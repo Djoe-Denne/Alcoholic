@@ -1,0 +1,11 @@
+{
+  "id": "testpack:age_new_make",
+  "process": "alcoholic:age",
+  "config": {
+    "input_liquid": "testpack:new_make_spirit",
+    "output": { "liquid": "testpack:whisky" },
+    "ticks_to_complete": 40
+  },
+  "inputs": {},
+  "outputs": ["finished"]
+}

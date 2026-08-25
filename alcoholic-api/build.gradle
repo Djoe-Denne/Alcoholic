@@ -1,0 +1,28 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+dependencies {
+    testImplementation platform("org.junit:junit-bom:${junit_version}")
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifactId = 'alcoholic-api'
+            pom {
+                name = 'Alcoholic Public API'
+                description = 'Stable Java 17 extension surface for Alcoholic addons.'
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = 'localBuild'
+            url = rootProject.layout.buildDirectory.dir('maven-repo')
+        }
+    }
+}

@@ -1,0 +1,35 @@
+{
+  "id": "alcoholic:industrial_fermentation_vat",
+  "kind": "ferment",
+  "process": "alcoholic:ferment",
+  "min_exterior": {
+    "x": 3,
+    "y": 4,
+    "z": 3
+  },
+  "max_exterior": {
+    "x": 9,
+    "y": 16,
+    "z": 9
+  },
+  "required_controllers": 1,
+  "casing_tags": [
+    "alcoholic:fermenter_casing"
+  ],
+  "window_tags": [
+    "alcoholic:valid_machine_windows"
+  ],
+  "port_tags": [
+    "alcoholic:industrial_ports"
+  ],
+  "required_ports": [],
+  "hollow_interior": true,
+  "capacity_per_internal_block": 8000,
+  "controller": "alcoholic:industrial_vat_controller",
+  "modifiers": {
+    "yield": 1.0,
+    "speed": 1.0,
+    "thermal_stability": 4.0,
+    "max_batch_units": 1
+  }
+}

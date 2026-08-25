@@ -1,0 +1,35 @@
+---
+title: Wiki Log
+---
+
+# Wiki Log
+
+- [2026-08-25T09:20:00+02:00] INIT vault_path="C:/Users/djden/source/repos/Alcoholic/obsidian" categories=concepts,entities,skills,references,synthesis,journal,projects
+- [2026-08-25T09:20:00+02:00] QMD_COLLECTION name="alcoholic-wiki" path="C:/Users/djden/source/repos/Alcoholic"
+- [2026-08-25T09:20:00+02:00] DATA_INGEST source="b9ff420b-fd71-4089-83bc-cc4766880b14.jsonl" format=JSONL pages_updated=0 pages_created=5
+- [2026-08-25T09:20:00+02:00] DATA_INGEST source="bd9af1a2-530d-4463-a8dc-715f5c4a790f.jsonl" format=JSONL pages_updated=0 pages_created=2
+- [2026-08-25T09:20:00+02:00] DATA_INGEST source="d4b827ef-0f56-4372-a020-e2bd947371cb.jsonl" format=JSONL pages_updated=0 pages_created=1
+- [2026-08-25T09:20:00+02:00] DATA_INGEST source="25b907ee-f0d3-4ec9-8d03-c79700f3adb0.jsonl" format=JSONL pages_updated=0 pages_created=1
+- [2026-08-25T12:50:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/b9ff420b-fd71-4089-83bc-cc4766880b14/b9ff420b-fd71-4089-83bc-cc4766880b14.jsonl" pages_updated=0 pages_created=0 mode=append
+- [2026-08-25T12:50:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/bff6f9b3-354c-46b7-8b5e-c5162dc38730.jsonl" pages_updated=4 pages_created=5 mode=append
+- [2026-08-25T12:50:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/b282f8bd-e540-4028-93d1-896905419dcd/b282f8bd-e540-4028-93d1-896905419dcd.jsonl" pages_updated=7 pages_created=4 mode=append
+- [2026-08-25T12:50:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/b282f8bd-e540-4028-93d1-896905419dcd/subagents/5362e3cf-53fc-4eff-a34f-7cf2342088a9.jsonl" pages_updated=4 pages_created=0 mode=append
+- [2026-08-25T12:50:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/b282f8bd-e540-4028-93d1-896905419dcd/subagents/76fb1a5f-75ec-4a6a-9436-6a55a7cd0256.jsonl" pages_updated=4 pages_created=0 mode=append
+- [2026-08-25T12:50:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/02718a41-464c-42f6-998f-a2c72e406923.jsonl" pages_updated=0 pages_created=0 mode=append
+- [2026-08-25T12:50:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/22819295-066d-4006-9321-c6e0a644e1a2.jsonl" pages_updated=0 pages_created=0 mode=append
+- [2026-08-25T12:50:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/381c3e75-9a79-4b37-848d-fe8cf2799319.jsonl" pages_updated=0 pages_created=0 mode=append
+- [2026-08-25T12:50:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/49f62360-98ce-420a-b7a9-3f7e81d4c1d0.jsonl" pages_updated=0 pages_created=0 mode=append
+- [2026-08-25T12:50:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/7731d1be-0643-4b8c-8840-5d0347ced41f.jsonl" pages_updated=0 pages_created=0 mode=append
+- [2026-08-25T12:50:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/7e03e8b8-11d2-4c4e-8bfc-17900328f655.jsonl" pages_updated=0 pages_created=0 mode=append
+- [2026-08-25T12:50:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/9ad7df24-ba96-4142-af5d-e3d86140eafb.jsonl" pages_updated=0 pages_created=0 mode=append
+- [2026-08-25T12:50:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/be2c63ac-c762-48d3-a76a-d36ff13afebe.jsonl" pages_updated=0 pages_created=0 mode=append
+- [2026-08-25T12:50:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/ea10aefe-32ce-4428-93e8-d9b5dd6668ab.jsonl" pages_updated=0 pages_created=0 mode=append
+- [2026-08-25T12:50:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/f726bd97-03b0-4dcc-ae22-2f35eace24b5.jsonl" pages_updated=0 pages_created=0 mode=append
+- [2026-08-25T14:10:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/a6b5797c-82f8-4021-9d63-10a82fed6899/a6b5797c-82f8-4021-9d63-10a82fed6899.jsonl" pages_updated=10 pages_created=6 mode=append
+- [2026-08-25T14:10:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/b282f8bd-e540-4028-93d1-896905419dcd/b282f8bd-e540-4028-93d1-896905419dcd.jsonl" pages_updated=0 pages_created=0 mode=append
+- [2026-08-25T14:40:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/c2ca3b27-ad63-4be9-af24-47c49c111f2f/c2ca3b27-ad63-4be9-af24-47c49c111f2f.jsonl" pages_updated=9 pages_created=7 mode=append
+- [2026-08-25T14:40:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/a6b5797c-82f8-4021-9d63-10a82fed6899/a6b5797c-82f8-4021-9d63-10a82fed6899.jsonl" pages_updated=0 pages_created=0 mode=append
+- [2026-08-25T15:30:00+02:00] QUERY tool="qmd" collection="alcoholic-wiki" topic="industrial multiblock executor PRESS FERMENT"
+- [2026-08-25T15:30:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/dc49ea79-b9e5-4902-ad7f-795f762f8f52/dc49ea79-b9e5-4902-ad7f-795f762f8f52.jsonl" pages_updated=3 pages_created=5 mode=append
+- [2026-08-25T15:53:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/dc49ea79-b9e5-4902-ad7f-795f762f8f52/dc49ea79-b9e5-4902-ad7f-795f762f8f52.jsonl" pages_updated=10 pages_created=1 mode=append
+- [2026-08-25T15:53:00+02:00] INGEST source="C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/c2ca3b27-ad63-4be9-af24-47c49c111f2f/c2ca3b27-ad63-4be9-af24-47c49c111f2f.jsonl" pages_updated=1 pages_created=0 mode=append

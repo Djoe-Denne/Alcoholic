@@ -1,0 +1,29 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            name = 'MinecraftForge'
+            url = 'https://maven.minecraftforge.net/'
+        }
+    }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
+}
+
+rootProject.name = 'alcoholic'
+
+include(
+        'alcoholic-api',
+        'domain',
+        'platform-api',
+        'application',
+        'minecraft-common',
+        'integration-vinery',
+        'integration-brewery',
+        'integration-create',
+        'integration-create-forge-1.19.2',
+        'integration-test-addon',
+        'platform-forge-1.19.2'
+)

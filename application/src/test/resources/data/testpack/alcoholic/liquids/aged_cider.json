@@ -1,0 +1,7 @@
+{
+  "id": "testpack:aged_cider",
+  "defaults": {
+    "alcoholic:ethanol": 0.06,
+    "alcoholic:maturity": 1.0
+  }
+}

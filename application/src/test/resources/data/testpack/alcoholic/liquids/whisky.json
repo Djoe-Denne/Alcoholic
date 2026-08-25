@@ -1,0 +1,7 @@
+{
+  "id": "testpack:whisky",
+  "defaults": {
+    "alcoholic:ethanol": 0.43,
+    "alcoholic:maturity": 1.0
+  }
+}

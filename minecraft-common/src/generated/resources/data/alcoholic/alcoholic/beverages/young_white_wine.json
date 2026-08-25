@@ -1,0 +1,41 @@
+{
+  "graph": {
+    "nodes": [
+      {
+        "definition": "alcoholic:press_white_grapes",
+        "id": "press",
+        "inputs": {
+          "fruit": {
+            "tag": "alcoholic:grapes/white"
+          }
+        }
+      },
+      {
+        "definition": "alcoholic:ferment_white_must",
+        "id": "ferment",
+        "inputs": {
+          "must": {
+            "node": "press",
+            "port": "must"
+          },
+          "yeast": {
+            "tag": "alcoholic:yeast"
+          }
+        }
+      }
+    ],
+    "outputs": {
+      "result": {
+        "node": "ferment",
+        "port": "young"
+      }
+    }
+  },
+  "id": "alcoholic:young_white_wine",
+  "properties": [
+    "alcoholic:sugar",
+    "alcoholic:ethanol",
+    "alcoholic:acidity",
+    "alcoholic:quality"
+  ]
+}

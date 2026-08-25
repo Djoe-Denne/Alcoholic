@@ -1,0 +1,32 @@
+{
+  "id": "testaddon:polished_rice_wash",
+  "category": "experimental",
+  "graph": {
+    "nodes": [
+      {
+        "id": "polish",
+        "process": "testaddon:rice_polishing",
+        "config": {
+          "ratio": 0.7
+        },
+        "inputs": {
+          "rice": {
+            "item": "minecraft:wheat"
+          }
+        },
+        "outputs": [
+          "polished"
+        ]
+      }
+    ],
+    "outputs": {
+      "result": {
+        "node": "polish",
+        "port": "polished"
+      }
+    }
+  },
+  "properties": [
+    "testaddon:polishing_ratio"
+  ]
+}

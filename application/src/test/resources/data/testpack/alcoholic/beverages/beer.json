@@ -1,0 +1,106 @@
+{
+  "id": "testpack:beer",
+  "category": "beer",
+  "graph": {
+    "nodes": [
+      {
+        "id": "malt",
+        "process": "alcoholic:malt",
+        "inputs": {
+          "grain": {
+            "tag": "alcoholic:barley"
+          }
+        },
+        "outputs": [
+          "malt"
+        ]
+      },
+      {
+        "id": "mill",
+        "process": "alcoholic:mill",
+        "inputs": {
+          "malt": {
+            "node": "malt",
+            "port": "malt"
+          }
+        },
+        "outputs": [
+          "grist"
+        ]
+      },
+      {
+        "id": "mash",
+        "process": "alcoholic:mash",
+        "inputs": {
+          "grist": {
+            "node": "mill",
+            "port": "grist"
+          },
+          "water": {
+            "item": "minecraft:water_bucket"
+          }
+        },
+        "outputs": [
+          "wort"
+        ]
+      },
+      {
+        "id": "boil",
+        "process": "alcoholic:boil",
+        "inputs": {
+          "wort": {
+            "node": "mash",
+            "port": "wort"
+          },
+          "hops": {
+            "tag": "alcoholic:hops"
+          }
+        },
+        "outputs": [
+          "hopped_wort"
+        ]
+      },
+      {
+        "id": "ferment",
+        "process": "alcoholic:ferment",
+        "inputs": {
+          "wort": {
+            "node": "boil",
+            "port": "hopped_wort"
+          },
+          "yeast": {
+            "tag": "alcoholic:yeast"
+          }
+        },
+        "outputs": [
+          "finished"
+        ]
+      },
+      {
+        "id": "age",
+        "process": "alcoholic:age",
+        "config": {
+          "input_liquid": "testpack:beer",
+          "output": { "liquid": "testpack:barrel_aged_beer" },
+          "ticks_to_complete": 40
+        },
+        "inputs": {
+          "beer": { "node": "ferment", "port": "finished" }
+        },
+        "outputs": ["aged"]
+      }
+    ],
+    "outputs": {
+      "result": {
+        "node": "age",
+        "port": "aged"
+      }
+    }
+  },
+  "properties": [
+    "alcoholic:sugar",
+    "alcoholic:ethanol",
+    "alcoholic:bitterness",
+    "alcoholic:carbonation"
+  ]
+}

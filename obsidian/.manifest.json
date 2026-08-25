@@ -1,0 +1,320 @@
+{
+  "version": 1,
+  "sources": {
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/b9ff420b-fd71-4089-83bc-cc4766880b14/b9ff420b-fd71-4089-83bc-cc4766880b14.jsonl": {
+      "ingested_at": "2026-08-25T12:50:00+02:00",
+      "size_bytes": 240285,
+      "modified_at": "2026-08-25T07:28:23.296681Z",
+      "content_hash": "sha256:58475ec6d6698da3a00987f3bd523ce15759cf7c815ce6570af0352ea5da5b28",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/loader-independent-minecraft-architecture.md",
+        "projects/alcoholic/concepts/semantic-crop-compatibility.md",
+        "projects/alcoholic/skills/forge-1.19.2-phase-1-verification.md",
+        "projects/alcoholic/references/cursor-phase-1-foundation-session.md"
+      ],
+      "pages_updated": []
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/b9ff420b-fd71-4089-83bc-cc4766880b14/subagents/bd9af1a2-530d-4463-a8dc-715f5c4a790f.jsonl": {
+      "ingested_at": "2026-08-25T09:20:00+02:00",
+      "size_bytes": 34682,
+      "modified_at": "2026-08-25T06:55:48.300174Z",
+      "content_hash": "sha256:7803036b18a2f302ef0013fab63543b334db396514c8a8ddc30059b85738efdf",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/loader-independent-minecraft-architecture.md",
+        "projects/alcoholic/references/cursor-phase-1-foundation-session.md"
+      ],
+      "pages_updated": []
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/b9ff420b-fd71-4089-83bc-cc4766880b14/subagents/d4b827ef-0f56-4372-a020-e2bd947371cb.jsonl": {
+      "ingested_at": "2026-08-25T09:20:00+02:00",
+      "size_bytes": 15084,
+      "modified_at": "2026-08-25T06:41:12.684719Z",
+      "content_hash": "sha256:723653d3ceb13aab71dc229e66d931380a1ccb8c58691d8ec1e47aa68b37c27e",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/references/cursor-phase-1-foundation-session.md"
+      ],
+      "pages_updated": []
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/b9ff420b-fd71-4089-83bc-cc4766880b14/subagents/25b907ee-f0d3-4ec9-8d03-c79700f3adb0.jsonl": {
+      "ingested_at": "2026-08-25T09:20:00+02:00",
+      "size_bytes": 8196,
+      "modified_at": "2026-08-25T06:40:27.752152Z",
+      "content_hash": "sha256:07466b37075076fd8c4608d0c6c6c4c2477480309cc4926c8109ce914c39d757",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/references/cursor-phase-1-foundation-session.md"
+      ],
+      "pages_updated": []
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/bff6f9b3-354c-46b7-8b5e-c5162dc38730.jsonl": {
+      "ingested_at": "2026-08-25T12:50:00+02:00",
+      "size_bytes": 249632,
+      "modified_at": "2026-08-25T09:58:34.538694Z",
+      "content_hash": "sha256:49e227aba8cde744b47d10da381543504e1ac091600399b25d6a888d8f4e3331",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/trellis-training.md",
+        "projects/alcoholic/concepts/harvest-lot-metadata.md",
+        "projects/alcoholic/references/cursor-phase-2-viticulture-session.md",
+        "projects/alcoholic/skills/forge-1.19.2-phase-2-3-verification.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/semantic-crop-compatibility.md",
+        "projects/alcoholic/skills/forge-1.19.2-phase-1-verification.md",
+        "projects/alcoholic/references/cursor-phase-1-foundation-session.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/b282f8bd-e540-4028-93d1-896905419dcd/b282f8bd-e540-4028-93d1-896905419dcd.jsonl": {
+      "ingested_at": "2026-08-25T14:10:00+02:00",
+      "size_bytes": 409336,
+      "modified_at": "2026-08-25T10:54:49.891Z",
+      "content_hash": "sha256:b545e4540d551836537bd62ab560a96301c8c5c7fb3e7a9b3d82a5fbb5f1e21a",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/beverage-framework.md",
+        "projects/alcoholic/concepts/process-capability-graph.md",
+        "projects/alcoholic/concepts/public-extension-api.md",
+        "projects/alcoholic/references/cursor-phase-3-beverage-framework-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/loader-independent-minecraft-architecture.md",
+        "projects/alcoholic/concepts/semantic-crop-compatibility.md",
+        "projects/alcoholic/concepts/harvest-lot-metadata.md",
+        "projects/alcoholic/skills/forge-1.19.2-phase-1-verification.md",
+        "projects/alcoholic/skills/forge-1.19.2-phase-2-3-verification.md",
+        "projects/alcoholic/references/cursor-phase-1-foundation-session.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/b282f8bd-e540-4028-93d1-896905419dcd/subagents/5362e3cf-53fc-4eff-a34f-7cf2342088a9.jsonl": {
+      "ingested_at": "2026-08-25T12:50:00+02:00",
+      "size_bytes": 37590,
+      "modified_at": "2026-08-25T10:29:21.251476Z",
+      "content_hash": "sha256:5aad468cf0f88839d3abd1fb0fe5475b6519285f879472fb3c2620928c573674",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/concepts/beverage-framework.md",
+        "projects/alcoholic/concepts/process-capability-graph.md",
+        "projects/alcoholic/concepts/public-extension-api.md",
+        "projects/alcoholic/references/cursor-phase-3-beverage-framework-session.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/b282f8bd-e540-4028-93d1-896905419dcd/subagents/76fb1a5f-75ec-4a6a-9436-6a55a7cd0256.jsonl": {
+      "ingested_at": "2026-08-25T12:50:00+02:00",
+      "size_bytes": 36086,
+      "modified_at": "2026-08-25T10:28:43.746750Z",
+      "content_hash": "sha256:41310b5902bfa073512e691339a0dcec1282a5aeb2da8dbdb0fca8edb3b4d8dd",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/concepts/beverage-framework.md",
+        "projects/alcoholic/concepts/process-capability-graph.md",
+        "projects/alcoholic/concepts/public-extension-api.md",
+        "projects/alcoholic/references/cursor-phase-3-beverage-framework-session.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/02718a41-464c-42f6-998f-a2c72e406923.jsonl": {
+      "ingested_at": "2026-08-25T12:50:00+02:00",
+      "size_bytes": 32427,
+      "modified_at": "2026-08-25T07:34:34.844482Z",
+      "content_hash": "sha256:86f2ea4217bede2a8061c51eacf22ad846849f2ffed74730b73a01932e26e4f4",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": []
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/22819295-066d-4006-9321-c6e0a644e1a2.jsonl": {
+      "ingested_at": "2026-08-25T12:50:00+02:00",
+      "size_bytes": 6898,
+      "modified_at": "2026-08-25T08:14:05.323897Z",
+      "content_hash": "sha256:320abe9f98c79beeb38cfa66e92abd11ece768d008f648d437317093408c2085",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": []
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/381c3e75-9a79-4b37-848d-fe8cf2799319.jsonl": {
+      "ingested_at": "2026-08-25T12:50:00+02:00",
+      "size_bytes": 32573,
+      "modified_at": "2026-08-25T09:51:57.089900Z",
+      "content_hash": "sha256:6ccb4c4936756bec0129d2087ccdc62cfccb3c86f54ea479fc146beca5d60629",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": []
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/49f62360-98ce-420a-b7a9-3f7e81d4c1d0.jsonl": {
+      "ingested_at": "2026-08-25T12:50:00+02:00",
+      "size_bytes": 70872,
+      "modified_at": "2026-08-25T09:33:51.121131Z",
+      "content_hash": "sha256:1c47acf09d9190e48eb19f827c1cf46bcd385ac6ae03fcd19838300886058cd5",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": []
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/7731d1be-0643-4b8c-8840-5d0347ced41f.jsonl": {
+      "ingested_at": "2026-08-25T12:50:00+02:00",
+      "size_bytes": 158282,
+      "modified_at": "2026-08-25T08:12:42.002511Z",
+      "content_hash": "sha256:0cb1aaff32947c31b45609ea041e8d0b330c9c4cd58fc1265a179cece5546118",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": []
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/7e03e8b8-11d2-4c4e-8bfc-17900328f655.jsonl": {
+      "ingested_at": "2026-08-25T12:50:00+02:00",
+      "size_bytes": 47515,
+      "modified_at": "2026-08-25T07:57:41.515639Z",
+      "content_hash": "sha256:1c5536b7df04c4cebab18cad65bf91ab5c660b70ac951262bec3c0963d69fd64",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": []
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/9ad7df24-ba96-4142-af5d-e3d86140eafb.jsonl": {
+      "ingested_at": "2026-08-25T12:50:00+02:00",
+      "size_bytes": 96029,
+      "modified_at": "2026-08-25T07:52:26.451161Z",
+      "content_hash": "sha256:23d29aee9560dc91de8a7f811e5b3a7ae518971c71880c84fbe97d9dc9502141",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": []
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/be2c63ac-c762-48d3-a76a-d36ff13afebe.jsonl": {
+      "ingested_at": "2026-08-25T12:50:00+02:00",
+      "size_bytes": 37266,
+      "modified_at": "2026-08-25T07:34:42.325426Z",
+      "content_hash": "sha256:027edf8004fdf841eb3849c1d106201cf3d6b072eae4a8132238f9ac1d098ae1",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": []
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/ea10aefe-32ce-4428-93e8-d9b5dd6668ab.jsonl": {
+      "ingested_at": "2026-08-25T12:50:00+02:00",
+      "size_bytes": 32254,
+      "modified_at": "2026-08-25T09:50:27.474936Z",
+      "content_hash": "sha256:3bd96f8abf4c8eea42dd9ac672ac0dcc748649898a973ed20501081094535703",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": []
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/bff6f9b3-354c-46b7-8b5e-c5162dc38730/subagents/f726bd97-03b0-4dcc-ae22-2f35eace24b5.jsonl": {
+      "ingested_at": "2026-08-25T12:50:00+02:00",
+      "size_bytes": 39276,
+      "modified_at": "2026-08-25T07:34:30.339547Z",
+      "content_hash": "sha256:e707b3261d68515dd8e12e51670d9a83a69964b1d7fc28351e52ce2daea4e157",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": []
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/a6b5797c-82f8-4021-9d63-10a82fed6899/a6b5797c-82f8-4021-9d63-10a82fed6899.jsonl": {
+      "ingested_at": "2026-08-25T14:40:00+02:00",
+      "size_bytes": 588289,
+      "modified_at": "2026-08-25T12:02:08.110129Z",
+      "content_hash": "sha256:676983ef2a96def47a8b3cdae378256c20849040017f106b5710e8125456db0e",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/artisanal-processing.md",
+        "projects/alcoholic/concepts/create-press-adapter.md",
+        "projects/alcoholic/skills/forge-1.19.2-phase-4-verification.md",
+        "projects/alcoholic/references/cursor-phase-4-processing-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/process-capability-graph.md",
+        "projects/alcoholic/concepts/beverage-framework.md",
+        "projects/alcoholic/concepts/harvest-lot-metadata.md",
+        "projects/alcoholic/concepts/public-extension-api.md",
+        "projects/alcoholic/concepts/loader-independent-minecraft-architecture.md",
+        "projects/alcoholic/concepts/semantic-crop-compatibility.md",
+        "projects/alcoholic/skills/forge-1.19.2-phase-2-3-verification.md",
+        "projects/alcoholic/skills/forge-1.19.2-phase-1-verification.md",
+        "projects/alcoholic/references/cursor-phase-3-beverage-framework-session.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/c2ca3b27-ad63-4be9-af24-47c49c111f2f/c2ca3b27-ad63-4be9-af24-47c49c111f2f.jsonl": {
+      "ingested_at": "2026-08-25T15:53:00+02:00",
+      "size_bytes": 537575,
+      "modified_at": "2026-08-25T12:40:44.174644Z",
+      "content_hash": "sha256:74a5f25f36e8ce0adf8beacc41431e1aebdb0a803fad528647c971b33582d08b",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md",
+        "projects/alcoholic/concepts/batch-provenance.md",
+        "projects/alcoholic/concepts/blend-versus-tank-merge.md",
+        "projects/alcoholic/concepts/bottled-beverage-snapshot.md",
+        "projects/alcoholic/skills/forge-1.19.2-phase-5-verification.md",
+        "projects/alcoholic/references/cursor-phase-5-aging-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/process-capability-graph.md",
+        "projects/alcoholic/concepts/artisanal-processing.md",
+        "projects/alcoholic/concepts/public-extension-api.md",
+        "projects/alcoholic/concepts/beverage-framework.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/skills/forge-1.19.2-phase-4-verification.md",
+        "projects/alcoholic/references/cursor-phase-4-processing-session.md",
+        "projects/alcoholic/references/cursor-phase-5-aging-session.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/dc49ea79-b9e5-4902-ad7f-795f762f8f52/dc49ea79-b9e5-4902-ad7f-795f762f8f52.jsonl": {
+      "ingested_at": "2026-08-25T15:53:00+02:00",
+      "size_bytes": 251318,
+      "modified_at": "2026-08-25T13:54:11.261352Z",
+      "content_hash": "sha256:9d0d9a14ff5feff2344dad6b0bdc80d4983f4743e60560dd9ad4943f0ce512c9",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/industrial-ports.md",
+        "projects/alcoholic/skills/forge-1.19.2-phase-6-verification.md",
+        "projects/alcoholic/references/cursor-phase-6-industrial-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/artisanal-processing.md",
+        "projects/alcoholic/concepts/create-press-adapter.md",
+        "projects/alcoholic/concepts/public-extension-api.md",
+        "projects/alcoholic/concepts/process-capability-graph.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/skills/forge-1.19.2-phase-6-verification.md",
+        "projects/alcoholic/references/cursor-phase-6-industrial-session.md"
+      ]
+    }
+  },
+  "stats": {
+    "total_sources_ingested": 21,
+    "total_pages": 32
+  }
+}

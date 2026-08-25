@@ -1,0 +1,242 @@
+plugins {
+    id 'base'
+}
+
+group = mod_group_id
+version = mod_version
+
+allprojects {
+    group = rootProject.mod_group_id
+    version = rootProject.mod_version
+
+    repositories {
+        mavenCentral()
+        maven {
+            name = 'MinecraftForge'
+            url = 'https://maven.minecraftforge.net/'
+        }
+    }
+}
+
+subprojects {
+    pluginManager.withPlugin('java') {
+        java {
+            toolchain.languageVersion = JavaLanguageVersion.of(17)
+            withSourcesJar()
+        }
+
+        tasks.withType(JavaCompile).configureEach {
+            options.encoding = 'UTF-8'
+            options.release = 17
+        }
+
+        tasks.withType(Test).configureEach {
+            useJUnitPlatform()
+        }
+    }
+}
+
+def forbiddenImports = [
+        'alcoholic-api'  : [
+                'net.minecraft.',
+                'net.minecraftforge.',
+                'net.neoforged.',
+                'net.fabricmc.',
+                'org.quiltmc.',
+                'com.simibubi.create.',
+                'satisfyu.vinery.',
+                'com.djden.alcoholic.domain.',
+                'com.djden.alcoholic.application.',
+                'com.djden.alcoholic.minecraft.',
+                'com.djden.alcoholic.forge.',
+                'com.djden.alcoholic.platform.'
+        ],
+        'domain'         : [
+                'net.minecraft.',
+                'net.minecraftforge.',
+                'net.neoforged.',
+                'net.fabricmc.',
+                'org.quiltmc.',
+                'com.simibubi.create.',
+                'satisfyu.vinery.'
+        ],
+        'platform-api'   : [
+                'net.minecraft.',
+                'net.minecraftforge.',
+                'net.neoforged.',
+                'net.fabricmc.',
+                'org.quiltmc.',
+                'com.simibubi.create.',
+                'satisfyu.vinery.'
+        ],
+        'application'    : [
+                'net.minecraft.',
+                'net.minecraftforge.',
+                'net.neoforged.',
+                'net.fabricmc.',
+                'org.quiltmc.',
+                'com.simibubi.create.',
+                'satisfyu.vinery.'
+        ],
+        'minecraft-common': [
+                'net.minecraftforge.',
+                'net.neoforged.',
+                'net.fabricmc.',
+                'org.quiltmc.',
+                'com.simibubi.create.',
+                'satisfyu.vinery.'
+        ],
+        'integration-vinery': [
+                'net.minecraftforge.',
+                'net.neoforged.',
+                'net.fabricmc.',
+                'org.quiltmc.',
+                'com.simibubi.create.',
+                'satisfyu.vinery.'
+        ],
+        'integration-brewery': [
+                'net.minecraftforge.',
+                'net.neoforged.',
+                'net.fabricmc.',
+                'org.quiltmc.',
+                'com.simibubi.create.',
+                'satisfyu.vinery.'
+        ],
+        'integration-create': [
+                'net.minecraftforge.',
+                'net.neoforged.',
+                'net.fabricmc.',
+                'org.quiltmc.',
+                'com.simibubi.create.',
+                'satisfyu.vinery.'
+        ],
+        'integration-create-forge-1.19.2': [
+                'satisfyu.vinery.'
+        ],
+        'platform-forge-1.19.2': [
+                'satisfyu.vinery.'
+        ],
+        'integration-test-addon': [
+                'net.minecraft.',
+                'net.minecraftforge.',
+                'net.neoforged.',
+                'net.fabricmc.',
+                'org.quiltmc.',
+                'com.simibubi.create.',
+                'satisfyu.vinery.',
+                'com.djden.alcoholic.domain.',
+                'com.djden.alcoholic.application.',
+                'com.djden.alcoholic.minecraft.',
+                'com.djden.alcoholic.forge.',
+                'com.djden.alcoholic.platform.',
+                'com.djden.alcoholic.integration.'
+        ]
+]
+
+tasks.register('checkArchitecture') {
+    group = 'verification'
+    description = 'Fails when a module imports a forbidden platform API.'
+
+    doLast {
+        forbiddenImports.each { moduleName, prefixes ->
+            fileTree("${rootDir}/${moduleName}/src") {
+                include '**/*.java'
+            }.each { source ->
+                source.eachLine { line, number ->
+                    def normalized = line.trim()
+                    prefixes.each { prefix ->
+                        if (normalized.startsWith("import ${prefix}") ||
+                                normalized.startsWith("import static ${prefix}")) {
+                            throw new GradleException(
+                                    "Forbidden dependency '${prefix}' in ${source}:${number}"
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+def genericEngineSourceRoots = [
+        'alcoholic-api/src/main/java',
+        'domain/src/main/java/com/djden/alcoholic/domain/beverage',
+        'domain/src/main/java/com/djden/alcoholic/domain/process',
+        'domain/src/main/java/com/djden/alcoholic/domain/liquid',
+        'domain/src/main/java/com/djden/alcoholic/domain/property',
+        'domain/src/main/java/com/djden/alcoholic/domain/vessel',
+        'application/src/main/java/com/djden/alcoholic/application/beverage',
+        'application/src/main/java/com/djden/alcoholic/application/process',
+        'application/src/main/java/com/djden/alcoholic/application/property',
+        'minecraft-common/src/main/java/com/djden/alcoholic/minecraft/beverage',
+        'minecraft-common/src/main/java/com/djden/alcoholic/minecraft/environment',
+        'minecraft-common/src/main/java/com/djden/alcoholic/minecraft/inspect',
+        'domain/src/main/java/com/djden/alcoholic/domain/multiblock',
+        'application/src/main/java/com/djden/alcoholic/application/machine',
+        'minecraft-common/src/main/java/com/djden/alcoholic/minecraft/multiblock',
+        'minecraft-common/src/main/java/com/djden/alcoholic/minecraft/machine'
+]
+
+def forbiddenBeverageTokens = ~/\b(Wine|Beer|Whisky|Whiskey|Rum|wine|beer|whisky|whiskey|rum)\b/
+
+tasks.register('checkBeverageFrameworkPurity') {
+    group = 'verification'
+    description = 'Fails when generic beverage-framework sources name a finite drink family.'
+
+    doLast {
+        genericEngineSourceRoots.each { relativeRoot ->
+            def root = file("${rootDir}/${relativeRoot}")
+            if (!root.exists()) {
+                return
+            }
+            fileTree(root) {
+                include '**/*.java'
+                exclude '**/builtin/**'
+                exclude '**/content/**'
+            }.each { source ->
+                source.eachLine { line, number ->
+                    if (forbiddenBeverageTokens.matcher(line).find()) {
+                        throw new GradleException(
+                                "Forbidden beverage identity in generic engine source ${source}:${number}"
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+gradle.projectsEvaluated {
+    tasks.named('assemble') {
+        dependsOn subprojects.collect { it.tasks.named('assemble') }
+    }
+
+    tasks.named('check') {
+        dependsOn tasks.named('checkArchitecture')
+        dependsOn tasks.named('checkBeverageFrameworkPurity')
+        dependsOn subprojects.collect { it.tasks.named('check') }
+    }
+
+    tasks.register('test') {
+        group = 'verification'
+        description = 'Runs all unit tests.'
+        dependsOn subprojects.findAll { it.tasks.names.contains('test') }
+                .collect { it.tasks.named('test') }
+    }
+
+    tasks.register('runData') {
+        group = 'forgegradle runs'
+        description = 'Generates common and Forge resources.'
+        dependsOn ':platform-forge-1.19.2:runDataCommon'
+    }
+
+    tasks.register('runClient') {
+        group = 'forgegradle runs'
+        dependsOn ':platform-forge-1.19.2:runClient'
+    }
+
+    tasks.register('runGameTestServer') {
+        group = 'verification'
+        dependsOn ':platform-forge-1.19.2:runGameTestServer'
+    }
+}

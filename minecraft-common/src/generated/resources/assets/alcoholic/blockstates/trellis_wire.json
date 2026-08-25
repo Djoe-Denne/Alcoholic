@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "alcoholic:block/trellis_wire"
+    },
+    "axis=z": {
+      "model": "alcoholic:block/trellis_wire",
+      "y": 90
+    }
+  }
+}

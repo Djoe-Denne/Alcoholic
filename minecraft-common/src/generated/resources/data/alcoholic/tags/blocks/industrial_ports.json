@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "alcoholic:fluid_port",
+    "alcoholic:item_port",
+    "alcoholic:kinetic_port"
+  ]
+}

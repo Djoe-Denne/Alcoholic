@@ -1,0 +1,36 @@
+{
+  "id": "testpack:fruit_liqueur",
+  "category": "liqueur",
+  "graph": {
+    "nodes": [
+      {
+        "id": "infuse",
+        "process": "alcoholic:infuse",
+        "inputs": {
+          "spirit": {
+            "beverage": "testpack:spirit"
+          },
+          "fruit": {
+            "tag": "alcoholic:fruits/apple"
+          },
+          "sugar": {
+            "item": "minecraft:sugar"
+          }
+        },
+        "outputs": [
+          "liqueur"
+        ]
+      }
+    ],
+    "outputs": {
+      "result": {
+        "node": "infuse",
+        "port": "liqueur"
+      }
+    }
+  },
+  "properties": [
+    "alcoholic:ethanol",
+    "alcoholic:sugar"
+  ]
+}

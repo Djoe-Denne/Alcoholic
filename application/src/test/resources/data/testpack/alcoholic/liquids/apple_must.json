@@ -1,0 +1,9 @@
+{
+  "id": "testpack:apple_must",
+  "defaults": {
+    "alcoholic:sugar": 0.62,
+    "alcoholic:acidity": 0.40,
+    "alcoholic:ethanol": 0.0,
+    "alcoholic:temperature": 20.0
+  }
+}

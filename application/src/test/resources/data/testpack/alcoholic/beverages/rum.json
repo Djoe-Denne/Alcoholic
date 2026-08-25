@@ -1,0 +1,61 @@
+{
+  "id": "testpack:rum",
+  "category": "rum",
+  "graph": {
+    "nodes": [
+      {
+        "id": "ferment",
+        "process": "alcoholic:ferment",
+        "inputs": {
+          "molasses": {
+            "tag": "alcoholic:molasses"
+          },
+          "water": {
+            "item": "minecraft:water_bucket"
+          },
+          "yeast": {
+            "tag": "alcoholic:yeast"
+          }
+        },
+        "outputs": [
+          "wash"
+        ]
+      },
+      {
+        "id": "distill",
+        "process": "alcoholic:distill",
+        "inputs": {
+          "wash": {
+            "node": "ferment",
+            "port": "wash"
+          }
+        },
+        "outputs": [
+          "finished"
+        ]
+      },
+      {
+        "id": "age",
+        "process": "alcoholic:age",
+        "config": {
+          "input_liquid": "testpack:rum_spirit",
+          "output": { "liquid": "testpack:aged_rum" },
+          "ticks_to_complete": 40
+        },
+        "inputs": {
+          "spirit": { "node": "distill", "port": "finished" }
+        },
+        "outputs": ["aged"]
+      }
+    ],
+    "outputs": {
+      "result": {
+        "node": "age",
+        "port": "aged"
+      }
+    }
+  },
+  "properties": [
+    "alcoholic:ethanol"
+  ]
+}

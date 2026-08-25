@@ -1,0 +1,7 @@
+{
+  "id": "testpack:new_make_spirit",
+  "defaults": {
+    "alcoholic:ethanol": 0.65,
+    "alcoholic:maturity": 0.0
+  }
+}

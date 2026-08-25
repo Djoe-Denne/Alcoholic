@@ -1,0 +1,79 @@
+{
+  "id": "testpack:cider",
+  "category": "cider",
+  "graph": {
+    "nodes": [
+      {
+        "id": "press",
+        "definition": "testpack:press_fruit",
+        "inputs": {
+          "source": {
+            "ingredient": "testpack:apple"
+          }
+        }
+      },
+      {
+        "id": "ferment",
+        "process": "alcoholic:ferment",
+        "config": {
+          "input_liquid": "testpack:apple_must",
+          "output": {
+            "liquid": "testpack:young_cider"
+          },
+          "yeast": {
+            "tag": "alcoholic:yeast"
+          },
+          "require_yeast": true,
+          "preferred_temperature": {
+            "min": 16,
+            "max": 22
+          },
+          "operating_temperature": {
+            "min": 8,
+            "max": 28
+          },
+          "ticks_to_complete": 100,
+          "kinetics": {
+            "sugar_to_ethanol": 0.47,
+            "completion_threshold": 0.02
+          }
+        },
+        "inputs": {
+          "must": {
+            "node": "press",
+            "port": "must"
+          },
+          "yeast": {
+            "tag": "alcoholic:yeast"
+          }
+        },
+        "outputs": [
+          "cider"
+        ]
+      },
+      {
+        "id": "age",
+        "process": "alcoholic:age",
+        "config": {
+          "input_liquid": "testpack:young_cider",
+          "output": { "liquid": "testpack:aged_cider" },
+          "ticks_to_complete": 40
+        },
+        "inputs": {
+          "cider": { "node": "ferment", "port": "cider" }
+        },
+        "outputs": ["aged"]
+      }
+    ],
+    "outputs": {
+      "result": {
+        "node": "age",
+        "port": "aged"
+      }
+    }
+  },
+  "properties": [
+    "alcoholic:sugar",
+    "alcoholic:ethanol"
+  ]
+}

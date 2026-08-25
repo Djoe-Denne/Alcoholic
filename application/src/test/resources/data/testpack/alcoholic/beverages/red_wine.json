@@ -1,0 +1,61 @@
+{
+  "id": "testpack:red_wine",
+  "category": "wine",
+  "graph": {
+    "nodes": [
+      {
+        "id": "press",
+        "process": "alcoholic:press",
+        "inputs": {
+          "fruit": {
+            "tag": "alcoholic:grapes/red"
+          }
+        },
+        "outputs": [
+          "must"
+        ]
+      },
+      {
+        "id": "ferment",
+        "process": "alcoholic:ferment",
+        "inputs": {
+          "must": {
+            "node": "press",
+            "port": "must"
+          },
+          "yeast": {
+            "tag": "alcoholic:yeast"
+          }
+        },
+        "outputs": [
+          "young"
+        ]
+      },
+      {
+        "id": "age",
+        "process": "alcoholic:age",
+        "inputs": {
+          "young": {
+            "node": "ferment",
+            "port": "young"
+          }
+        },
+        "outputs": [
+          "finished"
+        ]
+      }
+    ],
+    "outputs": {
+      "result": {
+        "node": "age",
+        "port": "finished"
+      }
+    }
+  },
+  "properties": [
+    "alcoholic:sugar",
+    "alcoholic:ethanol",
+    "alcoholic:acidity",
+    "alcoholic:tannin"
+  ]
+}

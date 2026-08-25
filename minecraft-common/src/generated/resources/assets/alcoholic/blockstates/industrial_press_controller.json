@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "formed=false": {
+      "model": "alcoholic:block/industrial_press_controller"
+    },
+    "formed=true": {
+      "model": "alcoholic:block/industrial_press_controller_formed"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "defaults": {
+    "alcoholic:acidity": 0.55,
+    "alcoholic:ethanol": 0.11,
+    "alcoholic:maturity": 0.0,
+    "alcoholic:oxidation_exposure": 0.0,
+    "alcoholic:sugar": 0.00,
+    "alcoholic:temperature": 20.0,
+    "alcoholic:wood_exposure": 0.0
+  },
+  "id": "alcoholic:red_wine"
+}

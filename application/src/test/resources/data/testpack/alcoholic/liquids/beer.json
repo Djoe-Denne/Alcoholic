@@ -1,0 +1,7 @@
+{
+  "id": "testpack:beer",
+  "defaults": {
+    "alcoholic:ethanol": 0.05,
+    "alcoholic:maturity": 0.0
+  }
+}

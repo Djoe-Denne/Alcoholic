@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "alcoholic:block/industrial_tank_controller"
+  }
+}

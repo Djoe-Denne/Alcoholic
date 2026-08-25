@@ -1,0 +1,53 @@
+{
+  "id": "testpack:whisky",
+  "category": "whisky",
+  "graph": {
+    "nodes": [
+      {
+        "id": "mill",
+        "process": "alcoholic:mill",
+        "inputs": {
+          "malt": { "tag": "alcoholic:malted_grain" }
+        },
+        "outputs": ["grist"]
+      },
+      {
+        "id": "mash",
+        "process": "alcoholic:mash",
+        "inputs": {
+          "grist": { "node": "mill", "port": "grist" },
+          "water": { "item": "minecraft:water_bucket" }
+        },
+        "outputs": ["wort"]
+      },
+      {
+        "id": "ferment",
+        "process": "alcoholic:ferment",
+        "inputs": {
+          "wort": { "node": "mash", "port": "wort" }
+        },
+        "outputs": ["wash"]
+      },
+      {
+        "id": "distill",
+        "process": "alcoholic:distill",
+        "inputs": {
+          "wash": { "node": "ferment", "port": "wash" }
+        },
+        "outputs": ["spirit"]
+      },
+      {
+        "id": "age",
+        "definition": "testpack:age_new_make",
+        "inputs": {
+          "spirit": { "node": "distill", "port": "spirit" }
+        },
+        "outputs": ["finished"]
+      }
+    ],
+    "outputs": {
+      "result": { "node": "age", "port": "finished" }
+    }
+  },
+  "properties": ["alcoholic:ethanol", "alcoholic:maturity"]
+}

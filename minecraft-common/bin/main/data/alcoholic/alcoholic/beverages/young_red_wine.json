@@ -1,0 +1,41 @@
+{
+  "graph": {
+    "nodes": [
+      {
+        "definition": "alcoholic:press_red_grapes",
+        "id": "press",
+        "inputs": {
+          "fruit": {
+            "tag": "alcoholic:grapes/red"
+          }
+        }
+      },
+      {
+        "definition": "alcoholic:ferment_red_must",
+        "id": "ferment",
+        "inputs": {
+          "must": {
+            "node": "press",
+            "port": "must"
+          },
+          "yeast": {
+            "tag": "alcoholic:yeast"
+          }
+        }
+      }
+    ],
+    "outputs": {
+      "result": {
+        "node": "ferment",
+        "port": "young"
+      }
+    }
+  },
+  "id": "alcoholic:young_red_wine",
+  "properties": [
+    "alcoholic:sugar",
+    "alcoholic:ethanol",
+    "alcoholic:acidity",
+    "alcoholic:quality"
+  ]
+}

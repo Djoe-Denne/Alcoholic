@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IFI",
+    "ICI",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "F": {
+      "item": "alcoholic:artisanal_fermenter"
+    },
+    "C": {
+      "item": "alcoholic:industrial_casing"
+    }
+  },
+  "result": {
+    "item": "alcoholic:industrial_vat_controller",
+    "count": 1
+  }
+}

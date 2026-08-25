@@ -1,0 +1,29 @@
+{
+  "id": "testpack:spirit",
+  "category": "spirit",
+  "graph": {
+    "nodes": [
+      {
+        "id": "distill",
+        "process": "alcoholic:distill",
+        "inputs": {
+          "wash": {
+            "tag": "alcoholic:yeast"
+          }
+        },
+        "outputs": [
+          "spirit"
+        ]
+      }
+    ],
+    "outputs": {
+      "result": {
+        "node": "distill",
+        "port": "spirit"
+      }
+    }
+  },
+  "properties": [
+    "alcoholic:ethanol"
+  ]
+}

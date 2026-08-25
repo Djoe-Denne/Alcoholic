@@ -1,0 +1,162 @@
+plugins {
+    id 'java-library'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+
+def embeddedProjectPaths = [
+        ':alcoholic-api',
+        ':domain',
+        ':platform-api',
+        ':application',
+        ':minecraft-common',
+        ':integration-vinery',
+        ':integration-brewery',
+        ':integration-create',
+        ':integration-create-forge-1.19.2'
+]
+
+embeddedProjectPaths.each { evaluationDependsOn(it) }
+def embeddedProjects = embeddedProjectPaths.collect { project(it) }
+
+minecraft {
+    mappings channel: mapping_channel, version: mapping_version
+    copyIdeResources = true
+
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'info'
+            property 'forge.enabledGameTestNamespaces', mod_id
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile',
+                    file("${buildDir}/createSrgToMcp/output.srg").absolutePath
+
+            mods {
+                alcoholic {
+                    source sourceSets.main
+                    embeddedProjects.each { embedded ->
+                        source embedded.sourceSets.main
+                    }
+                }
+            }
+        }
+
+        client {
+        }
+
+        server {
+            args '--nogui'
+        }
+
+        gameTestServer {
+            workingDirectory project.file(
+                    providers.gradleProperty('withVinery').orNull == 'true'
+                            ? 'run-gametest-vinery'
+                            : 'run-gametest'
+            )
+        }
+
+        data {
+            taskName 'runDataCommon'
+            workingDirectory project.file('run-data-common')
+            property 'alcoholic.datagen.scope', 'common'
+            property 'alcoholic.datagen.forgeOutput',
+                    file('src/generated/resources').absolutePath
+            args '--mod', mod_id,
+                    '--all',
+                    '--output', file('../minecraft-common/src/generated/resources'),
+                    '--existing', file('../minecraft-common/src/main/resources')
+        }
+    }
+}
+
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
+
+repositories {
+    maven {
+        name = 'CurseMaven'
+        url = 'https://www.cursemaven.com'
+        content {
+            includeGroup 'curse.maven'
+        }
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    implementation project(':minecraft-common')
+    implementation project(':integration-vinery')
+    implementation project(':integration-brewery')
+    implementation project(':integration-create-forge-1.19.2')
+
+    testImplementation platform("org.junit:junit-bom:${junit_version}")
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    compileOnly fg.deobf('curse.maven:create-328085:4835190')
+    if (providers.gradleProperty('withCreate').orNull == 'true') {
+        runtimeOnly fg.deobf('curse.maven:create-328085:4835190')
+    }
+    if (providers.gradleProperty('withVinery').orNull == 'true') {
+        runtimeOnly fg.deobf(
+                "curse.maven:lets-do-vinery-704465:${vinery_curse_file}"
+        )
+        runtimeOnly fg.deobf(
+                "curse.maven:do-api-864599:${do_api_curse_file}"
+        )
+        runtimeOnly fg.deobf(
+                "curse.maven:architectury-api-419699:${architectury_curse_file}"
+        )
+    }
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    def replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            forge_version          : forge_version,
+            forge_version_range    : forge_version_range,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : mod_version,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description,
+            create_version         : create_version
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties
+    }
+}
+
+tasks.named('jar', Jar).configure {
+    archiveBaseName = "${mod_id}-forge-${minecraft_version}"
+    duplicatesStrategy = DuplicatesStrategy.FAIL
+
+    embeddedProjects.each { embedded ->
+        from embedded.sourceSets.main.output
+    }
+
+    manifest {
+        attributes([
+                'Specification-Title'   : mod_id,
+                'Specification-Vendor'  : mod_authors,
+                'Specification-Version' : '1',
+                'Implementation-Title'  : mod_name,
+                'Implementation-Version': mod_version,
+                'Implementation-Vendor' : mod_authors
+        ])
+    }
+
+    finalizedBy 'reobfJar'
+}
+
+tasks.named('assemble').configure {
+    dependsOn 'reobfJar'
+}

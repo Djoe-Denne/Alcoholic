@@ -1,0 +1,7 @@
+{
+  "id": "testpack:rum_spirit",
+  "defaults": {
+    "alcoholic:ethanol": 0.70,
+    "alcoholic:maturity": 0.0
+  }
+}

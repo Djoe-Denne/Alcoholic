@@ -1,0 +1,25 @@
+{
+  "id": "testpack:press_fruit",
+  "process": "alcoholic:press",
+  "config": {
+    "input": {
+      "ingredient": "testpack:apple",
+      "amount": 8
+    },
+    "output": {
+      "liquid": "testpack:apple_must",
+      "volume": 1000
+    },
+    "processing_time": 40,
+    "yield": 1.0,
+    "create_compatible": true
+  },
+  "inputs": {
+    "source": {
+      "ingredient": "testpack:apple"
+    }
+  },
+  "outputs": [
+    "must"
+  ]
+}

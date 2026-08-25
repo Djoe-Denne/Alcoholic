@@ -1,0 +1,41 @@
+{
+  "ambientocclusion": false,
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#vine"
+        },
+        "east": {
+          "texture": "#vine"
+        },
+        "north": {
+          "texture": "#vine"
+        },
+        "south": {
+          "texture": "#vine"
+        },
+        "up": {
+          "texture": "#vine"
+        },
+        "west": {
+          "texture": "#vine"
+        }
+      },
+      "from": [
+        7,
+        0,
+        7
+      ],
+      "to": [
+        9,
+        16,
+        9
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "alcoholic:block/white_grapevine_dormant",
+    "vine": "alcoholic:block/white_grapevine_dormant"
+  }
+}

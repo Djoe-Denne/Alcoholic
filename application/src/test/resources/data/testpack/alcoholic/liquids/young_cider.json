@@ -1,0 +1,9 @@
+{
+  "id": "testpack:young_cider",
+  "defaults": {
+    "alcoholic:sugar": 0.0,
+    "alcoholic:acidity": 0.40,
+    "alcoholic:ethanol": 0.06,
+    "alcoholic:temperature": 20.0
+  }
+}

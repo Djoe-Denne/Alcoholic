@@ -1,0 +1,7 @@
+{
+  "id": "testpack:barrel_aged_beer",
+  "defaults": {
+    "alcoholic:ethanol": 0.06,
+    "alcoholic:maturity": 1.0
+  }
+}
