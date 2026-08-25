@@ -67,4 +67,8 @@ public record TemperatureProfile(
     public boolean stressed(double celsius) {
         return !preferred.contains(celsius);
     }
+
+    public double preferredMidpoint() {
+        return (preferred.min() + preferred.max()) * 0.5;
+    }
 }

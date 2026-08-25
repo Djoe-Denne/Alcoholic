@@ -2,6 +2,7 @@ package com.djden.alcoholic.minecraft.mechanical;
 
 import com.djden.alcoholic.domain.mechanical.MechanicalDrivePort;
 import com.djden.alcoholic.domain.mechanical.MechanicalDriveState;
+import com.djden.alcoholic.domain.mechanical.MechanicalRequirement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -72,11 +73,28 @@ public final class MechanicalDrives {
         return select(level, machine).state();
     }
 
+    public static MechanicalDriveState forMachine(
+            Level level,
+            BlockPos machine,
+            MechanicalRequirement requirement
+    ) {
+        return select(level, machine, requirement).state();
+    }
+
     public static void consumeWork(Level level, BlockPos machine, double load) {
+        consumeWork(level, machine, load, null);
+    }
+
+    public static void consumeWork(
+            Level level,
+            BlockPos machine,
+            double load,
+            MechanicalRequirement requirement
+    ) {
         if (level == null || machine == null || load <= 0.0) {
             return;
         }
-        Selection selection = select(level, machine);
+        Selection selection = select(level, machine, requirement);
         if (!selection.state().usable()) {
             return;
         }
@@ -102,17 +120,25 @@ public final class MechanicalDrives {
     }
 
     private static Selection select(Level level, BlockPos machine) {
+        return select(level, machine, null);
+    }
+
+    private static Selection select(Level level, BlockPos machine, MechanicalRequirement requirement) {
         if (level == null || machine == null) {
             return Selection.idle();
         }
-        MechanicalDriveState local = localState(level, machine);
-        Adjacent adjacent = strongestAdjacent(level, machine);
-        MechanicalDriveState best = MechanicalDriveState.stronger(local, adjacent.state());
+        MechanicalDriveState local = localState(level, machine, requirement);
+        Adjacent adjacent = strongestAdjacent(level, machine, requirement);
+        MechanicalDriveState best = MechanicalDriveState.stronger(local, adjacent.state(), requirement);
         boolean localWon = best == local && local.usable();
         return new Selection(best, adjacent.port(), localWon);
     }
 
-    private static MechanicalDriveState localState(Level level, BlockPos machine) {
+    private static MechanicalDriveState localState(
+            Level level,
+            BlockPos machine,
+            MechanicalRequirement requirement
+    ) {
         BlockEntity entity = level.getBlockEntity(machine);
         if (entity == null) {
             return MechanicalDriveState.idle();
@@ -121,7 +147,7 @@ public final class MechanicalDrives {
         for (LocalAdapter adapter : LOCAL) {
             Optional<MechanicalDriveState> sampled = adapter.sample(level, machine, entity);
             if (sampled.isPresent()) {
-                best = MechanicalDriveState.stronger(best, sampled.get());
+                best = MechanicalDriveState.stronger(best, sampled.get(), requirement);
             }
         }
         return best;
@@ -133,11 +159,15 @@ public final class MechanicalDrives {
         }
     }
 
-    private static Adjacent strongestAdjacent(Level level, BlockPos machine) {
+    private static Adjacent strongestAdjacent(
+            Level level,
+            BlockPos machine,
+            MechanicalRequirement requirement
+    ) {
         Adjacent best = Adjacent.idle();
         for (Direction direction : Direction.values()) {
-            Adjacent candidate = adjacentSource(level, machine.relative(direction));
-            if (MechanicalDriveState.stronger(best.state(), candidate.state()) == candidate.state()) {
+            Adjacent candidate = adjacentSource(level, machine.relative(direction), requirement);
+            if (MechanicalDriveState.stronger(best.state(), candidate.state(), requirement) == candidate.state()) {
                 best = candidate;
             }
         }
@@ -145,6 +175,14 @@ public final class MechanicalDrives {
     }
 
     private static Adjacent adjacentSource(Level level, BlockPos position) {
+        return adjacentSource(level, position, null);
+    }
+
+    private static Adjacent adjacentSource(
+            Level level,
+            BlockPos position,
+            MechanicalRequirement requirement
+    ) {
         if (level == null || position == null) {
             return Adjacent.idle();
         }
@@ -157,7 +195,7 @@ public final class MechanicalDrives {
         for (Probe probe : PROBES) {
             Optional<MechanicalDriveState> sampled = probe.sample(level, position, state);
             if (sampled.isPresent()) {
-                best = MechanicalDriveState.stronger(best, sampled.get());
+                best = MechanicalDriveState.stronger(best, sampled.get(), requirement);
             }
         }
         return new Adjacent(best, null);

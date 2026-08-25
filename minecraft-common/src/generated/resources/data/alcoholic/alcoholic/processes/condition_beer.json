@@ -1,0 +1,25 @@
+{
+  "config": {
+    "carbonation_from_residual_sugar": 0.35,
+    "completion_maturity": 0.85,
+    "input_liquid": "alcoholic:beer",
+    "operating_temperature": {
+      "max": 20,
+      "min": 0
+    },
+    "output": {
+      "liquid": "alcoholic:beer"
+    },
+    "preferred_temperature": {
+      "max": 12,
+      "min": 2
+    },
+    "processing_time": 80
+  },
+  "id": "alcoholic:condition_beer",
+  "inputs": {},
+  "outputs": [
+    "finished"
+  ],
+  "process": "alcoholic:condition"
+}

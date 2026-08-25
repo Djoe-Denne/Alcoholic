@@ -1,16 +1,8 @@
 package com.djden.alcoholic.minecraft.multiblock;
 
 import com.djden.alcoholic.api.ResourceId;
-import com.djden.alcoholic.api.process.ProcessContext;
-import com.djden.alcoholic.api.process.ProcessInputs;
-import com.djden.alcoholic.api.process.ProcessInvocation;
-import com.djden.alcoholic.api.process.ProcessResult;
 import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
 import com.djden.alcoholic.application.machine.MultiblockProfiler;
-import com.djden.alcoholic.application.process.FermentConfig;
-import com.djden.alcoholic.application.process.PressConfig;
-import com.djden.alcoholic.application.process.ProcessRecipeResolver;
-import com.djden.alcoholic.domain.ingredient.IngredientLot;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.mechanical.MechanicalDrivePort;
 import com.djden.alcoholic.domain.mechanical.MechanicalDriveState;
@@ -25,7 +17,6 @@ import com.djden.alcoholic.domain.multiblock.PressStrokeState;
 import com.djden.alcoholic.domain.multiblock.ValidationResult;
 import com.djden.alcoholic.domain.multiblock.ValidationStatus;
 import com.djden.alcoholic.domain.process.ElapsedProcessClock;
-import com.djden.alcoholic.domain.process.ThermalStability;
 import com.djden.alcoholic.minecraft.fluid.LiquidBatchNbt;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
@@ -39,6 +30,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.ContainerHelper;
@@ -80,6 +72,15 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     private PressStrokeState stroke = PressStrokeState.IDLE;
     private double lastRpm;
     private List<BlockPos> boundParts = List.of();
+    private int processProgress;
+    private int processDuration = 1;
+    private double processClock;
+    private String processJob = "";
+    private String processStage = "";
+    private ResourceId boundDefinition;
+    private double targetTemperature = Double.NaN;
+    private int additionsCommitted;
+    private final List<ItemStack> committedSolids = new ArrayList<>();
 
     public MultiblockControllerBlockEntity(
             BlockEntityType<?> type,
@@ -131,11 +132,77 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     }
 
     public void executePress(MultiblockDefinition definition, long gameTime) {
-        tickPress(definition);
+        IndustrialProcessTicks.press(this, definition, gameTime);
     }
 
     public void executeFerment(MultiblockDefinition definition, long gameTime) {
-        tickFerment(definition, gameTime);
+        IndustrialProcessTicks.ferment(this, definition, gameTime);
+    }
+
+    public void executeMalt(MultiblockDefinition definition, long gameTime) {
+        IndustrialProcessTicks.malt(this, definition, gameTime);
+    }
+
+    public void executeMill(MultiblockDefinition definition, long gameTime) {
+        IndustrialProcessTicks.mill(this, definition, gameTime);
+    }
+
+    public void executeMash(MultiblockDefinition definition, long gameTime) {
+        IndustrialProcessTicks.mash(this, definition, gameTime);
+    }
+
+    public void executeBoil(MultiblockDefinition definition, long gameTime) {
+        IndustrialProcessTicks.boil(this, definition, gameTime);
+    }
+
+    public void executeCondition(MultiblockDefinition definition, long gameTime) {
+        IndustrialProcessTicks.condition(this, definition, gameTime);
+    }
+
+    public int processProgress() {
+        return processProgress;
+    }
+
+    public int processDuration() {
+        return processDuration;
+    }
+
+    public String processStage() {
+        return processStage;
+    }
+
+    public ResourceId boundDefinition() {
+        return boundDefinition;
+    }
+
+    public double targetTemperature() {
+        return targetTemperature;
+    }
+
+    public void debugSetTargetTemperature(double celsius) {
+        this.targetTemperature = celsius;
+        setChanged();
+    }
+
+    public boolean cycleBoundDefinition() {
+        Optional<ResourceId> processType = definition().flatMap(MultiblockDefinition::processType);
+        if (processType.isEmpty()) {
+            return false;
+        }
+        List<ResourceId> ids = ProcessRuntime.shared().beverages().catalog().processes().values().stream()
+                .filter(definition -> processType.get().equals(definition.processType()))
+                .map(com.djden.alcoholic.domain.process.ProcessDefinition::id)
+                .sorted(java.util.Comparator.comparing(ResourceId::toString))
+                .toList();
+        if (ids.isEmpty()) {
+            return false;
+        }
+        int index = boundDefinition == null ? -1 : ids.indexOf(boundDefinition);
+        boundDefinition = ids.get((index + 1) % ids.size());
+        resetProcess();
+        setChanged();
+        sync();
+        return true;
     }
 
     private boolean fermentMachine() {
@@ -150,6 +217,15 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     }
 
     public void onTankChanged() {
+        resetProcess();
+        markTankChanged();
+    }
+
+    void onProcessTankChanged() {
+        markTankChanged();
+    }
+
+    private void markTankChanged() {
         setChanged();
         if (access == IndustrialAccess.DRAIN_ONLY) {
             markStructureDirty();
@@ -188,6 +264,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         if (!access.canProcess()) {
             pressWorking = false;
             stroke = PressStrokeState.IDLE;
+            pauseElapsed(now);
             return;
         }
         definition().ifPresent(definition -> definition.processType()
@@ -294,177 +371,6 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         boundParts = List.of();
     }
 
-    private void tickPress(MultiblockDefinition definition) {
-        MechanicalDriveState drive = collectDrive();
-        lastRpm = drive.speed();
-        if (!definition.kinetic().satisfied(drive)) {
-            pressWorking = false;
-            stroke = PressStrokeState.IDLE;
-            pressProgress = 0;
-            return;
-        }
-        ItemStack input = items.get(INPUT_SLOT);
-        if (input.isEmpty()) {
-            pressWorking = false;
-            stroke = PressStrokeState.IDLE;
-            pressProgress = 0;
-            return;
-        }
-        ProcessRuntime runtime = ProcessRuntime.shared();
-        Optional<ProcessInvocation> invocation = ProcessRecipeResolver.find(
-                runtime.beverages().catalog(),
-                runtime.beverages().api(),
-                BuiltinRegistrations.PRESS,
-                MinecraftSelectorMatcher.create(runtime.beverages()),
-                Optional.of(ItemLots.id(input)),
-                Optional.empty()
-        );
-        if (invocation.isEmpty()) {
-            pressWorking = false;
-            return;
-        }
-        PressConfig config = PressConfig.CODEC.decode(invocation.get().config());
-        if (!config.executable() || input.getCount() < config.inputAmount()) {
-            pressWorking = false;
-            return;
-        }
-        pressWorking = true;
-        pressDuration = Math.max(1, (int) Math.round(config.processingTicks() / definition.modifiers().speedModifier()));
-        consumeMechanicalWork(definition);
-        pressProgress++;
-        strokeCycle = pressDuration <= 1 ? 1.0 : (double) pressProgress / pressDuration;
-        stroke = PressStrokeState.fromProgress(true, strokeCycle);
-        applyCrush();
-        if (pressProgress < pressDuration) {
-            setChanged();
-            if (pressProgress % 4 == 0) {
-                sync();
-            }
-            return;
-        }
-        int units = Math.min(
-                input.getCount() / config.inputAmount(),
-                definition.modifiers().maxBatchUnits()
-        );
-        IngredientLot lot = ItemLots.lot(copyCount(input, units * config.inputAmount()));
-        ProcessResult result = runtime.engine().execute(
-                IndustrialRuntime.shared().executor(BuiltinRegistrations.PRESS),
-                invocation.get(),
-                ProcessInputs.ofSolids("source", List.of(lot)),
-                ProcessContext.of(
-                        20.0,
-                        1.0,
-                        false,
-                        Optional.empty(),
-                        Optional.empty(),
-                        level.getGameTime(),
-                        definition.modifiers()
-                )
-        );
-        if (!result.success() || result.outputs().isEmpty()) {
-            pressProgress = 0;
-            return;
-        }
-        LiquidBatch produced = (LiquidBatch) result.outputs().get(0);
-        if (tank.fill(produced, true) < produced.volumeMillibuckets()) {
-            pressProgress = pressDuration;
-            return;
-        }
-        if (!result.items().isEmpty()) {
-            var byproduct = result.items().get(0);
-            ItemStack created = stack(byproduct.item(), byproduct.amount());
-            ItemStack existing = items.get(OUTPUT_SLOT);
-            if (created.isEmpty()) {
-                pressProgress = 0;
-                return;
-            }
-            if (!existing.isEmpty() && (!ItemStack.isSameItemSameTags(existing, created)
-                    || existing.getCount() + created.getCount() > getMaxStackSize())) {
-                pressProgress = pressDuration;
-                return;
-            }
-            if (existing.isEmpty()) {
-                items.set(OUTPUT_SLOT, created);
-            } else {
-                existing.grow(created.getCount());
-            }
-        }
-        tank.fill(produced, false);
-        input.shrink(units * config.inputAmount());
-        pressProgress = 0;
-        strokeCycle = 0.0;
-        stroke = PressStrokeState.IDLE;
-        pressWorking = false;
-        onTankChanged();
-    }
-
-    private void tickFerment(MultiblockDefinition definition, long now) {
-        if (skipUnloadGap) {
-            lastProcessedGameTime = now;
-            skipUnloadGap = false;
-            return;
-        }
-        double delta = ElapsedProcessClock.deltaTicks(lastProcessedGameTime, now, 200);
-        lastProcessedGameTime = now;
-        if (delta <= 0.0) {
-            return;
-        }
-        Optional<LiquidBatch> contents = tank.contents();
-        if (contents.isEmpty() || contents.get().baseLiquid().isEmpty()) {
-            yeastPitched = false;
-            return;
-        }
-        LiquidBatch batch = contents.get();
-        ProcessRuntime runtime = ProcessRuntime.shared();
-        Optional<ProcessInvocation> invocation = ProcessRecipeResolver.find(
-                runtime.beverages().catalog(),
-                runtime.beverages().api(),
-                BuiltinRegistrations.FERMENT,
-                MinecraftSelectorMatcher.create(runtime.beverages()),
-                Optional.empty(),
-                batch.baseLiquid()
-        );
-        if (invocation.isEmpty()) {
-            return;
-        }
-        FermentConfig config = FermentConfig.CODEC.decode(invocation.get().config());
-        if (config.requireYeast() && !yeastPitched) {
-            ItemStack yeast = items.get(INPUT_SLOT);
-            if (yeast.isEmpty() || !yeastMatches(runtime, yeast)) {
-                return;
-            }
-            yeast.shrink(1);
-            yeastPitched = true;
-        }
-        double ambient = ambientTemperature();
-        double effective = ThermalStability.effectiveCelsius(ambient, 18.0, definition.modifiers().thermalStability());
-        ProcessResult result = runtime.engine().execute(
-                IndustrialRuntime.shared().executor(BuiltinRegistrations.FERMENT),
-                invocation.get(),
-                ProcessInputs.ofLiquid("must", batch),
-                ProcessContext.of(
-                        effective,
-                        delta,
-                        yeastPitched || !config.requireYeast(),
-                        Optional.empty(),
-                        Optional.empty(),
-                        now,
-                        definition.modifiers()
-                )
-        );
-        if (!result.success() || result.outputs().isEmpty()) {
-            return;
-        }
-        LiquidBatch next = (LiquidBatch) result.outputs().get(0);
-        double consumedSugar = Math.max(
-                0.0,
-                batch.number(config.sugarProperty(), 0.0) - next.number(config.sugarProperty(), 0.0)
-        );
-        ventedCo2 += consumedSugar * config.kinetics().co2PerSugar();
-        tank.set(next);
-        onTankChanged();
-    }
-
     private void applyCrush() {
         if (level == null || geometry == null || !stroke.crushActive()) {
             return;
@@ -531,6 +437,251 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         this.pressWorking = state != PressStrokeState.IDLE;
     }
 
+    NonNullList<ItemStack> inventory() {
+        return items;
+    }
+
+    List<ItemStack> committedSolids() {
+        return committedSolids;
+    }
+
+    void stopPressProcess() {
+        pressWorking = false;
+        pressProgress = 0;
+        strokeCycle = 0.0;
+        stroke = PressStrokeState.IDLE;
+    }
+
+    void preparePressProcess(int durationTicks) {
+        pressWorking = true;
+        pressDuration = Math.max(1, durationTicks);
+    }
+
+    boolean pressProcessComplete() {
+        return pressProgress >= pressDuration;
+    }
+
+    boolean advancePressProcess() {
+        pressProgress++;
+        strokeCycle = pressDuration <= 1 ? 1.0 : (double) pressProgress / pressDuration;
+        stroke = PressStrokeState.fromProgress(true, strokeCycle);
+        applyCrush();
+        return pressProcessComplete();
+    }
+
+    boolean shouldSyncPressProcess() {
+        return pressProgress % 4 == 0;
+    }
+
+    void holdPressProcess() {
+        pressWorking = true;
+        pressProgress = pressDuration;
+        strokeCycle = 1.0;
+        stroke = PressStrokeState.fromProgress(true, strokeCycle);
+    }
+
+    void completePressProcess() {
+        stopPressProcess();
+        onProcessTankChanged();
+    }
+
+    void ventCo2(double amount) {
+        if (Double.isFinite(amount) && amount > 0.0) {
+            ventedCo2 += amount;
+        }
+    }
+
+    void resetProcess() {
+        refundCommittedSolids();
+        clearProcessState();
+    }
+
+    void completeProcess() {
+        committedSolids.clear();
+        clearProcessState();
+    }
+
+    private void clearProcessState() {
+        processProgress = 0;
+        processDuration = 1;
+        processClock = 0.0;
+        processJob = "";
+        processStage = "";
+        additionsCommitted = 0;
+        yeastPitched = false;
+        skipUnloadGap = true;
+    }
+
+    boolean beginProcessJob(String job, int durationTicks) {
+        if (!job.equals(processJob)) {
+            refundCommittedSolids();
+            processJob = job;
+            processProgress = 0;
+            processClock = 0.0;
+            processStage = "";
+            additionsCommitted = 0;
+            yeastPitched = false;
+            skipUnloadGap = true;
+        }
+        processDuration = Math.max(1, durationTicks);
+        return true;
+    }
+
+    boolean processComplete() {
+        return processProgress >= processDuration;
+    }
+
+    void noteRpm(double rpm) {
+        lastRpm = rpm;
+    }
+
+    boolean catalystConsumed() {
+        return yeastPitched;
+    }
+
+    void catalystConsumed(boolean value) {
+        yeastPitched = value;
+    }
+
+    double consumeElapsed(long now) {
+        if (skipUnloadGap) {
+            lastProcessedGameTime = now;
+            skipUnloadGap = false;
+            return 0.0;
+        }
+        double delta = ElapsedProcessClock.deltaTicks(lastProcessedGameTime, now, 200);
+        lastProcessedGameTime = now;
+        return Math.max(0.0, delta);
+    }
+
+    void pauseElapsed(long now) {
+        lastProcessedGameTime = now;
+        skipUnloadGap = false;
+    }
+
+    boolean advanceElapsed(long now, double rate) {
+        if (skipUnloadGap) {
+            lastProcessedGameTime = now;
+            skipUnloadGap = false;
+            return false;
+        }
+        double delta = ElapsedProcessClock.deltaTicks(lastProcessedGameTime, now, 200);
+        lastProcessedGameTime = now;
+        if (delta <= 0.0 || rate <= 0.0) {
+            return false;
+        }
+        processClock += delta * rate;
+        processProgress = Math.min(processDuration, (int) Math.floor(processClock));
+        return processClock + 1e-9 >= processDuration;
+    }
+
+    boolean advanceTick() {
+        processProgress++;
+        processClock = processProgress;
+        return processProgress >= processDuration;
+    }
+
+    void setProcessProgressFraction(double fraction) {
+        double normalized = Double.isFinite(fraction) ? Math.max(0.0, Math.min(1.0, fraction)) : 0.0;
+        processClock = normalized * processDuration;
+        processProgress = Math.min(processDuration, (int) Math.floor(processClock));
+    }
+
+    void setProcessStage(String stage) {
+        processStage = stage == null ? "" : stage;
+    }
+
+    int additionsCommitted() {
+        return additionsCommitted;
+    }
+
+    void additionsCommitted(int value) {
+        additionsCommitted = Math.max(0, value);
+    }
+
+    ResourceId selectedDefinition(ResourceId fallback) {
+        return boundDefinition == null ? fallback : boundDefinition;
+    }
+
+    double resolvedTarget(double fallback) {
+        return Double.isFinite(targetTemperature) ? targetTemperature : fallback;
+    }
+
+    double heatCelsius() {
+        return com.djden.alcoholic.minecraft.environment.HeatSources.celsius(level, worldPosition);
+    }
+
+    com.djden.alcoholic.domain.vessel.EnvironmentProfile environment() {
+        if (level == null) {
+            return com.djden.alcoholic.domain.vessel.EnvironmentProfile.temperateCellar();
+        }
+        return com.djden.alcoholic.minecraft.environment.EnvironmentSampler.sample(level, worldPosition);
+    }
+
+    void consumeWork(MultiblockDefinition definition) {
+        consumeMechanicalWork(definition);
+    }
+
+    MechanicalDriveState drive(MultiblockDefinition definition) {
+        return collectDrive(definition);
+    }
+
+    double ambient() {
+        return ambientTemperature();
+    }
+
+    ItemStack itemStack(ResourceId id, int amount) {
+        return stack(id, amount);
+    }
+
+    ItemStack copyOf(ItemStack stack, int count) {
+        return copyCount(stack, count);
+    }
+
+    boolean matchesYeast(ItemStack stack) {
+        return yeastMatches(ProcessRuntime.shared(), stack);
+    }
+
+    void markProcessDirty(boolean syncNow) {
+        setChanged();
+        if (syncNow) {
+            sync();
+        }
+    }
+
+    private void refundCommittedSolids() {
+        if (committedSolids.isEmpty()) {
+            return;
+        }
+        List<ItemStack> undelivered = new ArrayList<>();
+        for (ItemStack committed : committedSolids) {
+            if (committed.isEmpty()) {
+                continue;
+            }
+            ItemStack remainder = committed.copy();
+            ItemStack input = items.get(INPUT_SLOT);
+            if (input.isEmpty()) {
+                int moved = Math.min(remainder.getCount(), getMaxStackSize());
+                ItemStack restored = remainder.split(moved);
+                items.set(INPUT_SLOT, restored);
+            } else if (ItemStack.isSameItemSameTags(input, remainder) && input.getCount() < getMaxStackSize()) {
+                int moved = Math.min(remainder.getCount(), getMaxStackSize() - input.getCount());
+                input.grow(moved);
+                remainder.shrink(moved);
+            }
+            if (!remainder.isEmpty()) {
+                if (level != null && !level.isClientSide) {
+                    Block.popResource(level, worldPosition, remainder);
+                } else {
+                    undelivered.add(remainder);
+                }
+            }
+        }
+        committedSolids.clear();
+        committedSolids.addAll(undelivered);
+        setChanged();
+    }
+
     private void consumeMechanicalWork(MultiblockDefinition definition) {
         if (level == null || geometry == null) {
             return;
@@ -539,29 +690,32 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         if (load <= 0.0) {
             load = 1.0;
         }
-        PortDrive winner = winningPortDrive();
+        PortDrive winner = winningPortDrive(definition);
         if (winner != null) {
-            MechanicalDrives.consumeWork(level, winner.pos(), load);
+            MechanicalDrives.consumeWork(level, winner.pos(), load, definition.kinetic().asMechanical());
         }
     }
 
-    private MechanicalDriveState collectDrive() {
+    private MechanicalDriveState collectDrive(MultiblockDefinition definition) {
         if (level == null || geometry == null) {
             return lastRpm > 0.0
                     ? MechanicalDriveState.running(lastRpm, Double.POSITIVE_INFINITY)
                     : MechanicalDriveState.idle();
         }
-        PortDrive winner = winningPortDrive();
+        PortDrive winner = winningPortDrive(definition);
         return winner == null ? MechanicalDriveState.idle() : winner.state();
     }
 
-    private PortDrive winningPortDrive() {
+    private PortDrive winningPortDrive(MultiblockDefinition definition) {
         PortDrive best = null;
+        var requirement = definition.kinetic().asMechanical();
         for (CellCoord port : geometry.ports()) {
             BlockPos pos = WorldStructureSampler.pos(port);
             if (level.getBlockEntity(pos) instanceof MechanicalDrivePort drive) {
-                MechanicalDriveState state = drive.driveState();
-                if (best == null || MechanicalDriveState.stronger(best.state(), state) == state) {
+                MechanicalDriveState state = drive instanceof KineticPortBlockEntity kinetic
+                        ? kinetic.driveState(requirement)
+                        : drive.driveState();
+                if (best == null || MechanicalDriveState.stronger(best.state(), state, requirement) == state) {
                     best = new PortDrive(pos, state);
                 }
             }
@@ -627,7 +781,12 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
                 + " executor=" + definition().map(MultiblockDefinition::kind)
                 + " rpm=" + lastRpm
                 + " stroke=" + stroke
-                + " crush=" + crushVolume();
+                + " crush=" + crushVolume()
+                + " job=" + processJob
+                + " stage=" + processStage
+                + " progress=" + processProgress + "/" + processDuration
+                + " bound=" + boundDefinition
+                + " targetC=" + targetTemperature;
     }
 
     private boolean yeastMatches(ProcessRuntime runtime, ItemStack stack) {
@@ -679,6 +838,25 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         tag.putLong("LastProcessedGameTime", lastProcessedGameTime);
         tag.putBoolean("SkipUnloadGap", skipUnloadGap);
         tag.putDouble("LastRpm", lastRpm);
+        tag.putInt("ProcessProgress", processProgress);
+        tag.putInt("ProcessDuration", processDuration);
+        tag.putDouble("ProcessClock", processClock);
+        tag.putString("ProcessJob", processJob);
+        tag.putString("ProcessStage", processStage);
+        if (boundDefinition != null) {
+            tag.putString("BoundDefinition", boundDefinition.toString());
+        }
+        if (Double.isFinite(targetTemperature)) {
+            tag.putDouble("TargetTemperature", targetTemperature);
+        }
+        tag.putInt("AdditionsCommitted", additionsCommitted);
+        ListTag committed = new ListTag();
+        for (ItemStack stack : committedSolids) {
+            if (!stack.isEmpty()) {
+                committed.add(stack.save(new CompoundTag()));
+            }
+        }
+        tag.put("CommittedSolids", committed);
         if (geometry != null) {
             CompoundTag geo = new CompoundTag();
             geo.putInt("MinX", geometry.bounds().minX());
@@ -722,6 +900,34 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         lastProcessedGameTime = tag.getLong("LastProcessedGameTime");
         skipUnloadGap = tag.contains("SkipUnloadGap") ? tag.getBoolean("SkipUnloadGap") : true;
         lastRpm = tag.getDouble("LastRpm");
+        processProgress = tag.getInt("ProcessProgress");
+        processDuration = Math.max(1, tag.getInt("ProcessDuration"));
+        processClock = tag.getDouble("ProcessClock");
+        processJob = tag.getString("ProcessJob");
+        processStage = tag.getString("ProcessStage");
+        if (tag.contains("BoundDefinition")) {
+            try {
+                boundDefinition = ResourceId.parse(tag.getString("BoundDefinition"));
+            } catch (RuntimeException ignored) {
+                boundDefinition = null;
+            }
+        }
+        targetTemperature = tag.contains("TargetTemperature") ? tag.getDouble("TargetTemperature") : Double.NaN;
+        additionsCommitted = tag.getInt("AdditionsCommitted");
+        committedSolids.clear();
+        if (tag.contains("CommittedSolids", Tag.TAG_LIST)) {
+            ListTag committed = tag.getList("CommittedSolids", Tag.TAG_COMPOUND);
+            for (int index = 0; index < committed.size(); index++) {
+                ItemStack stack = ItemStack.of(committed.getCompound(index));
+                if (!stack.isEmpty()) {
+                    committedSolids.add(stack);
+                }
+            }
+        } else if (tag.contains("CommittedSolids", Tag.TAG_COMPOUND)) {
+            NonNullList<ItemStack> legacy = NonNullList.withSize(4, ItemStack.EMPTY);
+            ContainerHelper.loadAllItems(tag.getCompound("CommittedSolids"), legacy);
+            legacy.stream().filter(stack -> !stack.isEmpty()).forEach(committedSolids::add);
+        }
         if (tag.contains("Geometry")) {
             CompoundTag geo = tag.getCompound("Geometry");
             AxisBox box = new AxisBox(
@@ -817,7 +1023,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
             if (!value.hasProcess()) {
                 return new int[0];
             }
-            if (value.processType().filter(BuiltinRegistrations.FERMENT::equals).isPresent()) {
+            if (inputOnlyProcess(value)) {
                 return new int[]{INPUT_SLOT};
             }
             return direction == Direction.DOWN ? new int[]{OUTPUT_SLOT} : new int[]{INPUT_SLOT};
@@ -832,6 +1038,17 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction direction) {
         return access.canDrain()
-                && (slot == OUTPUT_SLOT || fermentMachine());
+                && (slot == OUTPUT_SLOT || inputOnlyProcess());
+    }
+
+    private boolean inputOnlyProcess() {
+        return definition().map(this::inputOnlyProcess).orElse(false);
+    }
+
+    private boolean inputOnlyProcess(MultiblockDefinition definition) {
+        return definition.processType()
+                .filter(type -> BuiltinRegistrations.FERMENT.equals(type)
+                        || BuiltinRegistrations.CONDITION.equals(type))
+                .isPresent();
     }
 }

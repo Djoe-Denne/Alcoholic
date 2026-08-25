@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "alcoholic:block/industrial_malt_house_controller"
+    }
+  }
+}

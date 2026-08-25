@@ -19,7 +19,7 @@ public record MechanicalDriveState(
         if (!Double.isFinite(speed) || speed < 0.0) {
             speed = 0.0;
         }
-        if (!Double.isFinite(availableCapacity) || availableCapacity < 0.0) {
+        if (Double.isNaN(availableCapacity) || availableCapacity < 0.0) {
             availableCapacity = 0.0;
         }
         direction = direction == null ? MechanicalDirection.NONE : direction;
@@ -57,5 +57,23 @@ public record MechanicalDriveState(
             return b;
         }
         return a.speed() >= b.speed() ? a : b;
+    }
+
+    public static MechanicalDriveState stronger(
+            MechanicalDriveState left,
+            MechanicalDriveState right,
+            MechanicalRequirement requirement
+    ) {
+        MechanicalDriveState a = left == null ? idle() : left;
+        MechanicalDriveState b = right == null ? idle() : right;
+        if (requirement == null) {
+            return stronger(a, b);
+        }
+        boolean aSatisfied = requirement.satisfied(a);
+        boolean bSatisfied = requirement.satisfied(b);
+        if (aSatisfied != bSatisfied) {
+            return bSatisfied ? b : a;
+        }
+        return stronger(a, b);
     }
 }

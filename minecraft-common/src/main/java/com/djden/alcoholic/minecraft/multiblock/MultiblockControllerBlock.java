@@ -94,6 +94,10 @@ public final class MultiblockControllerBlock extends BaseEntityBlock implements 
             return InteractionResult.SUCCESS;
         }
         ItemStack held = player.getItemInHand(hand);
+        if (player.isShiftKeyDown() && held.isEmpty() && entity.cycleBoundDefinition()) {
+            player.displayClientMessage(entity.status(), true);
+            return InteractionResult.CONSUME;
+        }
         if (Bottling.bottle(player, held, entity.tank())) {
             entity.onTankChanged();
             return InteractionResult.CONSUME;
@@ -117,6 +121,7 @@ public final class MultiblockControllerBlock extends BaseEntityBlock implements 
     public void onRemove(BlockState state, Level level, BlockPos position, BlockState newState, boolean moved) {
         if (!state.is(newState.getBlock())
                 && level.getBlockEntity(position) instanceof MultiblockControllerBlockEntity entity) {
+            entity.resetProcess();
             Containers.dropContents(level, position, entity);
             entity.clearContent();
             ItemStack stack = new ItemStack(this);

@@ -1,12 +1,14 @@
 package com.djden.alcoholic.application.process;
 
 import com.djden.alcoholic.api.ResourceId;
+import com.djden.alcoholic.api.process.ExecutorModifiers;
 import com.djden.alcoholic.api.process.ProcessContext;
 import com.djden.alcoholic.api.process.ProcessInputs;
 import com.djden.alcoholic.api.process.ProcessResult;
 import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
+import com.djden.alcoholic.domain.process.ThermalStability;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -44,6 +46,68 @@ class MashProcessorTest {
         LiquidBatch preferred = (LiquidBatch) mash(loaded, 65.0, 0.85, 0.12).outputs().get(0);
         LiquidBatch hot = (LiquidBatch) mash(loaded, 75.0, 0.85, 0.12).outputs().get(0);
         assertTrue(hot.number(GrainProcessHarness.SUGAR, 0.0) < preferred.number(GrainProcessHarness.SUGAR, 0.0));
+    }
+
+    @Test
+    void industrialYieldModifierIncreasesExtractedSugar() {
+        GrainProcessHarness.Loaded loaded = GrainProcessHarness.load();
+        LiquidBatch artisanal = (LiquidBatch) mash(loaded, 65.0, 0.85, 0.12).outputs().get(0);
+        var invocation = loaded.find(
+                BuiltinRegistrations.MASH,
+                Optional.of(GrainProcessHarness.GRIST),
+                Optional.of(GrainProcessHarness.WATER)
+        );
+        ProcessResult industrial = loaded.engine().execute(
+                new CapabilityProcessExecutor(BuiltinRegistrations.MASH),
+                invocation,
+                ProcessInputs.of(
+                        "grist",
+                        List.of(GrainProcessHarness.lot(
+                                GrainProcessHarness.GRIST,
+                                1,
+                                PropertyBag.empty()
+                                        .with(GrainProcessHarness.SUGAR, 0.85)
+                                        .with(GrainProcessHarness.COLOR, 0.12)
+                        )),
+                        "water",
+                        LiquidBatch.of(GrainProcessHarness.WATER, 1000, PropertyBag.empty())
+                ),
+                ProcessContext.of(
+                        65.0,
+                        1.0,
+                        false,
+                        Optional.empty(),
+                        Optional.empty(),
+                        0L,
+                        ExecutorModifiers.industrialMashTun()
+                )
+        );
+        assertTrue(industrial.success(), industrial.message());
+        LiquidBatch wort = (LiquidBatch) industrial.outputs().get(0);
+        assertEquals(1000.0, wort.volume(), 1e-9);
+        assertEquals(
+                artisanal.number(GrainProcessHarness.SUGAR, 0.0) * 1.05,
+                wort.number(GrainProcessHarness.SUGAR, 0.0),
+                1e-6
+        );
+    }
+
+    @Test
+    void industrialThermalStabilityKeepsHotAmbientCloserToTarget() {
+        double heat = 75.0;
+        double target = 65.0;
+        double artisanal = ThermalStability.effectiveCelsius(heat, target, 1.0);
+        double industrial = ThermalStability.effectiveCelsius(
+                heat,
+                target,
+                ExecutorModifiers.industrialMashTun().thermalStability()
+        );
+        assertEquals(75.0, artisanal, 1e-9);
+        assertTrue(Math.abs(industrial - target) < Math.abs(artisanal - target));
+        GrainProcessHarness.Loaded loaded = GrainProcessHarness.load();
+        LiquidBatch exposed = (LiquidBatch) mash(loaded, artisanal, 0.85, 0.12).outputs().get(0);
+        LiquidBatch damped = (LiquidBatch) mash(loaded, industrial, 0.85, 0.12).outputs().get(0);
+        assertTrue(damped.number(GrainProcessHarness.SUGAR, 0.0) > exposed.number(GrainProcessHarness.SUGAR, 0.0));
     }
 
     @Test

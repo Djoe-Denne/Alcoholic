@@ -52,4 +52,21 @@ class ProcessConfigRoundTripTest {
         assertEquals(original.hopProfile(), restored.hopProfile());
         assertEquals(original.temperature(), restored.temperature());
     }
+
+    @Test
+    void conditionConfigRoundTripsKineticsAndProperties() {
+        GrainProcessHarness.Loaded loaded = GrainProcessHarness.load();
+        ConditionConfig original = ConditionConfig.CODEC.decode(
+                loaded.catalog().process(ResourceId.parse("alcoholic:condition_beer")).orElseThrow().config()
+        );
+        ConditionConfig restored = ConditionConfig.CODEC.decode(ConditionConfig.CODEC.encode(original));
+        assertEquals(original.inputLiquid(), restored.inputLiquid());
+        assertEquals(original.outputLiquid(), restored.outputLiquid());
+        assertEquals(original.processingTicks(), restored.processingTicks());
+        assertEquals(original.temperature(), restored.temperature());
+        assertEquals(original.kinetics(), restored.kinetics());
+        assertEquals(original.maturityProperty(), restored.maturityProperty());
+        assertEquals(original.sugarProperty(), restored.sugarProperty());
+        assertEquals(original.carbonationProperty(), restored.carbonationProperty());
+    }
 }

@@ -1,6 +1,7 @@
 package com.djden.alcoholic.minecraft.multiblock;
 
 import com.djden.alcoholic.domain.mechanical.MechanicalDriveState;
+import com.djden.alcoholic.domain.mechanical.MechanicalRequirement;
 import com.djden.alcoholic.minecraft.AlcoholicDebug;
 import com.djden.alcoholic.minecraft.mechanical.MechanicalDrives;
 import net.minecraft.core.BlockPos;
@@ -33,10 +34,16 @@ public final class KineticPortBlockEntity extends PartBlockEntity implements Kin
 
     @Override
     public MechanicalDriveState driveState() {
+        return driveState(null);
+    }
+
+    MechanicalDriveState driveState(MechanicalRequirement requirement) {
         if (storedSpeed > 0.0) {
             return MechanicalDriveState.running(storedSpeed, Double.POSITIVE_INFINITY);
         }
-        return MechanicalDrives.forMachine(level, worldPosition);
+        return requirement == null
+                ? MechanicalDrives.forMachine(level, worldPosition)
+                : MechanicalDrives.forMachine(level, worldPosition, requirement);
     }
 
     @Override

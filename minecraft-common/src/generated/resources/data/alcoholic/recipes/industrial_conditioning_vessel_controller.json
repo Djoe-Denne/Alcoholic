@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "alcoholic:industrial_casing"
+    },
+    "F": {
+      "item": "alcoholic:oak_barrel"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "IFI",
+    "ICI",
+    "III"
+  ],
+  "result": {
+    "count": 1,
+    "item": "alcoholic:industrial_conditioning_vessel_controller"
+  }
+}

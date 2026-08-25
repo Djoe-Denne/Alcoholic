@@ -19,6 +19,11 @@ public final class IndustrialRuntime {
     public IndustrialRuntime() {
         register(BuiltinRegistrations.PRESS, MultiblockControllerBlockEntity::executePress);
         register(BuiltinRegistrations.FERMENT, MultiblockControllerBlockEntity::executeFerment);
+        register(BuiltinRegistrations.MALT, MultiblockControllerBlockEntity::executeMalt);
+        register(BuiltinRegistrations.MILL, MultiblockControllerBlockEntity::executeMill);
+        register(BuiltinRegistrations.MASH, MultiblockControllerBlockEntity::executeMash);
+        register(BuiltinRegistrations.BOIL, MultiblockControllerBlockEntity::executeBoil);
+        register(BuiltinRegistrations.CONDITION, MultiblockControllerBlockEntity::executeCondition);
     }
 
     public static IndustrialRuntime shared() {

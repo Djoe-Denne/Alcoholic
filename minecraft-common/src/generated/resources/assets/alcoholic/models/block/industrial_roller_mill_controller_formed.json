@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "alcoholic:block/industrial_roller_mill_controller_formed"
+  }
+}

@@ -4,6 +4,13 @@
       "amount": 1,
       "tag": "alcoholic:hops"
     },
+    "additions": [
+      {
+        "at_progress": 0.0,
+        "role": "bittering",
+        "tag": "alcoholic:hops"
+      }
+    ],
     "hop_profile": {
       "aroma_potential": 0.40,
       "bitterness_potential": 0.55

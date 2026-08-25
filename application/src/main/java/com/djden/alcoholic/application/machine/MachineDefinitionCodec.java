@@ -100,20 +100,28 @@ public final class MachineDefinitionCodec implements DataCodec<MultiblockDefinit
     private static KineticRequirement kinetic(DataNode.ObjectNode object, String path) {
         if (object.has("mechanical")) {
             DataNode.ObjectNode node = object.require("mechanical", path).asObject(child(path, "mechanical"));
+            boolean required = node.get("required")
+                    .map(value -> value.asBoolean(child(path, "mechanical/required")))
+                    .orElse(false);
             return new KineticRequirement(
                     numberOr(node, "min_speed", child(path, "mechanical/min_speed"), 0.0),
                     numberOr(node, "max_speed", child(path, "mechanical/max_speed"), 0.0),
-                    node.get("required").map(value -> value.asBoolean(child(path, "mechanical/required"))).orElse(false)
+                    numberOr(node, "required_capacity", child(path, "mechanical/required_capacity"), required ? 1.0 : 0.0),
+                    required
             );
         }
         if (!object.has("kinetic")) {
             return KineticRequirement.none();
         }
         DataNode.ObjectNode node = object.require("kinetic", path).asObject(child(path, "kinetic"));
+        boolean required = node.get("required")
+                .map(value -> value.asBoolean(child(path, "kinetic/required")))
+                .orElse(false);
         return new KineticRequirement(
                 numberOr(node, "min_rpm", child(path, "kinetic/min_rpm"), 0.0),
                 numberOr(node, "max_rpm", child(path, "kinetic/max_rpm"), 0.0),
-                node.get("required").map(value -> value.asBoolean(child(path, "kinetic/required"))).orElse(false)
+                numberOr(node, "required_capacity", child(path, "kinetic/required_capacity"), required ? 1.0 : 0.0),
+                required
         );
     }
 

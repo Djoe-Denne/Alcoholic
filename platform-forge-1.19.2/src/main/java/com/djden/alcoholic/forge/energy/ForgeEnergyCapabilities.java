@@ -31,41 +31,43 @@ public final class ForgeEnergyCapabilities {
         if (!(event.getObject() instanceof EnergyHolder holder)) {
             return;
         }
-        EnergyBuffer buffer = holder.energy();
-        LazyOptional<IEnergyStorage> storage = LazyOptional.of(() -> new IEnergyStorage() {
-            @Override
-            public int receiveEnergy(int maxReceive, boolean simulate) {
-                int accepted = buffer.receive(maxReceive, simulate);
-                if (!simulate && accepted > 0) {
-                    event.getObject().setChanged();
+        LazyOptional<IEnergyStorage> storage = LazyOptional.of(() -> {
+            EnergyBuffer buffer = holder.energy();
+            return new IEnergyStorage() {
+                @Override
+                public int receiveEnergy(int maxReceive, boolean simulate) {
+                    int accepted = buffer.receive(maxReceive, simulate);
+                    if (!simulate && accepted > 0) {
+                        event.getObject().setChanged();
+                    }
+                    return accepted;
                 }
-                return accepted;
-            }
 
-            @Override
-            public int extractEnergy(int maxExtract, boolean simulate) {
-                return 0;
-            }
+                @Override
+                public int extractEnergy(int maxExtract, boolean simulate) {
+                    return 0;
+                }
 
-            @Override
-            public int getEnergyStored() {
-                return buffer.stored();
-            }
+                @Override
+                public int getEnergyStored() {
+                    return buffer.stored();
+                }
 
-            @Override
-            public int getMaxEnergyStored() {
-                return buffer.capacity();
-            }
+                @Override
+                public int getMaxEnergyStored() {
+                    return buffer.capacity();
+                }
 
-            @Override
-            public boolean canExtract() {
-                return false;
-            }
+                @Override
+                public boolean canExtract() {
+                    return false;
+                }
 
-            @Override
-            public boolean canReceive() {
-                return true;
-            }
+                @Override
+                public boolean canReceive() {
+                    return true;
+                }
+            };
         });
         event.addCapability(KEY, new ICapabilityProvider() {
             @Nonnull

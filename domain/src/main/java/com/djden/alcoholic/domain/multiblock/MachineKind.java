@@ -6,5 +6,10 @@ package com.djden.alcoholic.domain.multiblock;
 public enum MachineKind {
     PRESS,
     FERMENT,
-    STORAGE
+    STORAGE,
+    MALT,
+    MILL,
+    MASH,
+    BOIL,
+    CONDITION
 }

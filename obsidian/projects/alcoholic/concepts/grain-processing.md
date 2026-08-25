@@ -2,7 +2,7 @@
 title: Grain Processing
 category: concepts
 tags: [minecraft, software-architecture, type/concept, project/alcoholic]
-aliases: [MALT, MILL, MASH, BOIL, beer DAG, malting floor, mash tun, brewing kettle]
+aliases: [MALT, MILL, MASH, BOIL, CONDITION, beer DAG, malting floor, mash tun, brewing kettle]
 sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/95c81b7c-fa88-4055-9741-14cb948964c9/95c81b7c-fa88-4055-9741-14cb948964c9.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06.jsonl"
@@ -13,7 +13,7 @@ provenance:
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T18:55:00+02:00
-updated: 2026-08-25T20:05:00+02:00
+updated: 2026-08-25T20:20:00+02:00
 ---
 
 # Grain Processing
@@ -27,9 +27,10 @@ BARLEY → MALT → MALTED BARLEY → MILL → GRIST
 GRIST + WATER → MASH → WORT
 WORT + HOPS → BOIL → HOPPED WORT
 HOPPED WORT + YEAST → FERMENT → BEER
+YOUNG BEER → optional CONDITION → BEER
 ```
 
-The shipped graph is `alcoholic:beer`. It ends after generic `FERMENT`. AGE is not injected. Whisky remains a structural fixture (`DISTILL` is still a stub). Wheat-beer and non-beer mash graphs stay validation fixtures.
+The shipped graph is `alcoholic:beer`. It ends after generic `FERMENT`. AGE is not injected. `CONDITION` exists as a generic optional process and is not a node on `alcoholic:beer`. Whisky remains a structural fixture (`DISTILL` is still a stub). Wheat-beer and non-beer mash graphs stay validation fixtures.
 
 ## Process types
 
@@ -39,7 +40,9 @@ The shipped graph is `alcoholic:beer`. It ends after generic `FERMENT`. AGE is n
 
 `alcoholic:mash` is a mixed thermal process (ADR-026): grist plus `minecraft:water` → wort plus spent grain. `TemperatureProfile.extractionYield` maps preferred / cold / hot / out-of-band heat to extraction quality. Sugar, color, and temperature are typed liquid properties. The mash tun is a two-tank executor; heat comes from the block below through `HeatSources`.
 
-`alcoholic:boil` heats a liquid and consumes hop additions (ADR-027). Extracted `alcoholic:bitterness` and `alcoholic:aroma` are typed properties. Phase 7A uses one addition at progress `0.0`; `BoilConfig.additions` is the later timeline hook. The brewing kettle executes `BOIL`. Existing fermenters then run generic `FERMENT`.
+`alcoholic:boil` heats a liquid and consumes hop additions (ADR-027). Extracted `alcoholic:bitterness` and `alcoholic:aroma` are typed properties. Additions may carry `at_progress` and a lightweight `role` (`bittering`, `aroma`, `dual`). The brewing kettle and industrial kettle execute `BOIL`. Existing fermenters then run generic `FERMENT`.
+
+`alcoholic:condition` is optional post-fermentation maturation that is not wood `AGE`. It may raise `alcoholic:maturity` and, with yeast plus residual sugar, `alcoholic:carbonation`.
 
 Mixed solid/liquid ports reuse `ProcessInputs` (ADR-025). There is no brewing-water fluid.
 
@@ -51,7 +54,7 @@ Barley is an annual cereal (`CerealCropBlock`). Hops grow as a vertical bine on 
 
 The malting floor executes `MALT` only. An earlier Phase 7A cut also ran `MILL` on that floor because Alcoholic had no mill (ADR-028). [[native-executor-invariant|ADR-030]] added the Malt Mill and returned the floor to malt-only.
 
-The mash tun and brewing kettle are artisanal mixed-input executors. There is no industrial malt house, mash tun, or kettle yet.
+The mash tun and brewing kettle are artisanal mixed-input executors. Phase 7B adds industrial executors for the same process types: malt house, roller mill, mash tun, brewing kettle, plus an optional conditioning vessel. See [[industrial-processing]].
 
 ## Related
 
@@ -68,4 +71,5 @@ The mash tun and brewing kettle are artisanal mixed-input executors. There is no
 - [[fermentation-physics]]
 - [[cursor-phase-7a-grain-session]]
 - [[cursor-create-independence-session]]
+- [[industrial-processing]]
 - [[forge-1.19.2-phase-7a-verification]]

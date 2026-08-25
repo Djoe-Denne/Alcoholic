@@ -134,6 +134,11 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "block.alcoholic.industrial_press_controller": "Industrial Press Controller",
                           "block.alcoholic.industrial_vat_controller": "Industrial Fermentation Vat Controller",
                           "block.alcoholic.industrial_tank_controller": "Industrial Storage Tank Controller",
+                          "block.alcoholic.industrial_malt_house_controller": "Industrial Malt House Controller",
+                          "block.alcoholic.industrial_roller_mill_controller": "Industrial Roller Mill Controller",
+                          "block.alcoholic.industrial_mash_tun_controller": "Industrial Mash Tun Controller",
+                          "block.alcoholic.industrial_brewing_kettle_controller": "Industrial Brewing Kettle Controller",
+                          "block.alcoholic.industrial_conditioning_vessel_controller": "Industrial Conditioning Vessel Controller",
                           "message.alcoholic.port.mode": "Port mode: %s",
                           "death.attack.alcoholic.industrial_press": "%1$s was crushed in an industrial press",
                           "block.alcoholic.barley_crop": "Barley",
@@ -268,6 +273,11 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "block.alcoholic.industrial_press_controller": "Contrôleur de pressoir industriel",
                           "block.alcoholic.industrial_vat_controller": "Contrôleur de cuve de fermentation industrielle",
                           "block.alcoholic.industrial_tank_controller": "Contrôleur de réservoir de stockage industriel",
+                          "block.alcoholic.industrial_malt_house_controller": "Contrôleur de touraille industrielle",
+                          "block.alcoholic.industrial_roller_mill_controller": "Contrôleur de broyeur à cylindres industriel",
+                          "block.alcoholic.industrial_mash_tun_controller": "Contrôleur de cuve d'empâtage industrielle",
+                          "block.alcoholic.industrial_brewing_kettle_controller": "Contrôleur de chaudière de brassage industrielle",
+                          "block.alcoholic.industrial_conditioning_vessel_controller": "Contrôleur de cuve de conditionnement industrielle",
                           "message.alcoholic.port.mode": "Mode du port : %s",
                           "death.attack.alcoholic.industrial_press": "%1$s a été écrasé dans un pressoir industriel",
                           "block.alcoholic.barley_crop": "Orge",
@@ -612,7 +622,11 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                 "item_port",
                 "kinetic_port",
                 "industrial_vat_controller",
-                "industrial_tank_controller"
+                "industrial_tank_controller",
+                "industrial_malt_house_controller",
+                "industrial_mash_tun_controller",
+                "industrial_brewing_kettle_controller",
+                "industrial_conditioning_vessel_controller"
         }) {
             addSimpleBlock(sink, name);
             addBlockItem(sink, name);
@@ -651,6 +665,40 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                         """
         );
         addBlockItem(sink, "industrial_press_controller");
+        sink.add(
+                "assets/alcoholic/blockstates/industrial_roller_mill_controller.json",
+                """
+                        {
+                          "variants": {
+                            "formed=false": { "model": "alcoholic:block/industrial_roller_mill_controller" },
+                            "formed=true": { "model": "alcoholic:block/industrial_roller_mill_controller_formed" }
+                          }
+                        }
+                        """
+        );
+        sink.add(
+                "assets/alcoholic/models/block/industrial_roller_mill_controller.json",
+                """
+                        {
+                          "parent": "minecraft:block/cube_all",
+                          "textures": {
+                            "all": "alcoholic:block/industrial_roller_mill_controller"
+                          }
+                        }
+                        """
+        );
+        sink.add(
+                "assets/alcoholic/models/block/industrial_roller_mill_controller_formed.json",
+                """
+                        {
+                          "parent": "minecraft:block/cube_all",
+                          "textures": {
+                            "all": "alcoholic:block/industrial_roller_mill_controller_formed"
+                          }
+                        }
+                        """
+        );
+        addBlockItem(sink, "industrial_roller_mill_controller");
     }
 
     private static void addSimpleBlock(JsonSink sink, String name) {

@@ -25,7 +25,10 @@ public final class SolidPropertyNbt {
         if (properties == null || properties.isEmpty()) {
             return;
         }
-        CompoundTag data = new CompoundTag();
+        CompoundTag root = stack.getOrCreateTag();
+        CompoundTag data = root.contains(ROOT_TAG, Tag.TAG_COMPOUND)
+                ? root.getCompound(ROOT_TAG).copy()
+                : new CompoundTag();
         properties.forEach((id, value) -> {
             if (value instanceof Number number) {
                 data.putDouble(id.toString(), number.doubleValue());
@@ -33,7 +36,7 @@ public final class SolidPropertyNbt {
                 data.putString(id.toString(), String.valueOf(value));
             }
         });
-        stack.getOrCreateTag().put(ROOT_TAG, data);
+        root.put(ROOT_TAG, data);
     }
 
     public static Optional<PropertyBag> read(ItemStack stack) {

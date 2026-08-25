@@ -9,6 +9,11 @@
     "alcoholic:kinetic_port",
     "alcoholic:industrial_press_controller",
     "alcoholic:industrial_vat_controller",
-    "alcoholic:industrial_tank_controller"
+    "alcoholic:industrial_tank_controller",
+    "alcoholic:industrial_malt_house_controller",
+    "alcoholic:industrial_roller_mill_controller",
+    "alcoholic:industrial_mash_tun_controller",
+    "alcoholic:industrial_brewing_kettle_controller",
+    "alcoholic:industrial_conditioning_vessel_controller"
   ]
 }

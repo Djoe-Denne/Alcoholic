@@ -117,4 +117,39 @@ class GrainProcessGraphTest {
         assertEquals(GrainProcessHarness.BEVERAGE, finished.baseLiquid().orElseThrow());
         assertTrue(finished.number(GrainProcessHarness.ETHANOL, 0.0) > 0.0);
     }
+
+    @Test
+    void optionalConditionMaturesBeerAfterTheOfficialGraph() {
+        GrainProcessHarness.Loaded loaded = GrainProcessHarness.load();
+        assertTrue(ProcessRecipeResolver.find(
+                loaded.catalog(),
+                loaded.api(),
+                BuiltinRegistrations.CONDITION,
+                loaded.matcher(),
+                Optional.empty(),
+                Optional.of(GrainProcessHarness.BEVERAGE)
+        ).isPresent());
+        LiquidBatch fermentedBeer = LiquidBatch.of(
+                GrainProcessHarness.BEVERAGE,
+                1000,
+                PropertyBag.empty()
+                        .with(GrainProcessHarness.SUGAR, 0.06)
+                        .with(GrainProcessHarness.ETHANOL, 0.38)
+        );
+        var invocation = loaded.find(
+                BuiltinRegistrations.CONDITION,
+                Optional.empty(),
+                Optional.of(GrainProcessHarness.BEVERAGE)
+        );
+        ProcessResult conditioned = loaded.engine().execute(
+                new CapabilityProcessExecutor(BuiltinRegistrations.CONDITION),
+                invocation,
+                ProcessInputs.ofLiquid("input", fermentedBeer),
+                ProcessContext.of(8.0, 40.0, true)
+        );
+        assertTrue(conditioned.success(), conditioned.message());
+        LiquidBatch beer = (LiquidBatch) conditioned.outputs().get(0);
+        assertEquals(GrainProcessHarness.BEVERAGE, beer.baseLiquid().orElseThrow());
+        assertTrue(beer.number(GrainProcessHarness.CARBONATION, 0.0) > 0.0);
+    }
 }

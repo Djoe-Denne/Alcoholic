@@ -163,7 +163,12 @@ class GeneratedResourceContractTest {
                 "kinetic_port",
                 "industrial_press_controller",
                 "industrial_vat_controller",
-                "industrial_tank_controller"
+                "industrial_tank_controller",
+                "industrial_malt_house_controller",
+                "industrial_roller_mill_controller",
+                "industrial_mash_tun_controller",
+                "industrial_brewing_kettle_controller",
+                "industrial_conditioning_vessel_controller"
         }) {
             resource("assets/alcoholic/blockstates/" + block + ".json");
             resource("assets/alcoholic/models/block/" + block + ".json");
@@ -226,6 +231,11 @@ class GeneratedResourceContractTest {
                     "block.alcoholic.industrial_press_controller",
                     "block.alcoholic.industrial_vat_controller",
                     "block.alcoholic.industrial_tank_controller",
+                    "block.alcoholic.industrial_malt_house_controller",
+                    "block.alcoholic.industrial_roller_mill_controller",
+                    "block.alcoholic.industrial_mash_tun_controller",
+                    "block.alcoholic.industrial_brewing_kettle_controller",
+                    "block.alcoholic.industrial_conditioning_vessel_controller",
                     "message.alcoholic.port.mode",
                     "block.alcoholic.malting_floor",
                     "block.alcoholic.mash_tun",
@@ -294,6 +304,11 @@ class GeneratedResourceContractTest {
         resource("data/alcoholic/recipes/industrial_casing.json");
         resource("data/alcoholic/recipes/fluid_port.json");
         resource("data/alcoholic/recipes/industrial_press_controller.json");
+        resource("data/alcoholic/recipes/industrial_malt_house_controller.json");
+        resource("data/alcoholic/recipes/industrial_roller_mill_controller.json");
+        resource("data/alcoholic/recipes/industrial_mash_tun_controller.json");
+        resource("data/alcoholic/recipes/industrial_brewing_kettle_controller.json");
+        resource("data/alcoholic/recipes/industrial_conditioning_vessel_controller.json");
         resource("data/alcoholic/tags/blocks/industrial_tank_casing.json");
         resource("data/alcoholic/tags/blocks/fermenter_casing.json");
         resource("data/alcoholic/tags/blocks/pressure_safe_casing.json");
@@ -304,6 +319,7 @@ class GeneratedResourceContractTest {
         resource("data/alcoholic/alcoholic/processes/mash_wort.json");
         resource("data/alcoholic/alcoholic/processes/boil_wort.json");
         resource("data/alcoholic/alcoholic/processes/ferment_hopped_wort.json");
+        resource("data/alcoholic/alcoholic/processes/condition_beer.json");
         resource("data/alcoholic/alcoholic/beverages/beer.json");
         resource("data/alcoholic/alcoholic/liquids/wort.json");
         JsonObject barley = resource("data/alcoholic/tags/items/barley.json");
@@ -313,6 +329,11 @@ class GeneratedResourceContractTest {
         resource("data/alcoholic/alcoholic/machines/industrial_press.json");
         resource("data/alcoholic/alcoholic/machines/industrial_fermentation_vat.json");
         resource("data/alcoholic/alcoholic/machines/industrial_storage_tank.json");
+        resource("data/alcoholic/alcoholic/machines/industrial_malt_house.json");
+        resource("data/alcoholic/alcoholic/machines/industrial_roller_mill.json");
+        resource("data/alcoholic/alcoholic/machines/industrial_mash_tun.json");
+        resource("data/alcoholic/alcoholic/machines/industrial_brewing_kettle.json");
+        resource("data/alcoholic/alcoholic/machines/industrial_conditioning_vessel.json");
         assertEquals(
                 0,
                 resource("data/alcoholic/loot_tables/blocks/industrial_press_controller.json")

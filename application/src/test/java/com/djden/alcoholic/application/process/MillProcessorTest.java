@@ -61,4 +61,38 @@ class MillProcessorTest {
         assertTrue(result.success(), result.message());
         assertEquals(1, result.items().get(0).amount());
     }
+
+    @Test
+    void industrialRollerMillUsesTheSameGenericMillDefinition() {
+        GrainProcessHarness.Loaded loaded = GrainProcessHarness.load();
+        var invocation = loaded.find(
+                BuiltinRegistrations.MILL,
+                Optional.of(GrainProcessHarness.MALTED),
+                Optional.empty()
+        );
+        ProcessResult result = loaded.engine().execute(
+                new CapabilityProcessExecutor(BuiltinRegistrations.MILL),
+                invocation,
+                ProcessInputs.ofSolids("malt", List.of(
+                        GrainProcessHarness.lot(
+                                GrainProcessHarness.MALTED,
+                                1,
+                                PropertyBag.empty().with(GrainProcessHarness.SUGAR, 0.85)
+                        )
+                )),
+                ProcessContext.of(
+                        20.0,
+                        1.0,
+                        false,
+                        Optional.empty(),
+                        Optional.empty(),
+                        0L,
+                        ExecutorModifiers.industrialRollerMill()
+                )
+        );
+        assertTrue(result.success(), result.message());
+        assertEquals(GrainProcessHarness.GRIST, result.items().get(0).item());
+        assertEquals(1, result.items().get(0).amount());
+        assertEquals(0.85, (Double) result.items().get(0).properties().get(GrainProcessHarness.SUGAR), 1e-9);
+    }
 }

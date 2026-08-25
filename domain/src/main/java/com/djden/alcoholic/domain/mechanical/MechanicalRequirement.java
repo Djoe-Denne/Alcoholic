@@ -34,6 +34,14 @@ public record MechanicalRequirement(
         return new MechanicalRequirement(16.0, 256.0, 1.0, true);
     }
 
+    /**
+     * Medium speed, high load. Capacity stays within a single primitive
+     * engine so standalone Alcoholic can still drive the machine.
+     */
+    public static MechanicalRequirement industrialRollerMill() {
+        return new MechanicalRequirement(16.0, 256.0, 4.0, true);
+    }
+
     public boolean satisfied(MechanicalDriveState state) {
         if (!required) {
             return true;

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "alcoholic:industrial_casing"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "M": {
+      "item": "alcoholic:malting_floor"
+    }
+  },
+  "pattern": [
+    "IMI",
+    "ICI",
+    "III"
+  ],
+  "result": {
+    "count": 1,
+    "item": "alcoholic:industrial_malt_house_controller"
+  }
+}

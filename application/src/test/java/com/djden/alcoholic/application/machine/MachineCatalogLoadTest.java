@@ -14,9 +14,17 @@ class MachineCatalogLoadTest {
     @Test
     void builtinsArePresentWithoutDatapackOverlay() {
         MachineCatalog catalog = new LoadMachineCatalogUseCase().load(Map.of());
-        assertEquals(3, catalog.machines().size());
+        assertEquals(8, catalog.machines().size());
         assertEquals(MachineKind.STORAGE, catalog.get(BuiltinMachines.INDUSTRIAL_TANK).orElseThrow().kind());
+        assertEquals(MachineKind.MALT, catalog.get(BuiltinMachines.INDUSTRIAL_MALT_HOUSE).orElseThrow().kind());
+        assertEquals(MachineKind.MILL, catalog.get(BuiltinMachines.INDUSTRIAL_ROLLER_MILL).orElseThrow().kind());
+        assertEquals(MachineKind.MASH, catalog.get(BuiltinMachines.INDUSTRIAL_MASH_TUN).orElseThrow().kind());
+        assertEquals(MachineKind.BOIL, catalog.get(BuiltinMachines.INDUSTRIAL_BREWING_KETTLE).orElseThrow().kind());
+        assertEquals(MachineKind.CONDITION, catalog.get(BuiltinMachines.INDUSTRIAL_CONDITIONING_VESSEL).orElseThrow().kind());
         assertTrue(catalog.get(BuiltinMachines.INDUSTRIAL_PRESS).orElseThrow().processType().isPresent());
+        assertTrue(catalog.get(BuiltinMachines.INDUSTRIAL_MASH_TUN).orElseThrow().processType().isPresent());
+        assertEquals(4.0, catalog.get(BuiltinMachines.INDUSTRIAL_ROLLER_MILL).orElseThrow()
+                .kinetic().requiredCapacity(), 1e-9);
     }
 
     @Test

@@ -48,16 +48,33 @@ public record BoilConfig(
     }
 
     /**
-     * Ordered addition at a progress fraction in {@code [0, 1]}. Phase 7A uses a
-     * single start-of-process addition; later schedules can append more entries.
+     * Ordered addition at a progress fraction in {@code [0, 1]}. Role is a
+     * lightweight extraction hint ({@code bittering}, {@code aroma}, {@code dual}),
+     * not a scripting engine.
      */
-    public record BoilAddition(IngredientSelector selector, double atProgress) {
+    public record BoilAddition(IngredientSelector selector, double atProgress, String role) {
         public BoilAddition {
             selector = selector == null ? new IngredientSelector.Tag(ResourceId.parse("alcoholic:hops")) : selector;
             if (!Double.isFinite(atProgress)) {
                 atProgress = 0.0;
             }
             atProgress = Math.max(0.0, Math.min(1.0, atProgress));
+            role = normalizeRole(role);
+        }
+
+        public BoilAddition(IngredientSelector selector, double atProgress) {
+            this(selector, atProgress, "dual");
+        }
+
+        public static String normalizeRole(String role) {
+            if (role == null || role.isBlank()) {
+                return "dual";
+            }
+            String normalized = role.trim().toLowerCase();
+            if ("bittering".equals(normalized) || "aroma".equals(normalized) || "dual".equals(normalized)) {
+                return normalized;
+            }
+            return "dual";
         }
     }
 
@@ -131,7 +148,12 @@ public record BoilConfig(
                                     .map(value -> value.asNumber(
                                             DataDecodeException.child(path, "additions/at_progress")
                                     ).doubleValue())
-                                    .orElse(0.0)
+                                    .orElse(0.0),
+                            row.get("role")
+                                    .map(value -> value.asString(
+                                            DataDecodeException.child(path, "additions/role")
+                                    ))
+                                    .orElse("dual")
                     ));
                 }
             } else if (addition.isPresent()) {
@@ -173,6 +195,7 @@ public record BoilConfig(
                     DataNode.ObjectBuilder row = DataNode.objectBuilder();
                     PressConfig.encodeSelector(row, addition.selector());
                     row.put("at_progress", DataNode.number(addition.atProgress()));
+                    row.put("role", DataNode.string(addition.role()));
                     rows.add(row.build());
                 }
                 builder.put("additions", DataNode.list(rows));
@@ -209,6 +232,12 @@ public record BoilConfig(
 
     public boolean executable() {
         return inputLiquid.isPresent() && outputLiquid.isPresent();
+    }
+
+    public int requiredAdditionItems() {
+        int additionsRequired = additions.isEmpty() ? (additionSelector.isPresent() ? 1 : 0) : additions.size();
+        long required = (long) additionAmount * additionsRequired;
+        return required >= Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) required;
     }
 
     @Override

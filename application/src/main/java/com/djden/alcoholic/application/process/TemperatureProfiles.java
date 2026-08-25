@@ -54,6 +54,14 @@ final class TemperatureProfiles {
         );
     }
 
+    static TemperatureProfile conditionDefault() {
+        return new TemperatureProfile(
+                new TemperatureBand(2.0, 12.0),
+                new TemperatureBand(0.0, 20.0),
+                new TemperatureBand(-10.0, 30.0)
+        );
+    }
+
     private static TemperatureBand band(
             DataNode.ObjectNode object,
             String path,

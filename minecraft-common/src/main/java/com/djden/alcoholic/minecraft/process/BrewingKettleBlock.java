@@ -125,6 +125,7 @@ public final class BrewingKettleBlock extends BaseEntityBlock {
     ) {
         if (!state.is(newState.getBlock())
                 && level.getBlockEntity(position) instanceof BrewingKettleBlockEntity entity) {
+            entity.cancelProcess();
             Containers.dropContents(level, position, entity);
         }
         super.onRemove(state, level, position, newState, moved);

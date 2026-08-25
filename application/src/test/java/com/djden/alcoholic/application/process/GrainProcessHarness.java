@@ -33,7 +33,12 @@ final class GrainProcessHarness {
     static final ResourceId SUGAR = ResourceId.parse("alcoholic:sugar");
     static final ResourceId COLOR = ResourceId.parse("alcoholic:color");
     static final ResourceId BITTERNESS = ResourceId.parse("alcoholic:bitterness");
+    static final ResourceId AROMA = ResourceId.parse("alcoholic:aroma");
     static final ResourceId ETHANOL = ResourceId.parse("alcoholic:ethanol");
+    static final ResourceId MATURITY = ResourceId.parse("alcoholic:maturity");
+    static final ResourceId CARBONATION = ResourceId.parse("alcoholic:carbonation");
+    static final ResourceId ADDITION_ROLE = ResourceId.parse("alcoholic:addition_role");
+    static final ResourceId ADDITION_PROGRESS = ResourceId.parse("alcoholic:addition_progress");
 
     private GrainProcessHarness() {
     }
@@ -175,6 +180,26 @@ final class GrainProcessHarness {
                         }
                         """)
         );
+        processes.put(
+                ResourceId.parse("alcoholic:processes/condition_beer"),
+                JsonDataParser.parse("""
+                        {
+                          "id": "alcoholic:condition_beer",
+                          "process": "alcoholic:condition",
+                          "config": {
+                            "input_liquid": "alcoholic:beer",
+                            "output": { "liquid": "alcoholic:beer" },
+                            "processing_time": 40,
+                            "preferred_temperature": { "min": 2, "max": 12 },
+                            "operating_temperature": { "min": 0, "max": 20 },
+                            "carbonation_from_residual_sugar": 0.35,
+                            "completion_maturity": 0.85
+                          },
+                          "inputs": {},
+                          "outputs": ["finished"]
+                        }
+                        """)
+        );
         BeverageCatalog loaded = new LoadBeverageCatalogUseCase().load(
                 Map.of(),
                 processes,
@@ -190,7 +215,7 @@ final class GrainProcessHarness {
                                 """),
                         ResourceId.parse("alcoholic:liquids/beer"),
                         JsonDataParser.parse("""
-                                {"id":"alcoholic:beer","defaults":{"alcoholic:ethanol":0.0}}
+                                {"id":"alcoholic:beer","defaults":{"alcoholic:ethanol":0.0,"alcoholic:carbonation":0.0}}
                                 """)
                 ),
                 api

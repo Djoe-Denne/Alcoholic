@@ -29,6 +29,21 @@ public record IndustrialContent(
         RegistryRef<BlockEntityType<?>> vatControllerEntity,
         RegistryRef<Block> tankController,
         RegistryRef<Item> tankControllerItem,
-        RegistryRef<BlockEntityType<?>> tankControllerEntity
+        RegistryRef<BlockEntityType<?>> tankControllerEntity,
+        RegistryRef<Block> maltHouseController,
+        RegistryRef<Item> maltHouseControllerItem,
+        RegistryRef<BlockEntityType<?>> maltHouseControllerEntity,
+        RegistryRef<Block> rollerMillController,
+        RegistryRef<Item> rollerMillControllerItem,
+        RegistryRef<BlockEntityType<?>> rollerMillControllerEntity,
+        RegistryRef<Block> mashTunController,
+        RegistryRef<Item> mashTunControllerItem,
+        RegistryRef<BlockEntityType<?>> mashTunControllerEntity,
+        RegistryRef<Block> brewingKettleController,
+        RegistryRef<Item> brewingKettleControllerItem,
+        RegistryRef<BlockEntityType<?>> brewingKettleControllerEntity,
+        RegistryRef<Block> conditioningVesselController,
+        RegistryRef<Item> conditioningVesselControllerItem,
+        RegistryRef<BlockEntityType<?>> conditioningVesselControllerEntity
 ) {
 }

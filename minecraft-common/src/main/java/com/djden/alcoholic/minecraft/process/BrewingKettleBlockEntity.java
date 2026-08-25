@@ -18,6 +18,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.ContainerHelper;
@@ -30,8 +32,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 public final class BrewingKettleBlockEntity extends BlockEntity implements WorldlyContainer, LiquidVessel {
@@ -43,6 +47,9 @@ public final class BrewingKettleBlockEntity extends BlockEntity implements World
     private int progress;
     private int duration = 200;
     private String runningJob = "";
+    private String runningDefinition = "";
+    private int additionsCommitted;
+    private final List<ItemStack> committedSolids = new ArrayList<>();
 
     public BrewingKettleBlockEntity(BlockEntityType<?> type, BlockPos position, BlockState state) {
         super(type, position, state);
@@ -77,64 +84,177 @@ public final class BrewingKettleBlockEntity extends BlockEntity implements World
 
     private void tick() {
         Optional<LiquidBatch> contents = tank.contents();
-        ItemStack addition = items.get(ADDITION_SLOT);
-        if (contents.isEmpty() || addition.isEmpty()) {
-            progress = 0;
+        if (contents.isEmpty() || contents.get().baseLiquid().isEmpty()) {
+            cancelProcess();
             return;
         }
         LiquidBatch liquid = contents.get();
+        ItemStack addition = items.get(ADDITION_SLOT);
         ProcessRuntime runtime = ProcessRuntime.shared();
+        Optional<ResourceId> selected = selectedDefinition();
         Optional<ProcessInvocation> invocation = ProcessRecipeResolver.find(
                 runtime.beverages().catalog(),
                 runtime.beverages().api(),
                 BuiltinRegistrations.BOIL,
                 MinecraftSelectorMatcher.create(runtime.beverages()),
-                Optional.of(ItemLots.id(addition)),
-                liquid.baseLiquid()
+                selected.isPresent() || addition.isEmpty()
+                        ? Optional.empty()
+                        : Optional.of(ItemLots.id(addition)),
+                liquid.baseLiquid(),
+                selected
         );
         if (invocation.isEmpty()) {
-            progress = 0;
+            if (selected.isPresent()) {
+                cancelProcess();
+            } else {
+                progress = 0;
+            }
             return;
         }
         BoilConfig config = BoilConfig.CODEC.decode(invocation.get().config());
-        if (!config.executable() || addition.getCount() < config.additionAmount()) {
-            progress = 0;
+        if (!config.executable()) {
+            cancelProcess();
             return;
         }
         if (config.temperature().stalled(temperatureCelsius())) {
-            progress = 0;
             return;
         }
-        String job = invocation.get().nodeId() + "|" + ItemLots.id(addition)
-                + "|" + liquid.baseLiquid().map(ResourceId::toString).orElse("");
+        String job = invocation.get().nodeId() + "|" + liquid.baseLiquid().map(ResourceId::toString).orElse("");
         if (!job.equals(runningJob)) {
+            cancelProcess();
             runningJob = job;
+            runningDefinition = invocation.get().nodeId();
             progress = 0;
         }
         double rate = Math.max(0.10, config.temperature().rateFactor(temperatureCelsius()));
         duration = Math.max(1, (int) Math.round(config.processingTicks() / rate));
-        progress++;
+        double fraction = duration <= 1 ? 1.0 : Math.min(1.0, (double) progress / duration);
+        if (!commitDueAdditions(config, fraction)) {
+            setChanged();
+            return;
+        }
+        if (progress < duration) {
+            progress++;
+        }
         if (progress < duration) {
             setChanged();
             return;
         }
-        IngredientLot lot = ItemLots.lot(MachineItemStacks.copyCount(addition, config.additionAmount()));
+        if (!commitDueAdditions(config, 1.0)) {
+            setChanged();
+            return;
+        }
+        List<IngredientLot> lots = committedSolids.stream()
+                .filter(stack -> !stack.isEmpty())
+                .map(ItemLots::lot)
+                .toList();
+        long committedItems = lots.stream().mapToLong(IngredientLot::count).sum();
+        if (committedItems < config.requiredAdditionItems()) {
+            return;
+        }
         ProcessResult result = runtime.engine().execute(
                 runtime.boilExecutor(),
                 invocation.get(),
-                ProcessInputs.of("hops", List.of(lot), "wort", liquid),
+                lots.isEmpty()
+                        ? ProcessInputs.ofLiquid("wort", liquid)
+                        : ProcessInputs.of("hops", lots, "wort", liquid),
                 ProcessContext.of(temperatureCelsius(), 1.0, false)
         );
         if (!result.success() || result.outputs().isEmpty()) {
-            progress = 0;
+            cancelProcess();
             setChanged();
             return;
         }
         tank.set((LiquidBatch) result.outputs().get(0));
-        addition.shrink(config.additionAmount());
-        progress = 0;
+        completeProcess();
         setChanged();
         sync();
+    }
+
+    private boolean commitDueAdditions(BoilConfig config, double fraction) {
+        List<BoilConfig.BoilAddition> schedule = schedule(config);
+        var matcher = MinecraftSelectorMatcher.create(ProcessRuntime.shared().beverages());
+        while (additionsCommitted < schedule.size()) {
+            BoilConfig.BoilAddition due = schedule.get(additionsCommitted);
+            if (due.atProgress() > fraction + 1e-9) {
+                return true;
+            }
+            ItemStack input = items.get(ADDITION_SLOT);
+            if (input.isEmpty()
+                    || input.getCount() < config.additionAmount()
+                    || !matcher.matches(due.selector(), ItemLots.id(input))) {
+                return false;
+            }
+            ItemStack taken = input.split(config.additionAmount());
+            SolidPropertyNbt.write(
+                    taken,
+                    Map.of(
+                            ResourceId.parse("alcoholic:addition_role"), due.role(),
+                            ResourceId.parse("alcoholic:addition_progress"), due.atProgress()
+                    )
+            );
+            committedSolids.add(taken);
+            additionsCommitted++;
+            setChanged();
+        }
+        return true;
+    }
+
+    private static List<BoilConfig.BoilAddition> schedule(BoilConfig config) {
+        if (!config.additions().isEmpty()) {
+            return config.additions();
+        }
+        return config.additionSelector()
+                .map(selector -> List.of(new BoilConfig.BoilAddition(selector, 0.0)))
+                .orElseGet(List::of);
+    }
+
+    private Optional<ResourceId> selectedDefinition() {
+        if (runningDefinition.isBlank()) {
+            return Optional.empty();
+        }
+        try {
+            return Optional.of(ResourceId.parse(runningDefinition));
+        } catch (RuntimeException ignored) {
+            return Optional.empty();
+        }
+    }
+
+    void cancelProcess() {
+        refundCommittedSolids();
+        completeProcess();
+    }
+
+    private void completeProcess() {
+        progress = 0;
+        duration = 200;
+        runningJob = "";
+        runningDefinition = "";
+        additionsCommitted = 0;
+        committedSolids.clear();
+    }
+
+    private void refundCommittedSolids() {
+        for (ItemStack committed : committedSolids) {
+            if (committed.isEmpty()) {
+                continue;
+            }
+            ItemStack remainder = committed.copy();
+            ItemStack input = items.get(ADDITION_SLOT);
+            if (input.isEmpty()) {
+                items.set(ADDITION_SLOT, remainder);
+                continue;
+            }
+            if (ItemStack.isSameItemSameTags(input, remainder) && input.getCount() < input.getMaxStackSize()) {
+                int moved = Math.min(remainder.getCount(), input.getMaxStackSize() - input.getCount());
+                input.grow(moved);
+                remainder.shrink(moved);
+            }
+            if (!remainder.isEmpty() && level != null && !level.isClientSide) {
+                Block.popResource(level, worldPosition, remainder);
+            }
+        }
+        committedSolids.clear();
     }
 
     public String debugDump() {
@@ -187,6 +307,16 @@ public final class BrewingKettleBlockEntity extends BlockEntity implements World
         ContainerHelper.saveAllItems(tag, items);
         tag.putInt("Progress", progress);
         tag.putInt("Duration", duration);
+        tag.putString("RunningJob", runningJob);
+        tag.putString("RunningDefinition", runningDefinition);
+        tag.putInt("AdditionsCommitted", additionsCommitted);
+        ListTag committed = new ListTag();
+        for (ItemStack stack : committedSolids) {
+            if (!stack.isEmpty()) {
+                committed.add(stack.save(new CompoundTag()));
+            }
+        }
+        tag.put("CommittedSolids", committed);
         tank.contents().ifPresent(batch -> LiquidBatchNbt.writeRoot(tag, batch));
     }
 
@@ -196,6 +326,17 @@ public final class BrewingKettleBlockEntity extends BlockEntity implements World
         ContainerHelper.loadAllItems(tag, items);
         progress = tag.getInt("Progress");
         duration = Math.max(1, tag.getInt("Duration"));
+        runningJob = tag.getString("RunningJob");
+        runningDefinition = tag.getString("RunningDefinition");
+        additionsCommitted = Math.max(0, tag.getInt("AdditionsCommitted"));
+        committedSolids.clear();
+        ListTag committed = tag.getList("CommittedSolids", Tag.TAG_COMPOUND);
+        for (int index = 0; index < committed.size(); index++) {
+            ItemStack stack = ItemStack.of(committed.getCompound(index));
+            if (!stack.isEmpty()) {
+                committedSolids.add(stack);
+            }
+        }
         tank.clear();
         LiquidBatchNbt.readRoot(tag).ifPresent(tank::set);
     }
@@ -257,6 +398,7 @@ public final class BrewingKettleBlockEntity extends BlockEntity implements World
     @Override
     public void clearContent() {
         items.clear();
+        committedSolids.clear();
     }
 
     @Override

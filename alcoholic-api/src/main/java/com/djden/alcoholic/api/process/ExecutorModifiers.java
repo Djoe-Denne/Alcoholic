@@ -46,4 +46,24 @@ public record ExecutorModifiers(
     public static ExecutorModifiers maltMill() {
         return new ExecutorModifiers(1.0, 1.0, 1.0, 1);
     }
+
+    public static ExecutorModifiers industrialMaltHouse() {
+        return new ExecutorModifiers(1.0, 2.0, 2.0, Integer.MAX_VALUE);
+    }
+
+    public static ExecutorModifiers industrialRollerMill() {
+        return new ExecutorModifiers(1.0, 4.0, 1.0, Integer.MAX_VALUE);
+    }
+
+    public static ExecutorModifiers industrialMashTun() {
+        return new ExecutorModifiers(1.05, 1.5, 6.0, Integer.MAX_VALUE);
+    }
+
+    public static ExecutorModifiers industrialBrewingKettle() {
+        return new ExecutorModifiers(1.0, 1.5, 3.0, 1);
+    }
+
+    public static ExecutorModifiers industrialConditioningVessel() {
+        return new ExecutorModifiers(1.0, 1.0, 3.0, 1);
+    }
 }

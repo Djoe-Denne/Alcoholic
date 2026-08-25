@@ -16,6 +16,8 @@ import com.djden.alcoholic.application.process.BoilConfig;
 import com.djden.alcoholic.application.process.BoilProcessor;
 import com.djden.alcoholic.application.process.BottleConfig;
 import com.djden.alcoholic.application.process.BottleProcessor;
+import com.djden.alcoholic.application.process.ConditionConfig;
+import com.djden.alcoholic.application.process.ConditionProcessor;
 import com.djden.alcoholic.application.process.FermentConfig;
 import com.djden.alcoholic.application.process.FermentProcessor;
 import com.djden.alcoholic.application.process.MaltConfig;
@@ -45,6 +47,7 @@ public final class BuiltinRegistrations {
     public static final ResourceId MILL = new ResourceId("alcoholic", "mill");
     public static final ResourceId MASH = new ResourceId("alcoholic", "mash");
     public static final ResourceId BOIL = new ResourceId("alcoholic", "boil");
+    public static final ResourceId CONDITION = new ResourceId("alcoholic", "condition");
 
     private static final String[] STUB_PROCESS_PATHS = {
             "distill",
@@ -84,6 +87,7 @@ public final class BuiltinRegistrations {
         registerMill(api);
         registerMash(api, catalog);
         registerBoil(api);
+        registerCondition(api);
         for (String path : STUB_PROCESS_PATHS) {
             registerStubProcess(api, path);
         }
@@ -132,6 +136,14 @@ public final class BuiltinRegistrations {
 
     private static void registerBoil(AlcoholicApi api) {
         registerProcess(api, BOIL, () -> api.processes().register(BOIL, BoilConfig.CODEC, new BoilProcessor()));
+    }
+
+    private static void registerCondition(AlcoholicApi api) {
+        registerProcess(api, CONDITION, () -> api.processes().register(
+                CONDITION,
+                ConditionConfig.CODEC,
+                new ConditionProcessor()
+        ));
     }
 
     private static void registerStubProcess(AlcoholicApi api, String path) {

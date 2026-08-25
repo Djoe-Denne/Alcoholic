@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "alcoholic:block/industrial_mash_tun_controller"
+    }
+  }
+}

@@ -31,6 +31,7 @@ public final class ProcessRuntime {
         register(BuiltinRegistrations.MILL);
         register(BuiltinRegistrations.MASH);
         register(BuiltinRegistrations.BOIL);
+        register(BuiltinRegistrations.CONDITION);
     }
 
     public static ProcessRuntime shared() {
@@ -84,6 +85,10 @@ public final class ProcessRuntime {
 
     public CapabilityProcessExecutor boilExecutor() {
         return executor(BuiltinRegistrations.BOIL);
+    }
+
+    public CapabilityProcessExecutor conditionExecutor() {
+        return executor(BuiltinRegistrations.CONDITION);
     }
 
     public Function<ResourceId, PropertyMerge> merges() {

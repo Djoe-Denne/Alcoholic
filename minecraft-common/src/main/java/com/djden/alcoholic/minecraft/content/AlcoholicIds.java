@@ -46,12 +46,24 @@ public final class AlcoholicIds {
     public static final ResourceId INDUSTRIAL_PRESS_CONTROLLER = id("industrial_press_controller");
     public static final ResourceId INDUSTRIAL_VAT_CONTROLLER = id("industrial_vat_controller");
     public static final ResourceId INDUSTRIAL_TANK_CONTROLLER = id("industrial_tank_controller");
+    public static final ResourceId INDUSTRIAL_MALT_HOUSE_CONTROLLER = id("industrial_malt_house_controller");
+    public static final ResourceId INDUSTRIAL_ROLLER_MILL_CONTROLLER = id("industrial_roller_mill_controller");
+    public static final ResourceId INDUSTRIAL_MASH_TUN_CONTROLLER = id("industrial_mash_tun_controller");
+    public static final ResourceId INDUSTRIAL_BREWING_KETTLE_CONTROLLER = id("industrial_brewing_kettle_controller");
+    public static final ResourceId INDUSTRIAL_CONDITIONING_VESSEL_CONTROLLER =
+            id("industrial_conditioning_vessel_controller");
     public static final ResourceId FLUID_PORT_ENTITY = id("fluid_port");
     public static final ResourceId ITEM_PORT_ENTITY = id("item_port");
     public static final ResourceId KINETIC_PORT_ENTITY = id("kinetic_port");
     public static final ResourceId INDUSTRIAL_PRESS_ENTITY = id("industrial_press_controller");
     public static final ResourceId INDUSTRIAL_VAT_ENTITY = id("industrial_vat_controller");
     public static final ResourceId INDUSTRIAL_TANK_ENTITY = id("industrial_tank_controller");
+    public static final ResourceId INDUSTRIAL_MALT_HOUSE_ENTITY = id("industrial_malt_house_controller");
+    public static final ResourceId INDUSTRIAL_ROLLER_MILL_ENTITY = id("industrial_roller_mill_controller");
+    public static final ResourceId INDUSTRIAL_MASH_TUN_ENTITY = id("industrial_mash_tun_controller");
+    public static final ResourceId INDUSTRIAL_BREWING_KETTLE_ENTITY = id("industrial_brewing_kettle_controller");
+    public static final ResourceId INDUSTRIAL_CONDITIONING_VESSEL_ENTITY =
+            id("industrial_conditioning_vessel_controller");
     public static final ResourceId BARLEY = id("barley");
     public static final ResourceId BARLEY_SEEDS = id("barley_seeds");
     public static final ResourceId BARLEY_CROP = id("barley_crop");

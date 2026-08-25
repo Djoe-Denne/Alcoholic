@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "alcoholic:block/industrial_brewing_kettle_controller"
+    }
+  }
+}
