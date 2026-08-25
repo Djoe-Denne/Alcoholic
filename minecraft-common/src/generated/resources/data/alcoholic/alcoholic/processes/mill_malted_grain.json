@@ -1,0 +1,24 @@
+{
+  "config": {
+    "create_compatible": true,
+    "input": {
+      "amount": 1,
+      "tag": "alcoholic:malted_grain"
+    },
+    "output": {
+      "amount": 1,
+      "item": "alcoholic:grist"
+    },
+    "processing_time": 80
+  },
+  "id": "alcoholic:mill_malted_grain",
+  "inputs": {
+    "malt": {
+      "tag": "alcoholic:malted_grain"
+    }
+  },
+  "outputs": [
+    "grist"
+  ],
+  "process": "alcoholic:mill"
+}

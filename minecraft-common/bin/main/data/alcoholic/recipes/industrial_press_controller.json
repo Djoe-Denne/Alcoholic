@@ -1,23 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "IPI",
-    "ICI",
-    "III"
-  ],
   "key": {
+    "C": {
+      "item": "alcoholic:industrial_casing"
+    },
     "I": {
       "item": "minecraft:iron_ingot"
     },
     "P": {
       "item": "alcoholic:artisanal_press"
-    },
-    "C": {
-      "item": "alcoholic:industrial_casing"
     }
   },
+  "pattern": [
+    "IPI",
+    "ICI",
+    "III"
+  ],
   "result": {
-    "item": "alcoholic:industrial_press_controller",
-    "count": 1
+    "count": 1,
+    "item": "alcoholic:industrial_press_controller"
   }
 }

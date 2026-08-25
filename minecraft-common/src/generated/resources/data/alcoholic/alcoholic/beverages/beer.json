@@ -1,0 +1,93 @@
+{
+  "graph": {
+    "nodes": [
+      {
+        "definition": "alcoholic:malt_pale",
+        "id": "malt",
+        "inputs": {
+          "grain": {
+            "tag": "alcoholic:barley"
+          }
+        },
+        "outputs": [
+          "malt"
+        ]
+      },
+      {
+        "definition": "alcoholic:mill_malted_grain",
+        "id": "mill",
+        "inputs": {
+          "malt": {
+            "node": "malt",
+            "port": "malt"
+          }
+        },
+        "outputs": [
+          "grist"
+        ]
+      },
+      {
+        "definition": "alcoholic:mash_wort",
+        "id": "mash",
+        "inputs": {
+          "grist": {
+            "node": "mill",
+            "port": "grist"
+          },
+          "water": {
+            "item": "minecraft:water_bucket"
+          }
+        },
+        "outputs": [
+          "wort"
+        ]
+      },
+      {
+        "definition": "alcoholic:boil_wort",
+        "id": "boil",
+        "inputs": {
+          "hops": {
+            "tag": "alcoholic:hops"
+          },
+          "wort": {
+            "node": "mash",
+            "port": "wort"
+          }
+        },
+        "outputs": [
+          "hopped_wort"
+        ]
+      },
+      {
+        "definition": "alcoholic:ferment_hopped_wort",
+        "id": "ferment",
+        "inputs": {
+          "wort": {
+            "node": "boil",
+            "port": "hopped_wort"
+          },
+          "yeast": {
+            "tag": "alcoholic:yeast"
+          }
+        },
+        "outputs": [
+          "finished"
+        ]
+      }
+    ],
+    "outputs": {
+      "result": {
+        "node": "ferment",
+        "port": "finished"
+      }
+    }
+  },
+  "id": "alcoholic:beer",
+  "properties": [
+    "alcoholic:sugar",
+    "alcoholic:ethanol",
+    "alcoholic:bitterness",
+    "alcoholic:color",
+    "alcoholic:aroma"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "config": {
+    "input": {
+      "amount": 1,
+      "tag": "alcoholic:barley"
+    },
+    "kiln_profile": {
+      "color_potential": 0.35,
+      "fermentable_potential": 0.78,
+      "id": "alcoholic:amber",
+      "roast_intensity": 0.45
+    },
+    "moisture_requirement": 0.4,
+    "output": {
+      "amount": 1,
+      "item": "alcoholic:malted_barley"
+    },
+    "processing_time": 80
+  },
+  "id": "alcoholic:malt_amber",
+  "inputs": {
+    "grain": {
+      "tag": "alcoholic:barley"
+    }
+  },
+  "outputs": [
+    "malt"
+  ],
+  "process": "alcoholic:malt"
+}

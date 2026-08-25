@@ -25,6 +25,9 @@ public final class IngredientSemanticRegistry {
         registry.bind(SemanticTags.BARLEY, IngredientType.BARLEY.categoryId());
         registry.bind(SemanticTags.HOPS, IngredientType.HOPS.categoryId());
         registry.bind(SemanticTags.YEAST, IngredientType.YEAST.categoryId());
+        registry.bind(SemanticTags.MALTED_GRAIN, new ResourceId("alcoholic", "malted_grain"));
+        registry.bind(SemanticTags.MALTED_BARLEY, new ResourceId("alcoholic", "malted_barley"));
+        registry.bind(SemanticTags.GRIST, new ResourceId("alcoholic", "grist"));
         return registry;
     }
 

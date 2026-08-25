@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "minecraft:bucket"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "P P",
+    "PBP",
+    "PPP"
+  ],
+  "result": {
+    "item": "alcoholic:mash_tun"
+  }
+}

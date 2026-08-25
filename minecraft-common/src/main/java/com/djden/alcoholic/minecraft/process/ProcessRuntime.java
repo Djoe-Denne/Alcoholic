@@ -9,25 +9,28 @@ import com.djden.alcoholic.application.process.ExecuteProcessUseCase;
 import com.djden.alcoholic.application.process.PropertyMerges;
 import com.djden.alcoholic.minecraft.beverage.BeverageRuntime;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 public final class ProcessRuntime {
     private final BeverageRuntime beverages;
     private final ExecuteProcessUseCase engine;
-    private final CapabilityProcessExecutor press;
-    private final CapabilityProcessExecutor ferment;
-    private final CapabilityProcessExecutor age;
-    private final CapabilityProcessExecutor blend;
-    private final CapabilityProcessExecutor bottle;
+    private final Map<ResourceId, CapabilityProcessExecutor> executors = new LinkedHashMap<>();
 
     public ProcessRuntime(BeverageRuntime beverages) {
         this.beverages = beverages;
         this.engine = new ExecuteProcessUseCase(beverages.api());
-        this.press = new CapabilityProcessExecutor(BuiltinRegistrations.PRESS);
-        this.ferment = new CapabilityProcessExecutor(BuiltinRegistrations.FERMENT);
-        this.age = new CapabilityProcessExecutor(BuiltinRegistrations.AGE);
-        this.blend = new CapabilityProcessExecutor(BuiltinRegistrations.BLEND);
-        this.bottle = new CapabilityProcessExecutor(BuiltinRegistrations.BOTTLE);
+        register(BuiltinRegistrations.PRESS);
+        register(BuiltinRegistrations.FERMENT);
+        register(BuiltinRegistrations.AGE);
+        register(BuiltinRegistrations.BLEND);
+        register(BuiltinRegistrations.BOTTLE);
+        register(BuiltinRegistrations.MALT);
+        register(BuiltinRegistrations.MILL);
+        register(BuiltinRegistrations.MASH);
+        register(BuiltinRegistrations.BOIL);
     }
 
     public static ProcessRuntime shared() {
@@ -42,24 +45,45 @@ public final class ProcessRuntime {
         return engine;
     }
 
+    public CapabilityProcessExecutor executor(ResourceId processType) {
+        Objects.requireNonNull(processType, "processType");
+        return executors.computeIfAbsent(processType, CapabilityProcessExecutor::new);
+    }
+
     public CapabilityProcessExecutor pressExecutor() {
-        return press;
+        return executor(BuiltinRegistrations.PRESS);
     }
 
     public CapabilityProcessExecutor fermentExecutor() {
-        return ferment;
+        return executor(BuiltinRegistrations.FERMENT);
     }
 
     public CapabilityProcessExecutor ageExecutor() {
-        return age;
+        return executor(BuiltinRegistrations.AGE);
     }
 
     public CapabilityProcessExecutor blendExecutor() {
-        return blend;
+        return executor(BuiltinRegistrations.BLEND);
     }
 
     public CapabilityProcessExecutor bottleExecutor() {
-        return bottle;
+        return executor(BuiltinRegistrations.BOTTLE);
+    }
+
+    public CapabilityProcessExecutor maltExecutor() {
+        return executor(BuiltinRegistrations.MALT);
+    }
+
+    public CapabilityProcessExecutor millExecutor() {
+        return executor(BuiltinRegistrations.MILL);
+    }
+
+    public CapabilityProcessExecutor mashExecutor() {
+        return executor(BuiltinRegistrations.MASH);
+    }
+
+    public CapabilityProcessExecutor boilExecutor() {
+        return executor(BuiltinRegistrations.BOIL);
     }
 
     public Function<ResourceId, PropertyMerge> merges() {
@@ -68,6 +92,10 @@ public final class ProcessRuntime {
 
     public Function<ResourceId, PropertyAggregator> aggregators() {
         return PropertyMerges.aggregators(beverages.api());
+    }
+
+    private void register(ResourceId processType) {
+        executors.put(processType, new CapabilityProcessExecutor(processType));
     }
 
     private static final class Holder {

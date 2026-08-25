@@ -1,0 +1,17 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#alcoholic:has_wild_barley",
+  "features": [
+    "alcoholic:wild_barley"
+  ],
+  "forge:conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "alcoholic:item_present",
+        "item": "brewery:barley"
+      }
+    }
+  ],
+  "step": "vegetal_decoration"
+}

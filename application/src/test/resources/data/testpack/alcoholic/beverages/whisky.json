@@ -4,10 +4,18 @@
   "graph": {
     "nodes": [
       {
+        "id": "malt",
+        "process": "alcoholic:malt",
+        "inputs": {
+          "grain": { "tag": "alcoholic:barley" }
+        },
+        "outputs": ["malt"]
+      },
+      {
         "id": "mill",
         "process": "alcoholic:mill",
         "inputs": {
-          "malt": { "tag": "alcoholic:malted_grain" }
+          "malt": { "node": "malt", "port": "malt" }
         },
         "outputs": ["grist"]
       },

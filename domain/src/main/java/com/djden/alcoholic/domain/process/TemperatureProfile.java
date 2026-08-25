@@ -38,8 +38,25 @@ public record TemperatureProfile(
         return 0.0;
     }
 
+    /**
+     * Aggregate extraction quality for mixed thermal processes such as mash.
+     * Too cold is incomplete; preferred is full; too hot is degraded.
+     */
+    public double extractionYield(double celsius) {
+        if (preferred.contains(celsius)) {
+            return 1.0;
+        }
+        if (operating.contains(celsius) && celsius < preferred.min()) {
+            return 0.40;
+        }
+        if (operating.contains(celsius) && celsius > preferred.max()) {
+            return 0.55;
+        }
+        return 0.10;
+    }
+
     public boolean stalled(double celsius) {
-        return !operating.contains(celsius);
+        return rateFactor(celsius) <= 0.0;
     }
 
     public boolean damaging(double celsius) {

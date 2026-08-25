@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "alcoholic:block/mash_tun",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "alcoholic:block/mash_tun"
+    },
+    "facing=south": {
+      "model": "alcoholic:block/mash_tun",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "alcoholic:block/mash_tun",
+      "y": 270
+    }
+  }
+}

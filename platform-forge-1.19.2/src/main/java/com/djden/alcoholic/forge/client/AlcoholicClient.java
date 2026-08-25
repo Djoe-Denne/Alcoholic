@@ -1,6 +1,7 @@
 package com.djden.alcoholic.forge.client;
 
 import com.djden.alcoholic.minecraft.content.AlcoholicContent;
+import com.djden.alcoholic.minecraft.content.GrainContent;
 import com.djden.alcoholic.minecraft.content.IndustrialContent;
 import com.djden.alcoholic.minecraft.content.ProcessingContent;
 import com.djden.alcoholic.minecraft.multiblock.MultiblockControllerBlockEntity;
@@ -19,6 +20,7 @@ public final class AlcoholicClient {
             IEventBus modEventBus,
             AlcoholicContent content,
             ProcessingContent processing,
+            GrainContent grain,
             IndustrialContent industrial
     ) {
         modEventBus.addListener(
@@ -30,6 +32,11 @@ public final class AlcoholicClient {
                     ItemBlockRenderTypes.setRenderLayer(processing.artisanalFermenter().get(), RenderType.cutout());
                     ItemBlockRenderTypes.setRenderLayer(processing.oakBarrel().get(), RenderType.cutout());
                     ItemBlockRenderTypes.setRenderLayer(processing.blendingCrock().get(), RenderType.cutout());
+                    ItemBlockRenderTypes.setRenderLayer(processing.maltingFloor().get(), RenderType.cutout());
+                    ItemBlockRenderTypes.setRenderLayer(processing.mashTun().get(), RenderType.cutout());
+                    ItemBlockRenderTypes.setRenderLayer(processing.brewingKettle().get(), RenderType.cutout());
+                    ItemBlockRenderTypes.setRenderLayer(grain.barleyCrop().get(), RenderType.cutout());
+                    ItemBlockRenderTypes.setRenderLayer(grain.hopBine().get(), RenderType.cutout());
                     ItemBlockRenderTypes.setRenderLayer(industrial.machineWindow().get(), RenderType.translucent());
                     ItemBlockRenderTypes.setRenderLayer(industrial.pressController().get(), RenderType.cutout());
                 })

@@ -23,12 +23,17 @@ import com.djden.alcoholic.forge.damage.IndustrialDamageSources;
 import com.djden.alcoholic.forge.event.ForgeIndustrialEvents;
 import com.djden.alcoholic.forge.item.ForgeItemCapabilities;
 import com.djden.alcoholic.minecraft.content.GrapeContentRegistrar;
+import com.djden.alcoholic.minecraft.content.GrainContent;
+import com.djden.alcoholic.minecraft.content.GrainContentRegistrar;
 import com.djden.alcoholic.minecraft.content.IndustrialContent;
 import com.djden.alcoholic.minecraft.content.IndustrialContentRegistrar;
 import com.djden.alcoholic.minecraft.content.ProcessingContent;
 import com.djden.alcoholic.minecraft.content.ProcessingContentRegistrar;
 import com.djden.alcoholic.minecraft.viticulture.InternalGrapeProvider;
 import com.djden.alcoholic.minecraft.viticulture.ViticultureRuntime;
+import com.djden.alcoholic.forge.condition.ItemPresentCondition;
+import com.djden.alcoholic.forge.create.CreateMillPropertyBridge;
+import com.djden.alcoholic.forge.environment.CreateHeatProbe;
 import com.djden.alcoholic.forge.fluid.ForgeFluidCapabilities;
 import com.djden.alcoholic.forge.fluid.ForgeFluidContent;
 import com.djden.alcoholic.forge.fluid.ForgeFluidInteraction;
@@ -46,6 +51,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
@@ -57,14 +63,22 @@ public final class AlcoholicForgeMod {
     private final CompatibilitySnapshot compatibility;
     private final AlcoholicContent content;
     private final ProcessingContent processing;
+    private final GrainContent grain;
     private final IndustrialContent industrial;
     private final ForgeFluidContent fluids;
 
     public AlcoholicForgeMod(FMLJavaModLoadingContext loadingContext) {
         IEventBus modEventBus = loadingContext.getModEventBus();
         compatibility = new CompatibilityService(new ForgeModPresenceAdapter()).snapshot();
-        CropProviderSelectionPolicy cropPolicy =
-                new CropProviderSelectionPolicy(compatibility);
+        CraftingHelper.register(new ItemPresentCondition.Serializer());
+        CropProviderSelectionPolicy cropPolicy = new CropProviderSelectionPolicy(
+                compatibility,
+                crop -> switch (crop) {
+                    case BARLEY -> itemPresent("brewery:barley") || itemPresent("brewery:barley_seeds");
+                    case HOPS -> itemPresent("brewery:hops");
+                    default -> true;
+                }
+        );
 
         ForgeRegistryPort<Block> blocks =
                 new ForgeRegistryPort<>(ForgeRegistries.BLOCKS, AlcoholicIds.MOD_ID);
@@ -103,6 +117,11 @@ public final class AlcoholicForgeMod {
         processing = ProcessingContentRegistrar.register(
                 new ContentRegistrationPorts(blocks, items, blockEntities)
         );
+        grain = GrainContentRegistrar.register(
+                new ContentRegistrationPorts(blocks, items, blockEntities),
+                () -> cropPolicy.isBuiltinAcquisitionEnabled(CropKind.BARLEY, GameplaySource.CREATIVE_DISCOVERY),
+                () -> cropPolicy.isBuiltinAcquisitionEnabled(CropKind.HOPS, GameplaySource.CREATIVE_DISCOVERY)
+        );
         industrial = registerIndustrial(new ContentRegistrationPorts(blocks, items, blockEntities));
         fluids = new ForgeFluidContent();
 
@@ -124,11 +143,13 @@ public final class AlcoholicForgeMod {
 
         DistExecutor.unsafeRunWhenOn(
                 Dist.CLIENT,
-                () -> () -> AlcoholicClient.register(modEventBus, content, processing, industrial)
+                () -> () -> AlcoholicClient.register(modEventBus, content, processing, grain, industrial)
         );
 
         if (ForgeCreateIntegration.shouldActivate(compatibility)) {
             LOGGER.info("Create integration boundary active for Create {}", "0.5.1.x");
+            CreateHeatProbe.install();
+            MinecraftForge.EVENT_BUS.register(new CreateMillPropertyBridge());
         }
     }
 
@@ -144,6 +165,10 @@ public final class AlcoholicForgeMod {
         return processing;
     }
 
+    public GrainContent grain() {
+        return grain;
+    }
+
     public IndustrialContent industrial() {
         return industrial;
     }
@@ -155,6 +180,15 @@ public final class AlcoholicForgeMod {
     private void freezeBeverageApi(FMLCommonSetupEvent event) {
         BeverageRuntime.shared().freeze();
         IndustrialDamageSources.install();
+    }
+
+    private static boolean itemPresent(String id) {
+        ResourceLocation location = ResourceLocation.tryParse(id);
+        if (location == null) {
+            return false;
+        }
+        Item item = ForgeRegistries.ITEMS.getValue(location);
+        return item != null && item != Items.AIR;
     }
 
     private static IndustrialContent registerIndustrial(ContentRegistrationPorts ports) {

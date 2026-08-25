@@ -17,7 +17,6 @@ import com.djden.alcoholic.domain.multiblock.Box3;
 import com.djden.alcoholic.domain.multiblock.CellCoord;
 import com.djden.alcoholic.domain.multiblock.CrushOccupancy;
 import com.djden.alcoholic.domain.multiblock.HollowCuboidValidator;
-import com.djden.alcoholic.domain.multiblock.MachineKind;
 import com.djden.alcoholic.domain.multiblock.MultiblockDefinition;
 import com.djden.alcoholic.domain.multiblock.MultiblockGeometry;
 import com.djden.alcoholic.domain.multiblock.PressStrokeState;
@@ -119,10 +118,27 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     }
 
     public boolean owns(BlockPos part) {
-        if (!formed || geometry == null) {
+        if (geometry == null) {
+            return false;
+        }
+        if (!formed && access != IndustrialAccess.DRAIN_ONLY) {
             return false;
         }
         return geometry.bounds().contains(WorldStructureSampler.coord(part));
+    }
+
+    public void executePress(MultiblockDefinition definition, long gameTime) {
+        tickPress(definition);
+    }
+
+    public void executeFerment(MultiblockDefinition definition, long gameTime) {
+        tickFerment(definition, gameTime);
+    }
+
+    private boolean fermentMachine() {
+        return definition().flatMap(MultiblockDefinition::processType)
+                .filter(BuiltinRegistrations.FERMENT::equals)
+                .isPresent();
     }
 
     @Override
@@ -171,13 +187,9 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
             stroke = PressStrokeState.IDLE;
             return;
         }
-        definition().ifPresent(definition -> {
-            if (definition.kind() == MachineKind.PRESS) {
-                tickPress(definition);
-            } else if (definition.kind() == MachineKind.FERMENT) {
-                tickFerment(definition, now);
-            }
-        });
+        definition().ifPresent(definition -> definition.processType()
+                .flatMap(IndustrialRuntime.shared()::strategy)
+                .ifPresent(strategy -> strategy.tick(this, definition, now)));
     }
 
     private void revalidate() {
@@ -238,7 +250,9 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         }
         pressWorking = false;
         stroke = PressStrokeState.IDLE;
-        clearPartBindings();
+        if (nextAccess != IndustrialAccess.DRAIN_ONLY) {
+            clearPartBindings();
+        }
         if (wasFormed && getBlockState().hasProperty(MultiblockControllerBlock.FORMED)) {
             level.setBlock(
                     worldPosition,
@@ -329,7 +343,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         );
         IngredientLot lot = ItemLots.lot(copyCount(input, units * config.inputAmount()));
         ProcessResult result = runtime.engine().execute(
-                IndustrialRuntime.shared().pressExecutor(),
+                IndustrialRuntime.shared().executor(BuiltinRegistrations.PRESS),
                 invocation.get(),
                 ProcessInputs.ofSolids("source", List.of(lot)),
                 ProcessContext.of(
@@ -420,7 +434,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         double ambient = ambientTemperature();
         double effective = ThermalStability.effectiveCelsius(ambient, 18.0, definition.modifiers().thermalStability());
         ProcessResult result = runtime.engine().execute(
-                IndustrialRuntime.shared().fermentExecutor(),
+                IndustrialRuntime.shared().executor(BuiltinRegistrations.FERMENT),
                 invocation.get(),
                 ProcessInputs.ofLiquid("must", batch),
                 ProcessContext.of(
@@ -533,7 +547,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     }
 
     public boolean insert(ItemStack stack) {
-        if (stack.isEmpty() || definition().map(value -> value.kind() == MachineKind.STORAGE).orElse(true)) {
+        if (stack.isEmpty() || definition().map(value -> !value.hasProcess()).orElse(true)) {
             return false;
         }
         ItemStack existing = items.get(INPUT_SLOT);
@@ -655,8 +669,6 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     public void load(CompoundTag tag) {
         super.load(tag);
         ContainerHelper.loadAllItems(tag, items);
-        tank.clear();
-        LiquidBatchNbt.readRoot(tag).ifPresent(tank::set);
         formed = tag.getBoolean("Formed");
         try {
             access = IndustrialAccess.valueOf(tag.getString("Access"));
@@ -696,6 +708,12 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
             );
             tank.tryResize(Math.max(tank.capacity(), geometry.capacityMillibuckets()));
         }
+        Optional<LiquidBatch> restored = LiquidBatchNbt.readRoot(tag);
+        if (restored.isPresent()) {
+            tank.set(restored.get());
+        } else if (!tag.contains(LiquidBatchNbt.ROOT_TAG)) {
+            tank.clear();
+        }
         List<BlockPos> parts = new ArrayList<>();
         tag.getList("BoundParts", 10).forEach(entry -> parts.add(NbtUtils.readBlockPos((CompoundTag) entry)));
         boundParts = List.copyOf(parts);
@@ -714,7 +732,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
 
     @Override
     public int getContainerSize() {
-        return definition().map(value -> value.kind() == MachineKind.STORAGE ? 0 : 2).orElse(2);
+        return definition().map(value -> value.hasProcess() ? 2 : 0).orElse(2);
     }
 
     @Override
@@ -762,10 +780,14 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
 
     @Override
     public int[] getSlotsForFace(Direction direction) {
-        return definition().map(value -> switch (value.kind()) {
-            case PRESS -> direction == Direction.DOWN ? new int[]{OUTPUT_SLOT} : new int[]{INPUT_SLOT};
-            case FERMENT -> new int[]{INPUT_SLOT};
-            case STORAGE -> new int[0];
+        return definition().map(value -> {
+            if (!value.hasProcess()) {
+                return new int[0];
+            }
+            if (value.processType().filter(BuiltinRegistrations.FERMENT::equals).isPresent()) {
+                return new int[]{INPUT_SLOT};
+            }
+            return direction == Direction.DOWN ? new int[]{OUTPUT_SLOT} : new int[]{INPUT_SLOT};
         }).orElse(new int[]{INPUT_SLOT});
     }
 
@@ -777,6 +799,6 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction direction) {
         return access.canDrain()
-                && (slot == OUTPUT_SLOT || definition().map(value -> value.kind() == MachineKind.FERMENT).orElse(false));
+                && (slot == OUTPUT_SLOT || fermentMachine());
     }
 }

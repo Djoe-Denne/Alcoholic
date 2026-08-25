@@ -3,8 +3,10 @@ package com.djden.alcoholic.api.process;
 import com.djden.alcoholic.api.PublicApi;
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.api.data.DataCodec;
+import com.djden.alcoholic.api.ingredient.IngredientSelector;
 
 import java.util.Objects;
+import java.util.function.BiPredicate;
 
 @PublicApi
 public interface ProcessType<C> {
@@ -24,6 +26,18 @@ public interface ProcessType<C> {
     @SuppressWarnings("unchecked")
     default boolean acceptsDecodedLiquid(Object config, ResourceId liquid) {
         return acceptsLiquid((C) config, liquid);
+    }
+
+    default boolean acceptsSolid(C config, ResourceId item, BiPredicate<IngredientSelector, ResourceId> matcher) {
+        if (config instanceof SolidAccepting accepting) {
+            return accepting.inputSelector().filter(selector -> matcher.test(selector, item)).isPresent();
+        }
+        return false;
+    }
+
+    @SuppressWarnings("unchecked")
+    default boolean acceptsDecodedSolid(Object config, ResourceId item, BiPredicate<IngredientSelector, ResourceId> matcher) {
+        return acceptsSolid((C) config, item, matcher);
     }
 
     static <C> ProcessType<C> of(ResourceId id, DataCodec<C> configCodec, ProcessHandler<C> handler) {

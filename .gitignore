@@ -11,6 +11,7 @@ build/
 .classpath
 .project
 .settings/
+**/bin/
 out/
 logs/
 crash-reports/

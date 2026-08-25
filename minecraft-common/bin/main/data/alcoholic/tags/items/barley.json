@@ -1,4 +1,10 @@
 {
   "replace": false,
-  "values": []
+  "values": [
+    "alcoholic:barley",
+    {
+      "id": "brewery:barley",
+      "required": false
+    }
+  ]
 }

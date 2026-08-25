@@ -49,6 +49,8 @@ public final class FixtureCatalogs {
         put(beverages, "rum");
         put(beverages, "spirit");
         put(beverages, "fruit_liqueur");
+        put(beverages, "wheat_beer");
+        put(beverages, "grain_mash");
         return beverages;
     }
 

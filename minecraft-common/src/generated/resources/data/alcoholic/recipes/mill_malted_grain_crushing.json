@@ -1,0 +1,28 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "create:crushing",
+        "ingredients": [
+          {
+            "tag": "alcoholic:malted_grain"
+          }
+        ],
+        "processingTime": 40,
+        "results": [
+          {
+            "count": 1,
+            "item": "alcoholic:grist"
+          }
+        ]
+      }
+    }
+  ]
+}

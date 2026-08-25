@@ -1,0 +1,353 @@
+package com.djden.alcoholic.forge.gametest;
+
+import com.djden.alcoholic.api.ResourceId;
+import com.djden.alcoholic.domain.liquid.LiquidBatch;
+import com.djden.alcoholic.domain.liquid.PropertyBag;
+import com.djden.alcoholic.minecraft.agriculture.CerealCropBlock;
+import com.djden.alcoholic.minecraft.agriculture.HopBineBlock;
+import com.djden.alcoholic.minecraft.content.AlcoholicIds;
+import com.djden.alcoholic.minecraft.process.ArtisanalFermenterBlockEntity;
+import com.djden.alcoholic.minecraft.process.BrewingKettleBlockEntity;
+import com.djden.alcoholic.minecraft.process.MaltingFloorBlockEntity;
+import com.djden.alcoholic.minecraft.process.MashTunBlockEntity;
+import com.djden.alcoholic.minecraft.process.SolidPropertyNbt;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.gametest.framework.GameTest;
+import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.gametest.GameTestHolder;
+import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Map;
+
+@GameTestHolder(AlcoholicIds.MOD_ID)
+@PrefixGameTestTemplate(false)
+public final class GrainGameTests {
+    private static final BlockPos ORIGIN = new BlockPos(1, 1, 1);
+
+    private GrainGameTests() {
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void barleyGrowsThroughThreeStages(GameTestHelper helper) {
+        CerealCropBlock crop = (CerealCropBlock) block("barley_crop");
+        helper.setBlock(ORIGIN.below(), Blocks.FARMLAND.defaultBlockState());
+        helper.setBlock(ORIGIN, crop.defaultBlockState());
+        crop.growCrops(helper.getLevel(), helper.absolutePos(ORIGIN), helper.getBlockState(ORIGIN));
+        crop.growCrops(helper.getLevel(), helper.absolutePos(ORIGIN), helper.getBlockState(ORIGIN));
+        require(
+                helper,
+                CerealCropBlock.isMature(helper.getBlockState(ORIGIN)),
+                "Barley did not reach maturity"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void hopsNeedOverheadTrellisToSurvive(GameTestHelper helper) {
+        helper.setBlock(new BlockPos(1, 2, 0), block("vineyard_post").defaultBlockState());
+        helper.setBlock(new BlockPos(1, 2, 2), block("end_post").defaultBlockState());
+        helper.setBlock(
+                new BlockPos(1, 2, 1),
+                block("trellis_wire").defaultBlockState().setValue(
+                        com.djden.alcoholic.minecraft.agriculture.TrellisWireBlock.AXIS,
+                        Direction.Axis.Z
+                )
+        );
+        helper.setBlock(ORIGIN.below(), Blocks.FARMLAND.defaultBlockState());
+        helper.setBlock(ORIGIN, block("hop_bine").defaultBlockState());
+        require(
+                helper,
+                helper.getBlockState(ORIGIN).getBlock() instanceof HopBineBlock,
+                "Hop bine did not place under a trellis run"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 120)
+    public static void maltingFloorConvertsBarley(GameTestHelper helper) {
+        helper.setBlock(ORIGIN, block("malting_floor").defaultBlockState());
+        MaltingFloorBlockEntity floor = (MaltingFloorBlockEntity) helper.getBlockEntity(ORIGIN);
+        floor.insert(new ItemStack(item("barley"), 1));
+        helper.runAtTickTime(90, () -> {
+            require(helper, !floor.getItem(MaltingFloorBlockEntity.OUTPUT_SLOT).isEmpty(), "Malting did not finish");
+            require(
+                    helper,
+                    floor.getItem(MaltingFloorBlockEntity.OUTPUT_SLOT).is(item("malted_barley")),
+                    "Malting output was not malted barley"
+            );
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 120)
+    public static void maltingFloorMillsMaltedGrainWithProperties(GameTestHelper helper) {
+        helper.setBlock(ORIGIN, block("malting_floor").defaultBlockState());
+        MaltingFloorBlockEntity floor = (MaltingFloorBlockEntity) helper.getBlockEntity(ORIGIN);
+        CompoundTag tag = floor.saveWithoutMetadata();
+        tag.putString("ProcessId", "alcoholic:mill_malted_grain");
+        floor.load(tag);
+        ItemStack malted = new ItemStack(item("malted_barley"), 1);
+        SolidPropertyNbt.write(malted, Map.of(
+                ResourceId.parse("alcoholic:sugar"), 0.85,
+                ResourceId.parse("alcoholic:color"), 0.12
+        ));
+        floor.insert(malted);
+        helper.runAtTickTime(90, () -> {
+            ItemStack output = floor.getItem(MaltingFloorBlockEntity.OUTPUT_SLOT);
+            require(helper, !output.isEmpty(), "Mill did not finish on the malting floor");
+            require(helper, output.is(item("grist")), "Mill output was not grist");
+            var properties = SolidPropertyNbt.read(output).orElse(null);
+            require(helper, properties != null, "Mill output lost solid properties");
+            require(
+                    helper,
+                    Math.abs(((Number) properties.get(ResourceId.parse("alcoholic:sugar")).orElse(0.0)).doubleValue() - 0.85) < 1e-6,
+                    "Sugar did not survive milling"
+            );
+            require(
+                    helper,
+                    Math.abs(((Number) properties.get(ResourceId.parse("alcoholic:color")).orElse(0.0)).doubleValue() - 0.12) < 1e-6,
+                    "Color did not survive milling"
+            );
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 80)
+    public static void mashTunProducesWortAndSpentGrain(GameTestHelper helper) {
+        helper.setBlock(ORIGIN, Blocks.MAGMA_BLOCK.defaultBlockState());
+        helper.setBlock(ORIGIN.above(), block("mash_tun").defaultBlockState());
+        MashTunBlockEntity mash = (MashTunBlockEntity) helper.getBlockEntity(ORIGIN.above());
+        mash.insert(new ItemStack(item("grist"), 1));
+        IFluidHandler handler = mash.getCapability(ForgeCapabilities.FLUID_HANDLER)
+                .orElseThrow(IllegalStateException::new);
+        int filled = handler.fill(new FluidStack(Fluids.WATER, 1000), IFluidHandler.FluidAction.EXECUTE);
+        require(helper, filled == 1000, "Mash tun rejected water");
+        helper.runAtTickTime(50, () -> {
+            require(helper, mash.tank().contents().isPresent(), "Mash tun did not produce wort");
+            LiquidBatch wort = mash.tank().contents().orElseThrow();
+            require(
+                    helper,
+                    wort.baseLiquid().filter(AlcoholicIds.WORT::equals).isPresent(),
+                    "Mash output was not wort"
+            );
+            require(
+                    helper,
+                    !mash.getItem(MashTunBlockEntity.BYPRODUCT_SLOT).isEmpty(),
+                    "Spent grain was not extractable"
+            );
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void mashTunSurvivesSaveReload(GameTestHelper helper) {
+        helper.setBlock(ORIGIN, block("mash_tun").defaultBlockState());
+        MashTunBlockEntity mash = (MashTunBlockEntity) helper.getBlockEntity(ORIGIN);
+        mash.tank().fill(LiquidBatch.of(AlcoholicIds.WORT, 500, PropertyBag.empty()), false);
+        CompoundTag saved = mash.saveWithoutMetadata();
+        mash.load(saved);
+        require(helper, mash.tank().contents().isPresent(), "Wort did not survive reload");
+        require(
+                helper,
+                mash.tank().contents().orElseThrow().volumeMillibuckets() == 500,
+                "Wort volume changed on reload"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void mashTunWortMovesIntoCreateTankWhenPresent(GameTestHelper helper) {
+        if (!ModList.get().isLoaded("create")) {
+            helper.succeed();
+            return;
+        }
+        helper.setBlock(ORIGIN, block("mash_tun").defaultBlockState());
+        helper.setBlock(ORIGIN.east(), createFluidTank().defaultBlockState());
+        MashTunBlockEntity mash = (MashTunBlockEntity) helper.getBlockEntity(ORIGIN);
+        mash.tank().fill(LiquidBatch.of(AlcoholicIds.WORT, 1000, PropertyBag.empty()), false);
+        IFluidHandler from = mash.getCapability(ForgeCapabilities.FLUID_HANDLER)
+                .orElseThrow(IllegalStateException::new);
+        IFluidHandler tank = helper.getBlockEntity(ORIGIN.east())
+                .getCapability(ForgeCapabilities.FLUID_HANDLER)
+                .orElseThrow(IllegalStateException::new);
+        FluidStack drained = from.drain(1000, IFluidHandler.FluidAction.EXECUTE);
+        require(helper, tank.fill(drained, IFluidHandler.FluidAction.EXECUTE) == 1000, "Create tank rejected wort");
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 80)
+    public static void brewingKettleProducesHoppedWort(GameTestHelper helper) {
+        helper.setBlock(ORIGIN, Blocks.CAMPFIRE.defaultBlockState());
+        helper.setBlock(ORIGIN.above(), block("brewing_kettle").defaultBlockState());
+        BrewingKettleBlockEntity kettle = (BrewingKettleBlockEntity) helper.getBlockEntity(ORIGIN.above());
+        kettle.tank().fill(
+                LiquidBatch.of(
+                        AlcoholicIds.WORT,
+                        1000,
+                        PropertyBag.empty().with(ResourceId.parse("alcoholic:sugar"), 0.80)
+                ),
+                false
+        );
+        kettle.insert(new ItemStack(item("hops"), 1));
+        helper.runAtTickTime(50, () -> {
+            require(helper, kettle.tank().contents().isPresent(), "Kettle emptied during boil");
+            LiquidBatch hopped = kettle.tank().contents().orElseThrow();
+            require(
+                    helper,
+                    hopped.baseLiquid().filter(AlcoholicIds.HOPPED_WORT::equals).isPresent(),
+                    "Boil output was not hopped wort"
+            );
+            require(
+                    helper,
+                    hopped.number(ResourceId.parse("alcoholic:bitterness"), 0.0) > 0.0,
+                    "Bitterness did not propagate"
+            );
+            require(
+                    helper,
+                    hopped.number(ResourceId.parse("alcoholic:sugar"), 0.0) > 0.7,
+                    "Unrelated sugar was not preserved"
+            );
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void brewingKettleMovesIntoArtisanalFermenter(GameTestHelper helper) {
+        helper.setBlock(ORIGIN, block("brewing_kettle").defaultBlockState());
+        helper.setBlock(ORIGIN.east(), block("artisanal_fermenter").defaultBlockState());
+        BrewingKettleBlockEntity kettle = (BrewingKettleBlockEntity) helper.getBlockEntity(ORIGIN);
+        ArtisanalFermenterBlockEntity fermenter =
+                (ArtisanalFermenterBlockEntity) helper.getBlockEntity(ORIGIN.east());
+        kettle.tank().fill(
+                LiquidBatch.of(
+                        AlcoholicIds.HOPPED_WORT,
+                        1000,
+                        PropertyBag.empty()
+                                .with(ResourceId.parse("alcoholic:sugar"), 0.80)
+                                .with(ResourceId.parse("alcoholic:bitterness"), 0.40)
+                ),
+                false
+        );
+        IFluidHandler from = kettle.getCapability(ForgeCapabilities.FLUID_HANDLER)
+                .orElseThrow(IllegalStateException::new);
+        IFluidHandler to = fermenter.getCapability(ForgeCapabilities.FLUID_HANDLER)
+                .orElseThrow(IllegalStateException::new);
+        FluidStack drained = from.drain(1000, IFluidHandler.FluidAction.EXECUTE);
+        require(helper, to.fill(drained, IFluidHandler.FluidAction.EXECUTE) == 1000, "Fermenter rejected hopped wort");
+        require(
+                helper,
+                fermenter.tank().contents().flatMap(LiquidBatch::baseLiquid)
+                        .filter(AlcoholicIds.HOPPED_WORT::equals)
+                        .isPresent(),
+                "Fermenter did not store hopped wort"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 200)
+    public static void hoppedWortFermentsInArtisanalFermenter(GameTestHelper helper) {
+        helper.setBlock(ORIGIN, block("artisanal_fermenter").defaultBlockState());
+        ArtisanalFermenterBlockEntity fermenter =
+                (ArtisanalFermenterBlockEntity) helper.getBlockEntity(ORIGIN);
+        fermenter.tank().fill(
+                LiquidBatch.of(
+                        AlcoholicIds.HOPPED_WORT,
+                        1000,
+                        PropertyBag.empty()
+                                .with(ResourceId.parse("alcoholic:sugar"), 0.80)
+                                .with(ResourceId.parse("alcoholic:ethanol"), 0.0)
+                                .with(ResourceId.parse("alcoholic:bitterness"), 0.40)
+                ),
+                false
+        );
+        fermenter.insertYeast(new ItemStack(item("yeast")));
+        helper.runAtTickTime(160, () -> {
+            LiquidBatch batch = fermenter.tank().contents().orElseThrow();
+            require(
+                    helper,
+                    batch.number(ResourceId.parse("alcoholic:sugar"), 1.0) < 0.80,
+                    "Sugar did not decrease in generic FERMENT"
+            );
+            require(
+                    helper,
+                    batch.number(ResourceId.parse("alcoholic:ethanol"), 0.0) > 0.0,
+                    "Ethanol did not increase in generic FERMENT"
+            );
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void brewingKettleSurvivesSaveReload(GameTestHelper helper) {
+        helper.setBlock(ORIGIN, block("brewing_kettle").defaultBlockState());
+        BrewingKettleBlockEntity kettle = (BrewingKettleBlockEntity) helper.getBlockEntity(ORIGIN);
+        kettle.tank().fill(
+                LiquidBatch.of(
+                        AlcoholicIds.HOPPED_WORT,
+                        750,
+                        PropertyBag.empty().with(ResourceId.parse("alcoholic:bitterness"), 0.33)
+                ),
+                false
+        );
+        CompoundTag saved = kettle.saveWithoutMetadata();
+        kettle.load(saved);
+        require(helper, kettle.tank().contents().isPresent(), "Hopped wort did not survive reload");
+        LiquidBatch reloaded = kettle.tank().contents().orElseThrow();
+        require(helper, reloaded.volumeMillibuckets() == 750, "Hopped wort volume changed on reload");
+        require(
+                helper,
+                Math.abs(reloaded.number(ResourceId.parse("alcoholic:bitterness"), 0.0) - 0.33) < 1e-6,
+                "Bitterness was lost on reload"
+        );
+        helper.succeed();
+    }
+
+    private static Block createFluidTank() {
+        Block tankBlock = ForgeRegistries.BLOCKS.getValue(
+                ResourceLocation.fromNamespaceAndPath("create", "fluid_tank")
+        );
+        if (tankBlock == null || tankBlock == Blocks.AIR) {
+            throw new IllegalStateException("Create is loaded but create:fluid_tank is missing");
+        }
+        return tankBlock;
+    }
+
+    private static Block block(String path) {
+        Block block = ForgeRegistries.BLOCKS.getValue(
+                ResourceLocation.fromNamespaceAndPath(AlcoholicIds.MOD_ID, path)
+        );
+        if (block == null) {
+            throw new IllegalStateException("Missing block alcoholic:" + path);
+        }
+        return block;
+    }
+
+    private static Item item(String path) {
+        Item item = ForgeRegistries.ITEMS.getValue(
+                ResourceLocation.fromNamespaceAndPath(AlcoholicIds.MOD_ID, path)
+        );
+        if (item == null) {
+            throw new IllegalStateException("Missing item alcoholic:" + path);
+        }
+        return item;
+    }
+
+    private static void require(GameTestHelper helper, boolean condition, String message) {
+        if (!condition) {
+            helper.fail(message);
+        }
+    }
+}

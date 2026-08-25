@@ -9,7 +9,7 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/a6b5797c-82f8-4021-9d63-10a82fed6899/a6b5797c-82f8-4021-9d63-10a82fed6899.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/c2ca3b27-ad63-4be9-af24-47c49c111f2f/c2ca3b27-ad63-4be9-af24-47c49c111f2f.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/dc49ea79-b9e5-4902-ad7f-795f762f8f52/dc49ea79-b9e5-4902-ad7f-795f762f8f52.jsonl"
-summary: Loader-independent brewing mod. Phase 6 adds industrial multiblocks; the engine stays beverage-agnostic.
+summary: Loader-independent brewing mod. Phase 7A adds generic malt/mill/mash/boil; the engine stays beverage-agnostic.
 provenance:
   extracted: 0.84
   inferred: 0.14
@@ -35,6 +35,8 @@ Alcoholic is a Minecraft mod for realistic brewing, winemaking, and distillation
 **Phase 5** — long-term storage: [[aging-process]], [[vessel-and-environment]], [[blend-versus-tank-merge]], [[batch-provenance]], and [[bottled-beverage-snapshot]]. Wine young → finished → bottle is the shipped loop. Whisky, beer, cider, and rum AGE graphs stay data-only fixtures. Distillation gameplay, drunkenness, and many woods stay out of scope.
 
 **Phase 6** — [[industrial-multiblock]], [[industrial-processing]], and [[industrial-ports]]: variable-size press, fermentation vat, and passive tank. They are extra PRESS/FERMENT executors, not a second wine recipe system. Create remains pipes, belts, and shafts.
+
+**Phase 7A** — second beverage family through generic process types: barley and hops agriculture, `MALT` / `MILL` / `MASH` / `BOIL`, malting floor, mash tun, brewing kettle, Create millstone/crushing executors. Shipped grain beer ends after generic `FERMENT`. AGE stays optional. Whisky remains a structural DAG fixture (`DISTILL` is still a stub).
 
 The Forge artifact still embeds the inward-pointing modules. Fabric remains a future adapter.
 

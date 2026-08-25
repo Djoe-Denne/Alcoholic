@@ -23,6 +23,10 @@ public final class AlcoholicDataGenerators {
                     new GrapeAssetDataProvider(output)
             );
             generator.addProvider(
+                    event.includeClient(),
+                    new AlcoholicTextureProvider(output)
+            );
+            generator.addProvider(
                     event.includeServer(),
                     new GrapeServerDataProvider(output)
             );

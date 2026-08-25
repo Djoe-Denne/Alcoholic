@@ -1,0 +1,20 @@
+{
+  "id": "testpack:grain_mash",
+  "graph": {
+    "nodes": [
+      {
+        "id": "mash",
+        "process": "alcoholic:mash",
+        "inputs": {
+          "grain": { "item": "minecraft:wheat" },
+          "water": { "item": "minecraft:water_bucket" }
+        },
+        "outputs": ["wort"]
+      }
+    ],
+    "outputs": {
+      "result": { "node": "mash", "port": "wort" }
+    }
+  },
+  "properties": ["alcoholic:sugar", "alcoholic:color"]
+}

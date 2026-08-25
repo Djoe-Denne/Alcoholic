@@ -7,6 +7,12 @@ import com.djden.alcoholic.minecraft.process.ArtisanalFermenterBlock;
 import com.djden.alcoholic.minecraft.process.ArtisanalFermenterBlockEntity;
 import com.djden.alcoholic.minecraft.process.ArtisanalPressBlock;
 import com.djden.alcoholic.minecraft.process.ArtisanalPressBlockEntity;
+import com.djden.alcoholic.minecraft.process.BrewingKettleBlock;
+import com.djden.alcoholic.minecraft.process.BrewingKettleBlockEntity;
+import com.djden.alcoholic.minecraft.process.MaltingFloorBlock;
+import com.djden.alcoholic.minecraft.process.MaltingFloorBlockEntity;
+import com.djden.alcoholic.minecraft.process.MashTunBlock;
+import com.djden.alcoholic.minecraft.process.MashTunBlockEntity;
 import com.djden.alcoholic.minecraft.process.OakBarrelBlock;
 import com.djden.alcoholic.minecraft.process.OakBarrelBlockEntity;
 import com.djden.alcoholic.platform.api.registry.RegistryRef;
@@ -33,10 +39,16 @@ public final class ProcessingContentRegistrar {
         AtomicReference<RegistryRef<BlockEntityType<?>>> fermenterEntityHolder = new AtomicReference<>();
         AtomicReference<RegistryRef<BlockEntityType<?>>> barrelEntityHolder = new AtomicReference<>();
         AtomicReference<RegistryRef<BlockEntityType<?>>> crockEntityHolder = new AtomicReference<>();
+        AtomicReference<RegistryRef<BlockEntityType<?>>> maltingEntityHolder = new AtomicReference<>();
+        AtomicReference<RegistryRef<BlockEntityType<?>>> mashEntityHolder = new AtomicReference<>();
+        AtomicReference<RegistryRef<BlockEntityType<?>>> kettleEntityHolder = new AtomicReference<>();
         Supplier<BlockEntityType<?>> pressType = () -> pressEntityHolder.get().get();
         Supplier<BlockEntityType<?>> fermenterType = () -> fermenterEntityHolder.get().get();
         Supplier<BlockEntityType<?>> barrelType = () -> barrelEntityHolder.get().get();
         Supplier<BlockEntityType<?>> crockType = () -> crockEntityHolder.get().get();
+        Supplier<BlockEntityType<?>> maltingType = () -> maltingEntityHolder.get().get();
+        Supplier<BlockEntityType<?>> mashType = () -> mashEntityHolder.get().get();
+        Supplier<BlockEntityType<?>> kettleType = () -> kettleEntityHolder.get().get();
 
         RegistryRef<Block> pressRef = ports.blocks().register(
                 AlcoholicIds.ARTISANAL_PRESS,
@@ -54,6 +66,18 @@ public final class ProcessingContentRegistrar {
                 AlcoholicIds.ARTISANAL_BLENDING_CROCK,
                 () -> new ArtisanalBlendingCrockBlock(machineProperties(), crockType)
         );
+        RegistryRef<Block> maltingRef = ports.blocks().register(
+                AlcoholicIds.MALTING_FLOOR,
+                () -> new MaltingFloorBlock(machineProperties(), maltingType)
+        );
+        RegistryRef<Block> mashRef = ports.blocks().register(
+                AlcoholicIds.MASH_TUN,
+                () -> new MashTunBlock(machineProperties(), mashType)
+        );
+        RegistryRef<Block> kettleRef = ports.blocks().register(
+                AlcoholicIds.BREWING_KETTLE,
+                () -> new BrewingKettleBlock(machineProperties(), kettleType)
+        );
         RegistryRef<Item> pressItem = ports.items().register(
                 AlcoholicIds.ARTISANAL_PRESS,
                 () -> new BlockItem(pressRef.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS))
@@ -70,6 +94,18 @@ public final class ProcessingContentRegistrar {
                 AlcoholicIds.ARTISANAL_BLENDING_CROCK,
                 () -> new BlockItem(crockRef.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS))
         );
+        RegistryRef<Item> maltingItem = ports.items().register(
+                AlcoholicIds.MALTING_FLOOR,
+                () -> new BlockItem(maltingRef.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS))
+        );
+        RegistryRef<Item> mashItem = ports.items().register(
+                AlcoholicIds.MASH_TUN,
+                () -> new BlockItem(mashRef.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS))
+        );
+        RegistryRef<Item> kettleItem = ports.items().register(
+                AlcoholicIds.BREWING_KETTLE,
+                () -> new BlockItem(kettleRef.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS))
+        );
         RegistryRef<Item> yeast = ports.items().register(
                 AlcoholicIds.YEAST,
                 () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC))
@@ -85,6 +121,10 @@ public final class ProcessingContentRegistrar {
         RegistryRef<Item> beverageBottle = ports.items().register(
                 AlcoholicIds.BEVERAGE_BOTTLE,
                 () -> new BeverageBottleItem(new Item.Properties().stacksTo(16).tab(CreativeModeTab.TAB_MISC))
+        );
+        RegistryRef<Item> spentGrain = ports.items().register(
+                AlcoholicIds.SPENT_GRAIN,
+                () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC))
         );
         RegistryRef<BlockEntityType<?>> pressEntity = ports.blockEntities().register(
                 AlcoholicIds.ARTISANAL_PRESS_ENTITY,
@@ -122,10 +162,34 @@ public final class ProcessingContentRegistrar {
                         crockRef.get()
                 ).build(null)
         );
+        RegistryRef<BlockEntityType<?>> maltingEntity = ports.blockEntities().register(
+                AlcoholicIds.MALTING_FLOOR_ENTITY,
+                () -> BlockEntityType.Builder.of(
+                        (position, state) -> new MaltingFloorBlockEntity(maltingType.get(), position, state),
+                        maltingRef.get()
+                ).build(null)
+        );
+        RegistryRef<BlockEntityType<?>> mashEntity = ports.blockEntities().register(
+                AlcoholicIds.MASH_TUN_ENTITY,
+                () -> BlockEntityType.Builder.of(
+                        (position, state) -> new MashTunBlockEntity(mashType.get(), position, state),
+                        mashRef.get()
+                ).build(null)
+        );
+        RegistryRef<BlockEntityType<?>> kettleEntity = ports.blockEntities().register(
+                AlcoholicIds.BREWING_KETTLE_ENTITY,
+                () -> BlockEntityType.Builder.of(
+                        (position, state) -> new BrewingKettleBlockEntity(kettleType.get(), position, state),
+                        kettleRef.get()
+                ).build(null)
+        );
         pressEntityHolder.set(pressEntity);
         fermenterEntityHolder.set(fermenterEntity);
         barrelEntityHolder.set(barrelEntity);
         crockEntityHolder.set(crockEntity);
+        maltingEntityHolder.set(maltingEntity);
+        mashEntityHolder.set(mashEntity);
+        kettleEntityHolder.set(kettleEntity);
         return new ProcessingContent(
                 pressRef,
                 pressItem,
@@ -142,7 +206,17 @@ public final class ProcessingContentRegistrar {
                 yeast,
                 pomace,
                 emptyBottle,
-                beverageBottle
+                beverageBottle,
+                maltingRef,
+                maltingItem,
+                maltingEntity,
+                mashRef,
+                mashItem,
+                mashEntity,
+                kettleRef,
+                kettleItem,
+                kettleEntity,
+                spentGrain
         );
     }
 

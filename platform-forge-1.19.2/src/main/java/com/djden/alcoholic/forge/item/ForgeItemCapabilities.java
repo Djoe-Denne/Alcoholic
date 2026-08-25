@@ -34,10 +34,8 @@ public final class ForgeItemCapabilities {
         if (!entity.getClass().getName().startsWith("com.djden.alcoholic")) {
             return;
         }
+        LazyOptional<IItemHandlerModifiable>[] handlers = SidedInvWrapper.create(container, Direction.values());
         event.addCapability(KEY, new ICapabilityProvider() {
-            private final LazyOptional<IItemHandlerModifiable>[] handlers =
-                    SidedInvWrapper.create(container, Direction.values());
-
             @Nonnull
             @Override
             public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
@@ -48,6 +46,11 @@ public final class ForgeItemCapabilities {
                     return handlers[0].cast();
                 }
                 return handlers[side.ordinal()].cast();
+            }
+        });
+        event.addListener(() -> {
+            for (LazyOptional<IItemHandlerModifiable> handler : handlers) {
+                handler.invalidate();
             }
         });
     }

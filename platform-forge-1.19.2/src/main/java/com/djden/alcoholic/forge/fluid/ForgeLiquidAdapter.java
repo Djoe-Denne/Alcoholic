@@ -20,7 +20,13 @@ public final class ForgeLiquidAdapter {
         if (batch.volumeMillibuckets() <= 0 || batch.baseLiquid().isEmpty()) {
             return FluidStack.EMPTY;
         }
-        Fluid fluid = fluids.source(batch.baseLiquid().orElseThrow());
+        ResourceId definition = batch.baseLiquid().orElseThrow();
+        Fluid fluid = fluids.source(definition);
+        if (fluid == null) {
+            fluid = ForgeRegistries.FLUIDS.getValue(
+                    ResourceLocation.fromNamespaceAndPath(definition.namespace(), definition.path())
+            );
+        }
         if (fluid == null) {
             return FluidStack.EMPTY;
         }

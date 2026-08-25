@@ -44,6 +44,9 @@ public final class ForgeFluidContent {
     public final RegistryObject<FlowingFluid> youngWhiteWine;
     public final RegistryObject<FlowingFluid> redWine;
     public final RegistryObject<FlowingFluid> whiteWine;
+    public final RegistryObject<FlowingFluid> wort;
+    public final RegistryObject<FlowingFluid> hoppedWort;
+    public final RegistryObject<FlowingFluid> beer;
 
     public ForgeFluidContent() {
         redGrapeMust = fluid(AlcoholicIds.RED_GRAPE_MUST, 0xFF7A1F3A);
@@ -52,6 +55,9 @@ public final class ForgeFluidContent {
         youngWhiteWine = fluid(AlcoholicIds.YOUNG_WHITE_WINE, 0xFFE8D36B);
         redWine = fluid(AlcoholicIds.RED_WINE, 0xFF4A0E1C);
         whiteWine = fluid(AlcoholicIds.WHITE_WINE, 0xFFE6C85A);
+        wort = fluid(AlcoholicIds.WORT, 0xFFC9A227);
+        hoppedWort = fluid(AlcoholicIds.HOPPED_WORT, 0xFFB8860B);
+        beer = fluid(AlcoholicIds.BEER, 0xFFD4A017);
     }
 
     public void attach(IEventBus bus) {

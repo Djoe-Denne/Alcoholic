@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public final class ItemLots {
     private static final ResourceId SUGAR = ResourceId.parse("alcoholic:sugar");
@@ -26,13 +27,22 @@ public final class ItemLots {
 
     public static IngredientLot lot(ItemStack stack) {
         Objects.requireNonNull(stack, "stack");
-        PropertyBag properties = HarvestLotNbt.read(stack)
-                .map(lot -> PropertyBag.empty()
-                        .with(SUGAR, lot.sugar())
-                        .with(ACIDITY, lot.acidity())
-                        .with(QUALITY, lot.quality())
-                        .with(VARIETY, lot.variety().toString()))
-                .orElse(PropertyBag.empty());
+        PropertyBag properties = PropertyBag.empty();
+        Optional<HarvestLotNbt.HarvestLot> harvest = HarvestLotNbt.read(stack);
+        if (harvest.isPresent()) {
+            HarvestLotNbt.HarvestLot lot = harvest.orElseThrow();
+            properties = properties
+                    .with(SUGAR, lot.sugar())
+                    .with(ACIDITY, lot.acidity())
+                    .with(QUALITY, lot.quality())
+                    .with(VARIETY, lot.variety().toString());
+        }
+        Optional<PropertyBag> solid = SolidPropertyNbt.read(stack);
+        if (solid.isPresent()) {
+            for (ResourceId id : solid.orElseThrow().ids()) {
+                properties = properties.with(id, solid.orElseThrow().get(id).orElseThrow());
+            }
+        }
         return new IngredientLot(id(stack), stack.getCount(), properties);
     }
 }

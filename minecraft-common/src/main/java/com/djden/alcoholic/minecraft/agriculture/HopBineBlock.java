@@ -1,0 +1,169 @@
+package com.djden.alcoholic.minecraft.agriculture;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+
+import java.util.function.Supplier;
+
+/**
+ * Vertical supported bine. Grows toward an overhead trellis run rather than
+ * as a reskinned cereal crop.
+ */
+public class HopBineBlock extends BushBlock implements BonemealableBlock {
+    public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
+    public static final int MAX_HEIGHT = 4;
+    private static final VoxelShape[] SHAPES = {
+            Block.box(4.0, 0.0, 4.0, 12.0, 6.0, 12.0),
+            Block.box(3.0, 0.0, 3.0, 13.0, 12.0, 13.0),
+            Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0)
+    };
+
+    private final Supplier<ItemStack> harvest;
+
+    public HopBineBlock(Properties properties, Supplier<ItemStack> harvest) {
+        super(properties);
+        this.harvest = harvest;
+        registerDefaultState(stateDefinition.any().setValue(AGE, 0));
+    }
+
+    @Override
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
+        return state.is(Blocks.FARMLAND)
+                || state.is(Blocks.DIRT)
+                || state.is(Blocks.GRASS_BLOCK)
+                || state.getBlock() instanceof HopBineBlock
+                || state.getBlock() instanceof CropSupportPost;
+    }
+
+    @Override
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        BlockState below = level.getBlockState(pos.below());
+        return mayPlaceOn(below, level, pos.below())
+                && TrellisDetector.shared().hasOverheadRun(level, pos, MAX_HEIGHT);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPES[Math.min(state.getValue(AGE), SHAPES.length - 1)];
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (random.nextInt(5) != 0) {
+            return;
+        }
+        grow(level, pos, state);
+    }
+
+    private void grow(ServerLevel level, BlockPos pos, BlockState state) {
+        int age = state.getValue(AGE);
+        if (age < 2) {
+            level.setBlock(pos, state.setValue(AGE, age + 1), Block.UPDATE_CLIENTS);
+            return;
+        }
+        BlockPos above = pos.above();
+        if (level.isEmptyBlock(above)
+                && above.getY() - ground(level, pos) < MAX_HEIGHT
+                && TrellisDetector.shared().hasOverheadRun(level, above, MAX_HEIGHT)) {
+            level.setBlock(above, defaultBlockState(), Block.UPDATE_CLIENTS);
+        }
+    }
+
+    private static int ground(LevelReader level, BlockPos pos) {
+        BlockPos cursor = pos;
+        while (level.getBlockState(cursor.below()).getBlock() instanceof HopBineBlock) {
+            cursor = cursor.below();
+        }
+        return cursor.getY();
+    }
+
+    public ItemStack harvestItem() {
+        return harvest.get();
+    }
+
+    public static boolean isMature(BlockState state) {
+        return state.hasProperty(AGE) && state.getValue(AGE) >= 2;
+    }
+
+    @Override
+    public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean client) {
+        return state.getValue(AGE) < 2 || level.getBlockState(pos.above()).isAir();
+    }
+
+    @Override
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+        return true;
+    }
+
+    @Override
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        grow(level, pos, state);
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(AGE);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public InteractionResult use(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hit
+    ) {
+        if (harvestBy(player, level, pos, state)) {
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
+        return InteractionResult.PASS;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Block block,
+            BlockPos fromPos,
+            boolean moving
+    ) {
+        if (!state.canSurvive(level, pos)) {
+            level.destroyBlock(pos, true);
+        }
+    }
+
+    public boolean harvestBy(Player player, Level level, BlockPos pos, BlockState state) {
+        if (!isMature(state) || level.isClientSide) {
+            return false;
+        }
+        ItemStack drop = harvest.get();
+        if (!player.getInventory().add(drop)) {
+            player.drop(drop, false);
+        }
+        level.setBlock(pos, state.setValue(AGE, 0), Block.UPDATE_CLIENTS);
+        return true;
+    }
+}

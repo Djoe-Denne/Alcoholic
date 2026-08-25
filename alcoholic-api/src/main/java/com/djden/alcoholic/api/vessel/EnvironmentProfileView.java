@@ -15,4 +15,11 @@ public interface EnvironmentProfileView {
     double stability();
 
     boolean sheltered();
+
+    /**
+     * 0 (dry) to 1 (saturated). Defaults to a temperate cellar.
+     */
+    default double humidity() {
+        return 0.5;
+    }
 }

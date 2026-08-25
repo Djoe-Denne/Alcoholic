@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/crop",
+  "textures": {
+    "crop": "alcoholic:block/barley_crop_2"
+  }
+}

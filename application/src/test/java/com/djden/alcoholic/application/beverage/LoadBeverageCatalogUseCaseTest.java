@@ -30,7 +30,7 @@ class LoadBeverageCatalogUseCaseTest {
                 api
         );
 
-        assertEquals(7, catalog.beverages().size());
+        assertEquals(9, catalog.beverages().size());
         assertTrue(catalog.beverage(ResourceId.parse("testpack:cider")).isPresent());
         assertTrue(catalog.beverage(ResourceId.parse("testpack:fruit_liqueur")).isPresent());
 
@@ -41,6 +41,22 @@ class LoadBeverageCatalogUseCaseTest {
                 .orElseThrow();
         assertEquals(2, mash.inputs().size());
         assertTrue(mash.inputs().get("water") instanceof InputReference.ItemInput);
+
+        ProcessNode wheatMash = catalog.beverage(ResourceId.parse("testpack:wheat_beer"))
+                .orElseThrow()
+                .graph()
+                .node("mash")
+                .orElseThrow();
+        assertEquals(3, wheatMash.inputs().size());
+        assertTrue(catalog.beverage(ResourceId.parse("testpack:grain_mash")).isPresent());
+        assertTrue(catalog.beverage(ResourceId.parse("testpack:whisky"))
+                .orElseThrow()
+                .graph()
+                .node("distill")
+                .orElseThrow()
+                .processType()
+                .filter(id -> id.equals(ResourceId.parse("alcoholic:distill")))
+                .isPresent());
 
         ProcessNode infuse = catalog.beverage(ResourceId.parse("testpack:fruit_liqueur"))
                 .orElseThrow()

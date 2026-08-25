@@ -139,6 +139,107 @@ progresses. If `output.liquid` is omitted, the batch keeps its definition
 when aging completes. The oak barrel only runs AGE when this recipe matches
 the stored liquid. There is no unload-time catch-up; see ADR-015.
 
+AGE is optional. A beverage graph that stops after FERMENT is valid. Grain
+beer ships without an AGE node; a later barrel-aged graph can add one.
+
+### MALT
+
+```json
+{
+  "id": "mypack:malt_pale",
+  "process": "alcoholic:malt",
+  "config": {
+    "input": { "tag": "alcoholic:barley", "amount": 1 },
+    "output": { "item": "mypack:malted_barley", "amount": 1 },
+    "processing_time": 80,
+    "moisture_requirement": 0.4,
+    "kiln_profile": {
+      "id": "mypack:pale",
+      "color_potential": 0.12,
+      "fermentable_potential": 0.85,
+      "roast_intensity": 0.15
+    }
+  },
+  "inputs": { "grain": { "tag": "alcoholic:barley" } },
+  "outputs": ["malt"]
+}
+```
+
+Solid-to-solid. Kiln profiles are data. The malting floor executes `MALT`.
+
+### MILL
+
+```json
+{
+  "id": "mypack:mill_malted_grain",
+  "process": "alcoholic:mill",
+  "config": {
+    "input": { "tag": "alcoholic:malted_grain", "amount": 1 },
+    "output": { "item": "mypack:grist", "amount": 1 },
+    "processing_time": 80,
+    "create_compatible": true
+  },
+  "inputs": { "malt": { "tag": "alcoholic:malted_grain" } },
+  "outputs": ["grist"]
+}
+```
+
+`create_compatible` emits Create millstone (`create:milling`) and crushing
+wheels (`create:crushing`) recipes. Alcoholic does not add its own mill.
+
+### MASH
+
+```json
+{
+  "id": "mypack:mash_wort",
+  "process": "alcoholic:mash",
+  "config": {
+    "solid": { "tag": "alcoholic:grist", "amount": 1 },
+    "liquid": { "fluid": "minecraft:water", "volume": 1000 },
+    "output": { "liquid": "mypack:wort", "volume": 1000 },
+    "byproduct": { "item": "mypack:spent_grain", "amount": 1 },
+    "processing_time": 40,
+    "preferred_temperature": { "min": 62, "max": 68 },
+    "operating_temperature": { "min": 52, "max": 78 }
+  },
+  "inputs": {
+    "grist": { "tag": "alcoholic:grist" },
+    "water": { "item": "minecraft:water_bucket" }
+  },
+  "outputs": ["wort"]
+}
+```
+
+Temperature changes extraction yield. Spent grain is extractable. The mash
+tun fills water and drains wort through standard fluid capabilities.
+
+### BOIL
+
+```json
+{
+  "id": "mypack:boil_wort",
+  "process": "alcoholic:boil",
+  "config": {
+    "input_liquid": "mypack:wort",
+    "output": { "liquid": "mypack:hopped_wort" },
+    "addition": { "tag": "alcoholic:hops", "amount": 1 },
+    "processing_time": 40,
+    "preferred_temperature": { "min": 98, "max": 105 },
+    "operating_temperature": { "min": 90, "max": 110 },
+    "hop_profile": {
+      "bitterness_potential": 0.55,
+      "aroma_potential": 0.40
+    }
+  },
+  "inputs": { "hops": { "tag": "alcoholic:hops" } },
+  "outputs": ["hopped_wort"]
+}
+```
+
+Bitterness and aroma are typed liquid properties. `additions` with
+`at_progress` is the extension point for later hop schedules; Phase 7A uses
+a single start-of-process addition.
+
 ### BLEND
 
 ```json

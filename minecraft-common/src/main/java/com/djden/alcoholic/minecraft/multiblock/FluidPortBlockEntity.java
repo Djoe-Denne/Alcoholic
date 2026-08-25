@@ -27,9 +27,27 @@ public final class FluidPortBlockEntity extends PartBlockEntity implements Liqui
     public LiquidTank tank() {
         MultiblockControllerBlockEntity controller = controller();
         if (controller == null) {
-            return new LiquidTank(1, id -> PropertyMerge.WEIGHTED_AVERAGE);
+            return LiquidTank.sealed();
         }
         return new DirectedTank(controller, mode());
+    }
+
+    @Override
+    public boolean canFillTank(int index) {
+        if (index != 0) {
+            return false;
+        }
+        MultiblockControllerBlockEntity controller = controller();
+        return controller != null && mode().allowsInsert() && controller.access().canFill();
+    }
+
+    @Override
+    public boolean canDrainTank(int index) {
+        if (index != 0) {
+            return false;
+        }
+        MultiblockControllerBlockEntity controller = controller();
+        return controller != null && mode().allowsExtract() && controller.access().canDrain();
     }
 
     private static final class DirectedTank extends LiquidTank {
@@ -74,6 +92,26 @@ public final class FluidPortBlockEntity extends PartBlockEntity implements Liqui
                 controller.onTankChanged();
             }
             return drained;
+        }
+
+        @Override
+        public boolean tryResize(int newCapacity) {
+            return controller.tank().tryResize(newCapacity);
+        }
+
+        @Override
+        public boolean trySet(LiquidBatch batch) {
+            return controller.tank().trySet(batch);
+        }
+
+        @Override
+        public void set(LiquidBatch batch) {
+            controller.tank().set(batch);
+        }
+
+        @Override
+        public void clear() {
+            controller.tank().clear();
         }
     }
 }

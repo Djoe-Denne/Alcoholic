@@ -1,23 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "IBI",
-    "ICI",
-    "III"
-  ],
   "key": {
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
     "B": {
       "item": "minecraft:bucket"
     },
     "C": {
       "item": "alcoholic:industrial_casing"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
     }
   },
+  "pattern": [
+    "IBI",
+    "ICI",
+    "III"
+  ],
   "result": {
-    "item": "alcoholic:industrial_tank_controller",
-    "count": 1
+    "count": 1,
+    "item": "alcoholic:industrial_tank_controller"
   }
 }

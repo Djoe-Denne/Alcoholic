@@ -1,0 +1,42 @@
+{
+  "config": {
+    "byproduct": {
+      "amount": 1,
+      "item": "alcoholic:spent_grain"
+    },
+    "liquid": {
+      "fluid": "minecraft:water",
+      "volume": 1000
+    },
+    "operating_temperature": {
+      "max": 78,
+      "min": 52
+    },
+    "output": {
+      "liquid": "alcoholic:wort",
+      "volume": 1000
+    },
+    "preferred_temperature": {
+      "max": 68,
+      "min": 62
+    },
+    "processing_time": 40,
+    "solid": {
+      "amount": 1,
+      "tag": "alcoholic:grist"
+    }
+  },
+  "id": "alcoholic:mash_wort",
+  "inputs": {
+    "grist": {
+      "tag": "alcoholic:grist"
+    },
+    "water": {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  "outputs": [
+    "wort"
+  ],
+  "process": "alcoholic:mash"
+}

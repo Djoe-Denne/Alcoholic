@@ -12,10 +12,18 @@ import com.djden.alcoholic.application.process.AgingConfig;
 import com.djden.alcoholic.application.process.AgingProcessor;
 import com.djden.alcoholic.application.process.BlendConfig;
 import com.djden.alcoholic.application.process.BlendProcessor;
+import com.djden.alcoholic.application.process.BoilConfig;
+import com.djden.alcoholic.application.process.BoilProcessor;
 import com.djden.alcoholic.application.process.BottleConfig;
 import com.djden.alcoholic.application.process.BottleProcessor;
 import com.djden.alcoholic.application.process.FermentConfig;
 import com.djden.alcoholic.application.process.FermentProcessor;
+import com.djden.alcoholic.application.process.MaltConfig;
+import com.djden.alcoholic.application.process.MaltProcessor;
+import com.djden.alcoholic.application.process.MashConfig;
+import com.djden.alcoholic.application.process.MashProcessor;
+import com.djden.alcoholic.application.process.MillConfig;
+import com.djden.alcoholic.application.process.MillProcessor;
 import com.djden.alcoholic.application.process.PressConfig;
 import com.djden.alcoholic.application.process.PressProcessor;
 import com.djden.alcoholic.application.process.PropertyMerges;
@@ -33,12 +41,12 @@ public final class BuiltinRegistrations {
     public static final ResourceId AGE = new ResourceId("alcoholic", "age");
     public static final ResourceId BLEND = new ResourceId("alcoholic", "blend");
     public static final ResourceId BOTTLE = new ResourceId("alcoholic", "bottle");
+    public static final ResourceId MALT = new ResourceId("alcoholic", "malt");
+    public static final ResourceId MILL = new ResourceId("alcoholic", "mill");
+    public static final ResourceId MASH = new ResourceId("alcoholic", "mash");
+    public static final ResourceId BOIL = new ResourceId("alcoholic", "boil");
 
     private static final String[] STUB_PROCESS_PATHS = {
-            "mill",
-            "malt",
-            "mash",
-            "boil",
             "distill",
             "infuse"
     };
@@ -48,9 +56,12 @@ public final class BuiltinRegistrations {
             "acidity",
             "tannin",
             "bitterness",
+            "aroma",
             "carbonation",
             "temperature",
             "quality",
+            "color",
+            "roast_intensity",
             "fermentation_stress",
             "wood_exposure",
             "oxidation_exposure"
@@ -69,6 +80,10 @@ public final class BuiltinRegistrations {
         registerAge(api);
         registerBlend(api);
         registerBottle(api);
+        registerMalt(api);
+        registerMill(api);
+        registerMash(api, catalog);
+        registerBoil(api);
         for (String path : STUB_PROCESS_PATHS) {
             registerStubProcess(api, path);
         }
@@ -81,72 +96,63 @@ public final class BuiltinRegistrations {
     }
 
     private static void registerPress(AlcoholicApi api, Supplier<BeverageCatalog> catalog) {
-        if (api.processes().contains(PRESS)) {
-            return;
-        }
-        try {
-            api.processes().register(PRESS, PressConfig.CODEC, new PressProcessor(catalog));
-        } catch (RegistrationException ignored) {
-            // A racing installer already registered the same capability.
-        }
+        registerProcess(api, PRESS, () -> api.processes().register(PRESS, PressConfig.CODEC, new PressProcessor(catalog)));
     }
 
     private static void registerFerment(AlcoholicApi api) {
-        if (api.processes().contains(FERMENT)) {
-            return;
-        }
-        try {
-            api.processes().register(FERMENT, FermentConfig.CODEC, new FermentProcessor());
-        } catch (RegistrationException ignored) {
-            // A racing installer already registered the same capability.
-        }
+        registerProcess(api, FERMENT, () -> api.processes().register(FERMENT, FermentConfig.CODEC, new FermentProcessor()));
     }
 
     private static void registerAge(AlcoholicApi api) {
-        if (api.processes().contains(AGE)) {
-            return;
-        }
-        try {
-            api.processes().register(AGE, AgingConfig.CODEC, new AgingProcessor());
-        } catch (RegistrationException ignored) {
-            // A racing installer already registered the same capability.
-        }
+        registerProcess(api, AGE, () -> api.processes().register(AGE, AgingConfig.CODEC, new AgingProcessor()));
     }
 
     private static void registerBlend(AlcoholicApi api) {
-        if (api.processes().contains(BLEND)) {
-            return;
-        }
-        try {
-            api.processes().register(BLEND, BlendConfig.CODEC, new BlendProcessor(
-                    PropertyMerges.from(api),
-                    PropertyMerges.aggregators(api)
-            ));
-        } catch (RegistrationException ignored) {
-            // A racing installer already registered the same capability.
-        }
+        registerProcess(api, BLEND, () -> api.processes().register(BLEND, BlendConfig.CODEC, new BlendProcessor(
+                PropertyMerges.from(api),
+                PropertyMerges.aggregators(api)
+        )));
     }
 
     private static void registerBottle(AlcoholicApi api) {
-        if (api.processes().contains(BOTTLE)) {
-            return;
-        }
-        try {
-            api.processes().register(BOTTLE, BottleConfig.CODEC, new BottleProcessor());
-        } catch (RegistrationException ignored) {
-            // A racing installer already registered the same capability.
-        }
+        registerProcess(api, BOTTLE, () -> api.processes().register(BOTTLE, BottleConfig.CODEC, new BottleProcessor()));
+    }
+
+    private static void registerMalt(AlcoholicApi api) {
+        registerProcess(api, MALT, () -> api.processes().register(MALT, MaltConfig.CODEC, new MaltProcessor()));
+    }
+
+    private static void registerMill(AlcoholicApi api) {
+        registerProcess(api, MILL, () -> api.processes().register(MILL, MillConfig.CODEC, new MillProcessor()));
+    }
+
+    private static void registerMash(AlcoholicApi api, Supplier<BeverageCatalog> catalog) {
+        registerProcess(api, MASH, () -> api.processes().register(MASH, MashConfig.CODEC, new MashProcessor(catalog)));
+    }
+
+    private static void registerBoil(AlcoholicApi api) {
+        registerProcess(api, BOIL, () -> api.processes().register(BOIL, BoilConfig.CODEC, new BoilProcessor()));
     }
 
     private static void registerStubProcess(AlcoholicApi api, String path) {
         ResourceId id = new ResourceId("alcoholic", path);
+        registerProcess(api, id, () -> api.processes().register(
+                id,
+                DataCodecs.UNIT,
+                (request, config, context) -> ProcessResult.unsupported(id)
+        ));
+    }
+
+    private static void registerProcess(AlcoholicApi api, ResourceId id, Runnable register) {
         if (api.processes().contains(id)) {
             return;
         }
         try {
-            api.processes().register(id, DataCodecs.UNIT, (request, config, context) -> ProcessResult.unsupported(id));
-        } catch (RegistrationException ignored) {
-            // A racing installer already registered the same capability.
+            register.run();
+        } catch (RegistrationException exception) {
+            if (!api.processes().contains(id)) {
+                throw exception;
+            }
         }
     }
 
@@ -157,8 +163,10 @@ public final class BuiltinRegistrations {
         }
         try {
             api.properties().register(LiquidProperty.of(id, Double.class, DataCodecs.DOUBLE, merge));
-        } catch (RegistrationException ignored) {
-            // A racing installer already registered the same property.
+        } catch (RegistrationException exception) {
+            if (!api.properties().contains(id)) {
+                throw exception;
+            }
         }
     }
 
@@ -169,8 +177,10 @@ public final class BuiltinRegistrations {
         }
         try {
             api.properties().register(LiquidProperty.of(id, String.class, DataCodecs.STRING, merge));
-        } catch (RegistrationException ignored) {
-            // A racing installer already registered the same property.
+        } catch (RegistrationException exception) {
+            if (!api.properties().contains(id)) {
+                throw exception;
+            }
         }
     }
 
@@ -181,8 +191,10 @@ public final class BuiltinRegistrations {
         }
         try {
             api.vessels().register(oak);
-        } catch (RegistrationException ignored) {
-            // A racing installer already registered the same vessel.
+        } catch (RegistrationException exception) {
+            if (!api.vessels().contains(oak.id())) {
+                throw exception;
+            }
         }
     }
 }

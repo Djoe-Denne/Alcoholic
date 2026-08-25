@@ -1,0 +1,55 @@
+{
+  "id": "testpack:wheat_beer",
+  "graph": {
+    "nodes": [
+      {
+        "id": "malt",
+        "process": "alcoholic:malt",
+        "inputs": {
+          "grain": { "tag": "alcoholic:barley" }
+        },
+        "outputs": ["malt"]
+      },
+      {
+        "id": "mill",
+        "process": "alcoholic:mill",
+        "inputs": {
+          "malt": { "node": "malt", "port": "malt" }
+        },
+        "outputs": ["grist"]
+      },
+      {
+        "id": "mash",
+        "process": "alcoholic:mash",
+        "inputs": {
+          "grist": { "node": "mill", "port": "grist" },
+          "wheat": { "item": "minecraft:wheat" },
+          "water": { "item": "minecraft:water_bucket" }
+        },
+        "outputs": ["wort"]
+      },
+      {
+        "id": "boil",
+        "process": "alcoholic:boil",
+        "inputs": {
+          "wort": { "node": "mash", "port": "wort" },
+          "hops": { "tag": "alcoholic:hops" }
+        },
+        "outputs": ["hopped_wort"]
+      },
+      {
+        "id": "ferment",
+        "process": "alcoholic:ferment",
+        "inputs": {
+          "wort": { "node": "boil", "port": "hopped_wort" },
+          "yeast": { "tag": "alcoholic:yeast" }
+        },
+        "outputs": ["finished"]
+      }
+    ],
+    "outputs": {
+      "result": { "node": "ferment", "port": "finished" }
+    }
+  },
+  "properties": ["alcoholic:sugar", "alcoholic:ethanol", "alcoholic:bitterness"]
+}

@@ -52,6 +52,25 @@ public final class AlcoholicIds {
     public static final ResourceId INDUSTRIAL_PRESS_ENTITY = id("industrial_press_controller");
     public static final ResourceId INDUSTRIAL_VAT_ENTITY = id("industrial_vat_controller");
     public static final ResourceId INDUSTRIAL_TANK_ENTITY = id("industrial_tank_controller");
+    public static final ResourceId BARLEY = id("barley");
+    public static final ResourceId BARLEY_SEEDS = id("barley_seeds");
+    public static final ResourceId BARLEY_CROP = id("barley_crop");
+    public static final ResourceId MALTED_BARLEY = id("malted_barley");
+    public static final ResourceId GRIST = id("grist");
+    public static final ResourceId HOPS = id("hops");
+    public static final ResourceId HOP_RHIZOME = id("hop_rhizome");
+    public static final ResourceId HOP_BINE = id("hop_bine");
+    public static final ResourceId SPENT_GRAIN = id("spent_grain");
+    public static final ResourceId MALTING_FLOOR = id("malting_floor");
+    public static final ResourceId MALTING_FLOOR_ENTITY = id("malting_floor");
+    public static final ResourceId MASH_TUN = id("mash_tun");
+    public static final ResourceId MASH_TUN_ENTITY = id("mash_tun");
+    public static final ResourceId BREWING_KETTLE = id("brewing_kettle");
+    public static final ResourceId BREWING_KETTLE_ENTITY = id("brewing_kettle");
+    public static final ResourceId WORT = id("wort");
+    public static final ResourceId HOPPED_WORT = id("hopped_wort");
+    public static final ResourceId BEER = id("beer");
+    public static final ResourceId WILD_BARLEY = id("wild_barley");
 
     private AlcoholicIds() {
     }

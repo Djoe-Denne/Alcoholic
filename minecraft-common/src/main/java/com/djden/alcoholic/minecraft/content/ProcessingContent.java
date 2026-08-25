@@ -21,6 +21,16 @@ public record ProcessingContent(
         RegistryRef<Item> yeast,
         RegistryRef<Item> grapePomace,
         RegistryRef<Item> emptyBottle,
-        RegistryRef<Item> beverageBottle
+        RegistryRef<Item> beverageBottle,
+        RegistryRef<Block> maltingFloor,
+        RegistryRef<Item> maltingFloorItem,
+        RegistryRef<BlockEntityType<?>> maltingFloorEntity,
+        RegistryRef<Block> mashTun,
+        RegistryRef<Item> mashTunItem,
+        RegistryRef<BlockEntityType<?>> mashTunEntity,
+        RegistryRef<Block> brewingKettle,
+        RegistryRef<Item> brewingKettleItem,
+        RegistryRef<BlockEntityType<?>> brewingKettleEntity,
+        RegistryRef<Item> spentGrain
 ) {
 }

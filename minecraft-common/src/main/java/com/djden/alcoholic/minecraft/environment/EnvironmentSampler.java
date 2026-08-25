@@ -34,6 +34,17 @@ public final class EnvironmentSampler {
         if (sky) {
             stability *= 0.6;
         }
-        return new EnvironmentProfile(temperature, stability, sheltered);
+        return new EnvironmentProfile(temperature, stability, sheltered, humidity(level, position));
+    }
+
+    public static double humidity(Level level, BlockPos position) {
+        if (level == null) {
+            return 0.5;
+        }
+        float downfall = level.getBiome(position).value().getDownfall();
+        if (!Float.isFinite(downfall)) {
+            return 0.5;
+        }
+        return Math.max(0.0, Math.min(1.0, downfall));
     }
 }

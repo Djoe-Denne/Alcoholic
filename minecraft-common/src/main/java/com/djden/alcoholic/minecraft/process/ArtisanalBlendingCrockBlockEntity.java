@@ -53,6 +53,16 @@ public final class ArtisanalBlendingCrockBlockEntity extends BlockEntity impleme
         return index == 1 ? second : first;
     }
 
+    @Override
+    public boolean canFillTank(int index) {
+        return index == 0 || index == 1;
+    }
+
+    @Override
+    public boolean canDrainTank(int index) {
+        return index == 0 || index == 1;
+    }
+
     public boolean tryBottle(Player player, ItemStack held) {
         LiquidTank source = first.contents().isPresent() ? first : second;
         boolean bottled = Bottling.bottle(player, held, source);
@@ -120,14 +130,16 @@ public final class ArtisanalBlendingCrockBlockEntity extends BlockEntity impleme
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        first.clear();
-        second.clear();
-        if (tag.contains("First")) {
-            LiquidBatchNbt.fromTag(tag.getCompound("First")).ifPresent(first::set);
+        restoreTank(first, tag, "First");
+        restoreTank(second, tag, "Second");
+    }
+
+    private static void restoreTank(LiquidTank tank, CompoundTag tag, String key) {
+        if (!tag.contains(key)) {
+            tank.clear();
+            return;
         }
-        if (tag.contains("Second")) {
-            LiquidBatchNbt.fromTag(tag.getCompound("Second")).ifPresent(second::set);
-        }
+        LiquidBatchNbt.fromTag(tag.getCompound(key)).ifPresent(tank::set);
     }
 
     @Override

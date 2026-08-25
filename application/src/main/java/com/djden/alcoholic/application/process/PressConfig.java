@@ -7,6 +7,7 @@ import com.djden.alcoholic.api.data.DataDecodeException;
 import com.djden.alcoholic.api.data.DataNode;
 import com.djden.alcoholic.api.ingredient.IngredientSelector;
 import com.djden.alcoholic.api.process.ItemOutput;
+import com.djden.alcoholic.api.process.SolidAccepting;
 
 import java.util.Optional;
 
@@ -19,7 +20,7 @@ public record PressConfig(
         int processingTicks,
         double yield,
         boolean createCompatible
-) implements ReferencedLiquids {
+) implements SolidAccepting, ReferencedLiquids {
     public PressConfig {
         inputSelector = inputSelector == null ? Optional.empty() : inputSelector;
         if (inputAmount < 1) {
@@ -174,7 +175,7 @@ public record PressConfig(
         return raw.startsWith("#") ? ResourceId.parse(raw.substring(1)) : ResourceId.parse(raw);
     }
 
-    private static void encodeSelector(DataNode.ObjectBuilder builder, IngredientSelector selector) {
+    static void encodeSelector(DataNode.ObjectBuilder builder, IngredientSelector selector) {
         if (selector instanceof IngredientSelector.Tag tag) {
             builder.put("tag", DataNode.string(tag.id().toString()));
             return;

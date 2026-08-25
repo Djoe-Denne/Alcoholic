@@ -30,6 +30,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
         addInfrastructureAssets(sink);
         addProcessingAssets(sink);
         addIndustrialAssets(sink);
+        addGrainAssets(sink);
 
         sink.add(
                 "assets/alcoholic/lang/en_us.json",
@@ -134,7 +135,28 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "block.alcoholic.industrial_vat_controller": "Industrial Fermentation Vat Controller",
                           "block.alcoholic.industrial_tank_controller": "Industrial Storage Tank Controller",
                           "message.alcoholic.port.mode": "Port mode: %s",
-                          "death.attack.alcoholic.industrial_press": "%1$s was crushed in an industrial press"
+                          "death.attack.alcoholic.industrial_press": "%1$s was crushed in an industrial press",
+                          "block.alcoholic.barley_crop": "Barley",
+                          "block.alcoholic.hop_bine": "Hop Bine",
+                          "block.alcoholic.malting_floor": "Malting Floor",
+                          "block.alcoholic.mash_tun": "Mash Tun",
+                          "block.alcoholic.brewing_kettle": "Brewing Kettle",
+                          "item.alcoholic.barley": "Barley",
+                          "item.alcoholic.barley_seeds": "Barley Seeds",
+                          "item.alcoholic.malted_barley": "Malted Barley",
+                          "item.alcoholic.grist": "Grist",
+                          "item.alcoholic.hops": "Hops",
+                          "item.alcoholic.hop_rhizome": "Hop Rhizome",
+                          "item.alcoholic.spent_grain": "Spent Grain",
+                          "item.alcoholic.wort_bucket": "Wort Bucket",
+                          "item.alcoholic.hopped_wort_bucket": "Hopped Wort Bucket",
+                          "item.alcoholic.beer_bucket": "Beer Bucket",
+                          "fluid_type.alcoholic.wort": "Wort",
+                          "fluid_type.alcoholic.hopped_wort": "Hopped Wort",
+                          "fluid_type.alcoholic.beer": "Beer",
+                          "message.alcoholic.malting.status": "Malting %1$s/%2$s (%3$s)",
+                          "message.alcoholic.mash.status": "Mash %1$s°C · %2$s/%3$s",
+                          "message.alcoholic.boil.status": "Boil %1$s°C · %2$s/%3$s"
                         }
                         """
         );
@@ -241,7 +263,28 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "block.alcoholic.industrial_vat_controller": "Contrôleur de cuve de fermentation industrielle",
                           "block.alcoholic.industrial_tank_controller": "Contrôleur de réservoir de stockage industriel",
                           "message.alcoholic.port.mode": "Mode du port : %s",
-                          "death.attack.alcoholic.industrial_press": "%1$s a été écrasé dans un pressoir industriel"
+                          "death.attack.alcoholic.industrial_press": "%1$s a été écrasé dans un pressoir industriel",
+                          "block.alcoholic.barley_crop": "Orge",
+                          "block.alcoholic.hop_bine": "Bine de houblon",
+                          "block.alcoholic.malting_floor": "Aire de maltage",
+                          "block.alcoholic.mash_tun": "Cuve de brassage",
+                          "block.alcoholic.brewing_kettle": "Chaudron de houblonnage",
+                          "item.alcoholic.barley": "Orge",
+                          "item.alcoholic.barley_seeds": "Graines d'orge",
+                          "item.alcoholic.malted_barley": "Orge maltée",
+                          "item.alcoholic.grist": "Mouture",
+                          "item.alcoholic.hops": "Houblon",
+                          "item.alcoholic.hop_rhizome": "Rhizome de houblon",
+                          "item.alcoholic.spent_grain": "Drêche",
+                          "item.alcoholic.wort_bucket": "Seau de moût de grain",
+                          "item.alcoholic.hopped_wort_bucket": "Seau de moût houblonné",
+                          "item.alcoholic.beer_bucket": "Seau de bière",
+                          "fluid_type.alcoholic.wort": "Moût de grain",
+                          "fluid_type.alcoholic.hopped_wort": "Moût houblonné",
+                          "fluid_type.alcoholic.beer": "Bière",
+                          "message.alcoholic.malting.status": "Maltage %1$s/%2$s (%3$s)",
+                          "message.alcoholic.mash.status": "Empâtage %1$s°C · %2$s/%3$s",
+                          "message.alcoholic.boil.status": "Ébullition %1$s°C · %2$s/%3$s"
                         }
                         """
         );
@@ -645,6 +688,102 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                         }
                         """.formatted(name)
         );
+    }
+
+    private static void addGrainAssets(JsonSink sink) {
+        StringBuilder barleyVariants = new StringBuilder("{\n  \"variants\": {\n");
+        for (int age = 0; age <= 2; age++) {
+            if (age > 0) {
+                barleyVariants.append(",\n");
+            }
+            barleyVariants.append("    \"age=")
+                    .append(age)
+                    .append("\": { \"model\": \"alcoholic:block/barley_crop_")
+                    .append(age)
+                    .append("\" }");
+            sink.add(
+                    "assets/alcoholic/models/block/barley_crop_" + age + ".json",
+                    """
+                            {
+                              "parent": "minecraft:block/crop",
+                              "textures": { "crop": "alcoholic:block/barley_crop_%s" }
+                            }
+                            """.formatted(age)
+            );
+        }
+        barleyVariants.append("\n  }\n}\n");
+        sink.add("assets/alcoholic/blockstates/barley_crop.json", barleyVariants.toString());
+
+        StringBuilder hopVariants = new StringBuilder("{\n  \"variants\": {\n");
+        for (int age = 0; age <= 2; age++) {
+            if (age > 0) {
+                hopVariants.append(",\n");
+            }
+            hopVariants.append("    \"age=")
+                    .append(age)
+                    .append("\": { \"model\": \"alcoholic:block/hop_bine_")
+                    .append(age)
+                    .append("\" }");
+            sink.add(
+                    "assets/alcoholic/models/block/hop_bine_" + age + ".json",
+                    """
+                            {
+                              "parent": "minecraft:block/cross",
+                              "textures": { "cross": "alcoholic:block/hop_bine_%s" }
+                            }
+                            """.formatted(age)
+            );
+        }
+        hopVariants.append("\n  }\n}\n");
+        sink.add("assets/alcoholic/blockstates/hop_bine.json", hopVariants.toString());
+
+        addSimpleMachine(sink, "malting_floor");
+        addSimpleMachine(sink, "mash_tun");
+        addSimpleMachine(sink, "brewing_kettle");
+        addGeneratedItem(sink, "barley");
+        addGeneratedItem(sink, "barley_seeds");
+        addGeneratedItem(sink, "malted_barley");
+        addGeneratedItem(sink, "grist");
+        addGeneratedItem(sink, "hops");
+        addGeneratedItem(sink, "hop_rhizome");
+        addGeneratedItem(sink, "spent_grain");
+        addGeneratedItem(sink, "wort_bucket");
+        addGeneratedItem(sink, "hopped_wort_bucket");
+        addGeneratedItem(sink, "beer_bucket");
+    }
+
+    private static void addSimpleMachine(JsonSink sink, String name) {
+        sink.add(
+                "assets/alcoholic/blockstates/" + name + ".json",
+                name.contains("floor")
+                        ? """
+                        {
+                          "variants": {
+                            "": { "model": "alcoholic:block/%s" }
+                          }
+                        }
+                        """.formatted(name)
+                        : """
+                        {
+                          "variants": {
+                            "facing=north": { "model": "alcoholic:block/%s" },
+                            "facing=south": { "model": "alcoholic:block/%s", "y": 180 },
+                            "facing=west": { "model": "alcoholic:block/%s", "y": 270 },
+                            "facing=east": { "model": "alcoholic:block/%s", "y": 90 }
+                          }
+                        }
+                        """.formatted(name, name, name, name)
+        );
+        sink.add(
+                "assets/alcoholic/models/block/" + name + ".json",
+                """
+                        {
+                          "parent": "minecraft:block/cube_all",
+                          "textures": { "all": "alcoholic:block/%s" }
+                        }
+                        """.formatted(name)
+        );
+        addBlockItem(sink, name);
     }
 
     @Override

@@ -55,6 +55,20 @@ class GeneratedResourceContractTest {
     }
 
     @Test
+    void barleyWorldgenIsConditionallyDisabledWhenBreweryIsPresent() throws IOException {
+        JsonObject modifier = resource(
+                "data/alcoholic/forge/biome_modifier/wild_barley.json"
+        );
+        JsonObject condition = modifier.getAsJsonArray("forge:conditions")
+                .get(0)
+                .getAsJsonObject();
+        assertEquals("forge:not", condition.get("type").getAsString());
+        JsonObject nested = condition.getAsJsonObject("value");
+        assertEquals("alcoholic:item_present", nested.get("type").getAsString());
+        assertEquals("brewery:barley", nested.get("item").getAsString());
+    }
+
+    @Test
     void viticultureProfilesMatchRuntimeLoaderContract() throws IOException {
         JsonObject settings = resource("data/alcoholic/viticulture/settings.json");
         JsonObject red = resource("data/alcoholic/viticulture/red_grape.json");
@@ -125,11 +139,22 @@ class GeneratedResourceContractTest {
             resource("assets/alcoholic/models/item/" + item + ".json");
             assertPng16("assets/alcoholic/textures/item/" + item + ".png");
         }
+        for (int age = 0; age <= 2; age++) {
+            resource("assets/alcoholic/models/block/barley_crop_" + age + ".json");
+            resource("assets/alcoholic/models/block/hop_bine_" + age + ".json");
+            assertPng16("assets/alcoholic/textures/block/barley_crop_" + age + ".png");
+            assertPng16("assets/alcoholic/textures/block/hop_bine_" + age + ".png");
+        }
+        resource("assets/alcoholic/blockstates/barley_crop.json");
+        resource("assets/alcoholic/blockstates/hop_bine.json");
         for (String block : new String[]{
                 "artisanal_press",
                 "artisanal_fermenter",
                 "oak_barrel",
                 "artisanal_blending_crock",
+                "malting_floor",
+                "mash_tun",
+                "brewing_kettle",
                 "industrial_casing",
                 "machine_window",
                 "access_hatch",
@@ -155,7 +180,17 @@ class GeneratedResourceContractTest {
                 "red_wine_bucket",
                 "white_wine_bucket",
                 "empty_bottle",
-                "beverage_bottle"
+                "beverage_bottle",
+                "barley",
+                "barley_seeds",
+                "malted_barley",
+                "grist",
+                "hops",
+                "hop_rhizome",
+                "spent_grain",
+                "wort_bucket",
+                "hopped_wort_bucket",
+                "beer_bucket"
         }) {
             resource("assets/alcoholic/models/item/" + item + ".json");
             assertPng16("assets/alcoholic/textures/item/" + item + ".png");
@@ -191,7 +226,13 @@ class GeneratedResourceContractTest {
                     "block.alcoholic.industrial_press_controller",
                     "block.alcoholic.industrial_vat_controller",
                     "block.alcoholic.industrial_tank_controller",
-                    "message.alcoholic.port.mode"
+                    "message.alcoholic.port.mode",
+                    "block.alcoholic.malting_floor",
+                    "block.alcoholic.mash_tun",
+                    "block.alcoholic.brewing_kettle",
+                    "item.alcoholic.barley",
+                    "item.alcoholic.hops",
+                    "message.alcoholic.mash.status"
             }) {
                 assertTrue(
                         translations.has(key),
@@ -211,11 +252,19 @@ class GeneratedResourceContractTest {
         resource("data/alcoholic/recipes/artisanal_fermenter.json");
         resource("data/alcoholic/recipes/oak_barrel.json");
         resource("data/alcoholic/recipes/artisanal_blending_crock.json");
+        resource("data/alcoholic/recipes/malting_floor.json");
+        resource("data/alcoholic/recipes/mash_tun.json");
+        resource("data/alcoholic/recipes/brewing_kettle.json");
         resource("data/alcoholic/recipes/empty_bottle.json");
         resource("data/alcoholic/recipes/yeast.json");
         resource("data/alcoholic/tags/items/grapes.json");
         resource("data/alcoholic/tags/items/barley.json");
+        resource("data/alcoholic/tags/items/barley/seeds.json");
+        resource("data/alcoholic/tags/items/malted_barley.json");
+        resource("data/alcoholic/tags/items/malted_grain.json");
+        resource("data/alcoholic/tags/items/grist.json");
         resource("data/alcoholic/tags/items/hops.json");
+        resource("data/alcoholic/tags/items/spent_grain.json");
         resource("data/alcoholic/tags/items/yeast.json");
 
         JsonObject crops = resource("data/minecraft/tags/blocks/crops.json");
@@ -250,6 +299,17 @@ class GeneratedResourceContractTest {
         resource("data/alcoholic/tags/blocks/pressure_safe_casing.json");
         resource("data/alcoholic/tags/blocks/valid_machine_windows.json");
         resource("data/alcoholic/tags/blocks/industrial_ports.json");
+        resource("data/alcoholic/alcoholic/processes/malt_pale.json");
+        resource("data/alcoholic/alcoholic/processes/mill_malted_grain.json");
+        resource("data/alcoholic/alcoholic/processes/mash_wort.json");
+        resource("data/alcoholic/alcoholic/processes/boil_wort.json");
+        resource("data/alcoholic/alcoholic/processes/ferment_hopped_wort.json");
+        resource("data/alcoholic/alcoholic/beverages/beer.json");
+        resource("data/alcoholic/alcoholic/liquids/wort.json");
+        JsonObject barley = resource("data/alcoholic/tags/items/barley.json");
+        assertTrue(barley.getAsJsonArray("values").size() > 0);
+        JsonObject hops = resource("data/alcoholic/tags/items/hops.json");
+        assertTrue(hops.getAsJsonArray("values").size() > 0);
         resource("data/alcoholic/alcoholic/machines/industrial_press.json");
         resource("data/alcoholic/alcoholic/machines/industrial_fermentation_vat.json");
         resource("data/alcoholic/alcoholic/machines/industrial_storage_tank.json");

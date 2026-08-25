@@ -100,35 +100,39 @@ workspace.
 
 ## Status
 
-Phase 6 industrialization is active on top of Phase 5 storage. PRESS,
-FERMENT, AGE, BLEND, and BOTTLE remain executable, generic process types.
-Liquids are `LiquidDefinition` plus `LiquidBatch` properties and flattened
-provenance, exposed to Forge/Create through fluid adapters. An artisanal
-press, fermenter, oak barrel, blending crock, industrial press, industrial
-fermentation vat, and industrial storage tank implement those
-capabilities. Create Mechanical Press + Basin compacting recipes are
-generated from PRESS definitions marked `create_compatible`. Industrial
-machines are extra executors, not a second recipe system.
+Phase 6 industrialization is active on top of Phase 5 storage. Phase 7A adds
+generic `MALT`, `MILL`, `MASH`, and `BOIL` plus barley/hops agriculture.
+PRESS, FERMENT, AGE, BLEND, and BOTTLE remain executable, generic process
+types. Liquids are `LiquidDefinition` plus `LiquidBatch` properties and
+flattened provenance, exposed to Forge/Create through fluid adapters. An
+artisanal press, fermenter, oak barrel, blending crock, malting floor, mash
+tun, brewing kettle, industrial press, industrial fermentation vat, and
+industrial storage tank implement those capabilities. Create Mechanical
+Press compacting and Create millstone/crushing recipes are generated from
+process definitions marked `create_compatible`. Industrial machines are extra
+executors, not a second recipe system.
 
 The production DAG remains authoritative: no process is injected. Data-only
-cider, plus beer / whisky / rum / fruit-liqueur fixtures, validate on the
-same engine. Wine content (must, young wine, and finished wine) is datapack
-plus Minecraft fluids, not Java branching. Barrels do not age while their
-chunk is unloaded.
+cider, wheat-beer, grain-mash, whisky, rum, and fruit-liqueur fixtures
+validate on the same engine. Shipped grain beer ends after FERMENT; AGE is
+optional. Wine content remains datapack plus Minecraft fluids, not Java
+branching.
 
 Phase 2 viticulture remains unchanged: persistent red and white perennial
 vines, eight growth stages, trained trellis rows, climate/pruning data packs,
 quantized harvest-lot metadata, localized inspection and tooltips, optional
 Vinery seed planting and harvest resolution, deterministic generated assets,
 and executable Forge GameTests. Harvest-lot sugar and acidity survive
-pressing into liquid batches.
+pressing into liquid batches. Barley is an annual cereal; hops grow on
+generic trellis posts/wire.
 
 Current limits:
 
-- no beer / malt / mash / hops / whisky / rum / distillation gameplay
-  beyond data fixtures;
+- no whisky / rum / distillation gameplay beyond data fixtures;
+- no industrial malt house, mash tun, or brewing kettle;
 - no industrial aging warehouses, stills, or custom pipes/pumps/belts;
 - no gas network (CO2 is modelled and vented);
+- no drinking, intoxication, taverns, or villagers;
 - Forge 1.19.2 is the only runnable platform; Fabric remains a future adapter.
 
 Architecture decisions for this phase: [ADR-007](docs/adr/ADR-007-production-dag-execution-model.md),
@@ -147,7 +151,13 @@ Architecture decisions for this phase: [ADR-007](docs/adr/ADR-007-production-dag
 [ADR-020](docs/adr/ADR-020-structure-validation-and-cache-invalidation.md),
 [ADR-021](docs/adr/ADR-021-cross-chunk-multiblock-behavior.md),
 [ADR-022](docs/adr/ADR-022-industrial-executor-modifiers.md),
-[ADR-023](docs/adr/ADR-023-industrial-passive-process-performance.md).
+[ADR-023](docs/adr/ADR-023-industrial-passive-process-performance.md),
+[ADR-024](docs/adr/ADR-024-malt-process-model.md),
+[ADR-025](docs/adr/ADR-025-generic-solid-liquid-multi-input.md),
+[ADR-026](docs/adr/ADR-026-mash-thermal-transformation.md),
+[ADR-027](docs/adr/ADR-027-boil-ingredient-extraction.md),
+[ADR-028](docs/adr/ADR-028-create-mill-executor-integration.md),
+[ADR-029](docs/adr/ADR-029-reusable-crop-provider-barley-hops.md).
 
 Addon authors should depend only on `alcoholic-api`. See
 [`docs/addons/public-api.md`](docs/addons/public-api.md) and

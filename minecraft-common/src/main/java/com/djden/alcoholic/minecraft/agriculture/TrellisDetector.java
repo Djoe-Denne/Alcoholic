@@ -33,7 +33,19 @@ public final class TrellisDetector {
                 || hasBoundedWire(level, vinePosition.above(2));
     }
 
-    private boolean hasBoundedWire(LevelReader level, BlockPos wirePosition) {
+    public boolean hasOverheadRun(LevelReader level, BlockPos plantPosition, int maximumHeight) {
+        Objects.requireNonNull(level, "level");
+        Objects.requireNonNull(plantPosition, "plantPosition");
+        int height = Math.max(1, maximumHeight);
+        for (int dy = 1; dy <= height; dy++) {
+            if (hasBoundedWire(level, plantPosition.above(dy))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasBoundedWire(LevelReader level, BlockPos wirePosition) {
         BlockState wireState = level.getBlockState(wirePosition);
         if (!(wireState.getBlock() instanceof TrellisWireBlock)) {
             return false;
@@ -74,7 +86,7 @@ public final class TrellisDetector {
     ) {
         for (int distance = 1; distance <= maximumDistance; distance++) {
             BlockState state = level.getBlockState(origin.relative(direction, distance));
-            if (state.getBlock() instanceof VineyardPostBlock) {
+            if (state.getBlock() instanceof CropSupportPost) {
                 return distance;
             }
             if (!(state.getBlock() instanceof TrellisWireBlock)

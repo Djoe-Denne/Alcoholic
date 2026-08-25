@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "alcoholic:hop_rhizome"
+        }
+      ],
+      "rolls": 1
+    },
+    {
+      "conditions": [
+        {
+          "block": "alcoholic:hop_bine",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "age": "2"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "alcoholic:hops"
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}

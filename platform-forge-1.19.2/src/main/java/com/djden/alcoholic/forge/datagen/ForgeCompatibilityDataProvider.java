@@ -32,6 +32,28 @@ final class ForgeCompatibilityDataProvider extends AlcoholicJsonProvider {
                         }
                         """
         );
+        sink.add(
+                "data/alcoholic/forge/biome_modifier/wild_barley.json",
+                """
+                        {
+                          "forge:conditions": [
+                            {
+                              "type": "forge:not",
+                              "value": {
+                                "type": "alcoholic:item_present",
+                                "item": "brewery:barley"
+                              }
+                            }
+                          ],
+                          "type": "forge:add_features",
+                          "biomes": "#alcoholic:has_wild_barley",
+                          "features": [
+                            "alcoholic:wild_barley"
+                          ],
+                          "step": "vegetal_decoration"
+                        }
+                        """
+        );
     }
 
     @Override

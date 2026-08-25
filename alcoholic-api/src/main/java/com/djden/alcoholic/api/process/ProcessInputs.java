@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @PublicApi
 public record ProcessInputs(
@@ -30,6 +31,51 @@ public record ProcessInputs(
 
     public static ProcessInputs ofSolids(String port, List<? extends SolidInputView> items) {
         return new ProcessInputs(Map.of(port, List.copyOf(items)), Map.of());
+    }
+
+    public static ProcessInputs of(
+            String solidPort,
+            List<? extends SolidInputView> items,
+            String liquidPort,
+            LiquidBatchView batch
+    ) {
+        return new ProcessInputs(Map.of(solidPort, List.copyOf(items)), Map.of(liquidPort, batch));
+    }
+
+    /**
+     * Returns solids on the first named port that exists. If none of the
+     * preferred ports are present and exactly one port exists, that port is
+     * used. Multiple unknown ports never flatten together.
+     */
+    public List<SolidInputView> solidsOn(String... ports) {
+        for (String port : ports) {
+            List<SolidInputView> found = solids.get(port);
+            if (found != null) {
+                return found;
+            }
+        }
+        if (solids.size() == 1) {
+            return solids.values().iterator().next();
+        }
+        return List.of();
+    }
+
+    /**
+     * Returns the liquid on the first named port that exists. If none of the
+     * preferred ports are present and exactly one port exists, that port is
+     * used.
+     */
+    public Optional<LiquidBatchView> liquidOn(String... ports) {
+        for (String port : ports) {
+            LiquidBatchView found = liquids.get(port);
+            if (found != null) {
+                return Optional.of(found);
+            }
+        }
+        if (liquids.size() == 1) {
+            return Optional.of(liquids.values().iterator().next());
+        }
+        return Optional.empty();
     }
 
     static Map<String, List<SolidInputView>> copyOfSolids(

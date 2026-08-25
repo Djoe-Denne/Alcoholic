@@ -1,0 +1,35 @@
+{
+  "config": {
+    "addition": {
+      "amount": 1,
+      "tag": "alcoholic:hops"
+    },
+    "hop_profile": {
+      "aroma_potential": 0.40,
+      "bitterness_potential": 0.55
+    },
+    "input_liquid": "alcoholic:wort",
+    "operating_temperature": {
+      "max": 110,
+      "min": 90
+    },
+    "output": {
+      "liquid": "alcoholic:hopped_wort"
+    },
+    "preferred_temperature": {
+      "max": 105,
+      "min": 98
+    },
+    "processing_time": 40
+  },
+  "id": "alcoholic:boil_wort",
+  "inputs": {
+    "hops": {
+      "tag": "alcoholic:hops"
+    }
+  },
+  "outputs": [
+    "hopped_wort"
+  ],
+  "process": "alcoholic:boil"
+}

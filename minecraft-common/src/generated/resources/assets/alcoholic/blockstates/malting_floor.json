@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "alcoholic:block/malting_floor"
+    }
+  }
+}

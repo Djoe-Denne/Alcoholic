@@ -1,23 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "alcoholic:industrial_casing"
+    },
+    "F": {
+      "item": "alcoholic:artisanal_fermenter"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
   "pattern": [
     "IFI",
     "ICI",
     "III"
   ],
-  "key": {
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "F": {
-      "item": "alcoholic:artisanal_fermenter"
-    },
-    "C": {
-      "item": "alcoholic:industrial_casing"
-    }
-  },
   "result": {
-    "item": "alcoholic:industrial_vat_controller",
-    "count": 1
+    "count": 1,
+    "item": "alcoholic:industrial_vat_controller"
   }
 }

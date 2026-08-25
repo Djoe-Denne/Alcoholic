@@ -32,4 +32,23 @@ class LiquidTankSplitTest {
         assertEquals(0, accepted);
         assertTrue(tank.contents().orElseThrow().baseLiquid().filter(MUST::equals).isPresent());
     }
+
+    @Test
+    void sealedTankRejectsFillAndDrain() {
+        LiquidTank tank = LiquidTank.sealed();
+        assertEquals(0, tank.fill(LiquidBatch.of(MUST, 500, PropertyBag.empty()), false));
+        assertTrue(tank.contents().isEmpty());
+        assertEquals(0.0, tank.drain(100, false).volume(), 1e-9);
+        assertTrue(!tank.trySet(LiquidBatch.of(MUST, 100, PropertyBag.empty())));
+    }
+
+    @Test
+    void trySetRefusesMoreThanCapacity() {
+        LiquidTank tank = new LiquidTank(100, id -> PropertyMerge.WEIGHTED_AVERAGE);
+        assertTrue(!tank.trySet(LiquidBatch.of(MUST, 500, PropertyBag.empty())));
+        assertTrue(tank.contents().isEmpty());
+        tank.set(LiquidBatch.of(MUST, 500, PropertyBag.empty()));
+        assertEquals(500, tank.capacity());
+        assertEquals(500.0, tank.contents().orElseThrow().volume(), 1e-9);
+    }
 }

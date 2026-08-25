@@ -6,11 +6,14 @@ import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
 import com.djden.alcoholic.minecraft.process.ArtisanalBlendingCrockBlockEntity;
 import com.djden.alcoholic.minecraft.process.ArtisanalFermenterBlockEntity;
+import com.djden.alcoholic.minecraft.process.ArtisanalPressBlockEntity;
+import com.djden.alcoholic.minecraft.process.BrewingKettleBlockEntity;
+import com.djden.alcoholic.minecraft.process.MaltingFloorBlockEntity;
+import com.djden.alcoholic.minecraft.process.MashTunBlockEntity;
+import com.djden.alcoholic.minecraft.process.OakBarrelBlockEntity;
 import com.djden.alcoholic.minecraft.multiblock.ControllerBound;
 import com.djden.alcoholic.minecraft.multiblock.KineticSource;
 import com.djden.alcoholic.minecraft.multiblock.MultiblockControllerBlockEntity;
-import com.djden.alcoholic.minecraft.process.ArtisanalPressBlockEntity;
-import com.djden.alcoholic.minecraft.process.OakBarrelBlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -36,6 +39,15 @@ public final class AlcoholicInspect {
         }
         if (entity instanceof ArtisanalPressBlockEntity press) {
             return Optional.of(press.debugDump());
+        }
+        if (entity instanceof MaltingFloorBlockEntity malting) {
+            return Optional.of(malting.debugDump());
+        }
+        if (entity instanceof MashTunBlockEntity mash) {
+            return Optional.of(mash.debugDump());
+        }
+        if (entity instanceof BrewingKettleBlockEntity kettle) {
+            return Optional.of(kettle.debugDump());
         }
         if (entity instanceof MultiblockControllerBlockEntity controller) {
             return Optional.of(controller.debugDump());
@@ -68,6 +80,9 @@ public final class AlcoholicInspect {
             );
         }
         CompoundTag tag = stack.getTag();
+        if (tag != null && tag.contains("AlcoholicSolidProperties")) {
+            return Optional.of("solid-props=" + tag.getCompound("AlcoholicSolidProperties"));
+        }
         if (tag != null && tag.contains("AlcoholicLiquid")) {
             return Optional.of("item-liquid=" + tag.getCompound("AlcoholicLiquid"));
         }

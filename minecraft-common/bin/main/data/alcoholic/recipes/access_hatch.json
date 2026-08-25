@@ -1,20 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "H": {
+      "item": "minecraft:iron_trapdoor"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
   "pattern": [
     " I ",
     "IHI",
     " I "
   ],
-  "key": {
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "H": {
-      "item": "minecraft:iron_trapdoor"
-    }
-  },
   "result": {
-    "item": "alcoholic:access_hatch",
-    "count": 1
+    "count": 1,
+    "item": "alcoholic:access_hatch"
   }
 }

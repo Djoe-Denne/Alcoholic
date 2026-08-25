@@ -1,20 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "H": {
+      "item": "minecraft:hopper"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
   "pattern": [
     " I ",
     "IHI",
     " I "
   ],
-  "key": {
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "H": {
-      "item": "minecraft:hopper"
-    }
-  },
   "result": {
-    "item": "alcoholic:item_port",
-    "count": 1
+    "count": 1,
+    "item": "alcoholic:item_port"
   }
 }

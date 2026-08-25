@@ -1,0 +1,50 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "block": "alcoholic:barley_crop",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "age": "2"
+                  }
+                }
+              ],
+              "name": "alcoholic:barley"
+            },
+            {
+              "type": "minecraft:item",
+              "name": "alcoholic:barley_seeds"
+            }
+          ]
+        }
+      ],
+      "rolls": 1
+    },
+    {
+      "conditions": [
+        {
+          "block": "alcoholic:barley_crop",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "age": "2"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "alcoholic:barley_seeds"
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}

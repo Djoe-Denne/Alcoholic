@@ -8,6 +8,7 @@ import com.djden.alcoholic.api.liquid.LiquidBatchView;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @PublicApi
 public record ProcessRequest(
@@ -39,5 +40,13 @@ public record ProcessRequest(
 
     public ProcessInputs asInputs() {
         return new ProcessInputs(solids, liquids);
+    }
+
+    public List<SolidInputView> solidsOn(String... ports) {
+        return asInputs().solidsOn(ports);
+    }
+
+    public Optional<LiquidBatchView> liquidOn(String... ports) {
+        return asInputs().liquidOn(ports);
     }
 }

@@ -1,42 +1,42 @@
 {
+  "capacity_per_internal_block": 4000,
+  "casing_tags": [
+    "alcoholic:pressure_safe_casing"
+  ],
+  "controller": "alcoholic:industrial_press_controller",
+  "hollow_interior": true,
   "id": "alcoholic:industrial_press",
   "kind": "press",
-  "process": "alcoholic:press",
-  "min_exterior": {
-    "x": 3,
-    "y": 4,
-    "z": 3
+  "kinetic": {
+    "max_rpm": 256,
+    "min_rpm": 16,
+    "required": true
   },
   "max_exterior": {
     "x": 7,
     "y": 8,
     "z": 7
   },
-  "required_controllers": 1,
-  "casing_tags": [
-    "alcoholic:pressure_safe_casing"
-  ],
-  "window_tags": [
-    "alcoholic:valid_machine_windows"
-  ],
+  "min_exterior": {
+    "x": 3,
+    "y": 4,
+    "z": 3
+  },
+  "modifiers": {
+    "max_batch_units": 2147483647,
+    "speed": 2.0,
+    "thermal_stability": 1.0,
+    "yield": 1.05
+  },
   "port_tags": [
     "alcoholic:industrial_ports"
   ],
+  "process": "alcoholic:press",
+  "required_controllers": 1,
   "required_ports": [
     "kinetic_port"
   ],
-  "hollow_interior": true,
-  "capacity_per_internal_block": 4000,
-  "controller": "alcoholic:industrial_press_controller",
-  "modifiers": {
-    "yield": 1.05,
-    "speed": 2.0,
-    "thermal_stability": 1.0,
-    "max_batch_units": 2147483647
-  },
-  "kinetic": {
-    "min_rpm": 16,
-    "max_rpm": 256,
-    "required": true
-  }
+  "window_tags": [
+    "alcoholic:valid_machine_windows"
+  ]
 }

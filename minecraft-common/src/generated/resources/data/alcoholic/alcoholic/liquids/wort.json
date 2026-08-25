@@ -1,0 +1,11 @@
+{
+  "defaults": {
+    "alcoholic:aroma": 0.0,
+    "alcoholic:bitterness": 0.0,
+    "alcoholic:color": 0.12,
+    "alcoholic:ethanol": 0.00,
+    "alcoholic:sugar": 0.00,
+    "alcoholic:temperature": 20.0
+  },
+  "id": "alcoholic:wort"
+}

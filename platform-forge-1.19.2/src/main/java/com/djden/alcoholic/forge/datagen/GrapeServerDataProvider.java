@@ -1,5 +1,9 @@
 package com.djden.alcoholic.forge.datagen;
 
+import com.djden.alcoholic.api.ResourceId;
+import com.djden.alcoholic.api.data.JsonDataParser;
+import com.djden.alcoholic.application.beverage.codec.ProcessDefinitionCodec;
+import com.djden.alcoholic.integration.create.CreateMillRecipeTranslator;
 import com.djden.alcoholic.integration.vinery.VineryIntegration;
 
 import java.nio.file.Path;
@@ -22,13 +26,19 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         addSelfDropLoot(sink, "artisanal_fermenter");
         addSelfDropLoot(sink, "oak_barrel");
         addSelfDropLoot(sink, "artisanal_blending_crock");
+        addSelfDropLoot(sink, "malting_floor");
+        addSelfDropLoot(sink, "mash_tun");
+        addSelfDropLoot(sink, "brewing_kettle");
         addEmptyLoot(sink, "trellis_wire");
+        addBarleyLoot(sink);
+        addHopBineLoot(sink);
         addRecipes(sink);
         addProcessing(sink);
         addIndustrial(sink);
         addViticultureSettings(sink);
         addWildGrapevines(sink, "red", 18);
         addWildGrapevines(sink, "white", 22);
+        addWildBarley(sink);
 
         sink.add(
                 "data/alcoholic/tags/worldgen/biome/has_wild_grapevines.json",
@@ -91,8 +101,44 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                         }
                         """.formatted(VineryIntegration.WHITE_GRAPES_TAG)
         );
-        addEmptyTag(sink, "barley");
-        addEmptyTag(sink, "hops");
+        addSemanticItemTag(
+                sink,
+                "barley",
+                "alcoholic:barley",
+                optionalItem("brewery:barley")
+        );
+        addSemanticItemTag(
+                sink,
+                "barley/seeds",
+                "alcoholic:barley_seeds",
+                optionalItem("brewery:barley_seeds")
+        );
+        addSemanticItemTag(
+                sink,
+                "malted_barley",
+                "alcoholic:malted_barley"
+        );
+        addSemanticItemTag(
+                sink,
+                "malted_grain",
+                "#alcoholic:malted_barley"
+        );
+        addSemanticItemTag(
+                sink,
+                "grist",
+                "alcoholic:grist"
+        );
+        addSemanticItemTag(
+                sink,
+                "hops",
+                "alcoholic:hops",
+                optionalItem("brewery:hops")
+        );
+        addSemanticItemTag(
+                sink,
+                "spent_grain",
+                "alcoholic:spent_grain"
+        );
         sink.add(
                 "data/alcoholic/tags/items/yeast.json",
                 """
@@ -118,6 +164,27 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         );
     }
 
+    private static String optionalItem(String id) {
+        return "{ \"id\": \"" + id + "\", \"required\": false }";
+    }
+
+    private static void addSemanticItemTag(JsonSink sink, String name, String... values) {
+        StringBuilder json = new StringBuilder("{\n  \"replace\": false,\n  \"values\": [\n");
+        for (int index = 0; index < values.length; index++) {
+            if (index > 0) {
+                json.append(",\n");
+            }
+            String value = values[index];
+            if (value.startsWith("{")) {
+                json.append("    ").append(value);
+            } else {
+                json.append("    \"").append(value).append('"');
+            }
+        }
+        json.append("\n  ]\n}");
+        sink.add("data/alcoholic/tags/items/" + name + ".json", json.toString());
+    }
+
     private static void addVanillaTags(JsonSink sink) {
         sink.add(
                 "data/minecraft/tags/blocks/crops.json",
@@ -126,7 +193,9 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "replace": false,
                           "values": [
                             "alcoholic:red_grapevine",
-                            "alcoholic:white_grapevine"
+                            "alcoholic:white_grapevine",
+                            "alcoholic:barley_crop",
+                            "alcoholic:hop_bine"
                           ]
                         }
                         """
@@ -138,7 +207,9 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "replace": false,
                           "values": [
                             "alcoholic:red_grape_cutting",
-                            "alcoholic:white_grape_cutting"
+                            "alcoholic:white_grape_cutting",
+                            "alcoholic:barley_seeds",
+                            "alcoholic:hop_rhizome"
                           ]
                         }
                         """
@@ -150,7 +221,9 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "replace": false,
                           "values": [
                             "alcoholic:red_grapevine",
-                            "alcoholic:white_grapevine"
+                            "alcoholic:white_grapevine",
+                            "alcoholic:barley_crop",
+                            "alcoholic:hop_bine"
                           ]
                         }
                         """
@@ -399,6 +472,65 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           },
                           "result": {
                             "item": "alcoholic:artisanal_blending_crock"
+                          }
+                        }
+                        """
+        );
+        sink.add(
+                "data/alcoholic/recipes/malting_floor.json",
+                """
+                        {
+                          "type": "minecraft:crafting_shaped",
+                          "pattern": [
+                            "SSS",
+                            "PPP"
+                          ],
+                          "key": {
+                            "S": { "item": "minecraft:wheat_seeds" },
+                            "P": { "tag": "minecraft:planks" }
+                          },
+                          "result": {
+                            "item": "alcoholic:malting_floor"
+                          }
+                        }
+                        """
+        );
+        sink.add(
+                "data/alcoholic/recipes/mash_tun.json",
+                """
+                        {
+                          "type": "minecraft:crafting_shaped",
+                          "pattern": [
+                            "P P",
+                            "PBP",
+                            "PPP"
+                          ],
+                          "key": {
+                            "P": { "tag": "minecraft:planks" },
+                            "B": { "item": "minecraft:bucket" }
+                          },
+                          "result": {
+                            "item": "alcoholic:mash_tun"
+                          }
+                        }
+                        """
+        );
+        sink.add(
+                "data/alcoholic/recipes/brewing_kettle.json",
+                """
+                        {
+                          "type": "minecraft:crafting_shaped",
+                          "pattern": [
+                            "I I",
+                            "IBI",
+                            "III"
+                          ],
+                          "key": {
+                            "I": { "item": "minecraft:iron_ingot" },
+                            "B": { "item": "minecraft:bucket" }
+                          },
+                          "result": {
+                            "item": "alcoholic:brewing_kettle"
                           }
                         }
                         """
@@ -693,6 +825,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         );
         addCreatePressing(sink, "press_red_grapes", "alcoholic:grapes/red", "alcoholic:red_grape_must");
         addCreatePressing(sink, "press_white_grapes", "alcoholic:grapes/white", "alcoholic:white_grape_must");
+        addGrainProcessing(sink);
     }
 
     private static void addLiquid(
@@ -1123,6 +1256,373 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           ]
                         }
                         """.formatted(feature, rarity)
+        );
+    }
+
+    private static void addGrainProcessing(JsonSink sink) {
+        addLiquidDefaults(sink, "wort", 0.0, 0.12, 0.0);
+        addLiquidDefaults(sink, "hopped_wort", 0.0, 0.12, 0.0);
+        addLiquidDefaults(sink, "beer", 0.0, 0.12, 0.0);
+        addMaltProcess(sink, "malt_pale", 0.12, 0.85, 0.15);
+        addMaltProcess(sink, "malt_amber", 0.35, 0.78, 0.45);
+        addMaltProcess(sink, "malt_dark", 0.62, 0.70, 0.80);
+        sink.add(
+                "data/alcoholic/alcoholic/processes/mill_malted_grain.json",
+                MILL_MALTED_GRAIN
+        );
+        sink.add(
+                "data/alcoholic/alcoholic/processes/mash_wort.json",
+                """
+                        {
+                          "id": "alcoholic:mash_wort",
+                          "process": "alcoholic:mash",
+                          "config": {
+                            "solid": { "tag": "alcoholic:grist", "amount": 1 },
+                            "liquid": { "fluid": "minecraft:water", "volume": 1000 },
+                            "output": { "liquid": "alcoholic:wort", "volume": 1000 },
+                            "byproduct": { "item": "alcoholic:spent_grain", "amount": 1 },
+                            "processing_time": 40,
+                            "preferred_temperature": { "min": 62, "max": 68 },
+                            "operating_temperature": { "min": 52, "max": 78 }
+                          },
+                          "inputs": {
+                            "grist": { "tag": "alcoholic:grist" },
+                            "water": { "item": "minecraft:water_bucket" }
+                          },
+                          "outputs": ["wort"]
+                        }
+                        """
+        );
+        sink.add(
+                "data/alcoholic/alcoholic/processes/boil_wort.json",
+                """
+                        {
+                          "id": "alcoholic:boil_wort",
+                          "process": "alcoholic:boil",
+                          "config": {
+                            "input_liquid": "alcoholic:wort",
+                            "output": { "liquid": "alcoholic:hopped_wort" },
+                            "addition": { "tag": "alcoholic:hops", "amount": 1 },
+                            "processing_time": 40,
+                            "preferred_temperature": { "min": 98, "max": 105 },
+                            "operating_temperature": { "min": 90, "max": 110 },
+                            "hop_profile": {
+                              "bitterness_potential": 0.55,
+                              "aroma_potential": 0.40
+                            }
+                          },
+                          "inputs": { "hops": { "tag": "alcoholic:hops" } },
+                          "outputs": ["hopped_wort"]
+                        }
+                        """
+        );
+        addFermentProcess(sink, "ferment_hopped_wort", "alcoholic:hopped_wort", "alcoholic:beer");
+        sink.add(
+                "data/alcoholic/alcoholic/beverages/beer.json",
+                """
+                        {
+                          "id": "alcoholic:beer",
+                          "graph": {
+                            "nodes": [
+                              {
+                                "id": "malt",
+                                "definition": "alcoholic:malt_pale",
+                                "inputs": { "grain": { "tag": "alcoholic:barley" } },
+                                "outputs": ["malt"]
+                              },
+                              {
+                                "id": "mill",
+                                "definition": "alcoholic:mill_malted_grain",
+                                "inputs": { "malt": { "node": "malt", "port": "malt" } },
+                                "outputs": ["grist"]
+                              },
+                              {
+                                "id": "mash",
+                                "definition": "alcoholic:mash_wort",
+                                "inputs": {
+                                  "grist": { "node": "mill", "port": "grist" },
+                                  "water": { "item": "minecraft:water_bucket" }
+                                },
+                                "outputs": ["wort"]
+                              },
+                              {
+                                "id": "boil",
+                                "definition": "alcoholic:boil_wort",
+                                "inputs": {
+                                  "wort": { "node": "mash", "port": "wort" },
+                                  "hops": { "tag": "alcoholic:hops" }
+                                },
+                                "outputs": ["hopped_wort"]
+                              },
+                              {
+                                "id": "ferment",
+                                "definition": "alcoholic:ferment_hopped_wort",
+                                "inputs": {
+                                  "wort": { "node": "boil", "port": "hopped_wort" },
+                                  "yeast": { "tag": "alcoholic:yeast" }
+                                },
+                                "outputs": ["finished"]
+                              }
+                            ],
+                            "outputs": { "result": { "node": "ferment", "port": "finished" } }
+                          },
+                          "properties": [
+                            "alcoholic:sugar",
+                            "alcoholic:ethanol",
+                            "alcoholic:bitterness",
+                            "alcoholic:color",
+                            "alcoholic:aroma"
+                          ]
+                        }
+                        """
+        );
+        addCreateMillRecipesFromCatalog(sink, MILL_MALTED_GRAIN);
+    }
+
+    private static final String MILL_MALTED_GRAIN = """
+            {
+              "id": "alcoholic:mill_malted_grain",
+              "process": "alcoholic:mill",
+              "config": {
+                "input": { "tag": "alcoholic:malted_grain", "amount": 1 },
+                "output": { "item": "alcoholic:grist", "amount": 1 },
+                "processing_time": 80,
+                "create_compatible": true
+              },
+              "inputs": { "malt": { "tag": "alcoholic:malted_grain" } },
+              "outputs": ["grist"]
+            }
+            """;
+
+    private static void addLiquidDefaults(JsonSink sink, String name, double sugar, double color, double ethanol) {
+        sink.add(
+                "data/alcoholic/alcoholic/liquids/" + name + ".json",
+                String.format(Locale.ROOT, """
+                        {
+                          "id": "alcoholic:%s",
+                          "defaults": {
+                            "alcoholic:sugar": %.2f,
+                            "alcoholic:color": %.2f,
+                            "alcoholic:ethanol": %.2f,
+                            "alcoholic:bitterness": 0.0,
+                            "alcoholic:aroma": 0.0,
+                            "alcoholic:temperature": 20.0
+                          }
+                        }
+                        """, name, sugar, color, ethanol)
+        );
+    }
+
+    private static void addMaltProcess(
+            JsonSink sink,
+            String id,
+            double color,
+            double fermentable,
+            double roast
+    ) {
+        sink.add(
+                "data/alcoholic/alcoholic/processes/" + id + ".json",
+                String.format(Locale.ROOT, """
+                        {
+                          "id": "alcoholic:%s",
+                          "process": "alcoholic:malt",
+                          "config": {
+                            "input": { "tag": "alcoholic:barley", "amount": 1 },
+                            "output": { "item": "alcoholic:malted_barley", "amount": 1 },
+                            "processing_time": 80,
+                            "moisture_requirement": 0.4,
+                            "kiln_profile": {
+                              "id": "alcoholic:%s",
+                              "color_potential": %.2f,
+                              "fermentable_potential": %.2f,
+                              "roast_intensity": %.2f
+                            }
+                          },
+                          "inputs": { "grain": { "tag": "alcoholic:barley" } },
+                          "outputs": ["malt"]
+                        }
+                        """, id, id.replace("malt_", ""), color, fermentable, roast)
+        );
+    }
+
+    private static void addCreateMillRecipesFromCatalog(JsonSink sink, String processJson) {
+        var definition = ProcessDefinitionCodec.INSTANCE.decode(
+                JsonDataParser.parse(processJson),
+                "mill",
+                ResourceId.parse("alcoholic:mill_malted_grain")
+        );
+        CreateMillRecipeTranslator.from(definition).ifPresent(spec -> {
+            sink.add(
+                    "data/alcoholic/recipes/" + spec.id().path() + "_millstone.json",
+                    wrapCreate(CreateMillRecipeTranslator.toMillingJson(spec))
+            );
+            sink.add(
+                    "data/alcoholic/recipes/" + spec.id().path() + "_crushing.json",
+                    wrapCreate(CreateMillRecipeTranslator.toCrushingJson(spec))
+            );
+        });
+    }
+
+    private static String wrapCreate(String recipeJson) {
+        return """
+                {
+                  "type": "forge:conditional",
+                  "recipes": [
+                    {
+                      "conditions": [ { "type": "forge:mod_loaded", "modid": "create" } ],
+                      "recipe": %s
+                    }
+                  ]
+                }
+                """.formatted(recipeJson.trim());
+    }
+
+    private static void addBarleyLoot(JsonSink sink) {
+        sink.add(
+                "data/alcoholic/loot_tables/blocks/barley_crop.json",
+                """
+                        {
+                          "type": "minecraft:block",
+                          "pools": [
+                            {
+                              "rolls": 1,
+                              "entries": [
+                                {
+                                  "type": "minecraft:alternatives",
+                                  "children": [
+                                    {
+                                      "type": "minecraft:item",
+                                      "name": "alcoholic:barley",
+                                      "conditions": [
+                                        {
+                                          "condition": "minecraft:block_state_property",
+                                          "block": "alcoholic:barley_crop",
+                                          "properties": { "age": "2" }
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "minecraft:item",
+                                      "name": "alcoholic:barley_seeds"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "rolls": 1,
+                              "entries": [
+                                { "type": "minecraft:item", "name": "alcoholic:barley_seeds" }
+                              ],
+                              "conditions": [
+                                {
+                                  "condition": "minecraft:block_state_property",
+                                  "block": "alcoholic:barley_crop",
+                                  "properties": { "age": "2" }
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                        """
+        );
+    }
+
+    private static void addHopBineLoot(JsonSink sink) {
+        sink.add(
+                "data/alcoholic/loot_tables/blocks/hop_bine.json",
+                """
+                        {
+                          "type": "minecraft:block",
+                          "pools": [
+                            {
+                              "rolls": 1,
+                              "entries": [
+                                { "type": "minecraft:item", "name": "alcoholic:hop_rhizome" }
+                              ]
+                            },
+                            {
+                              "rolls": 1,
+                              "entries": [
+                                { "type": "minecraft:item", "name": "alcoholic:hops" }
+                              ],
+                              "conditions": [
+                                {
+                                  "condition": "minecraft:block_state_property",
+                                  "block": "alcoholic:hop_bine",
+                                  "properties": { "age": "2" }
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                        """
+        );
+    }
+
+    private static void addWildBarley(JsonSink sink) {
+        sink.add(
+                "data/alcoholic/tags/worldgen/biome/has_wild_barley.json",
+                """
+                        {
+                          "replace": false,
+                          "values": [
+                            "minecraft:plains",
+                            "minecraft:sunflower_plains",
+                            "minecraft:meadow"
+                          ]
+                        }
+                        """
+        );
+        sink.add(
+                "data/alcoholic/worldgen/configured_feature/wild_barley.json",
+                """
+                        {
+                          "type": "minecraft:random_patch",
+                          "config": {
+                            "tries": 24,
+                            "xz_spread": 6,
+                            "y_spread": 2,
+                            "feature": {
+                              "feature": {
+                                "type": "minecraft:simple_block",
+                                "config": {
+                                  "to_place": {
+                                    "type": "minecraft:simple_state_provider",
+                                    "state": {
+                                      "Name": "alcoholic:barley_crop",
+                                      "Properties": { "age": "2" }
+                                    }
+                                  }
+                                }
+                              },
+                              "placement": [
+                                {
+                                  "type": "minecraft:block_predicate_filter",
+                                  "predicate": {
+                                    "type": "minecraft:matching_blocks",
+                                    "blocks": "minecraft:air"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                        """
+        );
+        sink.add(
+                "data/alcoholic/worldgen/placed_feature/wild_barley.json",
+                """
+                        {
+                          "feature": "alcoholic:wild_barley",
+                          "placement": [
+                            { "type": "minecraft:rarity_filter", "chance": 18 },
+                            { "type": "minecraft:in_square" },
+                            { "type": "minecraft:heightmap", "heightmap": "WORLD_SURFACE_WG" },
+                            { "type": "minecraft:biome" }
+                          ]
+                        }
+                        """
         );
     }
 

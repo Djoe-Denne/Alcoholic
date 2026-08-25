@@ -27,13 +27,21 @@ public class LiquidTank {
             Function<ResourceId, PropertyMerge> merge,
             Function<ResourceId, PropertyAggregator> aggregators
     ) {
-        if (capacity < 1) {
-            throw new IllegalArgumentException("capacity must be >= 1");
+        if (capacity < 0) {
+            throw new IllegalArgumentException("capacity must be >= 0");
         }
         this.capacity = capacity;
         this.merge = Objects.requireNonNull(merge, "merge");
         this.aggregators = Objects.requireNonNull(aggregators, "aggregators");
         this.stored = LiquidBatch.of(0);
+    }
+
+    /**
+     * A tank that never accepts or yields liquid. Used for vessels that are
+     * not currently bound to a real owner.
+     */
+    public static LiquidTank sealed() {
+        return new SealedTank();
     }
 
     public int capacity() {
@@ -94,11 +102,64 @@ public class LiquidTank {
         return split.extracted();
     }
 
+    public boolean trySet(LiquidBatch batch) {
+        Objects.requireNonNull(batch, "batch");
+        if (batch.volume() <= 0.0) {
+            stored = LiquidBatch.of(0);
+            return true;
+        }
+        if (batch.volumeMillibuckets() > capacity) {
+            return false;
+        }
+        stored = batch;
+        return true;
+    }
+
     public void set(LiquidBatch batch) {
-        stored = Objects.requireNonNull(batch, "batch");
+        Objects.requireNonNull(batch, "batch");
+        if (batch.volume() <= 0.0) {
+            stored = LiquidBatch.of(0);
+            return;
+        }
+        int needed = Math.max(1, batch.volumeMillibuckets());
+        if (needed > capacity) {
+            capacity = needed;
+        }
+        stored = batch;
     }
 
     public void clear() {
         stored = LiquidBatch.of(0);
+    }
+
+    private static final class SealedTank extends LiquidTank {
+        private SealedTank() {
+            super(0, id -> PropertyMerge.WEIGHTED_AVERAGE);
+        }
+
+        @Override
+        public int fill(LiquidBatch incoming, boolean simulate) {
+            return 0;
+        }
+
+        @Override
+        public LiquidBatch drain(int millibuckets, boolean simulate) {
+            return LiquidBatch.of(0);
+        }
+
+        @Override
+        public boolean tryResize(int newCapacity) {
+            return false;
+        }
+
+        @Override
+        public boolean trySet(LiquidBatch batch) {
+            return false;
+        }
+
+        @Override
+        public void set(LiquidBatch batch) {
+            // Sealed tanks never retain liquid.
+        }
     }
 }

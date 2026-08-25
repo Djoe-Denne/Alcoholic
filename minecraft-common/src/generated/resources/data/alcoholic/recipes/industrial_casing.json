@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "III",
-    "I I",
-    "III"
-  ],
   "key": {
     "I": {
       "item": "minecraft:iron_ingot"
     }
   },
+  "pattern": [
+    "III",
+    "I I",
+    "III"
+  ],
   "result": {
-    "item": "alcoholic:industrial_casing",
-    "count": 4
+    "count": 4,
+    "item": "alcoholic:industrial_casing"
   }
 }

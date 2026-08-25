@@ -1,0 +1,36 @@
+{
+  "config": {
+    "input_liquid": "alcoholic:hopped_wort",
+    "kinetics": {
+      "co2_per_sugar": 0.45,
+      "completion_threshold": 0.02,
+      "sugar_to_ethanol": 0.47
+    },
+    "operating_temperature": {
+      "max": 30,
+      "min": 10
+    },
+    "output": {
+      "liquid": "alcoholic:beer"
+    },
+    "preferred_temperature": {
+      "max": 24,
+      "min": 18
+    },
+    "require_yeast": true,
+    "ticks_to_complete": 80,
+    "yeast": {
+      "tag": "alcoholic:yeast"
+    }
+  },
+  "id": "alcoholic:ferment_hopped_wort",
+  "inputs": {
+    "yeast": {
+      "tag": "alcoholic:yeast"
+    }
+  },
+  "outputs": [
+    "young"
+  ],
+  "process": "alcoholic:ferment"
+}

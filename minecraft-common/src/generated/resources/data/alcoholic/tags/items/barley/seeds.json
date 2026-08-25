@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "alcoholic:barley_seeds",
+    {
+      "id": "brewery:barley_seeds",
+      "required": false
+    }
+  ]
+}

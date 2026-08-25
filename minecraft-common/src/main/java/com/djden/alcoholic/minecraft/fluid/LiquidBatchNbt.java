@@ -46,7 +46,7 @@ public final class LiquidBatchNbt {
         Objects.requireNonNull(data, "data");
         int version = data.getInt("Version");
         if (version != 1 && version != VERSION) {
-            LOGGER.debug("Ignoring liquid batch NBT with unknown version {}", version);
+            LOGGER.warn("Ignoring liquid batch NBT with unknown version {}", version);
             return Optional.empty();
         }
         try {
@@ -73,7 +73,7 @@ public final class LiquidBatchNbt {
                     provenance
             ));
         } catch (RuntimeException exception) {
-            LOGGER.debug("Ignoring malformed liquid batch NBT", exception);
+            LOGGER.warn("Ignoring malformed liquid batch NBT", exception);
             return Optional.empty();
         }
     }

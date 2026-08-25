@@ -1,28 +1,28 @@
 {
+  "capacity_per_internal_block": 16000,
+  "casing_tags": [
+    "alcoholic:industrial_tank_casing"
+  ],
+  "controller": "alcoholic:industrial_tank_controller",
+  "hollow_interior": true,
   "id": "alcoholic:industrial_storage_tank",
   "kind": "storage",
-  "min_exterior": {
-    "x": 3,
-    "y": 4,
-    "z": 3
-  },
   "max_exterior": {
     "x": 9,
     "y": 16,
     "z": 9
   },
-  "required_controllers": 1,
-  "casing_tags": [
-    "alcoholic:industrial_tank_casing"
-  ],
-  "window_tags": [
-    "alcoholic:valid_machine_windows"
-  ],
+  "min_exterior": {
+    "x": 3,
+    "y": 4,
+    "z": 3
+  },
   "port_tags": [
     "alcoholic:industrial_ports"
   ],
+  "required_controllers": 1,
   "required_ports": [],
-  "hollow_interior": true,
-  "capacity_per_internal_block": 16000,
-  "controller": "alcoholic:industrial_tank_controller"
+  "window_tags": [
+    "alcoholic:valid_machine_windows"
+  ]
 }

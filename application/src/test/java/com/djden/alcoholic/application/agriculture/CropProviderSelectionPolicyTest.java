@@ -41,6 +41,37 @@ class CropProviderSelectionPolicyTest {
         ));
     }
 
+    @Test
+    void prefersExternalBarleyAndHopsWhenBreweryIsPresent() {
+        CropProviderSelectionPolicy policy = policyWith(KnownMod.BREWERY);
+
+        assertEquals(CropProvider.EXTERNAL, policy.preferredProvider(CropKind.BARLEY));
+        assertEquals(CropProvider.EXTERNAL, policy.preferredProvider(CropKind.HOPS));
+        assertFalse(policy.isBuiltinAcquisitionEnabled(
+                CropKind.BARLEY,
+                GameplaySource.WORLD_GENERATION
+        ));
+        assertFalse(policy.isBuiltinAcquisitionEnabled(
+                CropKind.HOPS,
+                GameplaySource.CREATIVE_DISCOVERY
+        ));
+    }
+
+    @Test
+    void keepsBuiltinBarleyWhenBreweryIsPresentButItsCropsAreMissing() {
+        CropProviderSelectionPolicy policy = new CropProviderSelectionPolicy(
+                new CompatibilitySnapshot(Set.of(KnownMod.BREWERY)),
+                crop -> crop != CropKind.BARLEY
+        );
+
+        assertEquals(CropProvider.BUILTIN, policy.preferredProvider(CropKind.BARLEY));
+        assertEquals(CropProvider.EXTERNAL, policy.preferredProvider(CropKind.HOPS));
+        assertTrue(policy.isBuiltinAcquisitionEnabled(
+                CropKind.BARLEY,
+                GameplaySource.WORLD_GENERATION
+        ));
+    }
+
     private static CropProviderSelectionPolicy policyWith(KnownMod... mods) {
         return new CropProviderSelectionPolicy(new CompatibilitySnapshot(Set.of(mods)));
     }

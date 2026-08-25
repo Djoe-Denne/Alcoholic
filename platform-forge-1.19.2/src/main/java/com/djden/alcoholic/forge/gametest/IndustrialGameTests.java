@@ -69,6 +69,18 @@ public final class IndustrialGameTests {
         helper.succeed();
     }
 
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void isolatedFluidPortRejectsFill(GameTestHelper helper) {
+        helper.setBlock(ORIGIN, block("fluid_port").defaultBlockState());
+        IFluidHandler handler = helper.getBlockEntity(ORIGIN)
+                .getCapability(ForgeCapabilities.FLUID_HANDLER)
+                .orElseThrow(IllegalStateException::new);
+        int filled = handler.fill(new FluidStack(net.minecraft.world.level.material.Fluids.WATER, 1000), IFluidHandler.FluidAction.EXECUTE);
+        require(helper, filled == 0, "Unbound fluid port accepted " + filled + " mB");
+        require(helper, handler.drain(1000, IFluidHandler.FluidAction.EXECUTE).isEmpty(), "Unbound fluid port yielded liquid");
+        helper.succeed();
+    }
+
     @GameTest(template = "industrial_pad", timeoutTicks = 40)
     public static void acceptsFluidPortOnShell(GameTestHelper helper) {
         buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_tank_controller", "industrial_casing", null);
