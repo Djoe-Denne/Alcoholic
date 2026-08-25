@@ -31,6 +31,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         addSelfDropLoot(sink, "brewing_kettle");
         addSelfDropLoot(sink, "malt_mill");
         addSelfDropLoot(sink, "primitive_combustion_engine");
+        addSelfDropLoot(sink, "electric_motor");
         addEmptyLoot(sink, "trellis_wire");
         addBarleyLoot(sink);
         addHopBineLoot(sink);
@@ -600,6 +601,54 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "result": {
                             "item": "alcoholic:primitive_combustion_engine"
                           }
+                        }
+                        """
+        );
+        sink.add(
+                "data/alcoholic/recipes/electric_motor.json",
+                """
+                        {
+                          "type": "minecraft:crafting_shaped",
+                          "pattern": [
+                            "IRI",
+                            "RCR",
+                            "IRI"
+                          ],
+                          "key": {
+                            "I": { "item": "minecraft:iron_ingot" },
+                            "R": { "item": "minecraft:redstone" },
+                            "C": { "item": "minecraft:copper_ingot" }
+                          },
+                          "result": {
+                            "item": "alcoholic:electric_motor"
+                          }
+                        }
+                        """
+        );
+        sink.add(
+                "data/alcoholic/recipes/electric_motor_ie.json",
+                """
+                        {
+                          "type": "minecraft:crafting_shaped",
+                          "pattern": [
+                            "CIC",
+                            "IMI",
+                            "CIC"
+                          ],
+                          "key": {
+                            "C": { "item": "immersiveengineering:component_iron" },
+                            "I": { "item": "minecraft:iron_ingot" },
+                            "M": { "item": "immersiveengineering:coil_lv" }
+                          },
+                          "result": {
+                            "item": "alcoholic:electric_motor"
+                          },
+                          "conditions": [
+                            {
+                              "type": "alcoholic:item_present",
+                              "item": "immersiveengineering:coil_lv"
+                            }
+                          ]
                         }
                         """
         );

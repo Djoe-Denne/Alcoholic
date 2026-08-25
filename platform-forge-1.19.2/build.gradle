@@ -12,7 +12,9 @@ def embeddedProjectPaths = [
         ':integration-vinery',
         ':integration-brewery',
         ':integration-create',
-        ':integration-create-forge-1.19.2'
+        ':integration-create-forge-1.19.2',
+        ':integration-crossroads',
+        ':integration-crossroads-1.19.2'
 ]
 
 embeddedProjectPaths.each { evaluationDependsOn(it) }
@@ -92,6 +94,7 @@ dependencies {
     implementation project(':integration-vinery')
     implementation project(':integration-brewery')
     implementation project(':integration-create-forge-1.19.2')
+    implementation project(':integration-crossroads-1.19.2')
 
     testImplementation platform("org.junit:junit-bom:${junit_version}")
     testImplementation 'org.junit.jupiter:junit-jupiter'
@@ -99,6 +102,13 @@ dependencies {
     compileOnly fg.deobf('curse.maven:create-328085:4835190')
     if (providers.gradleProperty('withCreate').orNull == 'true') {
         runtimeOnly fg.deobf('curse.maven:create-328085:4835190')
+    }
+    if (providers.gradleProperty('withCrossroads').orNull == 'true') {
+        runtimeOnly fg.deobf("curse.maven:crossroads-mc-${crossroads_curse_project}:${crossroads_curse_file}")
+        runtimeOnly fg.deobf("curse.maven:essentials-293752:${essentials_curse_file}")
+    }
+    if (providers.gradleProperty('withImmersiveEngineering').orNull == 'true') {
+        runtimeOnly fg.deobf("curse.maven:immersive-engineering-231951:${immersiveengineering_curse_file}")
     }
     if (providers.gradleProperty('withVinery').orNull == 'true') {
         runtimeOnly fg.deobf(

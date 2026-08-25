@@ -84,7 +84,9 @@ def forbiddenImports = [
                 'net.fabricmc.',
                 'org.quiltmc.',
                 'com.simibubi.create.',
-                'satisfyu.vinery.'
+                'satisfyu.vinery.',
+                'com.Da_Technomancer.',
+                'blusunrize.immersiveengineering.'
         ],
         'integration-vinery': [
                 'net.minecraftforge.',
@@ -111,11 +113,30 @@ def forbiddenImports = [
                 'satisfyu.vinery.'
         ],
         'integration-create-forge-1.19.2': [
-                'satisfyu.vinery.'
+                'satisfyu.vinery.',
+                'com.Da_Technomancer.'
+        ],
+        'integration-crossroads': [
+                'net.minecraft.',
+                'net.minecraftforge.',
+                'net.neoforged.',
+                'net.fabricmc.',
+                'org.quiltmc.',
+                'com.simibubi.create.',
+                'satisfyu.vinery.',
+                'com.Da_Technomancer.',
+                'blusunrize.immersiveengineering.'
+        ],
+        'integration-crossroads-1.19.2': [
+                'satisfyu.vinery.',
+                'com.simibubi.create.',
+                'blusunrize.immersiveengineering.'
         ],
         'platform-forge-1.19.2': [
                 'satisfyu.vinery.',
-                'com.simibubi.create.'
+                'com.simibubi.create.',
+                'com.Da_Technomancer.',
+                'blusunrize.immersiveengineering.'
         ],
         'integration-test-addon': [
                 'net.minecraft.',

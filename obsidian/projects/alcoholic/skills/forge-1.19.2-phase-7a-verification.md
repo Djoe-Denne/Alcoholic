@@ -6,13 +6,14 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/95c81b7c-fa88-4055-9741-14cb948964c9/95c81b7c-fa88-4055-9741-14cb948964c9.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/14805ad4-dec0-4781-92a1-c718c5113dde/14805ad4-dec0-4781-92a1-c718c5113dde.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/1ca21b6f-a077-4686-8f47-c41ee6e59fc7/1ca21b6f-a077-4686-8f47-c41ee6e59fc7.jsonl"
 summary: After grain or mechanical-executor changes, rerun purity, architecture, unit tests, GrainGameTests, and the debug-NBT compile gate.
 provenance:
   extracted: 0.88
   inferred: 0.08
   ambiguous: 0.04
 created: 2026-08-25T18:55:00+02:00
-updated: 2026-08-25T19:21:00+02:00
+updated: 2026-08-25T20:05:00+02:00
 ---
 
 # Forge 1.19.2 Phase 7A Verification
@@ -28,6 +29,7 @@ Start from [[forge-1.19.2-phase-6-verification]], then add grain and mechanical 
 7. `.\gradlew runGameTestServer` — native path: barley, hops, malting floor, malt mill stall/power, mash tun, kettle, ferment
 8. `.\gradlew runGameTestServer -PwithCreate=true` — millstone/crushing recipes, mash tun → Create tank, kinetic adapters
 9. After changing `AlcoholicDebug` generation, compile with `"-Palcoholic.debug=false"` and confirm `javap` no longer shows `Rpm` / `DebugRpm` on kinetic-port save/load. See [[mechanical-drive-port#Debug RPM is compile-time]]. PowerShell must quote `-Palcoholic.debug=…`.
+10. After Crossroads or FE motor work, continue with [[forge-1.19.2-crossroads-fe-verification]].
 
 ## What the extra gates protect
 
@@ -41,7 +43,10 @@ The Phase 7A grain session closed Create GameTests at **42/42**. After the Malt 
 
 - [[grain-processing]]
 - [[mechanical-drive-port]]
+- [[electric-motor]]
 - [[native-executor-invariant]]
 - [[forge-1.19.2-phase-6-verification]]
+- [[forge-1.19.2-crossroads-fe-verification]]
 - [[cursor-phase-7a-grain-session]]
 - [[cursor-create-independence-session]]
+- [[cursor-crossroads-electric-motor-session]]

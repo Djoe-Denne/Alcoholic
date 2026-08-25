@@ -36,7 +36,7 @@ public final class KineticPortBlockEntity extends PartBlockEntity implements Kin
         if (storedSpeed > 0.0) {
             return MechanicalDriveState.running(storedSpeed, Double.POSITIVE_INFINITY);
         }
-        return MechanicalDrives.adjacent(level, worldPosition);
+        return MechanicalDrives.forMachine(level, worldPosition);
     }
 
     @Override

@@ -58,7 +58,7 @@ public final class MaltMillBlockEntity extends BlockEntity implements WorldlyCon
     }
 
     public MechanicalDriveState driveState() {
-        return MechanicalDrives.adjacent(level, worldPosition);
+        return MechanicalDrives.forMachine(level, worldPosition);
     }
 
     public static void serverTick(
@@ -78,7 +78,8 @@ public final class MaltMillBlockEntity extends BlockEntity implements WorldlyCon
             return;
         }
         MechanicalDriveState drive = driveState();
-        if (!MechanicalRequirement.maltMill().satisfied(drive)) {
+        MechanicalRequirement requirement = MechanicalRequirement.maltMill();
+        if (!requirement.satisfied(drive)) {
             setChanged();
             return;
         }
@@ -107,6 +108,7 @@ public final class MaltMillBlockEntity extends BlockEntity implements WorldlyCon
             progress = 0;
         }
         duration = Math.max(1, (int) Math.round(config.processingTicks() / modifiers.speedModifier()));
+        MechanicalDrives.consumeWork(level, worldPosition, requirement.requiredCapacity());
         progress++;
         if (progress < duration) {
             setChanged();

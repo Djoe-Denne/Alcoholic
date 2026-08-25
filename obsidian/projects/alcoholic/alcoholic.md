@@ -11,13 +11,15 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/dc49ea79-b9e5-4902-ad7f-795f762f8f52/dc49ea79-b9e5-4902-ad7f-795f762f8f52.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/95c81b7c-fa88-4055-9741-14cb948964c9/95c81b7c-fa88-4055-9741-14cb948964c9.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06.jsonl"
-summary: Loader-independent brewing mod. Phase 7A ships grain beer on generic processes; Create stays an optional extra executor.
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/1ca21b6f-a077-4686-8f47-c41ee6e59fc7/1ca21b6f-a077-4686-8f47-c41ee6e59fc7.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/ede9eb58-09ac-4ccc-9fea-74a521453d14/ede9eb58-09ac-4ccc-9fea-74a521453d14.jsonl"
+summary: Loader-independent brewing mod. Grain beer on generic processes; rotary power from native engines, Create, or Crossroads.
 provenance:
-  extracted: 0.84
-  inferred: 0.14
+  extracted: 0.82
+  inferred: 0.16
   ambiguous: 0.02
 created: 2026-08-25T09:20:00+02:00
-updated: 2026-08-25T18:55:00+02:00
+updated: 2026-08-25T20:05:00+02:00
 ---
 
 # Alcoholic
@@ -38,7 +40,9 @@ Alcoholic is a Minecraft mod for realistic brewing, winemaking, and distillation
 
 **Phase 6** — [[industrial-multiblock]], [[industrial-processing]], and [[industrial-ports]]: variable-size press, fermentation vat, and passive tank. They are extra PRESS/FERMENT executors, not a second wine recipe system. Create remains optional pipes, belts, and shafts.
 
-**Phase 7A** — second beverage family through generic process types: barley and hops agriculture, `MALT` / `MILL` / `MASH` / `BOIL`, malting floor, mash tun, brewing kettle. See [[grain-processing]]. Official DAGs follow the [[native-executor-invariant]]: the Malt Mill plus [[mechanical-drive-port|primitive engine]] keep MILL playable without Create. Create millstone/crushing stay optional extras. Shipped grain beer ends after generic `FERMENT`. AGE stays optional. Whisky remains a structural DAG fixture (`DISTILL` is still a stub).
+**Phase 7A** — second beverage family through generic process types: barley and hops agriculture, `MALT` / `MILL` / `MASH` / `BOIL`, malting floor, mash tun, brewing kettle. See [[grain-processing]]. Official DAGs follow the [[native-executor-invariant]]: the Malt Mill plus [[mechanical-drive-port]] keep MILL playable without Create. Create millstone/crushing stay optional extras. Shipped grain beer ends after generic `FERMENT`. AGE stays optional. Whisky remains a structural DAG fixture (`DISTILL` is still a stub).
+
+**Mechanical supplies (ADR-031)** — four ways to feed the same port: primitive combustion engine, [[electric-motor]] (generic FE; IE connector is one provider), optional Create, optional [[crossroads-rotary-adapter]]. Machines never branch on which mod is installed.
 
 The Forge artifact still embeds the inward-pointing modules. Fabric remains a future adapter.
 
@@ -60,6 +64,8 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[industrial-ports]]
 - [[grain-processing]]
 - [[mechanical-drive-port]]
+- [[electric-motor]]
+- [[crossroads-rotary-adapter]]
 - [[native-executor-invariant]]
 
 ## Verification
@@ -70,6 +76,7 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[forge-1.19.2-phase-5-verification]]
 - [[forge-1.19.2-phase-6-verification]]
 - [[forge-1.19.2-phase-7a-verification]]
+- [[forge-1.19.2-crossroads-fe-verification]]
 
 ## Session sources
 
@@ -81,3 +88,4 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[cursor-phase-6-industrial-session]]
 - [[cursor-phase-7a-grain-session]]
 - [[cursor-create-independence-session]]
+- [[cursor-crossroads-electric-motor-session]]

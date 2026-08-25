@@ -12,13 +12,14 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/dc49ea79-b9e5-4902-ad7f-795f762f8f52/dc49ea79-b9e5-4902-ad7f-795f762f8f52.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/95c81b7c-fa88-4055-9741-14cb948964c9/95c81b7c-fa88-4055-9741-14cb948964c9.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/1ca21b6f-a077-4686-8f47-c41ee6e59fc7/1ca21b6f-a077-4686-8f47-c41ee6e59fc7.jsonl"
 summary: Production is an acyclic graph of named nodes. No process is mandatory. Official nodes need a native executor.
 provenance:
   extracted: 0.88
   inferred: 0.1
   ambiguous: 0.02
 created: 2026-08-25T12:50:00+02:00
-updated: 2026-08-25T18:55:00+02:00
+updated: 2026-08-25T20:05:00+02:00
 ---
 
 # Process Capability Graph
@@ -58,6 +59,8 @@ Cider in `testpack:` proves the engine is not a wine framework and needs no cide
 - [[industrial-processing]]
 - [[grain-processing]]
 - [[native-executor-invariant]]
+- [[mechanical-drive-port]]
+- [[electric-motor]]
 - [[aging-process]]
 - [[blend-versus-tank-merge]]
 - [[loader-independent-minecraft-architecture]]

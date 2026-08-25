@@ -20,6 +20,13 @@ class MechanicalRequirementTest {
     }
 
     @Test
+    void maltMillAcceptsElectricMotorOutput() {
+        MechanicalDriveState motor = MechanicalDriveState.running(32.0, 8.0);
+        assertTrue(MechanicalRequirement.maltMill().satisfied(motor));
+        assertTrue(MechanicalRequirement.industrialPress().satisfied(motor));
+    }
+
+    @Test
     void rejectsIdleStalledOrUnderpoweredDrive() {
         MechanicalRequirement mill = MechanicalRequirement.maltMill();
         assertFalse(mill.satisfied(MechanicalDriveState.idle()));

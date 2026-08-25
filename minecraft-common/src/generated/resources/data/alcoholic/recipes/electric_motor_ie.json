@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "alcoholic:item_present",
+      "item": "immersiveengineering:coil_lv"
+    }
+  ],
+  "key": {
+    "C": {
+      "item": "immersiveengineering:component_iron"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "M": {
+      "item": "immersiveengineering:coil_lv"
+    }
+  },
+  "pattern": [
+    "CIC",
+    "IMI",
+    "CIC"
+  ],
+  "result": {
+    "item": "alcoholic:electric_motor"
+  }
+}

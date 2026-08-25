@@ -3,7 +3,9 @@ package com.djden.alcoholic.application.compatibility;
 public enum KnownMod {
     VINERY("vinery"),
     BREWERY("brewery"),
-    CREATE("create");
+    CREATE("create"),
+    CROSSROADS("crossroads"),
+    IMMERSIVE_ENGINEERING("immersiveengineering");
 
     private final String modId;
 

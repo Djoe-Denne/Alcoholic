@@ -14,7 +14,7 @@ provenance:
   inferred: 0.11
   ambiguous: 0.04
 created: 2026-08-25T18:55:00+02:00
-updated: 2026-08-25T19:21:00+02:00
+updated: 2026-08-25T20:05:00+02:00
 ---
 
 # Cursor Create Independence Session
@@ -63,6 +63,8 @@ A later red-team pass on uncommitted local changes found no critical or high iss
 - [[industrial-ports]]
 - [[blend-versus-tank-merge]]
 - [[forge-1.19.2-phase-7a-verification]]
+
+Later supplies (FE motor, Crossroads axle) are [[cursor-crossroads-electric-motor-session]].
 
 ## Related
 

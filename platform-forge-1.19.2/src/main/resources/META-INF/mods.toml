@@ -43,3 +43,17 @@ mandatory=false
 versionRange="[0.5.1,0.5.2)"
 ordering="AFTER"
 side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="crossroads"
+mandatory=false
+versionRange="[2.9,2.10)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="immersiveengineering"
+mandatory=false
+versionRange="[1.19.2,)"
+ordering="AFTER"
+side="BOTH"

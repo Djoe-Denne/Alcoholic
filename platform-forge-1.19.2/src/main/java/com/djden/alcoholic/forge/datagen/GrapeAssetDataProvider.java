@@ -143,6 +143,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "block.alcoholic.brewing_kettle": "Brewing Kettle",
                           "block.alcoholic.malt_mill": "Malt Mill",
                           "block.alcoholic.primitive_combustion_engine": "Primitive Combustion Engine",
+                          "block.alcoholic.electric_motor": "Electric Motor",
                           "item.alcoholic.barley": "Barley",
                           "item.alcoholic.barley_seeds": "Barley Seeds",
                           "item.alcoholic.malted_barley": "Malted Barley",
@@ -160,7 +161,8 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "message.alcoholic.mash.status": "Mash %1$s°C · %2$s/%3$s",
                           "message.alcoholic.boil.status": "Boil %1$s°C · %2$s/%3$s",
                           "message.alcoholic.mill.status": "Milling %1$s/%2$s · drive %3$s",
-                          "message.alcoholic.engine.status": "Engine speed %1$s · burn %2$s/%3$s"
+                          "message.alcoholic.engine.status": "Engine speed %1$s · burn %2$s/%3$s",
+                          "message.alcoholic.electric_motor.status": "Motor speed %1$s · FE %2$s/%3$s"
                         }
                         """
         );
@@ -275,6 +277,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "block.alcoholic.brewing_kettle": "Chaudron de houblonnage",
                           "block.alcoholic.malt_mill": "Broyeur à malt",
                           "block.alcoholic.primitive_combustion_engine": "Moteur à combustion primitif",
+                          "block.alcoholic.electric_motor": "Moteur électrique",
                           "item.alcoholic.barley": "Orge",
                           "item.alcoholic.barley_seeds": "Graines d'orge",
                           "item.alcoholic.malted_barley": "Orge maltée",
@@ -292,7 +295,8 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "message.alcoholic.mash.status": "Empâtage %1$s°C · %2$s/%3$s",
                           "message.alcoholic.boil.status": "Ébullition %1$s°C · %2$s/%3$s",
                           "message.alcoholic.mill.status": "Mouture %1$s/%2$s · entraînement %3$s",
-                          "message.alcoholic.engine.status": "Moteur vitesse %1$s · combustion %2$s/%3$s"
+                          "message.alcoholic.engine.status": "Moteur vitesse %1$s · combustion %2$s/%3$s",
+                          "message.alcoholic.electric_motor.status": "Moteur vitesse %1$s · FE %2$s/%3$s"
                         }
                         """
         );
@@ -750,6 +754,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
         addSimpleMachine(sink, "brewing_kettle");
         addSimpleMachine(sink, "malt_mill");
         addLitMachine(sink, "primitive_combustion_engine");
+        addLitMachine(sink, "electric_motor");
         addGeneratedItem(sink, "barley");
         addGeneratedItem(sink, "barley_seeds");
         addGeneratedItem(sink, "malted_barley");

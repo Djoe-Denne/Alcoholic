@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.ModList;
@@ -144,6 +145,86 @@ public final class GrainGameTests {
             );
             helper.succeed();
         });
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 120)
+    public static void electricMotorPowersMaltMillAndConsumesFe(GameTestHelper helper) {
+        helper.setBlock(ORIGIN, block("malt_mill").defaultBlockState());
+        helper.setBlock(ORIGIN.east(), block("electric_motor").defaultBlockState());
+        MaltMillBlockEntity mill = (MaltMillBlockEntity) helper.getBlockEntity(ORIGIN);
+        IEnergyStorage energy = helper.getBlockEntity(ORIGIN.east())
+                .getCapability(ForgeCapabilities.ENERGY)
+                .orElseThrow(IllegalStateException::new);
+        int stored = 0;
+        while (stored < 800) {
+            int accepted = energy.receiveEnergy(80, false);
+            require(helper, accepted > 0, "Electric motor rejected Forge Energy");
+            stored += accepted;
+        }
+        int before = energy.getEnergyStored();
+        mill.insert(new ItemStack(item("malted_barley"), 1));
+        helper.runAtTickTime(20, () -> {
+            require(helper, mill.progress() > 0, "Mill did not run from the electric motor: " + mill.debugDump());
+            require(
+                    helper,
+                    energy.getEnergyStored() < before,
+                    "Motor did not consume FE while the mill worked"
+            );
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void idleElectricMotorDoesNotDrainFullPower(GameTestHelper helper) {
+        helper.setBlock(ORIGIN, block("electric_motor").defaultBlockState());
+        helper.setBlock(ORIGIN.west(), block("malt_mill").defaultBlockState());
+        IEnergyStorage energy = helper.getBlockEntity(ORIGIN)
+                .getCapability(ForgeCapabilities.ENERGY)
+                .orElseThrow(IllegalStateException::new);
+        energy.receiveEnergy(80, false);
+        int before = energy.getEnergyStored();
+        helper.runAtTickTime(20, () -> {
+            require(
+                    helper,
+                    energy.getEnergyStored() == before,
+                    "Idle motor drained FE with no mechanical work"
+            );
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void emptyElectricMotorDoesNotPowerMaltMill(GameTestHelper helper) {
+        helper.setBlock(ORIGIN, block("malt_mill").defaultBlockState());
+        helper.setBlock(ORIGIN.east(), block("electric_motor").defaultBlockState());
+        MaltMillBlockEntity mill = (MaltMillBlockEntity) helper.getBlockEntity(ORIGIN);
+        mill.insert(new ItemStack(item("malted_barley"), 1));
+        helper.runAtTickTime(20, () -> {
+            require(helper, mill.progress() == 0, "Empty motor powered the mill");
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void electricMotorAcceptsForgeEnergyWithoutImmersiveEngineering(GameTestHelper helper) {
+        helper.setBlock(ORIGIN, block("electric_motor").defaultBlockState());
+        IEnergyStorage energy = helper.getBlockEntity(ORIGIN)
+                .getCapability(ForgeCapabilities.ENERGY)
+                .orElseThrow(IllegalStateException::new);
+        require(helper, energy.canReceive(), "Motor does not accept FE");
+        require(helper, energy.receiveEnergy(80, false) == 80, "Motor rejected a standard FE packet");
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void crossroadsAbsenceDoesNotBlockAlcoholic(GameTestHelper helper) {
+        helper.setBlock(ORIGIN, block("malt_mill").defaultBlockState());
+        require(helper, helper.getBlockEntity(ORIGIN) instanceof MaltMillBlockEntity, "Malt mill missing");
+        if (ModList.get().isLoaded("crossroads")) {
+            boolean axle = hasCrossroadsAxle(helper.getBlockEntity(ORIGIN));
+            require(helper, axle, "Crossroads is loaded but the mill has no AXLE_CAPABILITY");
+        }
+        helper.succeed();
     }
 
     @GameTest(template = "empty", timeoutTicks = 80)
@@ -334,6 +415,23 @@ public final class GrainGameTests {
                 "Bitterness was lost on reload"
         );
         helper.succeed();
+    }
+
+    private static boolean hasCrossroadsAxle(net.minecraft.world.level.block.entity.BlockEntity entity) {
+        try {
+            Class<?> capabilities = Class.forName("com.Da_Technomancer.crossroads.api.Capabilities");
+            Object axle = capabilities.getField("AXLE_CAPABILITY").get(null);
+            Class<?> capabilityClass = Class.forName("net.minecraftforge.common.capabilities.Capability");
+            java.lang.reflect.Method getCapability = entity.getClass().getMethod(
+                    "getCapability",
+                    capabilityClass,
+                    Direction.class
+            );
+            Object optional = getCapability.invoke(entity, axle, Direction.NORTH);
+            return (boolean) optional.getClass().getMethod("isPresent").invoke(optional);
+        } catch (ReflectiveOperationException exception) {
+            return false;
+        }
     }
 
     private static Block createFluidTank() {

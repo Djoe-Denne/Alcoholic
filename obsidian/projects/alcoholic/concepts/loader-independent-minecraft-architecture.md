@@ -8,13 +8,14 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/b282f8bd-e540-4028-93d1-896905419dcd/b282f8bd-e540-4028-93d1-896905419dcd.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/a6b5797c-82f8-4021-9d63-10a82fed6899/a6b5797c-82f8-4021-9d63-10a82fed6899.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06.jsonl"
-summary: Alcoholic keeps a public Java API and pure domain, then vanilla-common behavior, with Forge fluids and Create behind adapters.
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/1ca21b6f-a077-4686-8f47-c41ee6e59fc7/1ca21b6f-a077-4686-8f47-c41ee6e59fc7.jsonl"
+summary: Public API and pure domain, then vanilla-common behavior. Forge fluids, FE, Create, and Crossroads stay behind adapters.
 provenance:
-  extracted: 0.86
-  inferred: 0.12
+  extracted: 0.84
+  inferred: 0.14
   ambiguous: 0.02
 created: 2026-08-25T09:20:00+02:00
-updated: 2026-08-25T18:55:00+02:00
+updated: 2026-08-25T20:05:00+02:00
 ---
 
 # Loader-Independent Minecraft Architecture
@@ -28,12 +29,12 @@ Alcoholic uses an inward-pointing multi-module architecture so loader ports are 
 - `platform-api` contains narrow platform ports and now reuses the public `ResourceId`.
 - `application` contains compatibility, crop-provider, semantic-resolution, and beverage-catalog policy.
 - `minecraft-common` may use vanilla Minecraft classes but not Forge, Fabric, Create, or Vinery classes.
-- integration modules own optional-mod boundaries without leaking external APIs inward. `integration-create` translates PRESS and MILL data to Create recipes in pure Java; see [[create-press-adapter]]. `integration-create-forge-1.19.2` owns Create types (heat probes, millstone/crushing adapters, kinetic port, drive probe).
+- integration modules own optional-mod boundaries without leaking external APIs inward. `integration-create` translates PRESS and MILL data to Create recipes in pure Java; see [[create-press-adapter]]. `integration-create-forge-1.19.2` owns Create types. `integration-crossroads` holds unit mapping without Crossroads classes; `integration-crossroads-1.19.2` owns `IAxleHandler`. There is no `integration-immersive-engineering`: IE talks FE to the native [[electric-motor]].
 - `integration-test-addon` compiles only against `alcoholic-api`.
-- `platform-forge-1.19.2` owns Forge bootstrap, registries, events, datagen, client setup, fluid registration, and `IFluidHandler` adapters over domain [[liquid-batch]] storage. It must not import `com.simibubi.create.`; the root only calls `ForgeCreateIntegration.install()` / `registerIndustrial()`.
-- Domain mechanical types (`MechanicalDrivePort` / `State` / `Requirement`) stay loader-independent. `minecraft-common` `MechanicalDrives` samples adjacent sources plus registered probes. See [[mechanical-drive-port]].
+- `platform-forge-1.19.2` owns Forge bootstrap, registries, events, datagen, client setup, fluid registration, `IFluidHandler` over domain [[liquid-batch]], and `ForgeCapabilities.ENERGY` over `EnergyBuffer`. It must not import `com.simibubi.create.` or `com.Da_Technomancer`; the root only calls install hooks.
+- Domain mechanical types (`MechanicalDrivePort` / `State` / `Requirement`) stay loader-independent. `minecraft-common` `MechanicalDrives` samples local adapters plus adjacent sources. See [[mechanical-drive-port]].
 
-Gradle source checks reject forbidden imports in core and common modules. `checkArchitecture` also forbids Create types in `platform-forge-1.19.2`. This is intentionally narrower than a speculative universal abstraction framework.
+Gradle source checks reject forbidden imports in core and common modules. `checkArchitecture` also forbids Create and Crossroads types in `platform-forge-1.19.2`. This is intentionally narrower than a speculative universal abstraction framework.
 
 ## Registration
 
@@ -60,5 +61,8 @@ A Fabric target should reuse the pure and vanilla-common modules while replacing
 - [[cursor-phase-3-beverage-framework-session]]
 - [[native-executor-invariant]]
 - [[mechanical-drive-port]]
+- [[electric-motor]]
+- [[crossroads-rotary-adapter]]
 - [[cursor-phase-4-processing-session]]
 - [[cursor-create-independence-session]]
+- [[cursor-crossroads-electric-motor-session]]

@@ -29,6 +29,7 @@ import com.djden.alcoholic.domain.process.ThermalStability;
 import com.djden.alcoholic.minecraft.fluid.LiquidBatchNbt;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
+import com.djden.alcoholic.minecraft.mechanical.MechanicalDrives;
 import com.djden.alcoholic.minecraft.process.ItemLots;
 import com.djden.alcoholic.minecraft.process.MinecraftSelectorMatcher;
 import com.djden.alcoholic.minecraft.process.ProcessRuntime;
@@ -329,6 +330,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         }
         pressWorking = true;
         pressDuration = Math.max(1, (int) Math.round(config.processingTicks() / definition.modifiers().speedModifier()));
+        consumeMechanicalWork(definition);
         pressProgress++;
         strokeCycle = pressDuration <= 1 ? 1.0 : (double) pressProgress / pressDuration;
         stroke = PressStrokeState.fromProgress(true, strokeCycle);
@@ -529,19 +531,45 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         this.pressWorking = state != PressStrokeState.IDLE;
     }
 
+    private void consumeMechanicalWork(MultiblockDefinition definition) {
+        if (level == null || geometry == null) {
+            return;
+        }
+        double load = definition.kinetic().asMechanical().requiredCapacity();
+        if (load <= 0.0) {
+            load = 1.0;
+        }
+        PortDrive winner = winningPortDrive();
+        if (winner != null) {
+            MechanicalDrives.consumeWork(level, winner.pos(), load);
+        }
+    }
+
     private MechanicalDriveState collectDrive() {
         if (level == null || geometry == null) {
             return lastRpm > 0.0
                     ? MechanicalDriveState.running(lastRpm, Double.POSITIVE_INFINITY)
                     : MechanicalDriveState.idle();
         }
-        MechanicalDriveState best = MechanicalDriveState.idle();
+        PortDrive winner = winningPortDrive();
+        return winner == null ? MechanicalDriveState.idle() : winner.state();
+    }
+
+    private PortDrive winningPortDrive() {
+        PortDrive best = null;
         for (CellCoord port : geometry.ports()) {
-            if (level.getBlockEntity(WorldStructureSampler.pos(port)) instanceof MechanicalDrivePort drive) {
-                best = MechanicalDriveState.stronger(best, drive.driveState());
+            BlockPos pos = WorldStructureSampler.pos(port);
+            if (level.getBlockEntity(pos) instanceof MechanicalDrivePort drive) {
+                MechanicalDriveState state = drive.driveState();
+                if (best == null || MechanicalDriveState.stronger(best.state(), state) == state) {
+                    best = new PortDrive(pos, state);
+                }
             }
         }
         return best;
+    }
+
+    private record PortDrive(BlockPos pos, MechanicalDriveState state) {
     }
 
     private double ambientTemperature() {

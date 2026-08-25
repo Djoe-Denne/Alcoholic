@@ -47,5 +47,7 @@ Create recipe times, not duplicated process definitions.
 - Official grain progression works without Create.
 - `integration-create-forge-1.19.2` owns Create types (heat, millstone,
   crushing wheels, kinetic port, drive probe).
-- Future rotary mods register a `MechanicalDrives.Probe` without editing
-  the Malt Mill.
+- Future rotary mods register a `MechanicalDrives.Probe` or
+  `LocalAdapter` without editing the Malt Mill. Crossroads joins the
+  consumer via `AXLE_CAPABILITY`; see
+  [ADR-031](ADR-031-crossroads-and-electric-motor.md).

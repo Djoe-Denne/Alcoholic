@@ -37,6 +37,9 @@ public record ProcessingContent(
         RegistryRef<BlockEntityType<?>> maltMillEntity,
         RegistryRef<Block> primitiveCombustionEngine,
         RegistryRef<Item> primitiveCombustionEngineItem,
-        RegistryRef<BlockEntityType<?>> primitiveCombustionEngineEntity
+        RegistryRef<BlockEntityType<?>> primitiveCombustionEngineEntity,
+        RegistryRef<Block> electricMotor,
+        RegistryRef<Item> electricMotorItem,
+        RegistryRef<BlockEntityType<?>> electricMotorEntity
 ) {
 }

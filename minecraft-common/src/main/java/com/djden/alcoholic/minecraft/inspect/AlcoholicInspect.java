@@ -8,6 +8,7 @@ import com.djden.alcoholic.minecraft.process.ArtisanalBlendingCrockBlockEntity;
 import com.djden.alcoholic.minecraft.process.ArtisanalFermenterBlockEntity;
 import com.djden.alcoholic.minecraft.process.ArtisanalPressBlockEntity;
 import com.djden.alcoholic.minecraft.process.BrewingKettleBlockEntity;
+import com.djden.alcoholic.minecraft.mechanical.ElectricMotorBlockEntity;
 import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlockEntity;
 import com.djden.alcoholic.minecraft.process.MaltMillBlockEntity;
 import com.djden.alcoholic.minecraft.process.MaltingFloorBlockEntity;
@@ -50,6 +51,9 @@ public final class AlcoholicInspect {
         }
         if (entity instanceof PrimitiveCombustionEngineBlockEntity engine) {
             return Optional.of(engine.debugDump());
+        }
+        if (entity instanceof ElectricMotorBlockEntity motor) {
+            return Optional.of(motor.debugDump());
         }
         if (entity instanceof MashTunBlockEntity mash) {
             return Optional.of(mash.debugDump());

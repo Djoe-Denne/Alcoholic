@@ -9,13 +9,14 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/dc49ea79-b9e5-4902-ad7f-795f762f8f52/dc49ea79-b9e5-4902-ad7f-795f762f8f52.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/95c81b7c-fa88-4055-9741-14cb948964c9/95c81b7c-fa88-4055-9741-14cb948964c9.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/1ca21b6f-a077-4686-8f47-c41ee6e59fc7/1ca21b6f-a077-4686-8f47-c41ee6e59fc7.jsonl"
 summary: Small-scale machines execute process capabilities: wine vessels plus malting floor, mash tun, kettle, and malt mill.
 provenance:
   extracted: 0.86
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T14:10:00+02:00
-updated: 2026-08-25T18:55:00+02:00
+updated: 2026-08-25T20:05:00+02:00
 ---
 
 # Artisanal Processing
@@ -46,7 +47,7 @@ The artisanal blending crock has two 4000 mB tanks. Both tanks must accept fill 
 
 ## Grain machines
 
-The malting floor is `MALT`-only (overlapping pale/amber/dark via sneak-cycle). The mash tun is a two-tank thermal executor heated from below. The brewing kettle extracts hop properties into a liquid. The Malt Mill needs adjacent [[mechanical-drive-port]] power and stalls without it. Hopped wort then reuses the artisanal fermenter.
+The malting floor is `MALT`-only (overlapping pale/amber/dark via sneak-cycle). The mash tun is a two-tank thermal executor heated from below. The brewing kettle extracts hop properties into a liquid. The Malt Mill needs [[mechanical-drive-port]] power (primitive engine, [[electric-motor]], Create, or [[crossroads-rotary-adapter]]) and stalls without it. Hopped wort then reuses the artisanal fermenter.
 
 Right-click a vessel with `alcoholic:empty_bottle` to write a [[bottled-beverage-snapshot]].
 
@@ -67,6 +68,8 @@ Block entities store domain `LiquidTank` / `LiquidBatch` with vanilla NBT. Forge
 - [[industrial-multiblock]]
 - [[grain-processing]]
 - [[mechanical-drive-port]]
+- [[electric-motor]]
+- [[crossroads-rotary-adapter]]
 - [[native-executor-invariant]]
 - [[public-extension-api]]
 - [[alcoholic]]

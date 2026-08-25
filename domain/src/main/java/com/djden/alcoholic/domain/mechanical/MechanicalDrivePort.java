@@ -15,4 +15,12 @@ public interface MechanicalDrivePort {
     default boolean isSource() {
         return true;
     }
+
+    /**
+     * Called when a machine actually performs mechanical work this tick.
+     * Sources that store energy (electric motors, rotary adapters) drain here.
+     * Idle machines must not call this.
+     */
+    default void consumeWork(double load) {
+    }
 }

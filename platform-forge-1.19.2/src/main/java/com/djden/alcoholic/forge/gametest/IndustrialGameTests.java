@@ -18,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.ModList;
@@ -185,6 +186,31 @@ public final class IndustrialGameTests {
                     helper,
                     entity.tank().contents().isPresent(),
                     "Industrial press produced no liquid with the primitive engine: " + entity.debugDump()
+            );
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "industrial_pad", timeoutTicks = 80)
+    public static void industrialPressRunsFromElectricMotor(GameTestHelper helper) {
+        buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_press_controller", "industrial_casing", "kinetic_port");
+        BlockPos motorPos = ORIGIN.offset(3, 0, 0);
+        helper.setBlock(motorPos, block("electric_motor").defaultBlockState());
+        MultiblockControllerBlockEntity press = revalidate(helper, ORIGIN);
+        require(helper, press.formed(), "Press did not form: " + press.debugDump());
+        IEnergyStorage energy = helper.getBlockEntity(motorPos)
+                .getCapability(ForgeCapabilities.ENERGY)
+                .orElseThrow(IllegalStateException::new);
+        for (int i = 0; i < 20; i++) {
+            energy.receiveEnergy(80, false);
+        }
+        press.insert(new ItemStack(item("red_grapes"), 8));
+        helper.runAtTickTime(20, () -> {
+            MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
+            require(
+                    helper,
+                    entity.tank().contents().isPresent(),
+                    "Industrial press produced no liquid with the electric motor: " + entity.debugDump()
             );
             helper.succeed();
         });

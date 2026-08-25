@@ -47,7 +47,7 @@ public final class CreateKineticPortBlockEntity extends KineticBlockEntity
             return MechanicalDriveState.stalled(speed, 0.0);
         }
         if (speed <= 0.0) {
-            return MechanicalDrives.adjacent(level, worldPosition);
+            return MechanicalDrives.forMachine(level, worldPosition);
         }
         return MechanicalDriveState.running(speed, 64.0);
     }

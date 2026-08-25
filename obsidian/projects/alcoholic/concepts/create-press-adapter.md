@@ -8,13 +8,14 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/dc49ea79-b9e5-4902-ad7f-795f762f8f52/dc49ea79-b9e5-4902-ad7f-795f762f8f52.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/95c81b7c-fa88-4055-9741-14cb948964c9/95c81b7c-fa88-4055-9741-14cb948964c9.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/1ca21b6f-a077-4686-8f47-c41ee6e59fc7/1ca21b6f-a077-4686-8f47-c41ee6e59fc7.jsonl"
 summary: Optional Create PRESS and MILL recipes live in integration-create. They enhance native executors; they are never the only official path.
 provenance:
   extracted: 0.88
   inferred: 0.1
   ambiguous: 0.02
 created: 2026-08-25T14:10:00+02:00
-updated: 2026-08-25T18:55:00+02:00
+updated: 2026-08-25T20:05:00+02:00
 ---
 
 # Create Press Adapter
@@ -35,7 +36,7 @@ Compacting outputs the registered Forge fluid plus a required solid byproduct. R
 
 Create pipes, pumps, and tanks attach to standard `IFluidHandler`. Alcoholic does not own a pipe network. GameTests that place `create:fluid_tank` run only with `-PwithCreate=true`; without Create they succeed as no-ops.
 
-Phase 6 adds a separate Create surface: [[industrial-ports|kinetic ports]] drive industrial machines when Create shafts are present. A [[mechanical-drive-port|primitive engine]] can power the same port without Create.
+Phase 6 adds a separate Create surface: [[industrial-ports|kinetic ports]] drive industrial machines when Create shafts are present. A [[mechanical-drive-port|primitive engine]], [[electric-motor]], or [[crossroads-rotary-adapter]] can power the same port without Create.
 
 ## Optional MILL recipes
 
@@ -53,6 +54,8 @@ Definitions marked `create_compatible` also generate `create:milling` and `creat
 - [[grain-processing]]
 - [[native-executor-invariant]]
 - [[mechanical-drive-port]]
+- [[electric-motor]]
+- [[crossroads-rotary-adapter]]
 - [[cursor-phase-4-processing-session]]
 - [[cursor-phase-6-industrial-session]]
 - [[cursor-phase-7a-grain-session]]

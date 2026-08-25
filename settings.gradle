@@ -24,6 +24,8 @@ include(
         'integration-brewery',
         'integration-create',
         'integration-create-forge-1.19.2',
+        'integration-crossroads',
+        'integration-crossroads-1.19.2',
         'integration-test-addon',
         'platform-forge-1.19.2'
 )

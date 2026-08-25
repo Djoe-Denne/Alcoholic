@@ -6,13 +6,14 @@ aliases: [MALT, MILL, MASH, BOIL, beer DAG, malting floor, mash tun, brewing ket
 sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/95c81b7c-fa88-4055-9741-14cb948964c9/95c81b7c-fa88-4055-9741-14cb948964c9.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/1ca21b6f-a077-4686-8f47-c41ee6e59fc7/1ca21b6f-a077-4686-8f47-c41ee6e59fc7.jsonl"
 summary: Phase 7A ships a beer DAG through generic MALT, MILL, MASH, and BOIL. No drink-family Java branches.
 provenance:
   extracted: 0.86
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T18:55:00+02:00
-updated: 2026-08-25T18:55:00+02:00
+updated: 2026-08-25T20:05:00+02:00
 ---
 
 # Grain Processing
@@ -34,7 +35,7 @@ The shipped graph is `alcoholic:beer`. It ends after generic `FERMENT`. AGE is n
 
 `alcoholic:malt` is solid-to-solid (ADR-024). A definition carries duration, moisture, temperature, and a kiln profile (`colorPotential`, `fermentablePotential`, `roastIntensity`). Pale / amber / dark are data, not Java subclasses. When several `MALT` definitions share an input, executors bind an explicit id (default `alcoholic:malt_pale`). Shift-using an empty malting floor cycles definitions.
 
-`alcoholic:mill` is a generic solid transform (malted grain → grist, property copy). Official execution is the [[native-executor-invariant|Malt Mill]]. Create millstone and crushing wheels remain optional extra executors.
+`alcoholic:mill` is a generic solid transform (malted grain → grist, property copy). Official execution is the [[native-executor-invariant|Malt Mill]], powered by any [[mechanical-drive-port]] supply. Create millstone and crushing wheels remain optional extra executors.
 
 `alcoholic:mash` is a mixed thermal process (ADR-026): grist plus `minecraft:water` → wort plus spent grain. `TemperatureProfile.extractionYield` maps preferred / cold / hot / out-of-band heat to extraction quality. Sugar, color, and temperature are typed liquid properties. The mash tun is a two-tank executor; heat comes from the block below through `HeatSources`.
 
@@ -59,6 +60,8 @@ The mash tun and brewing kettle are artisanal mixed-input executors. There is no
 - [[beverage-framework]]
 - [[artisanal-processing]]
 - [[mechanical-drive-port]]
+- [[electric-motor]]
+- [[crossroads-rotary-adapter]]
 - [[native-executor-invariant]]
 - [[create-press-adapter]]
 - [[semantic-crop-compatibility]]

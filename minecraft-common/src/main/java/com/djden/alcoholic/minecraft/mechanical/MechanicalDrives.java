@@ -13,9 +13,10 @@ import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Samples adjacent rotary sources for a machine. Native engines implement
- * {@link MechanicalDrivePort}; optional adapters (Create, later Crossroads)
- * register a {@link Probe} so machines never import those APIs.
+ * Samples rotary sources for a machine. Native engines implement
+ * {@link MechanicalDrivePort}; optional adapters register a {@link Probe}
+ * (adjacent foreign blocks) or a {@link LocalAdapter} (capability attached
+ * to the machine itself, e.g. a Crossroads axle handler).
  */
 public final class MechanicalDrives {
     @FunctionalInterface
@@ -23,7 +24,26 @@ public final class MechanicalDrives {
         Optional<MechanicalDriveState> sample(Level level, BlockPos drivePos, BlockState state);
     }
 
+    public interface LocalAdapter {
+        Optional<MechanicalDriveState> sample(Level level, BlockPos machine, BlockEntity entity);
+
+        default boolean consumeWork(Level level, BlockPos machine, BlockEntity entity, double load) {
+            return false;
+        }
+    }
+
+    private record Selection(
+            MechanicalDriveState state,
+            MechanicalDrivePort adjacentPort,
+            boolean localWon
+    ) {
+        static Selection idle() {
+            return new Selection(MechanicalDriveState.idle(), null, false);
+        }
+    }
+
     private static final List<Probe> PROBES = new CopyOnWriteArrayList<>();
+    private static final List<LocalAdapter> LOCAL = new CopyOnWriteArrayList<>();
 
     private MechanicalDrives() {
     }
@@ -34,24 +54,103 @@ public final class MechanicalDrives {
         }
     }
 
+    public static void registerLocal(LocalAdapter adapter) {
+        if (adapter != null) {
+            LOCAL.add(adapter);
+        }
+    }
+
     public static MechanicalDriveState adjacent(Level level, BlockPos machine) {
+        return select(level, machine).state();
+    }
+
+    /**
+     * Drive available to a consumer: adapters attached to the machine itself
+     * plus adjacent native/probed sources. Machines should use this.
+     */
+    public static MechanicalDriveState forMachine(Level level, BlockPos machine) {
+        return select(level, machine).state();
+    }
+
+    public static void consumeWork(Level level, BlockPos machine, double load) {
+        if (level == null || machine == null || load <= 0.0) {
+            return;
+        }
+        Selection selection = select(level, machine);
+        if (!selection.state().usable()) {
+            return;
+        }
+        if (selection.localWon()) {
+            BlockEntity self = level.getBlockEntity(machine);
+            if (self == null) {
+                return;
+            }
+            for (LocalAdapter adapter : LOCAL) {
+                if (adapter.consumeWork(level, machine, self, load)) {
+                    return;
+                }
+            }
+            return;
+        }
+        if (selection.adjacentPort() != null) {
+            selection.adjacentPort().consumeWork(load);
+        }
+    }
+
+    public static MechanicalDriveState at(Level level, BlockPos position) {
+        return adjacentSource(level, position).state();
+    }
+
+    private static Selection select(Level level, BlockPos machine) {
         if (level == null || machine == null) {
+            return Selection.idle();
+        }
+        MechanicalDriveState local = localState(level, machine);
+        Adjacent adjacent = strongestAdjacent(level, machine);
+        MechanicalDriveState best = MechanicalDriveState.stronger(local, adjacent.state());
+        boolean localWon = best == local && local.usable();
+        return new Selection(best, adjacent.port(), localWon);
+    }
+
+    private static MechanicalDriveState localState(Level level, BlockPos machine) {
+        BlockEntity entity = level.getBlockEntity(machine);
+        if (entity == null) {
             return MechanicalDriveState.idle();
         }
         MechanicalDriveState best = MechanicalDriveState.idle();
-        for (Direction direction : Direction.values()) {
-            best = MechanicalDriveState.stronger(best, at(level, machine.relative(direction)));
+        for (LocalAdapter adapter : LOCAL) {
+            Optional<MechanicalDriveState> sampled = adapter.sample(level, machine, entity);
+            if (sampled.isPresent()) {
+                best = MechanicalDriveState.stronger(best, sampled.get());
+            }
         }
         return best;
     }
 
-    public static MechanicalDriveState at(Level level, BlockPos position) {
+    private record Adjacent(MechanicalDriveState state, MechanicalDrivePort port) {
+        static Adjacent idle() {
+            return new Adjacent(MechanicalDriveState.idle(), null);
+        }
+    }
+
+    private static Adjacent strongestAdjacent(Level level, BlockPos machine) {
+        Adjacent best = Adjacent.idle();
+        for (Direction direction : Direction.values()) {
+            Adjacent candidate = adjacentSource(level, machine.relative(direction));
+            if (MechanicalDriveState.stronger(best.state(), candidate.state()) == candidate.state()) {
+                best = candidate;
+            }
+        }
+        return best;
+    }
+
+    private static Adjacent adjacentSource(Level level, BlockPos position) {
         if (level == null || position == null) {
-            return MechanicalDriveState.idle();
+            return Adjacent.idle();
         }
         BlockEntity entity = level.getBlockEntity(position);
         if (entity instanceof MechanicalDrivePort port && port.isSource()) {
-            return port.driveState();
+            return new Adjacent(port.driveState(), port);
         }
         BlockState state = level.getBlockState(position);
         MechanicalDriveState best = MechanicalDriveState.idle();
@@ -61,6 +160,6 @@ public final class MechanicalDrives {
                 best = MechanicalDriveState.stronger(best, sampled.get());
             }
         }
-        return best;
+        return new Adjacent(best, null);
     }
 }

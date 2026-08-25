@@ -12,7 +12,9 @@ import com.djden.alcoholic.forge.event.ForgeBeverageEvents;
 import com.djden.alcoholic.forge.event.ForgeInspectEvents;
 import com.djden.alcoholic.forge.event.ForgeViticultureEvents;
 import com.djden.alcoholic.forge.registry.ForgeRegistryPort;
+import com.djden.alcoholic.forge.energy.ForgeEnergyCapabilities;
 import com.djden.alcoholic.integration.create.forge.ForgeCreateIntegration;
+import com.djden.alcoholic.integration.crossroads.forge.ForgeCrossroadsIntegration;
 import com.djden.alcoholic.integration.vinery.VineryGrapeProvider;
 import com.djden.alcoholic.minecraft.content.AlcoholicContent;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
@@ -133,6 +135,7 @@ public final class AlcoholicForgeMod {
         MinecraftForge.EVENT_BUS.register(new ForgeBeverageEvents(beverageRuntime));
         MinecraftForge.EVENT_BUS.register(new ForgeFluidCapabilities(fluids));
         MinecraftForge.EVENT_BUS.register(new ForgeItemCapabilities());
+        MinecraftForge.EVENT_BUS.register(new ForgeEnergyCapabilities());
         MinecraftForge.EVENT_BUS.register(new ForgeFluidInteraction());
         MinecraftForge.EVENT_BUS.register(new ForgeInspectEvents());
         MinecraftForge.EVENT_BUS.register(new ForgeIndustrialEvents());
@@ -145,6 +148,10 @@ public final class AlcoholicForgeMod {
         if (ForgeCreateIntegration.shouldActivate(compatibility)) {
             LOGGER.info("Create integration boundary active for Create {}", "0.5.1.x");
             ForgeCreateIntegration.install();
+        }
+        if (ForgeCrossroadsIntegration.shouldActivate(compatibility)) {
+            LOGGER.info("Crossroads rotary adapter active");
+            ForgeCrossroadsIntegration.install();
         }
     }
 

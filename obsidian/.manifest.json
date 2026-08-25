@@ -286,10 +286,10 @@
       ]
     },
     "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/dc49ea79-b9e5-4902-ad7f-795f762f8f52/dc49ea79-b9e5-4902-ad7f-795f762f8f52.jsonl": {
-      "ingested_at": "2026-08-25T15:53:00+02:00",
-      "size_bytes": 251318,
-      "modified_at": "2026-08-25T13:54:11.261352Z",
-      "content_hash": "sha256:9d0d9a14ff5feff2344dad6b0bdc80d4983f4743e60560dd9ad4943f0ce512c9",
+      "ingested_at": "2026-08-25T20:05:00+02:00",
+      "size_bytes": 575378,
+      "modified_at": "2026-08-25T14:03:43.0305963Z",
+      "content_hash": "sha256:98f9caf35894a6c39aaea5f2d5dba93b93010c37bfe5376ca37a5a9293c857a7",
       "source_type": "cursor-history",
       "project": "alcoholic",
       "pages_created": [
@@ -357,10 +357,10 @@
       ]
     },
     "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06.jsonl": {
-      "ingested_at": "2026-08-25T18:55:00+02:00",
-      "size_bytes": 437214,
-      "modified_at": "2026-08-25T16:54:46.019125Z",
-      "content_hash": "sha256:00dcaa3972357fb1d9025b2d46a7fd90a70978d1c982f6f162c8b367dc39afca",
+      "ingested_at": "2026-08-25T20:05:00+02:00",
+      "size_bytes": 566329,
+      "modified_at": "2026-08-25T17:02:23.7711545Z",
+      "content_hash": "sha256:b0ad2c3f356fec1d184c42dfb4bb7a9dd9f15c66ba307e4f0ad3b556e6bbda95",
       "source_type": "cursor-history",
       "project": "alcoholic",
       "pages_created": [
@@ -383,10 +383,10 @@
       ]
     },
     "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/14805ad4-dec0-4781-92a1-c718c5113dde/14805ad4-dec0-4781-92a1-c718c5113dde.jsonl": {
-      "ingested_at": "2026-08-25T19:21:00+02:00",
-      "size_bytes": 21085,
-      "modified_at": "2026-08-25T17:21:26.198354Z",
-      "content_hash": "sha256:c259303ade3a977070431e61cd877395dbc2f3dbc4c6b25d62ab8431c0fe2362",
+      "ingested_at": "2026-08-25T20:05:00+02:00",
+      "size_bytes": 51477,
+      "modified_at": "2026-08-25T17:24:25.8387691Z",
+      "content_hash": "sha256:2ae801e0b35bf840558993e4cf647002e064c5e5c205809853b331c6636d8b80",
       "source_type": "cursor-history",
       "project": "alcoholic",
       "pages_created": [],
@@ -396,12 +396,64 @@
         "projects/alcoholic/references/cursor-create-independence-session.md",
         "projects/alcoholic/skills/forge-1.19.2-phase-7a-verification.md"
       ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/1ca21b6f-a077-4686-8f47-c41ee6e59fc7/1ca21b6f-a077-4686-8f47-c41ee6e59fc7.jsonl": {
+      "ingested_at": "2026-08-25T20:05:00+02:00",
+      "size_bytes": 30840,
+      "modified_at": "2026-08-25T18:00:04.1928824Z",
+      "content_hash": "sha256:d9ada3f2438197dfd47edfa91d0dc846cdf4600c35b59eed6b0970adde79509f",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/electric-motor.md",
+        "projects/alcoholic/concepts/crossroads-rotary-adapter.md",
+        "projects/alcoholic/references/cursor-crossroads-electric-motor-session.md",
+        "projects/alcoholic/skills/forge-1.19.2-crossroads-fe-verification.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/mechanical-drive-port.md",
+        "projects/alcoholic/concepts/industrial-ports.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/native-executor-invariant.md",
+        "projects/alcoholic/concepts/loader-independent-minecraft-architecture.md",
+        "projects/alcoholic/concepts/artisanal-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/create-press-adapter.md",
+        "projects/alcoholic/concepts/process-capability-graph.md",
+        "projects/alcoholic/skills/forge-1.19.2-phase-7a-verification.md",
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/ede9eb58-09ac-4ccc-9fea-74a521453d14/ede9eb58-09ac-4ccc-9fea-74a521453d14.jsonl": {
+      "ingested_at": "2026-08-25T20:05:00+02:00",
+      "size_bytes": 13937,
+      "modified_at": "2026-08-25T17:58:35.1581756Z",
+      "content_hash": "sha256:32988302e89a85c2fc3b003aa5da137bab38f46dcb4cc2608f48468edb3416f5",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/concepts/mechanical-drive-port.md",
+        "projects/alcoholic/concepts/industrial-ports.md",
+        "projects/alcoholic/references/cursor-crossroads-electric-motor-session.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/b513551a-e1ea-4b9a-9761-4cb97b67cfbe/b513551a-e1ea-4b9a-9761-4cb97b67cfbe.jsonl": {
+      "ingested_at": "2026-08-25T20:05:00+02:00",
+      "size_bytes": 15251,
+      "modified_at": "2026-08-25T17:29:29.1483624Z",
+      "content_hash": "sha256:925a1efd9f722a6f8e5b34e7393607a6e250e6239f53569879103777b7893e87",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": []
     }
   },
   "projects": {
     "alcoholic": {
       "source_cwd": "C:/Users/djden/source/repos/Alcoholic",
-      "last_synced": "2026-08-25T19:21:00+02:00",
+      "last_synced": "2026-08-25T20:05:00+02:00",
       "last_commit_synced": "5c5d26d4ba471e23dd22c9fef857086960e924d2",
       "pages_in_vault": [
         "projects/alcoholic/alcoholic.md",
@@ -441,12 +493,16 @@
         "projects/alcoholic/references/cursor-phase-5-aging-session.md",
         "projects/alcoholic/references/cursor-phase-6-industrial-session.md",
         "projects/alcoholic/references/cursor-phase-7a-grain-session.md",
-        "projects/alcoholic/references/cursor-create-independence-session.md"
+        "projects/alcoholic/references/cursor-create-independence-session.md",
+        "projects/alcoholic/concepts/electric-motor.md",
+        "projects/alcoholic/concepts/crossroads-rotary-adapter.md",
+        "projects/alcoholic/skills/forge-1.19.2-crossroads-fe-verification.md",
+        "projects/alcoholic/references/cursor-crossroads-electric-motor-session.md"
       ]
     }
   },
   "stats": {
-    "total_sources_ingested": 26,
-    "total_pages": 38
+    "total_sources_ingested": 29,
+    "total_pages": 42
   }
 }

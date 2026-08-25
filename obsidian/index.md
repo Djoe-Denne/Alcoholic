@@ -4,7 +4,7 @@ title: Wiki Index
 
 # Wiki Index
 
-*This index is automatically maintained. Last updated: 2026-08-25T19:21:00+02:00*
+*This index is automatically maintained. Last updated: 2026-08-25T20:05:00+02:00*
 
 ## Concepts
 
@@ -27,10 +27,12 @@ title: Wiki Index
 - [[projects/alcoholic/concepts/bottled-beverage-snapshot|Bottled Beverage Snapshot]] — Consumer snapshot of a batch, not runtime process state. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/industrial-multiblock|Industrial Multiblock]] — Variable-size hollow cuboid machines; capacity is interior volume. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/industrial-processing|Industrial Processing]] — Extra PRESS and FERMENT executors plus a passive tank; kinetic power is not Create-only. ( #minecraft #software-architecture)
-- [[projects/alcoholic/concepts/industrial-ports|Industrial Ports]] — Fluid, item, and kinetic views on the controller; debug kinetic RPM NBT is compile-stripped. ( #minecraft #compatibility)
+- [[projects/alcoholic/concepts/industrial-ports|Industrial Ports]] — Fluid, item, and kinetic views; one kinetic port wins per tick for gate and billing. ( #minecraft #compatibility)
 - [[projects/alcoholic/concepts/grain-processing|Grain Processing]] — Beer DAG through generic MALT, MILL, MASH, and BOIL; no drink-family branches. ( #minecraft #software-architecture)
-- [[projects/alcoholic/concepts/mechanical-drive-port|Mechanical Drive Port]] — Loader-independent rotary port; debug RPM NBT is compile-stripped from published jars. ( #minecraft #software-architecture)
-- [[projects/alcoholic/concepts/native-executor-invariant|Native Executor Invariant]] — Official DAGs ship a native executor; Create may only add extras. ( #minecraft #software-architecture)
+- [[projects/alcoholic/concepts/mechanical-drive-port|Mechanical Drive Port]] — Loader-independent rotary port; four supplies; consumeWork bills the winner. ( #minecraft #software-architecture)
+- [[projects/alcoholic/concepts/electric-motor|Electric Motor]] — Native FE consumer that emits MechanicalDrivePort; idle machines do not drain. ( #minecraft #software-architecture)
+- [[projects/alcoholic/concepts/crossroads-rotary-adapter|Crossroads Rotary Adapter]] — Optional IAxleHandler on Alcoholic inputs; joule billing stays in the adapter. ( #minecraft #compatibility)
+- [[projects/alcoholic/concepts/native-executor-invariant|Native Executor Invariant]] — Official DAGs ship a native executor; Create, Crossroads, and IE stay optional. ( #minecraft #software-architecture)
 
 ## Entities
 
@@ -42,6 +44,7 @@ title: Wiki Index
 - [[projects/alcoholic/skills/forge-1.19.2-phase-5-verification|Forge 1.19.2 Phase 5 Verification]] — AGE, vessels, blend, bottle, and nineteen GameTests. ( #minecraft #testing)
 - [[projects/alcoholic/skills/forge-1.19.2-phase-6-verification|Forge 1.19.2 Phase 6 Verification]] — Multiblock purity, industrial catalog, and industrial_pad GameTests. ( #minecraft #testing)
 - [[projects/alcoholic/skills/forge-1.19.2-phase-7a-verification|Forge 1.19.2 Phase 7A Verification]] — Grain GameTests, mechanical mill, Create isolation, and debug-NBT compile gate. ( #minecraft #testing)
+- [[projects/alcoholic/skills/forge-1.19.2-crossroads-fe-verification|Forge 1.19.2 Crossroads and FE Verification]] — Architecture, mapping tests, FE GameTests, optional Crossroads and IE client paths. ( #minecraft #testing)
 
 ## References
 
@@ -53,6 +56,7 @@ title: Wiki Index
 - [[projects/alcoholic/references/cursor-phase-6-industrial-session|Cursor Phase 6 Industrial Session]] — Source session for industrial multiblocks and Create ports. ( #minecraft #software-architecture)
 - [[projects/alcoholic/references/cursor-phase-7a-grain-session|Cursor Phase 7A Grain Session]] — Source session for beer DAG, barley/hops, and generic malt/mill/mash/boil. ( #minecraft #software-architecture)
 - [[projects/alcoholic/references/cursor-create-independence-session|Cursor Create Independence Session]] — Red-team P0/P1 fixes, native mill, then compile-time debug kinetic NBT. ( #minecraft #software-architecture)
+- [[projects/alcoholic/references/cursor-crossroads-electric-motor-session|Cursor Crossroads Electric Motor Session]] — Optional Crossroads axle bridge, generic FE motor, then winning-port billing. ( #minecraft #software-architecture)
 
 ## Synthesis
 
