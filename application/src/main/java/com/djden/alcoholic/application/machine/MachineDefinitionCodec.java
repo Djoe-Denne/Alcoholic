@@ -98,15 +98,27 @@ public final class MachineDefinitionCodec implements DataCodec<MultiblockDefinit
     }
 
     private static KineticRequirement kinetic(DataNode.ObjectNode object, String path) {
+        if (object.has("mechanical")) {
+            DataNode.ObjectNode node = object.require("mechanical", path).asObject(child(path, "mechanical"));
+            return new KineticRequirement(
+                    numberOr(node, "min_speed", child(path, "mechanical/min_speed"), 0.0),
+                    numberOr(node, "max_speed", child(path, "mechanical/max_speed"), 0.0),
+                    node.get("required").map(value -> value.asBoolean(child(path, "mechanical/required"))).orElse(false)
+            );
+        }
         if (!object.has("kinetic")) {
             return KineticRequirement.none();
         }
         DataNode.ObjectNode node = object.require("kinetic", path).asObject(child(path, "kinetic"));
         return new KineticRequirement(
-                node.get("min_rpm").map(value -> value.asNumber(child(path, "kinetic/min_rpm")).doubleValue()).orElse(0.0),
-                node.get("max_rpm").map(value -> value.asNumber(child(path, "kinetic/max_rpm")).doubleValue()).orElse(0.0),
+                numberOr(node, "min_rpm", child(path, "kinetic/min_rpm"), 0.0),
+                numberOr(node, "max_rpm", child(path, "kinetic/max_rpm"), 0.0),
                 node.get("required").map(value -> value.asBoolean(child(path, "kinetic/required"))).orElse(false)
         );
+    }
+
+    private static double numberOr(DataNode.ObjectNode node, String field, String path, double fallback) {
+        return node.get(field).map(value -> value.asNumber(path).doubleValue()).orElse(fallback);
     }
 
     private static Set<String> stringSet(DataNode.ObjectNode object, String path, String field) {

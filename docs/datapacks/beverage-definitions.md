@@ -185,7 +185,9 @@ Solid-to-solid. Kiln profiles are data. The malting floor executes `MALT`.
 ```
 
 `create_compatible` emits Create millstone (`create:milling`) and crushing
-wheels (`create:crushing`) recipes. Alcoholic does not add its own mill.
+wheels (`create:crushing`) recipes as optional extra executors. The native
+Alcoholic Malt Mill always executes the same `MILL` definition. Create
+must not be required for official progression.
 
 ### MASH
 

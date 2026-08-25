@@ -1,9 +1,29 @@
 plugins {
     id 'java-library'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+
+minecraft {
+    mappings channel: mapping_channel, version: mapping_version
+}
+
+repositories {
+    maven {
+        name = 'CurseMaven'
+        url = 'https://www.cursemaven.com'
+        content {
+            includeGroup 'curse.maven'
+        }
+    }
 }
 
 dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
     api project(':integration-create')
+    implementation project(':minecraft-common')
+
+    compileOnly fg.deobf('curse.maven:create-328085:4835190')
 
     testImplementation platform("org.junit:junit-bom:${junit_version}")
     testImplementation 'org.junit.jupiter:junit-jupiter'

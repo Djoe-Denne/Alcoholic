@@ -1,6 +1,6 @@
 # ADR-028: Create MILL Executor Integration
 
-- Status: Accepted
+- Status: Superseded by [ADR-030](ADR-030-native-mechanical-executors.md)
 - Date: 2026-08-25
 
 ## Context
@@ -25,5 +25,7 @@ own mill.
 
 ## Consequences
 
-Create remains optional. Without Create, MILL still resolves in the process
-engine and tests; world execution uses Create when present.
+Create remained optional at the process-engine layer, but world execution
+of MILL had no native machine. ADR-030 adds the Malt Mill and a primitive
+engine so official progression no longer depends on Create. Create
+millstone and crushing recipes remain optional extra executors.

@@ -1,7 +1,8 @@
-package com.djden.alcoholic.forge.create;
+package com.djden.alcoholic.integration.create.forge;
 
 import com.djden.alcoholic.domain.liquid.PropertyBag;
 import com.djden.alcoholic.minecraft.process.SolidPropertyNbt;
+import com.simibubi.create.content.kinetics.crusher.CrushingWheelControllerBlockEntity;
 import com.simibubi.create.content.kinetics.millstone.MillstoneBlockEntity;
 import net.minecraft.server.level.ChunkHolder;
 import net.minecraft.server.level.ServerLevel;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.items.IItemHandler;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -21,8 +23,8 @@ import java.util.Optional;
 import java.util.WeakHashMap;
 
 /**
- * Copies Alcoholic solid properties from a millstone input onto newly produced
- * output. Create recipes themselves stay identifier-only.
+ * Copies Alcoholic solid properties from Create mill/crusher inputs onto
+ * newly produced output. Create recipes themselves stay identifier-only.
  */
 public final class CreateMillPropertyBridge {
     private final Map<BlockEntity, ItemStack> lastInputs = new WeakHashMap<>();
@@ -38,20 +40,22 @@ public final class CreateMillPropertyBridge {
         for (LevelChunk chunk : loadedChunks(level)) {
             for (BlockEntity blockEntity : chunk.getBlockEntities().values()) {
                 if (blockEntity instanceof MillstoneBlockEntity millstone) {
-                    transfer(millstone);
+                    transfer(millstone, millstone.inputInv, millstone.outputInv);
+                } else if (blockEntity instanceof CrushingWheelControllerBlockEntity crusher) {
+                    transfer(crusher, crusher.inventory, crusher.inventory);
                 }
             }
         }
     }
 
-    private void transfer(MillstoneBlockEntity millstone) {
-        ItemStack input = millstone.inputInv.getStackInSlot(0);
-        ItemStack previous = lastInputs.get(millstone);
+    private void transfer(BlockEntity entity, IItemHandler inputInv, IItemHandler outputInv) {
+        ItemStack input = firstNonEmpty(inputInv);
+        ItemStack previous = lastInputs.get(entity);
         if (previous != null && !previous.isEmpty() && input.getCount() < previous.getCount()) {
             Optional<PropertyBag> properties = SolidPropertyNbt.read(previous);
             if (properties.isPresent()) {
-                for (int slot = 0; slot < millstone.outputInv.getSlots(); slot++) {
-                    ItemStack output = millstone.outputInv.getStackInSlot(slot);
+                for (int slot = 0; slot < outputInv.getSlots(); slot++) {
+                    ItemStack output = outputInv.getStackInSlot(slot);
                     if (output.isEmpty() || SolidPropertyNbt.read(output).isPresent()) {
                         continue;
                     }
@@ -59,7 +63,17 @@ public final class CreateMillPropertyBridge {
                 }
             }
         }
-        lastInputs.put(millstone, input.copy());
+        lastInputs.put(entity, input.copy());
+    }
+
+    private static ItemStack firstNonEmpty(IItemHandler inventory) {
+        for (int slot = 0; slot < inventory.getSlots(); slot++) {
+            ItemStack stack = inventory.getStackInSlot(slot);
+            if (!stack.isEmpty()) {
+                return stack;
+            }
+        }
+        return ItemStack.EMPTY;
     }
 
     private static List<LevelChunk> loadedChunks(ServerLevel level) {

@@ -26,14 +26,11 @@ import com.djden.alcoholic.minecraft.content.GrapeContentRegistrar;
 import com.djden.alcoholic.minecraft.content.GrainContent;
 import com.djden.alcoholic.minecraft.content.GrainContentRegistrar;
 import com.djden.alcoholic.minecraft.content.IndustrialContent;
-import com.djden.alcoholic.minecraft.content.IndustrialContentRegistrar;
 import com.djden.alcoholic.minecraft.content.ProcessingContent;
 import com.djden.alcoholic.minecraft.content.ProcessingContentRegistrar;
 import com.djden.alcoholic.minecraft.viticulture.InternalGrapeProvider;
 import com.djden.alcoholic.minecraft.viticulture.ViticultureRuntime;
 import com.djden.alcoholic.forge.condition.ItemPresentCondition;
-import com.djden.alcoholic.forge.create.CreateMillPropertyBridge;
-import com.djden.alcoholic.forge.environment.CreateHeatProbe;
 import com.djden.alcoholic.forge.fluid.ForgeFluidCapabilities;
 import com.djden.alcoholic.forge.fluid.ForgeFluidContent;
 import com.djden.alcoholic.forge.fluid.ForgeFluidInteraction;
@@ -48,7 +45,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -148,8 +144,7 @@ public final class AlcoholicForgeMod {
 
         if (ForgeCreateIntegration.shouldActivate(compatibility)) {
             LOGGER.info("Create integration boundary active for Create {}", "0.5.1.x");
-            CreateHeatProbe.install();
-            MinecraftForge.EVENT_BUS.register(new CreateMillPropertyBridge());
+            ForgeCreateIntegration.install();
         }
     }
 
@@ -192,18 +187,6 @@ public final class AlcoholicForgeMod {
     }
 
     private static IndustrialContent registerIndustrial(ContentRegistrationPorts ports) {
-        if (!ModList.get().isLoaded("create")) {
-            return IndustrialContentRegistrar.register(ports);
-        }
-        try {
-            return (IndustrialContent) Class.forName(
-                            "com.djden.alcoholic.forge.create.CreateIndustrialContent"
-                    )
-                    .getMethod("register", ContentRegistrationPorts.class)
-                    .invoke(null, ports);
-        } catch (ReflectiveOperationException exception) {
-            LOGGER.error("Create is loaded but the kinetic port adapter failed; using the vanilla port", exception);
-            return IndustrialContentRegistrar.register(ports);
-        }
+        return ForgeCreateIntegration.registerIndustrial(ports);
     }
 }

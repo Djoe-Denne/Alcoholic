@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "alcoholic:block/malt_mill",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "alcoholic:block/malt_mill"
+    },
+    "facing=south": {
+      "model": "alcoholic:block/malt_mill",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "alcoholic:block/malt_mill",
+      "y": 270
+    }
+  }
+}

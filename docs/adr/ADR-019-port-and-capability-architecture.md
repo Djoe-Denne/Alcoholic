@@ -16,13 +16,16 @@ Generic ports are configured by the formed machine, not by beverage:
 - Fluid port → Forge `FLUID_HANDLER` over the controller tank, gated by
   `INPUT` / `OUTPUT` / `BOTH` and `IndustrialAccess`
 - Item port → `WorldlyContainer` + Forge `ITEM_HANDLER`
-- Kinetic port → `KineticSource` RPM probe
+- Kinetic port → `MechanicalDrivePort` relay (legacy `KineticSource` view)
 
 Players cycle port mode with sneak + empty hand or `create:wrench`.
 
-When Create is present the kinetic port is a Create `KineticBlock` so
-shafts and gearboxes connect. When Create is absent the vanilla port
-still stores RPM for GameTests via `debugForceRpm`.
+Machines consume `MechanicalDriveState` (speed, capacity, running/stalled).
+The vanilla kinetic port forwards an adjacent native engine or a stored
+debug speed. When Create is present the port is a Create `KineticBlock`
+and a `MechanicalDrives` probe translates Create kinetics. Alcoholic
+does not add a shaft network. See
+[ADR-030](ADR-030-native-mechanical-executors.md).
 
 The controller may also expose capabilities, but routine factories use
 ports.

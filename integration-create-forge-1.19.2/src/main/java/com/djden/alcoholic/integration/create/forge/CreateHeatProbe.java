@@ -1,4 +1,4 @@
-package com.djden.alcoholic.forge.environment;
+package com.djden.alcoholic.integration.create.forge;
 
 import com.djden.alcoholic.minecraft.environment.HeatSources;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
@@ -6,7 +6,7 @@ import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import java.util.OptionalDouble;
 
 /**
- * Optional Create heat mapping. Lives in the Forge composition root so
+ * Optional Create heat mapping. Lives in the Create Forge adapter so
  * minecraft-common stays loader-neutral.
  */
 public final class CreateHeatProbe {

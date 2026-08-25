@@ -3,13 +3,61 @@ plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
 
+def requestedTasks = gradle.startParameter.taskNames.collect { it.toLowerCase() }
+def releaseLike = requestedTasks.any { name ->
+    def simple = name.contains(':') ? name.substring(name.lastIndexOf(':') + 1) : name
+    simple == 'build' || simple == 'assemble' || simple == 'jar' || simple == 'reobfjar' || simple.contains('publish')
+}
+def alcoholicDebug = providers.gradleProperty('alcoholic.debug')
+        .orElse(releaseLike ? 'false' : 'true')
+
+def alcoholicDebugDir = layout.buildDirectory.dir('generated/sources/alcoholicDebug/java')
+def generateAlcoholicDebug = tasks.register('generateAlcoholicDebug') {
+    def outputDir = alcoholicDebugDir
+    def debugFlag = alcoholicDebug
+    inputs.property('alcoholic.debug', debugFlag)
+    outputs.dir(outputDir)
+    doLast {
+        def enabled = debugFlag.get().toBoolean()
+        def packageDir = new File(outputDir.get().asFile, 'com/djden/alcoholic/minecraft')
+        packageDir.mkdirs()
+        new File(packageDir, 'AlcoholicDebug.java').text = """\
+package com.djden.alcoholic.minecraft;
+
+/**
+ * Compile-time debug switch. {@code javac} dead-strips guarded branches
+ * when {@link #ENABLED} is {@code false}, so debug kinetic NBT never
+ * exists in published jars.
+ *
+ * <p>Override with {@code -Palcoholic.debug=true|false}. Default is
+ * {@code true} for IDE / {@code run*} and {@code false} for
+ * {@code build} / {@code jar} / {@code publish}.
+ */
+public final class AlcoholicDebug {
+    private AlcoholicDebug() {
+    }
+
+    public static final boolean ENABLED = ${enabled};
+}
+"""
+    }
+}
+
 minecraft {
     mappings channel: mapping_channel, version: mapping_version
     copyIdeResources = true
 }
 
+sourceSets.main.java {
+    srcDir alcoholicDebugDir
+}
+
 sourceSets.main.resources {
     srcDir 'src/generated/resources'
+}
+
+tasks.named('compileJava', JavaCompile).configure {
+    dependsOn generateAlcoholicDebug
 }
 
 dependencies {

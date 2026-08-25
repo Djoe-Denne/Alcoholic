@@ -19,7 +19,7 @@ Design and architecture session for [[industrial-multiblock]], [[industrial-proc
 
 Architectural answers recorded in ADR-017 through ADR-023: variable-size hollow cuboids, controller-owned state, ports as capability views, event-driven validation, cross-chunk `INCOMPLETE` rather than `INVALID`, executor modifiers, and elapsed-time fermentation.
 
-If the next task adds industrial beer machinery, the intended answer is: none of the generic multiblock framework needs modification except new machine definitions/executors and any genuinely new process-specific capabilities.
+If the next task adds industrial beer machinery, the intended answer is: none of the generic multiblock framework needs modification except new machine definitions/executors and any genuinely new process-specific capabilities. Phase 7A added artisanal grain machines instead; see [[cursor-phase-7a-grain-session]] and [[grain-processing]]. Kinetic power later became a [[mechanical-drive-port]] so Create is not required.
 
 ## Session outcome
 
@@ -40,4 +40,6 @@ Architecture and purity checks passed, together with **32/32** GameTests. Create
 
 - [[alcoholic]]
 - [[cursor-phase-5-aging-session]]
+- [[cursor-phase-7a-grain-session]]
+- [[cursor-create-independence-session]]
 - [[forge-1.19.2-phase-6-verification]]

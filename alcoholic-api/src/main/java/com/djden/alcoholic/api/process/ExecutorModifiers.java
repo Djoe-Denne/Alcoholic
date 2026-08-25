@@ -39,4 +39,11 @@ public record ExecutorModifiers(
     public static ExecutorModifiers industrialVat() {
         return new ExecutorModifiers(1.0, 1.0, 4.0, 1);
     }
+
+    /**
+     * Native Malt Mill: good yield, moderate standalone throughput.
+     */
+    public static ExecutorModifiers maltMill() {
+        return new ExecutorModifiers(1.0, 1.0, 1.0, 1);
+    }
 }

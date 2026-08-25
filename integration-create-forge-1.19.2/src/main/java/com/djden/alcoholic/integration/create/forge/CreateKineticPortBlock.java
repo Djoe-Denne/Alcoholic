@@ -1,4 +1,4 @@
-package com.djden.alcoholic.forge.create;
+package com.djden.alcoholic.integration.create.forge;
 
 import com.djden.alcoholic.domain.multiblock.PartRole;
 import com.djden.alcoholic.minecraft.multiblock.MultiblockNotifier;

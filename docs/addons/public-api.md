@@ -71,7 +71,17 @@ Generic PRESS definition
         +--> Create compacting adapter (same capability)
         |
         +--> industrial press executor
+
+Generic MILL definition
+        |
+        +--> Alcoholic Malt Mill
+        |
+        +--> Create Millstone / Crushing Wheels [optional]
 ```
+
+No official Alcoholic production DAG may require an executor supplied
+only by an optional integration. Create and other mods add extra
+executors and automation.
 
 The application layer asks whether executor X can run node Y with inputs Z,
 then applies the registered `ProcessType`. Transformation logic lives in the

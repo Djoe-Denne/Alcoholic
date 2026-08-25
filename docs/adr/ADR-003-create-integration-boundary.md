@@ -46,3 +46,7 @@ respective platform composition roots.
 - Some adapter code may be duplicated to preserve loader isolation.
 - Create remains an optional integration and cannot become a prerequisite for
   core brewing behavior.
+- Operational Create adapters (heat, millstone/crushing, kinetic drive)
+  live in `integration-create-forge-1.19.2`. They implement Alcoholic
+  ports such as `HeatSources.Probe` and `MechanicalDrivePort`. See
+  [ADR-030](ADR-030-native-mechanical-executors.md).

@@ -8,11 +8,13 @@ import com.djden.alcoholic.minecraft.process.ArtisanalBlendingCrockBlockEntity;
 import com.djden.alcoholic.minecraft.process.ArtisanalFermenterBlockEntity;
 import com.djden.alcoholic.minecraft.process.ArtisanalPressBlockEntity;
 import com.djden.alcoholic.minecraft.process.BrewingKettleBlockEntity;
+import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlockEntity;
+import com.djden.alcoholic.minecraft.process.MaltMillBlockEntity;
 import com.djden.alcoholic.minecraft.process.MaltingFloorBlockEntity;
 import com.djden.alcoholic.minecraft.process.MashTunBlockEntity;
 import com.djden.alcoholic.minecraft.process.OakBarrelBlockEntity;
+import com.djden.alcoholic.domain.mechanical.MechanicalDrivePort;
 import com.djden.alcoholic.minecraft.multiblock.ControllerBound;
-import com.djden.alcoholic.minecraft.multiblock.KineticSource;
 import com.djden.alcoholic.minecraft.multiblock.MultiblockControllerBlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -43,6 +45,12 @@ public final class AlcoholicInspect {
         if (entity instanceof MaltingFloorBlockEntity malting) {
             return Optional.of(malting.debugDump());
         }
+        if (entity instanceof MaltMillBlockEntity mill) {
+            return Optional.of(mill.debugDump());
+        }
+        if (entity instanceof PrimitiveCombustionEngineBlockEntity engine) {
+            return Optional.of(engine.debugDump());
+        }
         if (entity instanceof MashTunBlockEntity mash) {
             return Optional.of(mash.debugDump());
         }
@@ -53,7 +61,9 @@ public final class AlcoholicInspect {
             return Optional.of(controller.debugDump());
         }
         if (entity instanceof ControllerBound bound && bound.controller() != null) {
-            String extra = entity instanceof KineticSource kinetic ? " rpm=" + kinetic.rpm() : "";
+            String extra = entity instanceof MechanicalDrivePort drive
+                    ? " drive=" + drive.driveState().speed() + "/" + drive.driveState().availableCapacity()
+                    : "";
             return Optional.of(bound.controller().debugDump() + extra);
         }
         if (entity instanceof LiquidVessel vessel) {

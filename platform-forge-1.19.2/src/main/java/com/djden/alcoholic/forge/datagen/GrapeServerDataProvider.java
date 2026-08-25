@@ -29,6 +29,8 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         addSelfDropLoot(sink, "malting_floor");
         addSelfDropLoot(sink, "mash_tun");
         addSelfDropLoot(sink, "brewing_kettle");
+        addSelfDropLoot(sink, "malt_mill");
+        addSelfDropLoot(sink, "primitive_combustion_engine");
         addEmptyLoot(sink, "trellis_wire");
         addBarleyLoot(sink);
         addHopBineLoot(sink);
@@ -561,6 +563,46 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         addShaped(sink, "fluid_port", " I ", "IBI", " I ", "I", "minecraft:iron_ingot", "B", "minecraft:bucket", 1);
         addShaped(sink, "item_port", " I ", "IHI", " I ", "I", "minecraft:iron_ingot", "H", "minecraft:hopper", 1);
         addShaped(sink, "kinetic_port", " I ", "ISI", " I ", "I", "minecraft:iron_ingot", "S", "minecraft:iron_nugget", 1);
+        sink.add(
+                "data/alcoholic/recipes/malt_mill.json",
+                """
+                        {
+                          "type": "minecraft:crafting_shaped",
+                          "pattern": [
+                            "S S",
+                            "PSP",
+                            "PPP"
+                          ],
+                          "key": {
+                            "S": { "item": "minecraft:smooth_stone_slab" },
+                            "P": { "tag": "minecraft:planks" }
+                          },
+                          "result": {
+                            "item": "alcoholic:malt_mill"
+                          }
+                        }
+                        """
+        );
+        sink.add(
+                "data/alcoholic/recipes/primitive_combustion_engine.json",
+                """
+                        {
+                          "type": "minecraft:crafting_shaped",
+                          "pattern": [
+                            "III",
+                            "IFI",
+                            "III"
+                          ],
+                          "key": {
+                            "I": { "item": "minecraft:iron_ingot" },
+                            "F": { "item": "minecraft:furnace" }
+                          },
+                          "result": {
+                            "item": "alcoholic:primitive_combustion_engine"
+                          }
+                        }
+                        """
+        );
         addShaped(sink, "industrial_press_controller", "IPI", "ICI", "III", "I", "minecraft:iron_ingot", "P", "alcoholic:artisanal_press", "C", "alcoholic:industrial_casing", 1);
         addShaped(sink, "industrial_vat_controller", "IFI", "ICI", "III", "I", "minecraft:iron_ingot", "F", "alcoholic:artisanal_fermenter", "C", "alcoholic:industrial_casing", 1);
         addShaped(sink, "industrial_tank_controller", "IBI", "ICI", "III", "I", "minecraft:iron_ingot", "B", "minecraft:bucket", "C", "alcoholic:industrial_casing", 1);

@@ -12,6 +12,8 @@ import com.djden.alcoholic.application.process.PressConfig;
 import com.djden.alcoholic.application.process.ProcessRecipeResolver;
 import com.djden.alcoholic.domain.ingredient.IngredientLot;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
+import com.djden.alcoholic.domain.mechanical.MechanicalDrivePort;
+import com.djden.alcoholic.domain.mechanical.MechanicalDriveState;
 import com.djden.alcoholic.domain.multiblock.AxisBox;
 import com.djden.alcoholic.domain.multiblock.Box3;
 import com.djden.alcoholic.domain.multiblock.CellCoord;
@@ -292,8 +294,9 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     }
 
     private void tickPress(MultiblockDefinition definition) {
-        lastRpm = collectRpm();
-        if (!definition.kinetic().satisfied(lastRpm)) {
+        MechanicalDriveState drive = collectDrive();
+        lastRpm = drive.speed();
+        if (!definition.kinetic().satisfied(drive)) {
             pressWorking = false;
             stroke = PressStrokeState.IDLE;
             pressProgress = 0;
@@ -526,17 +529,19 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         this.pressWorking = state != PressStrokeState.IDLE;
     }
 
-    private double collectRpm() {
+    private MechanicalDriveState collectDrive() {
         if (level == null || geometry == null) {
-            return lastRpm;
+            return lastRpm > 0.0
+                    ? MechanicalDriveState.running(lastRpm, Double.POSITIVE_INFINITY)
+                    : MechanicalDriveState.idle();
         }
-        double max = 0.0;
+        MechanicalDriveState best = MechanicalDriveState.idle();
         for (CellCoord port : geometry.ports()) {
-            if (level.getBlockEntity(WorldStructureSampler.pos(port)) instanceof KineticSource kinetic) {
-                max = Math.max(max, kinetic.rpm());
+            if (level.getBlockEntity(WorldStructureSampler.pos(port)) instanceof MechanicalDrivePort drive) {
+                best = MechanicalDriveState.stronger(best, drive.driveState());
             }
         }
-        return max;
+        return best;
     }
 
     private double ambientTemperature() {

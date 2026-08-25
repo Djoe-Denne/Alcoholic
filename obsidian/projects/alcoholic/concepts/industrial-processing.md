@@ -5,13 +5,14 @@ tags: [minecraft, software-architecture, type/concept, project/alcoholic]
 aliases: [industrial press, industrial vat, industrial tank]
 sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/dc49ea79-b9e5-4902-ad7f-795f762f8f52/dc49ea79-b9e5-4902-ad7f-795f762f8f52.jsonl"
-summary: Industrial machines are extra PRESS and FERMENT executors plus a passive tank. Create remains the transport layer.
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06.jsonl"
+summary: Industrial machines are extra PRESS and FERMENT executors plus a passive tank. Kinetic power is a MechanicalDrivePort, not Create-only.
 provenance:
-  extracted: 0.9
+  extracted: 0.88
   inferred: 0.1
-  ambiguous: 0.0
+  ambiguous: 0.02
 created: 2026-08-25T15:30:00+02:00
-updated: 2026-08-25T16:01:00+02:00
+updated: 2026-08-25T18:55:00+02:00
 ---
 
 # Industrial Processing
@@ -36,7 +37,7 @@ The wine DAG is unchanged: grapes → PRESS → must → FERMENT → young wine 
 
 ## Industrial press
 
-The press consumes Create kinetic power, aggregates large homogeneous batches, and reuses generic PRESS outputs and byproducts. Executor modifiers improve throughput and yield without changing recipe semantics.
+The press consumes [[mechanical-drive-port]] power (primitive engine adjacent to the kinetic port, or Create shafts when present), aggregates large homogeneous batches, and reuses generic PRESS outputs and byproducts. Executor modifiers improve throughput and yield without changing recipe semantics. Tick dispatch is by `ProcessType` (`IndustrialRuntime.strategy`), not `MachineKind`, so a later industrial mash registers a strategy instead of extending an enum.
 
 Its crush-zone easter egg is active only during the compression stroke; incidental edge contact is safe.
 
@@ -50,14 +51,17 @@ The tank is a passive vessel, not a process executor. It preserves batch metadat
 
 ## Create
 
-Alcoholic does not add pipes, pumps, belts, or shafts. The intended factory is vineyard → belts → industrial press → pipes → tank → pipes → vat → pipes → existing barrel aging. See [[create-press-adapter]] for the separate Mechanical Press + Basin compacting path.
+Alcoholic does not add pipes, pumps, belts, or shafts. The intended factory is vineyard → belts → industrial press → pipes → tank → pipes → vat → pipes → existing barrel aging. Without Create, the primitive engine can still drive the press. See [[create-press-adapter]] for the separate Mechanical Press + Basin compacting path. There is no industrial malt house, mash tun, or kettle yet.
 
 ## Related
 
 - [[industrial-multiblock]]
 - [[industrial-ports]]
+- [[mechanical-drive-port]]
+- [[native-executor-invariant]]
 - [[artisanal-processing]]
 - [[create-press-adapter]]
 - [[fermentation-physics]]
 - [[cursor-phase-6-industrial-session]]
+- [[cursor-create-independence-session]]
 - [[forge-1.19.2-phase-6-verification]]

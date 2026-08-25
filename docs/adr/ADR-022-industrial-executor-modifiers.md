@@ -26,6 +26,7 @@ Shipped defaults:
 
 - Industrial press: yield 1.05, speed 2.0, unbounded batch units
 - Industrial vat: thermal stability 4.0
+- Native Malt Mill: yield 1.0, speed 1.0, batch 1
 - Identity modifiers produce the same domain output as artisanal
   equipment
 

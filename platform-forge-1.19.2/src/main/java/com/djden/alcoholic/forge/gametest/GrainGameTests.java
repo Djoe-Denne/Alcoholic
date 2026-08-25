@@ -6,8 +6,10 @@ import com.djden.alcoholic.domain.liquid.PropertyBag;
 import com.djden.alcoholic.minecraft.agriculture.CerealCropBlock;
 import com.djden.alcoholic.minecraft.agriculture.HopBineBlock;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
+import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlockEntity;
 import com.djden.alcoholic.minecraft.process.ArtisanalFermenterBlockEntity;
 import com.djden.alcoholic.minecraft.process.BrewingKettleBlockEntity;
+import com.djden.alcoholic.minecraft.process.MaltMillBlockEntity;
 import com.djden.alcoholic.minecraft.process.MaltingFloorBlockEntity;
 import com.djden.alcoholic.minecraft.process.MashTunBlockEntity;
 import com.djden.alcoholic.minecraft.process.SolidPropertyNbt;
@@ -92,22 +94,41 @@ public final class GrainGameTests {
         });
     }
 
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void maltMillStallsWithoutMechanicalPower(GameTestHelper helper) {
+        helper.setBlock(ORIGIN, block("malt_mill").defaultBlockState());
+        MaltMillBlockEntity mill = (MaltMillBlockEntity) helper.getBlockEntity(ORIGIN);
+        mill.insert(new ItemStack(item("malted_barley"), 1));
+        helper.runAtTickTime(20, () -> {
+            require(helper, mill.getItem(MaltMillBlockEntity.OUTPUT_SLOT).isEmpty(), "Mill ran without a drive");
+            require(helper, mill.progress() == 0, "Mill progressed without mechanical power");
+            helper.succeed();
+        });
+    }
+
     @GameTest(template = "empty", timeoutTicks = 120)
-    public static void maltingFloorMillsMaltedGrainWithProperties(GameTestHelper helper) {
-        helper.setBlock(ORIGIN, block("malting_floor").defaultBlockState());
-        MaltingFloorBlockEntity floor = (MaltingFloorBlockEntity) helper.getBlockEntity(ORIGIN);
-        CompoundTag tag = floor.saveWithoutMetadata();
-        tag.putString("ProcessId", "alcoholic:mill_malted_grain");
-        floor.load(tag);
+    public static void maltMillMillsMaltedGrainWithProperties(GameTestHelper helper) {
+        helper.setBlock(ORIGIN, block("malt_mill").defaultBlockState());
+        helper.setBlock(ORIGIN.east(), block("primitive_combustion_engine").defaultBlockState());
+        MaltMillBlockEntity mill = (MaltMillBlockEntity) helper.getBlockEntity(ORIGIN);
+        PrimitiveCombustionEngineBlockEntity engine =
+                (PrimitiveCombustionEngineBlockEntity) helper.getBlockEntity(ORIGIN.east());
+        engine.insertFuel(new ItemStack(net.minecraft.world.item.Items.COAL));
+        PrimitiveCombustionEngineBlockEntity.serverTick(
+                helper.getLevel(),
+                helper.absolutePos(ORIGIN.east()),
+                helper.getBlockState(ORIGIN.east()),
+                engine
+        );
         ItemStack malted = new ItemStack(item("malted_barley"), 1);
         SolidPropertyNbt.write(malted, Map.of(
                 ResourceId.parse("alcoholic:sugar"), 0.85,
                 ResourceId.parse("alcoholic:color"), 0.12
         ));
-        floor.insert(malted);
+        mill.insert(malted);
         helper.runAtTickTime(90, () -> {
-            ItemStack output = floor.getItem(MaltingFloorBlockEntity.OUTPUT_SLOT);
-            require(helper, !output.isEmpty(), "Mill did not finish on the malting floor");
+            ItemStack output = mill.getItem(MaltMillBlockEntity.OUTPUT_SLOT);
+            require(helper, !output.isEmpty(), "Native malt mill did not finish: " + mill.debugDump());
             require(helper, output.is(item("grist")), "Mill output was not grist");
             var properties = SolidPropertyNbt.read(output).orElse(null);
             require(helper, properties != null, "Mill output lost solid properties");

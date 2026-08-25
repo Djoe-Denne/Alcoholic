@@ -7,8 +7,12 @@ import com.djden.alcoholic.minecraft.process.ArtisanalFermenterBlock;
 import com.djden.alcoholic.minecraft.process.ArtisanalFermenterBlockEntity;
 import com.djden.alcoholic.minecraft.process.ArtisanalPressBlock;
 import com.djden.alcoholic.minecraft.process.ArtisanalPressBlockEntity;
+import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlock;
+import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlockEntity;
 import com.djden.alcoholic.minecraft.process.BrewingKettleBlock;
 import com.djden.alcoholic.minecraft.process.BrewingKettleBlockEntity;
+import com.djden.alcoholic.minecraft.process.MaltMillBlock;
+import com.djden.alcoholic.minecraft.process.MaltMillBlockEntity;
 import com.djden.alcoholic.minecraft.process.MaltingFloorBlock;
 import com.djden.alcoholic.minecraft.process.MaltingFloorBlockEntity;
 import com.djden.alcoholic.minecraft.process.MashTunBlock;
@@ -42,6 +46,8 @@ public final class ProcessingContentRegistrar {
         AtomicReference<RegistryRef<BlockEntityType<?>>> maltingEntityHolder = new AtomicReference<>();
         AtomicReference<RegistryRef<BlockEntityType<?>>> mashEntityHolder = new AtomicReference<>();
         AtomicReference<RegistryRef<BlockEntityType<?>>> kettleEntityHolder = new AtomicReference<>();
+        AtomicReference<RegistryRef<BlockEntityType<?>>> millEntityHolder = new AtomicReference<>();
+        AtomicReference<RegistryRef<BlockEntityType<?>>> engineEntityHolder = new AtomicReference<>();
         Supplier<BlockEntityType<?>> pressType = () -> pressEntityHolder.get().get();
         Supplier<BlockEntityType<?>> fermenterType = () -> fermenterEntityHolder.get().get();
         Supplier<BlockEntityType<?>> barrelType = () -> barrelEntityHolder.get().get();
@@ -49,6 +55,8 @@ public final class ProcessingContentRegistrar {
         Supplier<BlockEntityType<?>> maltingType = () -> maltingEntityHolder.get().get();
         Supplier<BlockEntityType<?>> mashType = () -> mashEntityHolder.get().get();
         Supplier<BlockEntityType<?>> kettleType = () -> kettleEntityHolder.get().get();
+        Supplier<BlockEntityType<?>> millType = () -> millEntityHolder.get().get();
+        Supplier<BlockEntityType<?>> engineType = () -> engineEntityHolder.get().get();
 
         RegistryRef<Block> pressRef = ports.blocks().register(
                 AlcoholicIds.ARTISANAL_PRESS,
@@ -78,6 +86,14 @@ public final class ProcessingContentRegistrar {
                 AlcoholicIds.BREWING_KETTLE,
                 () -> new BrewingKettleBlock(machineProperties(), kettleType)
         );
+        RegistryRef<Block> millRef = ports.blocks().register(
+                AlcoholicIds.MALT_MILL,
+                () -> new MaltMillBlock(machineProperties(), millType)
+        );
+        RegistryRef<Block> engineRef = ports.blocks().register(
+                AlcoholicIds.PRIMITIVE_COMBUSTION_ENGINE,
+                () -> new PrimitiveCombustionEngineBlock(engineProperties(), engineType)
+        );
         RegistryRef<Item> pressItem = ports.items().register(
                 AlcoholicIds.ARTISANAL_PRESS,
                 () -> new BlockItem(pressRef.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS))
@@ -105,6 +121,14 @@ public final class ProcessingContentRegistrar {
         RegistryRef<Item> kettleItem = ports.items().register(
                 AlcoholicIds.BREWING_KETTLE,
                 () -> new BlockItem(kettleRef.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS))
+        );
+        RegistryRef<Item> millItem = ports.items().register(
+                AlcoholicIds.MALT_MILL,
+                () -> new BlockItem(millRef.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS))
+        );
+        RegistryRef<Item> engineItem = ports.items().register(
+                AlcoholicIds.PRIMITIVE_COMBUSTION_ENGINE,
+                () -> new BlockItem(engineRef.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS))
         );
         RegistryRef<Item> yeast = ports.items().register(
                 AlcoholicIds.YEAST,
@@ -183,6 +207,24 @@ public final class ProcessingContentRegistrar {
                         kettleRef.get()
                 ).build(null)
         );
+        RegistryRef<BlockEntityType<?>> millEntity = ports.blockEntities().register(
+                AlcoholicIds.MALT_MILL_ENTITY,
+                () -> BlockEntityType.Builder.of(
+                        (position, state) -> new MaltMillBlockEntity(millType.get(), position, state),
+                        millRef.get()
+                ).build(null)
+        );
+        RegistryRef<BlockEntityType<?>> engineEntity = ports.blockEntities().register(
+                AlcoholicIds.PRIMITIVE_COMBUSTION_ENGINE_ENTITY,
+                () -> BlockEntityType.Builder.of(
+                        (position, state) -> new PrimitiveCombustionEngineBlockEntity(
+                                engineType.get(),
+                                position,
+                                state
+                        ),
+                        engineRef.get()
+                ).build(null)
+        );
         pressEntityHolder.set(pressEntity);
         fermenterEntityHolder.set(fermenterEntity);
         barrelEntityHolder.set(barrelEntity);
@@ -190,6 +232,8 @@ public final class ProcessingContentRegistrar {
         maltingEntityHolder.set(maltingEntity);
         mashEntityHolder.set(mashEntity);
         kettleEntityHolder.set(kettleEntity);
+        millEntityHolder.set(millEntity);
+        engineEntityHolder.set(engineEntity);
         return new ProcessingContent(
                 pressRef,
                 pressItem,
@@ -216,7 +260,13 @@ public final class ProcessingContentRegistrar {
                 kettleRef,
                 kettleItem,
                 kettleEntity,
-                spentGrain
+                spentGrain,
+                millRef,
+                millItem,
+                millEntity,
+                engineRef,
+                engineItem,
+                engineEntity
         );
     }
 
@@ -225,5 +275,12 @@ public final class ProcessingContentRegistrar {
                 .strength(2.5F)
                 .sound(SoundType.WOOD)
                 .noOcclusion();
+    }
+
+    private static BlockBehaviour.Properties engineProperties() {
+        return BlockBehaviour.Properties.of(Material.STONE)
+                .strength(3.5F)
+                .sound(SoundType.STONE)
+                .lightLevel(state -> state.getValue(PrimitiveCombustionEngineBlock.LIT) ? 13 : 0);
     }
 }

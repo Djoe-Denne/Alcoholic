@@ -7,22 +7,24 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/a6b5797c-82f8-4021-9d63-10a82fed6899/a6b5797c-82f8-4021-9d63-10a82fed6899.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/c2ca3b27-ad63-4be9-af24-47c49c111f2f/c2ca3b27-ad63-4be9-af24-47c49c111f2f.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/dc49ea79-b9e5-4902-ad7f-795f762f8f52/dc49ea79-b9e5-4902-ad7f-795f762f8f52.jsonl"
-summary: Small-scale press, fermenter, oak barrel, and blending crock execute process capabilities and store LiquidBatch locally.
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/95c81b7c-fa88-4055-9741-14cb948964c9/95c81b7c-fa88-4055-9741-14cb948964c9.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06.jsonl"
+summary: Small-scale machines execute process capabilities: wine vessels plus malting floor, mash tun, kettle, and malt mill.
 provenance:
-  extracted: 0.88
-  inferred: 0.1
+  extracted: 0.86
+  inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T14:10:00+02:00
-updated: 2026-08-25T15:53:00+02:00
+updated: 2026-08-25T18:55:00+02:00
 ---
 
 # Artisanal Processing
 
-Phase 4 shipped press and fermenter. Phase 5 adds the oak barrel and artisanal blending crock. They remain valid after Phase 6. [[industrial-processing]] adds larger executors for the same capabilities; it does not replace these machines.
+Phase 4 shipped press and fermenter. Phase 5 adds the oak barrel and artisanal blending crock. They remain valid after Phase 6. [[industrial-processing]] adds larger executors for PRESS and FERMENT; it does not replace these machines. Phase 7A adds the malting floor, mash tun, brewing kettle, and Malt Mill for [[grain-processing]].
 
 ## Capability, not identity
 
-The press knows only that it executes `alcoholic:press`. The fermenter knows only `alcoholic:ferment`. The oak barrel knows only `alcoholic:age`. The crock knows only `alcoholic:blend`. Beverage JSON never names those machine ids. The same PRESS or AGE definition can later run on a Create adapter or another vessel. See [[process-capability-graph]] and [[create-press-adapter]].
+The press knows only that it executes `alcoholic:press`. The fermenter knows only `alcoholic:ferment`. The oak barrel knows only `alcoholic:age`. The crock knows only `alcoholic:blend`. The malting floor knows only `alcoholic:malt`. The mash tun knows only `alcoholic:mash`. The kettle knows only `alcoholic:boil`. The Malt Mill knows only `alcoholic:mill`. Beverage JSON never names those machine ids. The same PRESS, MILL, or AGE definition can later run on a Create adapter or another vessel. See [[process-capability-graph]], [[native-executor-invariant]], and [[create-press-adapter]].
 
 Recipe binding walks catalog process definitions. The machines must not contain `if (inputIsRedGrape)` or `if (makingWine)`.
 
@@ -40,7 +42,11 @@ The fermenter stores a [[liquid-batch]], accepts `#alcoholic:yeast`, and ticks [
 
 The oak barrel is one adapter of [[vessel-and-environment]]: 8000 mB, capability `alcoholic:age`, loaded-only catch-up. It exposes `IFluidHandler` for Create. History records previous contents; a used barrel applies seasoning.
 
-The artisanal blending crock has two 4000 mB tanks. Filling never auto-merges distinct definitions. Sneak plus empty hand runs [[blend-versus-tank-merge]].
+The artisanal blending crock has two 4000 mB tanks. Both tanks must accept fill (`canFillTank` for index 0 and 1). A review found only the first tank fillable, which made `blend()` unreachable; that is fixed. Filling never auto-merges distinct definitions. Sneak plus empty hand runs [[blend-versus-tank-merge]].
+
+## Grain machines
+
+The malting floor is `MALT`-only (overlapping pale/amber/dark via sneak-cycle). The mash tun is a two-tank thermal executor heated from below. The brewing kettle extracts hop properties into a liquid. The Malt Mill needs adjacent [[mechanical-drive-port]] power and stalls without it. Hopped wort then reuses the artisanal fermenter.
 
 Right-click a vessel with `alcoholic:empty_bottle` to write a [[bottled-beverage-snapshot]].
 
@@ -59,9 +65,14 @@ Block entities store domain `LiquidTank` / `LiquidBatch` with vanilla NBT. Forge
 - [[create-press-adapter]]
 - [[industrial-processing]]
 - [[industrial-multiblock]]
+- [[grain-processing]]
+- [[mechanical-drive-port]]
+- [[native-executor-invariant]]
 - [[public-extension-api]]
 - [[alcoholic]]
 - [[cursor-phase-4-processing-session]]
 - [[cursor-phase-5-aging-session]]
+- [[cursor-phase-7a-grain-session]]
 - [[forge-1.19.2-phase-4-verification]]
 - [[forge-1.19.2-phase-5-verification]]
+- [[forge-1.19.2-phase-7a-verification]]

@@ -1,5 +1,8 @@
-package com.djden.alcoholic.forge.create;
+package com.djden.alcoholic.integration.create.forge;
 
+import com.djden.alcoholic.domain.mechanical.MechanicalDriveState;
+import com.djden.alcoholic.minecraft.AlcoholicDebug;
+import com.djden.alcoholic.minecraft.mechanical.MechanicalDrives;
 import com.djden.alcoholic.minecraft.multiblock.ControllerBound;
 import com.djden.alcoholic.minecraft.multiblock.KineticSource;
 import com.djden.alcoholic.minecraft.multiblock.MultiblockControllerBlockEntity;
@@ -11,7 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * Create kinetic network member that also binds to an Alcoholic controller.
+ * Create kinetic network member that exposes Alcoholic's mechanical port.
  */
 public final class CreateKineticPortBlockEntity extends KineticBlockEntity
         implements ControllerBound, KineticSource {
@@ -24,16 +27,34 @@ public final class CreateKineticPortBlockEntity extends KineticBlockEntity
 
     @Override
     public double rpm() {
-        if (debugOverride != null) {
-            return debugOverride;
-        }
-        return Math.abs(getSpeed());
+        return driveState().speed();
     }
 
     @Override
     public void setRpm(double rpm) {
         debugOverride = Math.max(0.0, rpm);
         setChanged();
+    }
+
+    @Override
+    public MechanicalDriveState driveState() {
+        if (debugOverride != null) {
+            return MechanicalDriveState.running(debugOverride, Double.POSITIVE_INFINITY);
+        }
+        double speed = Math.abs(getSpeed());
+        boolean stalled = isOverStressed();
+        if (stalled) {
+            return MechanicalDriveState.stalled(speed, 0.0);
+        }
+        if (speed <= 0.0) {
+            return MechanicalDrives.adjacent(level, worldPosition);
+        }
+        return MechanicalDriveState.running(speed, 64.0);
+    }
+
+    @Override
+    public boolean isSource() {
+        return debugOverride != null || Math.abs(getSpeed()) > 0.0;
     }
 
     @Override
@@ -72,7 +93,7 @@ public final class CreateKineticPortBlockEntity extends KineticBlockEntity
         if (controllerPos != null) {
             tag.put("Controller", NbtUtils.writeBlockPos(controllerPos));
         }
-        if (debugOverride != null) {
+        if (AlcoholicDebug.ENABLED && debugOverride != null) {
             tag.putDouble("DebugRpm", debugOverride);
         }
     }
@@ -81,6 +102,8 @@ public final class CreateKineticPortBlockEntity extends KineticBlockEntity
     protected void read(CompoundTag tag, boolean clientPacket) {
         super.read(tag, clientPacket);
         controllerPos = tag.contains("Controller") ? NbtUtils.readBlockPos(tag.getCompound("Controller")) : null;
-        debugOverride = tag.contains("DebugRpm") ? tag.getDouble("DebugRpm") : null;
+        if (AlcoholicDebug.ENABLED) {
+            debugOverride = tag.contains("DebugRpm") ? tag.getDouble("DebugRpm") : null;
+        }
     }
 }

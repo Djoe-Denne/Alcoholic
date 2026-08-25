@@ -98,6 +98,15 @@ Do API `4676882`, and Architectury `4555749`. Forge development runs remap the
 external mods' Mixin reference maps to the official mappings used by this
 workspace.
 
+## Invariant
+
+No production DAG shipped by Alcoholic may require an executor supplied
+exclusively by an optional integration. Official processes such as
+`PRESS`, `MILL`, `MALT`, `MASH`, `BOIL`, `FERMENT`, `AGE`, and `DISTILL`
+must have a native Alcoholic executor once they are part of progression.
+Optional mods (Create, later Crossroads) add alternative executors and
+automation. See [ADR-030](docs/adr/ADR-030-native-mechanical-executors.md).
+
 ## Status
 
 Phase 6 industrialization is active on top of Phase 5 storage. Phase 7A adds
@@ -105,12 +114,15 @@ generic `MALT`, `MILL`, `MASH`, and `BOIL` plus barley/hops agriculture.
 PRESS, FERMENT, AGE, BLEND, and BOTTLE remain executable, generic process
 types. Liquids are `LiquidDefinition` plus `LiquidBatch` properties and
 flattened provenance, exposed to Forge/Create through fluid adapters. An
-artisanal press, fermenter, oak barrel, blending crock, malting floor, mash
-tun, brewing kettle, industrial press, industrial fermentation vat, and
-industrial storage tank implement those capabilities. Create Mechanical
-Press compacting and Create millstone/crushing recipes are generated from
-process definitions marked `create_compatible`. Industrial machines are extra
-executors, not a second recipe system.
+artisanal press, fermenter, oak barrel, blending crock, malting floor, malt
+mill, primitive combustion engine, mash tun, brewing kettle, industrial
+press, industrial fermentation vat, and industrial storage tank implement
+those capabilities. Create Mechanical Press compacting and Create
+millstone/crushing recipes are optional extra executors generated from
+process definitions marked `create_compatible`. Official production DAGs
+always have a native Alcoholic executor; Create must not be required to
+progress. Industrial machines are extra executors, not a second recipe
+system.
 
 The production DAG remains authoritative: no process is injected. Data-only
 cider, wheat-beer, grain-mash, whisky, rum, and fruit-liqueur fixtures
@@ -130,6 +142,7 @@ Current limits:
 
 - no whisky / rum / distillation gameplay beyond data fixtures;
 - no industrial malt house, mash tun, or brewing kettle;
+- no Alcoholic shaft, gearbox, or pipe network (Create remains optional logistics);
 - no industrial aging warehouses, stills, or custom pipes/pumps/belts;
 - no gas network (CO2 is modelled and vented);
 - no drinking, intoxication, taverns, or villagers;
@@ -157,7 +170,8 @@ Architecture decisions for this phase: [ADR-007](docs/adr/ADR-007-production-dag
 [ADR-026](docs/adr/ADR-026-mash-thermal-transformation.md),
 [ADR-027](docs/adr/ADR-027-boil-ingredient-extraction.md),
 [ADR-028](docs/adr/ADR-028-create-mill-executor-integration.md),
-[ADR-029](docs/adr/ADR-029-reusable-crop-provider-barley-hops.md).
+[ADR-029](docs/adr/ADR-029-reusable-crop-provider-barley-hops.md),
+[ADR-030](docs/adr/ADR-030-native-mechanical-executors.md).
 
 Addon authors should depend only on `alcoholic-api`. See
 [`docs/addons/public-api.md`](docs/addons/public-api.md) and

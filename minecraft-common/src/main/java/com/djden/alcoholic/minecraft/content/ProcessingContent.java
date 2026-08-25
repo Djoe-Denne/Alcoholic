@@ -31,6 +31,12 @@ public record ProcessingContent(
         RegistryRef<Block> brewingKettle,
         RegistryRef<Item> brewingKettleItem,
         RegistryRef<BlockEntityType<?>> brewingKettleEntity,
-        RegistryRef<Item> spentGrain
+        RegistryRef<Item> spentGrain,
+        RegistryRef<Block> maltMill,
+        RegistryRef<Item> maltMillItem,
+        RegistryRef<BlockEntityType<?>> maltMillEntity,
+        RegistryRef<Block> primitiveCombustionEngine,
+        RegistryRef<Item> primitiveCombustionEngineItem,
+        RegistryRef<BlockEntityType<?>> primitiveCombustionEngineEntity
 ) {
 }

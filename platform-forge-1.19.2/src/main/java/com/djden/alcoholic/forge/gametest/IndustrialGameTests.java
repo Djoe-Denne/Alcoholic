@@ -6,6 +6,7 @@ import com.djden.alcoholic.domain.liquid.PropertyBag;
 import com.djden.alcoholic.domain.multiblock.Box3;
 import com.djden.alcoholic.domain.multiblock.PressStrokeState;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
+import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlockEntity;
 import com.djden.alcoholic.minecraft.multiblock.MultiblockControllerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
@@ -157,6 +158,34 @@ public final class IndustrialGameTests {
                     "Industrial press did not produce must"
             );
             require(helper, !entity.getItem(1).isEmpty(), "Industrial press discarded pomace");
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "industrial_pad", timeoutTicks = 80)
+    public static void industrialPressRunsFromPrimitiveEngine(GameTestHelper helper) {
+        buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_press_controller", "industrial_casing", "kinetic_port");
+        BlockPos enginePos = ORIGIN.offset(3, 0, 0);
+        helper.setBlock(enginePos, block("primitive_combustion_engine").defaultBlockState());
+        MultiblockControllerBlockEntity press = revalidate(helper, ORIGIN);
+        require(helper, press.formed(), "Press did not form: " + press.debugDump());
+        PrimitiveCombustionEngineBlockEntity engine =
+                (PrimitiveCombustionEngineBlockEntity) helper.getBlockEntity(enginePos);
+        engine.insertFuel(new ItemStack(net.minecraft.world.item.Items.COAL));
+        PrimitiveCombustionEngineBlockEntity.serverTick(
+                helper.getLevel(),
+                helper.absolutePos(enginePos),
+                helper.getBlockState(enginePos),
+                engine
+        );
+        press.insert(new ItemStack(item("red_grapes"), 8));
+        helper.runAtTickTime(20, () -> {
+            MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
+            require(
+                    helper,
+                    entity.tank().contents().isPresent(),
+                    "Industrial press produced no liquid with the primitive engine: " + entity.debugDump()
+            );
             helper.succeed();
         });
     }

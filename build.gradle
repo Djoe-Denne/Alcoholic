@@ -114,7 +114,8 @@ def forbiddenImports = [
                 'satisfyu.vinery.'
         ],
         'platform-forge-1.19.2': [
-                'satisfyu.vinery.'
+                'satisfyu.vinery.',
+                'com.simibubi.create.'
         ],
         'integration-test-addon': [
                 'net.minecraft.',

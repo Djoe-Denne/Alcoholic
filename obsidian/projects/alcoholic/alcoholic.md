@@ -9,13 +9,15 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/a6b5797c-82f8-4021-9d63-10a82fed6899/a6b5797c-82f8-4021-9d63-10a82fed6899.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/c2ca3b27-ad63-4be9-af24-47c49c111f2f/c2ca3b27-ad63-4be9-af24-47c49c111f2f.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/dc49ea79-b9e5-4902-ad7f-795f762f8f52/dc49ea79-b9e5-4902-ad7f-795f762f8f52.jsonl"
-summary: Loader-independent brewing mod. Phase 7A adds generic malt/mill/mash/boil; the engine stays beverage-agnostic.
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/95c81b7c-fa88-4055-9741-14cb948964c9/95c81b7c-fa88-4055-9741-14cb948964c9.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06.jsonl"
+summary: Loader-independent brewing mod. Phase 7A ships grain beer on generic processes; Create stays an optional extra executor.
 provenance:
   extracted: 0.84
   inferred: 0.14
   ambiguous: 0.02
 created: 2026-08-25T09:20:00+02:00
-updated: 2026-08-25T15:53:00+02:00
+updated: 2026-08-25T18:55:00+02:00
 ---
 
 # Alcoholic
@@ -34,9 +36,9 @@ Alcoholic is a Minecraft mod for realistic brewing, winemaking, and distillation
 
 **Phase 5** — long-term storage: [[aging-process]], [[vessel-and-environment]], [[blend-versus-tank-merge]], [[batch-provenance]], and [[bottled-beverage-snapshot]]. Wine young → finished → bottle is the shipped loop. Whisky, beer, cider, and rum AGE graphs stay data-only fixtures. Distillation gameplay, drunkenness, and many woods stay out of scope.
 
-**Phase 6** — [[industrial-multiblock]], [[industrial-processing]], and [[industrial-ports]]: variable-size press, fermentation vat, and passive tank. They are extra PRESS/FERMENT executors, not a second wine recipe system. Create remains pipes, belts, and shafts.
+**Phase 6** — [[industrial-multiblock]], [[industrial-processing]], and [[industrial-ports]]: variable-size press, fermentation vat, and passive tank. They are extra PRESS/FERMENT executors, not a second wine recipe system. Create remains optional pipes, belts, and shafts.
 
-**Phase 7A** — second beverage family through generic process types: barley and hops agriculture, `MALT` / `MILL` / `MASH` / `BOIL`, malting floor, mash tun, brewing kettle, Create millstone/crushing executors. Shipped grain beer ends after generic `FERMENT`. AGE stays optional. Whisky remains a structural DAG fixture (`DISTILL` is still a stub).
+**Phase 7A** — second beverage family through generic process types: barley and hops agriculture, `MALT` / `MILL` / `MASH` / `BOIL`, malting floor, mash tun, brewing kettle. See [[grain-processing]]. Official DAGs follow the [[native-executor-invariant]]: the Malt Mill plus [[mechanical-drive-port|primitive engine]] keep MILL playable without Create. Create millstone/crushing stay optional extras. Shipped grain beer ends after generic `FERMENT`. AGE stays optional. Whisky remains a structural DAG fixture (`DISTILL` is still a stub).
 
 The Forge artifact still embeds the inward-pointing modules. Fabric remains a future adapter.
 
@@ -56,6 +58,9 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[industrial-multiblock]]
 - [[industrial-processing]]
 - [[industrial-ports]]
+- [[grain-processing]]
+- [[mechanical-drive-port]]
+- [[native-executor-invariant]]
 
 ## Verification
 
@@ -64,6 +69,7 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[forge-1.19.2-phase-4-verification]]
 - [[forge-1.19.2-phase-5-verification]]
 - [[forge-1.19.2-phase-6-verification]]
+- [[forge-1.19.2-phase-7a-verification]]
 
 ## Session sources
 
@@ -73,3 +79,5 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[cursor-phase-4-processing-session]]
 - [[cursor-phase-5-aging-session]]
 - [[cursor-phase-6-industrial-session]]
+- [[cursor-phase-7a-grain-session]]
+- [[cursor-create-independence-session]]

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "S": {
+      "item": "minecraft:smooth_stone_slab"
+    }
+  },
+  "pattern": [
+    "S S",
+    "PSP",
+    "PPP"
+  ],
+  "result": {
+    "item": "alcoholic:malt_mill"
+  }
+}

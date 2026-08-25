@@ -35,6 +35,8 @@ public final class AlcoholicClient {
                     ItemBlockRenderTypes.setRenderLayer(processing.maltingFloor().get(), RenderType.cutout());
                     ItemBlockRenderTypes.setRenderLayer(processing.mashTun().get(), RenderType.cutout());
                     ItemBlockRenderTypes.setRenderLayer(processing.brewingKettle().get(), RenderType.cutout());
+                    ItemBlockRenderTypes.setRenderLayer(processing.maltMill().get(), RenderType.cutout());
+                    ItemBlockRenderTypes.setRenderLayer(processing.primitiveCombustionEngine().get(), RenderType.cutout());
                     ItemBlockRenderTypes.setRenderLayer(grain.barleyCrop().get(), RenderType.cutout());
                     ItemBlockRenderTypes.setRenderLayer(grain.hopBine().get(), RenderType.cutout());
                     ItemBlockRenderTypes.setRenderLayer(industrial.machineWindow().get(), RenderType.translucent());

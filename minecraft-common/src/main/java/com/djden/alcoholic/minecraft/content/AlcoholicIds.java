@@ -67,6 +67,10 @@ public final class AlcoholicIds {
     public static final ResourceId MASH_TUN_ENTITY = id("mash_tun");
     public static final ResourceId BREWING_KETTLE = id("brewing_kettle");
     public static final ResourceId BREWING_KETTLE_ENTITY = id("brewing_kettle");
+    public static final ResourceId MALT_MILL = id("malt_mill");
+    public static final ResourceId MALT_MILL_ENTITY = id("malt_mill");
+    public static final ResourceId PRIMITIVE_COMBUSTION_ENGINE = id("primitive_combustion_engine");
+    public static final ResourceId PRIMITIVE_COMBUSTION_ENGINE_ENTITY = id("primitive_combustion_engine");
     public static final ResourceId WORT = id("wort");
     public static final ResourceId HOPPED_WORT = id("hopped_wort");
     public static final ResourceId BEER = id("beer");

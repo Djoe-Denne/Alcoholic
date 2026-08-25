@@ -22,7 +22,18 @@ Generic PRESS definition
         +--> Create compacting adapter
         |
         +--> industrial press executor
+
+Generic MILL definition
+        |
+        +--> Alcoholic Malt Mill
+        |
+        +--> Create Millstone          [optional]
+        |
+        +--> Create Crushing Wheels    [optional]
 ```
+
+No official process may ship with only an optional-integration executor.
+See [ADR-030](ADR-030-native-mechanical-executors.md).
 
 `ProcessExecutor.supportedProcesses()` is the capability set. Application code
 asks whether that executor can run a `ProcessInvocation` with the offered

@@ -1,5 +1,6 @@
 package com.djden.alcoholic.application.process;
 
+import com.djden.alcoholic.api.process.ExecutorModifiers;
 import com.djden.alcoholic.api.process.ProcessContext;
 import com.djden.alcoholic.api.process.ProcessInputs;
 import com.djden.alcoholic.api.process.ProcessResult;
@@ -39,5 +40,25 @@ class MillProcessorTest {
         assertTrue(result.success(), result.message());
         assertEquals(GrainProcessHarness.GRIST, result.items().get(0).item());
         assertEquals(0.85, (Double) result.items().get(0).properties().get(GrainProcessHarness.SUGAR), 1e-9);
+    }
+
+    @Test
+    void nativeMaltMillModifiersKeepAuthoritativeYield() {
+        GrainProcessHarness.Loaded loaded = GrainProcessHarness.load();
+        var invocation = loaded.find(
+                BuiltinRegistrations.MILL,
+                Optional.of(GrainProcessHarness.MALTED),
+                Optional.empty()
+        );
+        ProcessResult result = loaded.engine().execute(
+                new CapabilityProcessExecutor(BuiltinRegistrations.MILL),
+                invocation,
+                ProcessInputs.ofSolids("malt", List.of(
+                        GrainProcessHarness.lot(GrainProcessHarness.MALTED, 1, PropertyBag.empty())
+                )),
+                ProcessContext.of(20.0, 1.0, false, Optional.empty(), Optional.empty(), 0L, ExecutorModifiers.maltMill())
+        );
+        assertTrue(result.success(), result.message());
+        assertEquals(1, result.items().get(0).amount());
     }
 }

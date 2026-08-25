@@ -1,4 +1,4 @@
-package com.djden.alcoholic.forge.create;
+package com.djden.alcoholic.integration.create.forge;
 
 import com.djden.alcoholic.minecraft.content.ContentRegistrationPorts;
 import com.djden.alcoholic.minecraft.content.IndustrialContent;

@@ -9,7 +9,6 @@ import com.djden.alcoholic.api.process.ProcessResult;
 import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
 import com.djden.alcoholic.application.process.CapabilityProcessExecutor;
 import com.djden.alcoholic.application.process.MaltConfig;
-import com.djden.alcoholic.application.process.MillConfig;
 import com.djden.alcoholic.application.process.ProcessRecipeResolver;
 import com.djden.alcoholic.domain.ingredient.IngredientLot;
 import com.djden.alcoholic.domain.process.ProcessDefinition;
@@ -82,7 +81,7 @@ public final class MaltingFloorBlockEntity extends BlockEntity implements Worldl
             return;
         }
         ResourceId processType = selected.get().processType();
-        if (!BuiltinRegistrations.MALT.equals(processType) && !BuiltinRegistrations.MILL.equals(processType)) {
+        if (!BuiltinRegistrations.MALT.equals(processType)) {
             progress = 0;
             return;
         }
@@ -156,37 +155,16 @@ public final class MaltingFloorBlockEntity extends BlockEntity implements Worldl
             ProcessInvocation invocation,
             ItemStack input
     ) {
-        if (BuiltinRegistrations.MALT.equals(processType)) {
-            MaltConfig config = MaltConfig.CODEC.decode(invocation.config());
-            if (!config.executable() || input.getCount() < config.inputAmount()) {
-                return null;
-            }
-            EnvironmentProfile environment = level == null
-                    ? EnvironmentProfile.temperateCellar()
-                    : EnvironmentSampler.sample(level, worldPosition);
-            double temperature = level == null ? environment.temperature() : HeatSources.celsius(level, worldPosition);
-            if (config.temperature().stalled(temperature)
-                    || environment.humidity() + 1e-9 < config.moistureRequirement()) {
-                return null;
-            }
-            return new FloorJob(
-                    invocation.nodeId(),
-                    config.inputAmount(),
-                    config.processingTicks(),
-                    runtime.executor(processType),
-                    ProcessContext.of(
-                            temperature,
-                            1.0,
-                            false,
-                            Optional.empty(),
-                            Optional.of(environment),
-                            level == null ? 0L : level.getGameTime()
-                    ),
-                    "grain"
-            );
-        }
-        MillConfig config = MillConfig.CODEC.decode(invocation.config());
+        MaltConfig config = MaltConfig.CODEC.decode(invocation.config());
         if (!config.executable() || input.getCount() < config.inputAmount()) {
+            return null;
+        }
+        EnvironmentProfile environment = level == null
+                ? EnvironmentProfile.temperateCellar()
+                : EnvironmentSampler.sample(level, worldPosition);
+        double temperature = level == null ? environment.temperature() : HeatSources.celsius(level, worldPosition);
+        if (config.temperature().stalled(temperature)
+                || environment.humidity() + 1e-9 < config.moistureRequirement()) {
             return null;
         }
         return new FloorJob(
@@ -194,8 +172,15 @@ public final class MaltingFloorBlockEntity extends BlockEntity implements Worldl
                 config.inputAmount(),
                 config.processingTicks(),
                 runtime.executor(processType),
-                ProcessContext.empty(),
-                "malt"
+                ProcessContext.of(
+                        temperature,
+                        1.0,
+                        false,
+                        Optional.empty(),
+                        Optional.of(environment),
+                        level == null ? 0L : level.getGameTime()
+                ),
+                "grain"
         );
     }
 
@@ -231,8 +216,7 @@ public final class MaltingFloorBlockEntity extends BlockEntity implements Worldl
 
     public void cycleDefinition() {
         List<ResourceId> ids = ProcessRuntime.shared().beverages().catalog().processes().values().stream()
-                .filter(definition -> BuiltinRegistrations.MALT.equals(definition.processType())
-                        || BuiltinRegistrations.MILL.equals(definition.processType()))
+                .filter(definition -> BuiltinRegistrations.MALT.equals(definition.processType()))
                 .map(ProcessDefinition::id)
                 .sorted(Comparator.comparing(ResourceId::toString))
                 .toList();

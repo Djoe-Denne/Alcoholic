@@ -141,6 +141,8 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "block.alcoholic.malting_floor": "Malting Floor",
                           "block.alcoholic.mash_tun": "Mash Tun",
                           "block.alcoholic.brewing_kettle": "Brewing Kettle",
+                          "block.alcoholic.malt_mill": "Malt Mill",
+                          "block.alcoholic.primitive_combustion_engine": "Primitive Combustion Engine",
                           "item.alcoholic.barley": "Barley",
                           "item.alcoholic.barley_seeds": "Barley Seeds",
                           "item.alcoholic.malted_barley": "Malted Barley",
@@ -156,7 +158,9 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "fluid_type.alcoholic.beer": "Beer",
                           "message.alcoholic.malting.status": "Malting %1$s/%2$s (%3$s)",
                           "message.alcoholic.mash.status": "Mash %1$s°C · %2$s/%3$s",
-                          "message.alcoholic.boil.status": "Boil %1$s°C · %2$s/%3$s"
+                          "message.alcoholic.boil.status": "Boil %1$s°C · %2$s/%3$s",
+                          "message.alcoholic.mill.status": "Milling %1$s/%2$s · drive %3$s",
+                          "message.alcoholic.engine.status": "Engine speed %1$s · burn %2$s/%3$s"
                         }
                         """
         );
@@ -269,6 +273,8 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "block.alcoholic.malting_floor": "Aire de maltage",
                           "block.alcoholic.mash_tun": "Cuve de brassage",
                           "block.alcoholic.brewing_kettle": "Chaudron de houblonnage",
+                          "block.alcoholic.malt_mill": "Broyeur à malt",
+                          "block.alcoholic.primitive_combustion_engine": "Moteur à combustion primitif",
                           "item.alcoholic.barley": "Orge",
                           "item.alcoholic.barley_seeds": "Graines d'orge",
                           "item.alcoholic.malted_barley": "Orge maltée",
@@ -284,7 +290,9 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "fluid_type.alcoholic.beer": "Bière",
                           "message.alcoholic.malting.status": "Maltage %1$s/%2$s (%3$s)",
                           "message.alcoholic.mash.status": "Empâtage %1$s°C · %2$s/%3$s",
-                          "message.alcoholic.boil.status": "Ébullition %1$s°C · %2$s/%3$s"
+                          "message.alcoholic.boil.status": "Ébullition %1$s°C · %2$s/%3$s",
+                          "message.alcoholic.mill.status": "Mouture %1$s/%2$s · entraînement %3$s",
+                          "message.alcoholic.engine.status": "Moteur vitesse %1$s · combustion %2$s/%3$s"
                         }
                         """
         );
@@ -740,6 +748,8 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
         addSimpleMachine(sink, "malting_floor");
         addSimpleMachine(sink, "mash_tun");
         addSimpleMachine(sink, "brewing_kettle");
+        addSimpleMachine(sink, "malt_mill");
+        addLitMachine(sink, "primitive_combustion_engine");
         addGeneratedItem(sink, "barley");
         addGeneratedItem(sink, "barley_seeds");
         addGeneratedItem(sink, "malted_barley");
@@ -780,6 +790,45 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                         {
                           "parent": "minecraft:block/cube_all",
                           "textures": { "all": "alcoholic:block/%s" }
+                        }
+                        """.formatted(name)
+        );
+        addBlockItem(sink, name);
+    }
+
+    private static void addLitMachine(JsonSink sink, String name) {
+        sink.add(
+                "assets/alcoholic/blockstates/" + name + ".json",
+                """
+                        {
+                          "variants": {
+                            "facing=north,lit=false": { "model": "alcoholic:block/%1$s" },
+                            "facing=south,lit=false": { "model": "alcoholic:block/%1$s", "y": 180 },
+                            "facing=west,lit=false": { "model": "alcoholic:block/%1$s", "y": 270 },
+                            "facing=east,lit=false": { "model": "alcoholic:block/%1$s", "y": 90 },
+                            "facing=north,lit=true": { "model": "alcoholic:block/%1$s_on" },
+                            "facing=south,lit=true": { "model": "alcoholic:block/%1$s_on", "y": 180 },
+                            "facing=west,lit=true": { "model": "alcoholic:block/%1$s_on", "y": 270 },
+                            "facing=east,lit=true": { "model": "alcoholic:block/%1$s_on", "y": 90 }
+                          }
+                        }
+                        """.formatted(name)
+        );
+        sink.add(
+                "assets/alcoholic/models/block/" + name + ".json",
+                """
+                        {
+                          "parent": "minecraft:block/cube_all",
+                          "textures": { "all": "alcoholic:block/%s" }
+                        }
+                        """.formatted(name)
+        );
+        sink.add(
+                "assets/alcoholic/models/block/" + name + "_on.json",
+                """
+                        {
+                          "parent": "minecraft:block/cube_all",
+                          "textures": { "all": "alcoholic:block/%s_on" }
                         }
                         """.formatted(name)
         );
