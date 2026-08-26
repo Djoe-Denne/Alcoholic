@@ -31,6 +31,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -60,6 +61,7 @@ public class VineBlock extends BaseEntityBlock {
     public static final EnumProperty<VineStage> STAGE =
             EnumProperty.create("stage", VineStage.class);
     public static final BooleanProperty TRAINED = BooleanProperty.create("trained");
+    public static final BooleanProperty EXTENDED = BooleanProperty.create("extended");
 
     private static final VoxelShape[] SHAPES = {
             Block.box(5.0, 0.0, 5.0, 11.0, 5.0, 11.0),
@@ -68,10 +70,16 @@ public class VineBlock extends BaseEntityBlock {
             Block.box(1.0, 0.0, 1.0, 15.0, 15.0, 15.0),
             Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0)
     };
+    private static final VoxelShape EXTENDED_SHAPE =
+            Block.box(6.0, 0.0, 6.0, 10.0, 16.0, 10.0);
+    private static final VoxelShape TRAINED_SHAPE =
+            Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
 
     private final VineVariety<ResourceId> variety;
     private final ViticultureRuntime runtime;
     private final Supplier<? extends BlockEntityType<?>> blockEntityType;
+    private final Supplier<? extends Block> stemBlock;
+    private final Supplier<? extends Block> canopyBlock;
     private final MinecraftClimateResolver climateResolver;
     private final TrellisDetector trellisDetector;
 
@@ -81,18 +89,50 @@ public class VineBlock extends BaseEntityBlock {
             ViticultureRuntime runtime,
             Supplier<? extends BlockEntityType<?>> blockEntityType
     ) {
+        this(properties, variety, runtime, blockEntityType, () -> null);
+    }
+
+    public VineBlock(
+            Properties properties,
+            VineVariety<ResourceId> variety,
+            ViticultureRuntime runtime,
+            Supplier<? extends BlockEntityType<?>> blockEntityType,
+            Supplier<? extends Block> stemBlock
+    ) {
+        this(properties, variety, runtime, blockEntityType, stemBlock, () -> null);
+    }
+
+    public VineBlock(
+            Properties properties,
+            VineVariety<ResourceId> variety,
+            ViticultureRuntime runtime,
+            Supplier<? extends BlockEntityType<?>> blockEntityType,
+            Supplier<? extends Block> stemBlock,
+            Supplier<? extends Block> canopyBlock
+    ) {
         super(properties);
         this.variety = Objects.requireNonNull(variety, "variety");
         this.runtime = Objects.requireNonNull(runtime, "runtime");
         this.blockEntityType = Objects.requireNonNull(blockEntityType, "blockEntityType");
+        this.stemBlock = Objects.requireNonNull(stemBlock, "stemBlock");
+        this.canopyBlock = Objects.requireNonNull(canopyBlock, "canopyBlock");
         climateResolver = new MinecraftClimateResolver();
         trellisDetector = new TrellisDetector(runtime);
         registerDefaultState(
                 stateDefinition.any()
                         .setValue(STAGE, VineStage.PLANTED)
                         .setValue(TRAINED, false)
+                        .setValue(EXTENDED, false)
                         .setValue(AGE, 0)
         );
+    }
+
+    public Block stemBlock() {
+        return stemBlock.get();
+    }
+
+    public Block canopyBlock() {
+        return canopyBlock.get();
     }
 
     public VineVariety<ResourceId> variety() {
@@ -121,13 +161,7 @@ public class VineBlock extends BaseEntityBlock {
             return;
         }
 
-        boolean trained = trellisDetector.isTrained(level, position);
-        BlockState currentState = state;
-        if (state.getValue(TRAINED) != trained) {
-            currentState = state.setValue(TRAINED, trained);
-            level.setBlock(position, currentState, Block.UPDATE_CLIENTS);
-        }
-
+        boolean trained = trellisDetector.boundedWireHeightAbove(level, position) > 0;
         VineEnvironment environment = climateResolver.resolve(level, position);
         Vine<ResourceId> current = entity.vine();
         Vine<ResourceId> grown = runtime.grow(
@@ -139,11 +173,12 @@ public class VineBlock extends BaseEntityBlock {
         if (!grown.equals(current)) {
             entity.setVine(grown);
         } else {
-            BlockState synchronizedState = stateForVine(currentState, current);
-            if (synchronizedState != currentState) {
+            BlockState synchronizedState = stateForVine(state, current);
+            if (synchronizedState != state) {
                 level.setBlock(position, synchronizedState, Block.UPDATE_CLIENTS);
             }
         }
+        refreshStructure(level, position, entity.vine().growthStage(), true);
     }
 
     @Override
@@ -164,6 +199,7 @@ public class VineBlock extends BaseEntityBlock {
                 if (entity != null) {
                     PruningLevel pruning = shears.selectedLevel(held);
                     entity.setVine(runtime.prune(entity.vine(), pruning));
+                    refreshStructure(level, position, entity.vine().growthStage(), false);
                     if (!player.getAbilities().instabuild) {
                         held.hurtAndBreak(
                                 1,
@@ -203,7 +239,7 @@ public class VineBlock extends BaseEntityBlock {
     @Override
     public boolean canSurvive(
             BlockState state,
-            net.minecraft.world.level.LevelReader level,
+            LevelReader level,
             BlockPos position
     ) {
         return mayPlaceOn(level.getBlockState(position.below()));
@@ -231,12 +267,54 @@ public class VineBlock extends BaseEntityBlock {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(
+            BlockState state,
+            Level level,
+            BlockPos position,
+            Block block,
+            BlockPos fromPos,
+            boolean moving
+    ) {
+        if (!state.canSurvive(level, position)) {
+            VineColumn.removeProjection(level, position, this);
+            level.destroyBlock(position, true);
+            return;
+        }
+        VineBlockEntity entity = getOrCreateEntity(level, position, state);
+        if (entity != null) {
+            refreshStructure(level, position, entity.vine().growthStage(), false);
+        }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onRemove(
+            BlockState state,
+            Level level,
+            BlockPos position,
+            BlockState newState,
+            boolean isMoving
+    ) {
+        if (!state.is(newState.getBlock())) {
+            VineColumn.removeProjection(level, position, this);
+        }
+        super.onRemove(state, level, position, newState, isMoving);
+    }
+
+    @Override
     public VoxelShape getShape(
             BlockState state,
             BlockGetter level,
             BlockPos position,
             CollisionContext context
     ) {
+        if (state.getValue(EXTENDED)) {
+            return EXTENDED_SHAPE;
+        }
+        if (state.getValue(TRAINED)) {
+            return TRAINED_SHAPE;
+        }
         return SHAPES[Mth.clamp(state.getValue(AGE), 0, MAX_LEGACY_AGE)];
     }
 
@@ -244,7 +322,7 @@ public class VineBlock extends BaseEntityBlock {
     protected void createBlockStateDefinition(
             StateDefinition.Builder<Block, BlockState> builder
     ) {
-        builder.add(STAGE, TRAINED, AGE);
+        builder.add(STAGE, TRAINED, EXTENDED, AGE);
     }
 
     BlockState stateForVine(BlockState state, Vine<ResourceId> vine) {
@@ -302,6 +380,7 @@ public class VineBlock extends BaseEntityBlock {
         );
 
         entity.setVine(result.harvest().vine());
+        refreshStructure(level, position, result.harvest().vine().growthStage(), false);
         popResource(level, position, grapes);
         level.playSound(
                 null,
@@ -343,6 +422,15 @@ public class VineBlock extends BaseEntityBlock {
         );
     }
 
+    private void refreshStructure(
+            Level level,
+            BlockPos position,
+            VineGrowthStage stage,
+            boolean allowGrowth
+    ) {
+        VineColumn.sync(level, position, this, stage, trellisDetector, allowGrowth);
+    }
+
     private VineBlockEntity getOrCreateEntity(
             Level level,
             BlockPos position,
@@ -364,7 +452,7 @@ public class VineBlock extends BaseEntityBlock {
     }
 
     private static boolean mayPlaceOn(BlockState state) {
-        return state.is(BlockTags.DIRT);
+        return state.is(BlockTags.DIRT) || state.is(Blocks.FARMLAND);
     }
 
     private static int legacyAge(VineGrowthStage stage) {

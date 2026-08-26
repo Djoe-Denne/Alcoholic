@@ -8,6 +8,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 public record AlcoholicContent(
         RegistryRef<Block> redGrapevine,
         RegistryRef<Block> whiteGrapevine,
+        RegistryRef<Block> redGrapevineStem,
+        RegistryRef<Block> whiteGrapevineStem,
+        RegistryRef<Block> redGrapevineCanopy,
+        RegistryRef<Block> whiteGrapevineCanopy,
         RegistryRef<Item> redGrapes,
         RegistryRef<Item> whiteGrapes,
         RegistryRef<Item> redGrapeCutting,

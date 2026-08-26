@@ -2,6 +2,8 @@ package com.djden.alcoholic.minecraft.mechanical;
 
 import com.djden.alcoholic.domain.mechanical.MechanicalDrivePort;
 import com.djden.alcoholic.domain.mechanical.MechanicalDriveState;
+import com.djden.alcoholic.minecraft.menu.MachineAccess;
+import com.djden.alcoholic.minecraft.menu.MachineLayout;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -27,7 +29,7 @@ import java.util.Locale;
  * connects by sitting next to a machine, not through a shaft network.
  */
 public final class PrimitiveCombustionEngineBlockEntity extends BlockEntity
-        implements WorldlyContainer, MechanicalDrivePort {
+        implements WorldlyContainer, MechanicalDrivePort, MachineAccess {
     public static final int FUEL_SLOT = 0;
     public static final double OUTPUT_SPEED = 16.0;
     public static final double OUTPUT_CAPACITY = 4.0;
@@ -54,6 +56,31 @@ public final class PrimitiveCombustionEngineBlockEntity extends BlockEntity
 
     public int burnTime() {
         return burnTime;
+    }
+
+    @Override
+    public MachineLayout layout() {
+        return MachineLayout.FUEL;
+    }
+
+    @Override
+    public int progress() {
+        return burnTime;
+    }
+
+    @Override
+    public int duration() {
+        return Math.max(1, burnDuration);
+    }
+
+    @Override
+    public int extra() {
+        return burnTime;
+    }
+
+    @Override
+    public int extra2() {
+        return burnDuration;
     }
 
     public static void serverTick(

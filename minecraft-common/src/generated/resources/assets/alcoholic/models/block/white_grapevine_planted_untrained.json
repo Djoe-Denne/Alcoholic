@@ -3,71 +3,116 @@
   "elements": [
     {
       "faces": {
-        "down": {
-          "texture": "#vine"
-        },
-        "east": {
-          "texture": "#vine"
-        },
         "north": {
-          "texture": "#vine"
+          "texture": "#cross",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
         },
         "south": {
-          "texture": "#vine"
-        },
-        "up": {
-          "texture": "#vine"
-        },
-        "west": {
-          "texture": "#vine"
+          "texture": "#cross",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
         }
       },
       "from": [
-        7,
+        0.8,
         0,
-        7
+        8
       ],
+      "shade": false,
       "to": [
-        9,
-        6,
-        9
+        15.2,
+        8,
+        8
       ]
     },
     {
       "faces": {
-        "down": {
-          "texture": "#vine"
-        },
         "east": {
-          "texture": "#vine"
-        },
-        "north": {
-          "texture": "#vine"
-        },
-        "south": {
-          "texture": "#vine"
-        },
-        "up": {
-          "texture": "#vine"
+          "texture": "#cross",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
         },
         "west": {
-          "texture": "#vine"
+          "texture": "#cross",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
         }
       },
       "from": [
-        5,
-        3,
-        5
+        8,
+        0,
+        0.8
       ],
+      "shade": false,
       "to": [
-        11,
-        7,
-        11
+        8,
+        8,
+        15.2
+      ]
+    },
+    {
+      "faces": {
+        "north": {
+          "texture": "#cross",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#cross",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        }
+      },
+      "from": [
+        0.8,
+        0,
+        8
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "rescale": true
+      },
+      "shade": false,
+      "to": [
+        15.2,
+        8,
+        8
       ]
     }
   ],
   "textures": {
-    "particle": "alcoholic:block/white_grapevine_planted",
-    "vine": "alcoholic:block/white_grapevine_planted"
+    "cross": "alcoholic:block/white_grapevine_planted",
+    "particle": "alcoholic:block/white_grapevine_planted"
   }
 }

@@ -1,5 +1,6 @@
 package com.djden.alcoholic.minecraft.process;
 
+import com.djden.alcoholic.minecraft.menu.MachineMenus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -86,6 +87,9 @@ public final class ArtisanalFermenterBlock extends BaseEntityBlock {
             return InteractionResult.CONSUME;
         }
         if (!held.isEmpty() && entity.insertYeast(held)) {
+            return InteractionResult.CONSUME;
+        }
+        if (held.isEmpty() && MachineMenus.tryOpen(player, entity)) {
             return InteractionResult.CONSUME;
         }
         player.displayClientMessage(entity.status(), true);

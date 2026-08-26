@@ -4,6 +4,8 @@ import com.djden.alcoholic.domain.mechanical.MechanicalDrivePort;
 import com.djden.alcoholic.domain.mechanical.MechanicalDriveState;
 import com.djden.alcoholic.minecraft.energy.EnergyBuffer;
 import com.djden.alcoholic.minecraft.energy.EnergyHolder;
+import com.djden.alcoholic.minecraft.menu.MachineAccess;
+import com.djden.alcoholic.minecraft.menu.MachineLayout;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -23,7 +25,7 @@ import java.util.Locale;
  * the maximum input rate.
  */
 public final class ElectricMotorBlockEntity extends BlockEntity
-        implements MechanicalDrivePort, EnergyHolder {
+        implements MechanicalDrivePort, EnergyHolder, MachineAccess {
     public static final ElectricMotorSettings SETTINGS = ElectricMotorSettings.DEFAULT;
 
     private final EnergyBuffer energy = new EnergyBuffer(
@@ -34,6 +36,11 @@ public final class ElectricMotorBlockEntity extends BlockEntity
 
     public ElectricMotorBlockEntity(BlockEntityType<?> type, BlockPos position, BlockState state) {
         super(type, position, state);
+    }
+
+    @Override
+    public MachineLayout layout() {
+        return MachineLayout.ENERGY;
     }
 
     @Override

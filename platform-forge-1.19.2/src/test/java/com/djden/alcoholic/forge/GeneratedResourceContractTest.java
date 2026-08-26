@@ -88,18 +88,48 @@ class GeneratedResourceContractTest {
             JsonObject variants = resource(
                     "assets/alcoholic/blockstates/" + color + "_grapevine.json"
             ).getAsJsonObject("variants");
-            assertEquals(16, variants.size());
+            assertEquals(32, variants.size());
             for (String stage : STAGES) {
-                for (String training : new String[]{"untrained", "trained"}) {
-                    String key = "stage=" + stage + ",trained="
-                            + "trained".equals(training);
-                    assertTrue(variants.has(key), "Missing variant " + key);
+                for (boolean trained : new boolean[]{false, true}) {
+                    for (boolean extended : new boolean[]{false, true}) {
+                        String key = "extended=" + extended + ",stage=" + stage
+                                + ",trained=" + trained;
+                        assertTrue(variants.has(key), "Missing variant " + key);
+                    }
                     resource(
                             "assets/alcoholic/models/block/" + color
-                                    + "_grapevine_" + stage + "_" + training + ".json"
+                                    + "_grapevine_" + stage + "_untrained.json"
+                    );
+                    resource(
+                            "assets/alcoholic/models/block/" + color
+                                    + "_grapevine_" + stage + "_trained.json"
+                    );
+                    resource(
+                            "assets/alcoholic/models/block/" + color
+                                    + "_grapevine_" + stage + "_base.json"
+                    );
+                    resource(
+                            "assets/alcoholic/models/block/" + color
+                                    + "_grapevine_stem_" + stage + "_trained.json"
+                    );
+                    resource(
+                            "assets/alcoholic/models/block/" + color
+                                    + "_grapevine_stem_" + stage + "_untrained.json"
+                    );
+                    resource(
+                            "assets/alcoholic/models/block/" + color
+                                    + "_grapevine_canopy_" + stage + ".json"
                     );
                 }
             }
+            JsonObject stemVariants = resource(
+                    "assets/alcoholic/blockstates/" + color + "_grapevine_stem.json"
+            ).getAsJsonObject("variants");
+            assertEquals(16, stemVariants.size());
+            JsonObject canopyVariants = resource(
+                    "assets/alcoholic/blockstates/" + color + "_grapevine_canopy.json"
+            ).getAsJsonObject("variants");
+            assertEquals(16, canopyVariants.size());
             assertTrue(
                     variants.keySet().stream().noneMatch(
                             key -> key.startsWith("age=") || key.contains(",age=")
@@ -211,6 +241,10 @@ class GeneratedResourceContractTest {
             for (String key : new String[]{
                     "block.alcoholic.red_grapevine",
                     "block.alcoholic.white_grapevine",
+                    "block.alcoholic.red_grapevine_stem",
+                    "block.alcoholic.white_grapevine_stem",
+                    "block.alcoholic.red_grapevine_canopy",
+                    "block.alcoholic.white_grapevine_canopy",
                     "item.alcoholic.red_grape_cutting",
                     "item.alcoholic.white_grape_cutting",
                     "message.alcoholic.vine.inspect",
@@ -227,6 +261,9 @@ class GeneratedResourceContractTest {
                     "item.alcoholic.empty_bottle",
                     "tooltip.alcoholic.metadata.lost",
                     "command.alcoholic.inspect.nothing",
+                    "command.alcoholic.debug.place.line",
+                    "command.alcoholic.debug.place.machine",
+                    "command.alcoholic.debug.place.unknown",
                     "block.alcoholic.industrial_casing",
                     "block.alcoholic.industrial_press_controller",
                     "block.alcoholic.industrial_vat_controller",
@@ -242,7 +279,10 @@ class GeneratedResourceContractTest {
                     "block.alcoholic.brewing_kettle",
                     "item.alcoholic.barley",
                     "item.alcoholic.hops",
-                    "message.alcoholic.mash.status"
+                    "message.alcoholic.mash.status",
+                    "container.alcoholic.machine",
+                    "gui.alcoholic.temperature",
+                    "tooltip.alcoholic.gauge.fluid"
             }) {
                 assertTrue(
                         translations.has(key),
@@ -292,6 +332,30 @@ class GeneratedResourceContractTest {
         assertEquals(
                 0,
                 resource("data/alcoholic/loot_tables/blocks/trellis_wire.json")
+                        .getAsJsonArray("pools")
+                        .size()
+        );
+        assertEquals(
+                0,
+                resource("data/alcoholic/loot_tables/blocks/red_grapevine_stem.json")
+                        .getAsJsonArray("pools")
+                        .size()
+        );
+        assertEquals(
+                0,
+                resource("data/alcoholic/loot_tables/blocks/white_grapevine_stem.json")
+                        .getAsJsonArray("pools")
+                        .size()
+        );
+        assertEquals(
+                0,
+                resource("data/alcoholic/loot_tables/blocks/red_grapevine_canopy.json")
+                        .getAsJsonArray("pools")
+                        .size()
+        );
+        assertEquals(
+                0,
+                resource("data/alcoholic/loot_tables/blocks/white_grapevine_canopy.json")
                         .getAsJsonArray("pools")
                         .size()
         );
@@ -368,6 +432,7 @@ class GeneratedResourceContractTest {
         assertEquals("4", properties.get("age").getAsString());
         assertEquals("harvest_ready", properties.get("stage").getAsString());
         assertEquals("false", properties.get("trained").getAsString());
+        assertEquals("false", properties.get("extended").getAsString());
     }
 
     private static void assertOptionalTag(JsonObject tag, String expectedId) {

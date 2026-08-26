@@ -1,5 +1,6 @@
 package com.djden.alcoholic.minecraft.viticulture;
 
+import com.djden.alcoholic.minecraft.agriculture.TrellisDetector;
 import com.djden.alcoholic.minecraft.agriculture.TrellisWireBlock;
 import com.djden.alcoholic.minecraft.agriculture.VineyardPostBlock;
 import net.minecraft.core.BlockPos;
@@ -147,17 +148,15 @@ public final class TrellisSpoolItem extends Item {
     }
 
     private boolean canPlace(Level level, Player player, Connection connection) {
-        Block wireBlock = wire.get();
         for (int offset = 1; offset < connection.distance(); offset++) {
             BlockPos position = connection.start().relative(connection.direction(), offset);
             if (player != null && !level.mayInteract(player, position)) {
                 return false;
             }
             BlockState state = level.getBlockState(position);
-            boolean matchingWire = state.getBlock() == wireBlock
-                    && state.hasProperty(TrellisWireBlock.AXIS)
-                    && state.getValue(TrellisWireBlock.AXIS) == connection.axis();
-            if (!matchingWire && !state.getMaterial().isReplaceable()) {
+            boolean matchingSpan = TrellisDetector.isSpan(state)
+                    && TrellisDetector.axisOf(state) == connection.axis();
+            if (!matchingSpan && !state.getMaterial().isReplaceable()) {
                 return false;
             }
         }
@@ -169,7 +168,12 @@ public final class TrellisSpoolItem extends Item {
                 .setValue(TrellisWireBlock.AXIS, connection.axis());
         for (int offset = 1; offset < connection.distance(); offset++) {
             BlockPos position = connection.start().relative(connection.direction(), offset);
-            if (level.getBlockState(position) != wireState) {
+            BlockState existing = level.getBlockState(position);
+            if (TrellisDetector.isSpan(existing)
+                    && TrellisDetector.axisOf(existing) == connection.axis()) {
+                continue;
+            }
+            if (existing != wireState) {
                 level.setBlock(position, wireState, Block.UPDATE_ALL);
             }
         }

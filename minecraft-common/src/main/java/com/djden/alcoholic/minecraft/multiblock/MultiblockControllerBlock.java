@@ -3,6 +3,7 @@ package com.djden.alcoholic.minecraft.multiblock;
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.domain.multiblock.PartRole;
 import com.djden.alcoholic.minecraft.bottle.Bottling;
+import com.djden.alcoholic.minecraft.menu.MachineMenus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -103,6 +104,9 @@ public final class MultiblockControllerBlock extends BaseEntityBlock implements 
             return InteractionResult.CONSUME;
         }
         if (!held.isEmpty() && entity.insert(held)) {
+            return InteractionResult.CONSUME;
+        }
+        if (held.isEmpty() && MachineMenus.tryOpen(player, entity)) {
             return InteractionResult.CONSUME;
         }
         player.displayClientMessage(entity.status(), true);

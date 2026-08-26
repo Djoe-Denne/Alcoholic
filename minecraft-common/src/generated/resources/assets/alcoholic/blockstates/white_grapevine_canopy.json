@@ -1,0 +1,60 @@
+{
+  "variants": {
+    "axis=x,stage=dormant": {
+      "model": "alcoholic:block/white_grapevine_canopy_dormant"
+    },
+    "axis=x,stage=establishing": {
+      "model": "alcoholic:block/white_grapevine_canopy_establishing"
+    },
+    "axis=x,stage=flowering": {
+      "model": "alcoholic:block/white_grapevine_canopy_flowering"
+    },
+    "axis=x,stage=green_fruit": {
+      "model": "alcoholic:block/white_grapevine_canopy_green_fruit"
+    },
+    "axis=x,stage=harvest_ready": {
+      "model": "alcoholic:block/white_grapevine_canopy_harvest_ready"
+    },
+    "axis=x,stage=planted": {
+      "model": "alcoholic:block/white_grapevine_canopy_planted"
+    },
+    "axis=x,stage=ripening": {
+      "model": "alcoholic:block/white_grapevine_canopy_ripening"
+    },
+    "axis=x,stage=vegetative": {
+      "model": "alcoholic:block/white_grapevine_canopy_vegetative"
+    },
+    "axis=z,stage=dormant": {
+      "model": "alcoholic:block/white_grapevine_canopy_dormant",
+      "y": 90
+    },
+    "axis=z,stage=establishing": {
+      "model": "alcoholic:block/white_grapevine_canopy_establishing",
+      "y": 90
+    },
+    "axis=z,stage=flowering": {
+      "model": "alcoholic:block/white_grapevine_canopy_flowering",
+      "y": 90
+    },
+    "axis=z,stage=green_fruit": {
+      "model": "alcoholic:block/white_grapevine_canopy_green_fruit",
+      "y": 90
+    },
+    "axis=z,stage=harvest_ready": {
+      "model": "alcoholic:block/white_grapevine_canopy_harvest_ready",
+      "y": 90
+    },
+    "axis=z,stage=planted": {
+      "model": "alcoholic:block/white_grapevine_canopy_planted",
+      "y": 90
+    },
+    "axis=z,stage=ripening": {
+      "model": "alcoholic:block/white_grapevine_canopy_ripening",
+      "y": 90
+    },
+    "axis=z,stage=vegetative": {
+      "model": "alcoholic:block/white_grapevine_canopy_vegetative",
+      "y": 90
+    }
+  }
+}

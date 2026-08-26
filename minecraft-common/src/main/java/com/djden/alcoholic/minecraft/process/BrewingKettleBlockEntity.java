@@ -14,6 +14,8 @@ import com.djden.alcoholic.minecraft.environment.HeatSources;
 import com.djden.alcoholic.minecraft.fluid.LiquidBatchNbt;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
+import com.djden.alcoholic.minecraft.menu.MachineAccess;
+import com.djden.alcoholic.minecraft.menu.MachineLayout;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -38,7 +40,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
-public final class BrewingKettleBlockEntity extends BlockEntity implements WorldlyContainer, LiquidVessel {
+public final class BrewingKettleBlockEntity extends BlockEntity implements WorldlyContainer, LiquidVessel, MachineAccess {
     public static final int ADDITION_SLOT = 0;
     public static final int CAPACITY = 8_000;
 
@@ -71,6 +73,16 @@ public final class BrewingKettleBlockEntity extends BlockEntity implements World
 
     public double temperatureCelsius() {
         return HeatSources.celsius(level, worldPosition);
+    }
+
+    @Override
+    public MachineLayout layout() {
+        return MachineLayout.ONE_SLOT_ONE_TANK;
+    }
+
+    @Override
+    public int temperatureDeci() {
+        return MachineAccess.deci(temperatureCelsius());
     }
 
     public static void serverTick(

@@ -7,6 +7,7 @@ import com.djden.alcoholic.domain.multiblock.Box3;
 import com.djden.alcoholic.domain.multiblock.PressStrokeState;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
 import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlockEntity;
+import com.djden.alcoholic.minecraft.multiblock.HollowCuboidPlacer;
 import com.djden.alcoholic.minecraft.multiblock.MultiblockControllerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
@@ -772,23 +773,16 @@ public final class IndustrialGameTests {
             String casing,
             String extraPort
     ) {
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                for (int z = 0; z < depth; z++) {
-                    boolean shell = x == 0 || y == 0 || z == 0 || x == width - 1 || y == height - 1 || z == depth - 1;
-                    BlockPos pos = origin.offset(x, y, z);
-                    if (!shell) {
-                        helper.setBlock(pos, Blocks.AIR.defaultBlockState());
-                    } else if (x == 0 && y == 0 && z == 0) {
-                        helper.setBlock(pos, block(controller).defaultBlockState());
-                    } else if (extraPort != null && x == width - 1 && y == 0 && z == 0) {
-                        helper.setBlock(pos, block(extraPort).defaultBlockState());
-                    } else {
-                        helper.setBlock(pos, block(casing).defaultBlockState());
-                    }
-                }
-            }
-        }
+        HollowCuboidPlacer.place(
+                helper.getLevel(),
+                helper.absolutePos(origin),
+                width,
+                height,
+                depth,
+                block(controller),
+                block(casing),
+                extraPort == null ? null : block(extraPort)
+        );
     }
 
     private static MultiblockControllerBlockEntity revalidate(GameTestHelper helper, BlockPos pos) {

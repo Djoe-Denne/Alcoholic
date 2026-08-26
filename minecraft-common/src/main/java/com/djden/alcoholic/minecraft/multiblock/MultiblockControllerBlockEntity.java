@@ -21,6 +21,9 @@ import com.djden.alcoholic.minecraft.fluid.LiquidBatchNbt;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
 import com.djden.alcoholic.minecraft.mechanical.MechanicalDrives;
+import com.djden.alcoholic.minecraft.menu.MachineAccess;
+import com.djden.alcoholic.minecraft.menu.MachineContainerData;
+import com.djden.alcoholic.minecraft.menu.MachineLayout;
 import com.djden.alcoholic.minecraft.process.ItemLots;
 import com.djden.alcoholic.minecraft.process.MinecraftSelectorMatcher;
 import com.djden.alcoholic.minecraft.process.ProcessRuntime;
@@ -49,7 +52,7 @@ import java.util.List;
 import java.util.Optional;
 
 public final class MultiblockControllerBlockEntity extends BlockEntity
-        implements WorldlyContainer, LiquidVessel {
+        implements WorldlyContainer, LiquidVessel, MachineAccess {
     public static final int INPUT_SLOT = 0;
     public static final int OUTPUT_SLOT = 1;
 
@@ -99,6 +102,10 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
 
     public boolean formed() {
         return formed;
+    }
+
+    public String lastReason() {
+        return lastReason;
     }
 
     public IndustrialAccess access() {
@@ -165,6 +172,33 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
 
     public int processDuration() {
         return processDuration;
+    }
+
+    @Override
+    public MachineLayout layout() {
+        return definition()
+                .map(value -> value.hasProcess() ? MachineLayout.TWO_SLOTS_ONE_TANK : MachineLayout.ONE_TANK)
+                .orElse(MachineLayout.TWO_SLOTS_ONE_TANK);
+    }
+
+    @Override
+    public int progress() {
+        return processProgress;
+    }
+
+    @Override
+    public int duration() {
+        return Math.max(1, processDuration);
+    }
+
+    @Override
+    public int temperatureDeci() {
+        return MachineAccess.deci(targetTemperature);
+    }
+
+    @Override
+    public int flags() {
+        return formed ? MachineContainerData.FLAG_FORMED : 0;
     }
 
     public String processStage() {

@@ -11,6 +11,7 @@
               "Name": "alcoholic:white_grapevine",
               "Properties": {
                 "age": "4",
+                "extended": "false",
                 "stage": "harvest_ready",
                 "trained": "false"
               }

@@ -1,52 +1,100 @@
 {
   "variants": {
-    "stage=dormant,trained=false": {
+    "extended=false,stage=dormant,trained=false": {
       "model": "alcoholic:block/white_grapevine_dormant_untrained"
     },
-    "stage=dormant,trained=true": {
+    "extended=false,stage=dormant,trained=true": {
       "model": "alcoholic:block/white_grapevine_dormant_trained"
     },
-    "stage=establishing,trained=false": {
+    "extended=false,stage=establishing,trained=false": {
       "model": "alcoholic:block/white_grapevine_establishing_untrained"
     },
-    "stage=establishing,trained=true": {
+    "extended=false,stage=establishing,trained=true": {
       "model": "alcoholic:block/white_grapevine_establishing_trained"
     },
-    "stage=flowering,trained=false": {
+    "extended=false,stage=flowering,trained=false": {
       "model": "alcoholic:block/white_grapevine_flowering_untrained"
     },
-    "stage=flowering,trained=true": {
+    "extended=false,stage=flowering,trained=true": {
       "model": "alcoholic:block/white_grapevine_flowering_trained"
     },
-    "stage=green_fruit,trained=false": {
+    "extended=false,stage=green_fruit,trained=false": {
       "model": "alcoholic:block/white_grapevine_green_fruit_untrained"
     },
-    "stage=green_fruit,trained=true": {
+    "extended=false,stage=green_fruit,trained=true": {
       "model": "alcoholic:block/white_grapevine_green_fruit_trained"
     },
-    "stage=harvest_ready,trained=false": {
+    "extended=false,stage=harvest_ready,trained=false": {
       "model": "alcoholic:block/white_grapevine_harvest_ready_untrained"
     },
-    "stage=harvest_ready,trained=true": {
+    "extended=false,stage=harvest_ready,trained=true": {
       "model": "alcoholic:block/white_grapevine_harvest_ready_trained"
     },
-    "stage=planted,trained=false": {
+    "extended=false,stage=planted,trained=false": {
       "model": "alcoholic:block/white_grapevine_planted_untrained"
     },
-    "stage=planted,trained=true": {
+    "extended=false,stage=planted,trained=true": {
       "model": "alcoholic:block/white_grapevine_planted_trained"
     },
-    "stage=ripening,trained=false": {
+    "extended=false,stage=ripening,trained=false": {
       "model": "alcoholic:block/white_grapevine_ripening_untrained"
     },
-    "stage=ripening,trained=true": {
+    "extended=false,stage=ripening,trained=true": {
       "model": "alcoholic:block/white_grapevine_ripening_trained"
     },
-    "stage=vegetative,trained=false": {
+    "extended=false,stage=vegetative,trained=false": {
       "model": "alcoholic:block/white_grapevine_vegetative_untrained"
     },
-    "stage=vegetative,trained=true": {
+    "extended=false,stage=vegetative,trained=true": {
       "model": "alcoholic:block/white_grapevine_vegetative_trained"
+    },
+    "extended=true,stage=dormant,trained=false": {
+      "model": "alcoholic:block/white_grapevine_dormant_untrained"
+    },
+    "extended=true,stage=dormant,trained=true": {
+      "model": "alcoholic:block/white_grapevine_dormant_base"
+    },
+    "extended=true,stage=establishing,trained=false": {
+      "model": "alcoholic:block/white_grapevine_establishing_untrained"
+    },
+    "extended=true,stage=establishing,trained=true": {
+      "model": "alcoholic:block/white_grapevine_establishing_base"
+    },
+    "extended=true,stage=flowering,trained=false": {
+      "model": "alcoholic:block/white_grapevine_flowering_untrained"
+    },
+    "extended=true,stage=flowering,trained=true": {
+      "model": "alcoholic:block/white_grapevine_flowering_base"
+    },
+    "extended=true,stage=green_fruit,trained=false": {
+      "model": "alcoholic:block/white_grapevine_green_fruit_untrained"
+    },
+    "extended=true,stage=green_fruit,trained=true": {
+      "model": "alcoholic:block/white_grapevine_green_fruit_base"
+    },
+    "extended=true,stage=harvest_ready,trained=false": {
+      "model": "alcoholic:block/white_grapevine_harvest_ready_untrained"
+    },
+    "extended=true,stage=harvest_ready,trained=true": {
+      "model": "alcoholic:block/white_grapevine_harvest_ready_base"
+    },
+    "extended=true,stage=planted,trained=false": {
+      "model": "alcoholic:block/white_grapevine_planted_untrained"
+    },
+    "extended=true,stage=planted,trained=true": {
+      "model": "alcoholic:block/white_grapevine_planted_base"
+    },
+    "extended=true,stage=ripening,trained=false": {
+      "model": "alcoholic:block/white_grapevine_ripening_untrained"
+    },
+    "extended=true,stage=ripening,trained=true": {
+      "model": "alcoholic:block/white_grapevine_ripening_base"
+    },
+    "extended=true,stage=vegetative,trained=false": {
+      "model": "alcoholic:block/white_grapevine_vegetative_untrained"
+    },
+    "extended=true,stage=vegetative,trained=true": {
+      "model": "alcoholic:block/white_grapevine_vegetative_base"
     }
   }
 }

@@ -11,6 +11,8 @@ import com.djden.alcoholic.minecraft.bottle.Bottling;
 import com.djden.alcoholic.minecraft.fluid.LiquidBatchNbt;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
+import com.djden.alcoholic.minecraft.menu.MachineAccess;
+import com.djden.alcoholic.minecraft.menu.MachineLayout;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -25,7 +27,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public final class ArtisanalBlendingCrockBlockEntity extends BlockEntity implements LiquidVessel {
+public final class ArtisanalBlendingCrockBlockEntity extends BlockEntity implements LiquidVessel, MachineAccess {
     public static final int CAPACITY = 4_000;
 
     private final LiquidTank first;
@@ -61,6 +63,11 @@ public final class ArtisanalBlendingCrockBlockEntity extends BlockEntity impleme
     @Override
     public boolean canDrainTank(int index) {
         return index == 0 || index == 1;
+    }
+
+    @Override
+    public MachineLayout layout() {
+        return MachineLayout.TWO_TANKS;
     }
 
     public boolean tryBottle(Player player, ItemStack held) {

@@ -11,6 +11,8 @@ import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.minecraft.fluid.LiquidBatchNbt;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
+import com.djden.alcoholic.minecraft.menu.MachineAccess;
+import com.djden.alcoholic.minecraft.menu.MachineLayout;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -30,7 +32,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 import java.util.Optional;
 
-public final class ArtisanalPressBlockEntity extends BlockEntity implements WorldlyContainer, LiquidVessel {
+public final class ArtisanalPressBlockEntity extends BlockEntity implements WorldlyContainer, LiquidVessel, MachineAccess {
     public static final int INPUT_SLOT = 0;
     public static final int BYPRODUCT_SLOT = 1;
     public static final int CAPACITY = 8_000;
@@ -56,6 +58,11 @@ public final class ArtisanalPressBlockEntity extends BlockEntity implements Worl
 
     public int duration() {
         return duration;
+    }
+
+    @Override
+    public MachineLayout layout() {
+        return MachineLayout.TWO_SLOTS_ONE_TANK;
     }
 
     public static void serverTick(

@@ -27,10 +27,33 @@ public final class TrellisDetector {
     }
 
     public boolean isTrained(LevelReader level, BlockPos vinePosition) {
+        return boundedWireHeightAbove(level, vinePosition) > 0;
+    }
+
+    /**
+     * Height of the first bounded trellis wire above the vine, or {@code 0}
+     * when none is reachable through a clear path.
+     */
+    public int boundedWireHeightAbove(LevelReader level, BlockPos vinePosition) {
         Objects.requireNonNull(level, "level");
         Objects.requireNonNull(vinePosition, "vinePosition");
-        return hasBoundedWire(level, vinePosition.above())
-                || hasBoundedWire(level, vinePosition.above(2));
+        for (int height = 1; height <= VineColumn.MAX_WIRE_OFFSET; height++) {
+            if (hasBoundedWire(level, vinePosition.above(height))
+                    && pathClearTo(level, vinePosition, height)) {
+                return height;
+            }
+        }
+        return 0;
+    }
+
+    private static boolean pathClearTo(LevelReader level, BlockPos root, int wireHeight) {
+        for (int dy = 1; dy < wireHeight; dy++) {
+            BlockState state = level.getBlockState(root.above(dy));
+            if (!state.isAir() && !(state.getBlock() instanceof VineStemBlock)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean hasOverheadRun(LevelReader level, BlockPos plantPosition, int maximumHeight) {
@@ -45,13 +68,25 @@ public final class TrellisDetector {
         return false;
     }
 
+    public static boolean isSpan(BlockState state) {
+        return state.getBlock() instanceof TrellisWireBlock
+                || state.getBlock() instanceof VineCanopyBlock;
+    }
+
+    public static Direction.Axis axisOf(BlockState state) {
+        if (state.getBlock() instanceof VineCanopyBlock) {
+            return state.getValue(VineCanopyBlock.AXIS);
+        }
+        return state.getValue(TrellisWireBlock.AXIS);
+    }
+
     public boolean hasBoundedWire(LevelReader level, BlockPos wirePosition) {
         BlockState wireState = level.getBlockState(wirePosition);
-        if (!(wireState.getBlock() instanceof TrellisWireBlock)) {
+        if (!isSpan(wireState)) {
             return false;
         }
 
-        Direction.Axis axis = wireState.getValue(TrellisWireBlock.AXIS);
+        Direction.Axis axis = axisOf(wireState);
         Direction negative = axis == Direction.Axis.X ? Direction.WEST : Direction.NORTH;
         Direction positive = negative.getOpposite();
         int maximumSpan = runtime.settings().maxWireDistance();
@@ -89,8 +124,7 @@ public final class TrellisDetector {
             if (state.getBlock() instanceof CropSupportPost) {
                 return distance;
             }
-            if (!(state.getBlock() instanceof TrellisWireBlock)
-                    || state.getValue(TrellisWireBlock.AXIS) != axis) {
+            if (!isSpan(state) || axisOf(state) != axis) {
                 return -1;
             }
         }

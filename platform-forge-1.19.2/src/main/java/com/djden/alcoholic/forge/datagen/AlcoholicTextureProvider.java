@@ -55,6 +55,33 @@ final class AlcoholicTextureProvider implements DataProvider {
         for (Map.Entry<String, Integer> entry : textures.entrySet()) {
             writePng(cache, "assets/alcoholic/textures/" + entry.getKey() + ".png", entry.getValue());
         }
+        writeImage(cache, "assets/alcoholic/textures/gui/machine.png", machinePanel());
+        writeImage(cache, "assets/alcoholic/textures/gui/elements.png", machineElements());
+    }
+
+    private static BufferedImage machinePanel() {
+        BufferedImage image = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
+        fill(image, 0, 0, 176, 166, 0xFFC6C6C6);
+        rect(image, 0, 0, 176, 166, 0xFF8B8B8B);
+        fill(image, 1, 1, 174, 1, 0xFFFFFFFF);
+        fill(image, 1, 1, 1, 164, 0xFFFFFFFF);
+        fill(image, 7, 79, 162, 1, 0xFFA0A0A0);
+        return image;
+    }
+
+    private static BufferedImage machineElements() {
+        BufferedImage image = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
+        fill(image, 0, 0, 18, 18, 0xFF373737);
+        rect(image, 0, 0, 18, 18, 0xFF8B8B8B);
+        fill(image, 18, 0, 18, 52, 0xFF2B2B2B);
+        rect(image, 18, 0, 18, 52, 0xFF8B8B8B);
+        drawArrow(image, 36, 0, 0xFF8B8B8B);
+        drawArrow(image, 36, 17, 0xFFC9A227);
+        fill(image, 60, 0, 14, 14, 0xFF3A3A3A);
+        rect(image, 60, 0, 14, 14, 0xFF6A6A6A);
+        fill(image, 74, 0, 14, 14, 0xFFE08A1A);
+        rect(image, 74, 0, 14, 14, 0xFFB05A10);
+        return image;
     }
 
     private void writePng(CachedOutput cache, String relative, int argb) throws IOException {
@@ -66,10 +93,39 @@ final class AlcoholicTextureProvider implements DataProvider {
                 image.setRGB(x, y, edge ? border : argb);
             }
         }
+        writeImage(cache, relative, image);
+    }
+
+    private void writeImage(CachedOutput cache, String relative, BufferedImage image) throws IOException {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         ImageIO.write(image, "png", bytes);
         byte[] data = bytes.toByteArray();
         cache.writeIfNeeded(outputRoot.resolve(relative), data, Hashing.sha1().hashBytes(data));
+    }
+
+    private static void fill(BufferedImage image, int x, int y, int width, int height, int argb) {
+        if (width <= 0 || height <= 0) {
+            return;
+        }
+        for (int row = 0; row < height; row++) {
+            for (int column = 0; column < width; column++) {
+                image.setRGB(x + column, y + row, argb);
+            }
+        }
+    }
+
+    private static void rect(BufferedImage image, int x, int y, int width, int height, int argb) {
+        fill(image, x, y, width, 1, argb);
+        fill(image, x, y + height - 1, width, 1, argb);
+        fill(image, x, y, 1, height, argb);
+        fill(image, x + width - 1, y, 1, height, argb);
+    }
+
+    private static void drawArrow(BufferedImage image, int x, int y, int argb) {
+        fill(image, x, y + 6, 16, 5, argb);
+        for (int step = 0; step < 8; step++) {
+            fill(image, x + 16 + step, y + 2 + step, 1, 13 - step * 2, argb);
+        }
     }
 
     private static int darken(int argb) {

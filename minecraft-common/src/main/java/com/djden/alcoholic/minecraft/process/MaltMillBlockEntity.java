@@ -13,6 +13,8 @@ import com.djden.alcoholic.domain.ingredient.IngredientLot;
 import com.djden.alcoholic.domain.mechanical.MechanicalDriveState;
 import com.djden.alcoholic.domain.mechanical.MechanicalRequirement;
 import com.djden.alcoholic.minecraft.mechanical.MechanicalDrives;
+import com.djden.alcoholic.minecraft.menu.MachineAccess;
+import com.djden.alcoholic.minecraft.menu.MachineLayout;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -36,7 +38,7 @@ import java.util.Optional;
  * Native {@code MILL} executor. Requires an adjacent {@link com.djden.alcoholic.domain.mechanical.MechanicalDrivePort};
  * it contains no beverage-family logic.
  */
-public final class MaltMillBlockEntity extends BlockEntity implements WorldlyContainer {
+public final class MaltMillBlockEntity extends BlockEntity implements WorldlyContainer, MachineAccess {
     public static final int INPUT_SLOT = 0;
     public static final int OUTPUT_SLOT = 1;
 
@@ -59,6 +61,16 @@ public final class MaltMillBlockEntity extends BlockEntity implements WorldlyCon
 
     public MechanicalDriveState driveState() {
         return MechanicalDrives.forMachine(level, worldPosition);
+    }
+
+    @Override
+    public MachineLayout layout() {
+        return MachineLayout.TWO_SLOTS;
+    }
+
+    @Override
+    public int extra() {
+        return (int) Math.round(driveState().speed());
     }
 
     public static void serverTick(

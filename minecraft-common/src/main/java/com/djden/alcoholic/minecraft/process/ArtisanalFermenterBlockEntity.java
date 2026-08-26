@@ -11,6 +11,8 @@ import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.minecraft.fluid.LiquidBatchNbt;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
+import com.djden.alcoholic.minecraft.menu.MachineAccess;
+import com.djden.alcoholic.minecraft.menu.MachineLayout;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -29,7 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 
-public final class ArtisanalFermenterBlockEntity extends BlockEntity implements WorldlyContainer, LiquidVessel {
+public final class ArtisanalFermenterBlockEntity extends BlockEntity implements WorldlyContainer, LiquidVessel, MachineAccess {
     public static final int YEAST_SLOT = 0;
     public static final int CAPACITY = 8_000;
 
@@ -58,6 +60,21 @@ public final class ArtisanalFermenterBlockEntity extends BlockEntity implements 
         }
         float biome = level.getBiome(worldPosition).value().getBaseTemperature();
         return biome * 25.0 + 5.0;
+    }
+
+    @Override
+    public MachineLayout layout() {
+        return MachineLayout.ONE_SLOT_ONE_TANK;
+    }
+
+    @Override
+    public int temperatureDeci() {
+        return MachineAccess.deci(temperatureCelsius());
+    }
+
+    @Override
+    public int extra() {
+        return yeastPitched ? 1 : 0;
     }
 
     public static void serverTick(

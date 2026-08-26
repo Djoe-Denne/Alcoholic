@@ -17,6 +17,8 @@ import com.djden.alcoholic.minecraft.environment.EnvironmentSampler;
 import com.djden.alcoholic.minecraft.fluid.LiquidBatchNbt;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
+import com.djden.alcoholic.minecraft.menu.MachineAccess;
+import com.djden.alcoholic.minecraft.menu.MachineLayout;
 import com.djden.alcoholic.minecraft.vessel.BarrelHistoryNbt;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -32,7 +34,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 
-public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVessel {
+public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVessel, MachineAccess {
     public static final int CAPACITY = 8_000;
 
     private final LiquidTank tank;
@@ -61,6 +63,16 @@ public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVes
 
     public EnvironmentProfile environment() {
         return environment;
+    }
+
+    @Override
+    public MachineLayout layout() {
+        return MachineLayout.ONE_TANK;
+    }
+
+    @Override
+    public int temperatureDeci() {
+        return MachineAccess.deci(environment.temperature());
     }
 
     public VesselProfile vesselProfile() {

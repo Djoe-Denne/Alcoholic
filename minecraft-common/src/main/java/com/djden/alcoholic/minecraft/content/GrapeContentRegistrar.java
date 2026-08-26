@@ -5,6 +5,8 @@ import com.djden.alcoholic.minecraft.agriculture.EndPostBlock;
 import com.djden.alcoholic.minecraft.agriculture.TrellisWireBlock;
 import com.djden.alcoholic.minecraft.agriculture.VineBlock;
 import com.djden.alcoholic.minecraft.agriculture.VineBlockEntity;
+import com.djden.alcoholic.minecraft.agriculture.VineCanopyBlock;
+import com.djden.alcoholic.minecraft.agriculture.VineStemBlock;
 import com.djden.alcoholic.minecraft.agriculture.VineyardPostBlock;
 import com.djden.alcoholic.minecraft.viticulture.PruningShearsItem;
 import com.djden.alcoholic.minecraft.viticulture.TrellisSpoolItem;
@@ -66,13 +68,19 @@ public final class GrapeContentRegistrar {
                 AlcoholicIds.WHITE_GRAPES,
                 () -> new Item(grapeProperties(builtinDiscoverable))
         );
+        AtomicReference<RegistryRef<Block>> redStemHolder = new AtomicReference<>();
+        AtomicReference<RegistryRef<Block>> whiteStemHolder = new AtomicReference<>();
+        AtomicReference<RegistryRef<Block>> redCanopyHolder = new AtomicReference<>();
+        AtomicReference<RegistryRef<Block>> whiteCanopyHolder = new AtomicReference<>();
         RegistryRef<Block> redVineRef = ports.blocks().register(
                 AlcoholicIds.RED_GRAPEVINE,
                 () -> new VineBlock(
                         vineProperties(),
                         VineVarieties.RED_GRAPE,
                         runtime,
-                        vineEntityType
+                        vineEntityType,
+                        () -> redStemHolder.get().get(),
+                        () -> redCanopyHolder.get().get()
                 )
         );
         RegistryRef<Block> whiteVineRef = ports.blocks().register(
@@ -81,9 +89,21 @@ public final class GrapeContentRegistrar {
                         vineProperties(),
                         VineVarieties.WHITE_GRAPE,
                         runtime,
-                        vineEntityType
+                        vineEntityType,
+                        () -> whiteStemHolder.get().get(),
+                        () -> whiteCanopyHolder.get().get()
                 )
         );
+        RegistryRef<Block> redStemRef = ports.blocks().register(
+                AlcoholicIds.RED_GRAPEVINE_STEM,
+                () -> new VineStemBlock(stemProperties(), redVineRef::get)
+        );
+        RegistryRef<Block> whiteStemRef = ports.blocks().register(
+                AlcoholicIds.WHITE_GRAPEVINE_STEM,
+                () -> new VineStemBlock(stemProperties(), whiteVineRef::get)
+        );
+        redStemHolder.set(redStemRef);
+        whiteStemHolder.set(whiteStemRef);
         RegistryRef<Item> redCuttingRef = ports.items().register(
                 AlcoholicIds.RED_GRAPE_CUTTING,
                 () -> new ItemNameBlockItem(
@@ -111,6 +131,24 @@ public final class GrapeContentRegistrar {
                 AlcoholicIds.TRELLIS_WIRE,
                 () -> new TrellisWireBlock(wireProperties())
         );
+        RegistryRef<Block> redCanopyRef = ports.blocks().register(
+                AlcoholicIds.RED_GRAPEVINE_CANOPY,
+                () -> new VineCanopyBlock(
+                        stemProperties(),
+                        redVineRef::get,
+                        trellisWireRef::get
+                )
+        );
+        RegistryRef<Block> whiteCanopyRef = ports.blocks().register(
+                AlcoholicIds.WHITE_GRAPEVINE_CANOPY,
+                () -> new VineCanopyBlock(
+                        stemProperties(),
+                        whiteVineRef::get,
+                        trellisWireRef::get
+                )
+        );
+        redCanopyHolder.set(redCanopyRef);
+        whiteCanopyHolder.set(whiteCanopyRef);
         RegistryRef<Item> vineyardPostItemRef = ports.items().register(
                 AlcoholicIds.VINEYARD_POST,
                 () -> new BlockItem(vineyardPostRef.get(), infrastructureProperties())
@@ -159,6 +197,10 @@ public final class GrapeContentRegistrar {
         return new AlcoholicContent(
                 redVineRef,
                 whiteVineRef,
+                redStemRef,
+                whiteStemRef,
+                redCanopyRef,
+                whiteCanopyRef,
                 redGrapesRef,
                 whiteGrapesRef,
                 redCuttingRef,
@@ -195,8 +237,15 @@ public final class GrapeContentRegistrar {
                 .sound(SoundType.VINE);
     }
 
+    private static BlockBehaviour.Properties stemProperties() {
+        return BlockBehaviour.Properties.copy(Blocks.SWEET_BERRY_BUSH)
+                .noCollission()
+                .sound(SoundType.VINE);
+    }
+
     private static BlockBehaviour.Properties postProperties() {
         return BlockBehaviour.Properties.copy(Blocks.OAK_FENCE)
+                .noOcclusion()
                 .strength(2.0F, 3.0F)
                 .sound(SoundType.WOOD);
     }

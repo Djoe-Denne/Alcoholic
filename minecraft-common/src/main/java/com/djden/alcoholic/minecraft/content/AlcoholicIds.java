@@ -11,6 +11,10 @@ public final class AlcoholicIds {
     public static final ResourceId WHITE_GRAPE_CUTTING = id("white_grape_cutting");
     public static final ResourceId RED_GRAPEVINE = id("red_grapevine");
     public static final ResourceId WHITE_GRAPEVINE = id("white_grapevine");
+    public static final ResourceId RED_GRAPEVINE_STEM = id("red_grapevine_stem");
+    public static final ResourceId WHITE_GRAPEVINE_STEM = id("white_grapevine_stem");
+    public static final ResourceId RED_GRAPEVINE_CANOPY = id("red_grapevine_canopy");
+    public static final ResourceId WHITE_GRAPEVINE_CANOPY = id("white_grapevine_canopy");
     public static final ResourceId VINEYARD_POST = id("vineyard_post");
     public static final ResourceId END_POST = id("end_post");
     public static final ResourceId TRELLIS_WIRE = id("trellis_wire");
@@ -89,6 +93,14 @@ public final class AlcoholicIds {
     public static final ResourceId HOPPED_WORT = id("hopped_wort");
     public static final ResourceId BEER = id("beer");
     public static final ResourceId WILD_BARLEY = id("wild_barley");
+    public static final ResourceId TWO_SLOTS_MENU = id("two_slots_menu");
+    public static final ResourceId TWO_SLOTS_ONE_TANK_MENU = id("two_slots_one_tank_menu");
+    public static final ResourceId TWO_SLOTS_TWO_TANKS_MENU = id("two_slots_two_tanks_menu");
+    public static final ResourceId ONE_SLOT_ONE_TANK_MENU = id("one_slot_one_tank_menu");
+    public static final ResourceId ONE_TANK_MENU = id("one_tank_menu");
+    public static final ResourceId TWO_TANKS_MENU = id("two_tanks_menu");
+    public static final ResourceId FUEL_MENU = id("fuel_menu");
+    public static final ResourceId ENERGY_MENU = id("energy_menu");
 
     private AlcoholicIds() {
     }

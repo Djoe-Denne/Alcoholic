@@ -1,5 +1,6 @@
 package com.djden.alcoholic.minecraft.mechanical;
 
+import com.djden.alcoholic.minecraft.menu.MachineMenus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
@@ -115,6 +116,9 @@ public final class PrimitiveCombustionEngineBlock extends BaseEntityBlock {
             }
         }
         if (!held.isEmpty() && entity.insertFuel(held)) {
+            return InteractionResult.CONSUME;
+        }
+        if (held.isEmpty() && MachineMenus.tryOpen(player, entity)) {
             return InteractionResult.CONSUME;
         }
         player.displayClientMessage(entity.status(), true);

@@ -1,5 +1,6 @@
 package com.djden.alcoholic.minecraft.process;
 
+import com.djden.alcoholic.minecraft.menu.MachineMenus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -67,6 +68,9 @@ public final class ArtisanalBlendingCrockBlock extends BaseEntityBlock {
         }
         if (player.isShiftKeyDown() && held.isEmpty()) {
             player.displayClientMessage(entity.blend(), true);
+            return InteractionResult.CONSUME;
+        }
+        if (held.isEmpty() && MachineMenus.tryOpen(player, entity)) {
             return InteractionResult.CONSUME;
         }
         player.displayClientMessage(entity.status(), true);

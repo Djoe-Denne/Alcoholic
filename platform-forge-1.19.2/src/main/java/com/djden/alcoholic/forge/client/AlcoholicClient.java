@@ -4,9 +4,13 @@ import com.djden.alcoholic.minecraft.content.AlcoholicContent;
 import com.djden.alcoholic.minecraft.content.GrainContent;
 import com.djden.alcoholic.minecraft.content.IndustrialContent;
 import com.djden.alcoholic.minecraft.content.ProcessingContent;
+import com.djden.alcoholic.minecraft.menu.MachineMenu;
+import com.djden.alcoholic.minecraft.menu.MachineMenuContent;
 import com.djden.alcoholic.minecraft.multiblock.MultiblockControllerBlockEntity;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -21,12 +25,17 @@ public final class AlcoholicClient {
             AlcoholicContent content,
             ProcessingContent processing,
             GrainContent grain,
-            IndustrialContent industrial
+            IndustrialContent industrial,
+            MachineMenuContent menus
     ) {
         modEventBus.addListener(
                 (FMLClientSetupEvent event) -> event.enqueueWork(() -> {
                     ItemBlockRenderTypes.setRenderLayer(content.redGrapevine().get(), RenderType.cutout());
                     ItemBlockRenderTypes.setRenderLayer(content.whiteGrapevine().get(), RenderType.cutout());
+                    ItemBlockRenderTypes.setRenderLayer(content.redGrapevineStem().get(), RenderType.cutout());
+                    ItemBlockRenderTypes.setRenderLayer(content.whiteGrapevineStem().get(), RenderType.cutout());
+                    ItemBlockRenderTypes.setRenderLayer(content.redGrapevineCanopy().get(), RenderType.cutout());
+                    ItemBlockRenderTypes.setRenderLayer(content.whiteGrapevineCanopy().get(), RenderType.cutout());
                     ItemBlockRenderTypes.setRenderLayer(content.trellisWire().get(), RenderType.cutout());
                     ItemBlockRenderTypes.setRenderLayer(processing.artisanalPress().get(), RenderType.cutout());
                     ItemBlockRenderTypes.setRenderLayer(processing.artisanalFermenter().get(), RenderType.cutout());
@@ -42,6 +51,7 @@ public final class AlcoholicClient {
                     ItemBlockRenderTypes.setRenderLayer(grain.hopBine().get(), RenderType.cutout());
                     ItemBlockRenderTypes.setRenderLayer(industrial.machineWindow().get(), RenderType.translucent());
                     ItemBlockRenderTypes.setRenderLayer(industrial.pressController().get(), RenderType.cutout());
+                    registerMenus(menus);
                 })
         );
         modEventBus.addListener((EntityRenderersEvent.RegisterRenderers event) -> {
@@ -50,5 +60,17 @@ public final class AlcoholicClient {
                     (BlockEntityType<MultiblockControllerBlockEntity>) industrial.pressControllerEntity().get();
             event.registerBlockEntityRenderer(pressType, IndustrialPressRenderer::new);
         });
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void registerMenus(MachineMenuContent menus) {
+        MenuScreens.register((MenuType<MachineMenu>) menus.twoSlots().get(), AlcoholicMachineScreen::new);
+        MenuScreens.register((MenuType<MachineMenu>) menus.twoSlotsOneTank().get(), AlcoholicMachineScreen::new);
+        MenuScreens.register((MenuType<MachineMenu>) menus.twoSlotsTwoTanks().get(), AlcoholicMachineScreen::new);
+        MenuScreens.register((MenuType<MachineMenu>) menus.oneSlotOneTank().get(), AlcoholicMachineScreen::new);
+        MenuScreens.register((MenuType<MachineMenu>) menus.oneTank().get(), AlcoholicMachineScreen::new);
+        MenuScreens.register((MenuType<MachineMenu>) menus.twoTanks().get(), AlcoholicMachineScreen::new);
+        MenuScreens.register((MenuType<MachineMenu>) menus.fuel().get(), AlcoholicMachineScreen::new);
+        MenuScreens.register((MenuType<MachineMenu>) menus.energy().get(), AlcoholicMachineScreen::new);
     }
 }

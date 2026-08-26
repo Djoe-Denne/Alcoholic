@@ -33,6 +33,10 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         addSelfDropLoot(sink, "primitive_combustion_engine");
         addSelfDropLoot(sink, "electric_motor");
         addEmptyLoot(sink, "trellis_wire");
+        addEmptyLoot(sink, "red_grapevine_stem");
+        addEmptyLoot(sink, "white_grapevine_stem");
+        addEmptyLoot(sink, "red_grapevine_canopy");
+        addEmptyLoot(sink, "white_grapevine_canopy");
         addBarleyLoot(sink);
         addHopBineLoot(sink);
         addRecipes(sink);
@@ -1430,7 +1434,8 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                                       "Properties": {
                                         "age": "4",
                                         "stage": "harvest_ready",
-                                        "trained": "false"
+                                        "trained": "false",
+                                        "extended": "false"
                                       }
                                     }
                                   }

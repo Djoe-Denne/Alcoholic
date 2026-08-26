@@ -14,6 +14,8 @@ import com.djden.alcoholic.minecraft.environment.HeatSources;
 import com.djden.alcoholic.minecraft.fluid.LiquidBatchNbt;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
+import com.djden.alcoholic.minecraft.menu.MachineAccess;
+import com.djden.alcoholic.minecraft.menu.MachineLayout;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -35,7 +37,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-public final class MashTunBlockEntity extends BlockEntity implements WorldlyContainer, LiquidVessel {
+public final class MashTunBlockEntity extends BlockEntity implements WorldlyContainer, LiquidVessel, MachineAccess {
     public static final int INPUT_SLOT = 0;
     public static final int BYPRODUCT_SLOT = 1;
     public static final int CAPACITY = 8_000;
@@ -91,6 +93,16 @@ public final class MashTunBlockEntity extends BlockEntity implements WorldlyCont
 
     public double temperatureCelsius() {
         return HeatSources.celsius(level, worldPosition);
+    }
+
+    @Override
+    public MachineLayout layout() {
+        return MachineLayout.TWO_SLOTS_TWO_TANKS;
+    }
+
+    @Override
+    public int temperatureDeci() {
+        return MachineAccess.deci(temperatureCelsius());
     }
 
     public static void serverTick(

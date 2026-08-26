@@ -3,39 +3,116 @@
   "elements": [
     {
       "faces": {
-        "down": {
-          "texture": "#vine"
-        },
-        "east": {
-          "texture": "#vine"
-        },
         "north": {
-          "texture": "#vine"
+          "texture": "#cross",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
         },
         "south": {
-          "texture": "#vine"
-        },
-        "up": {
-          "texture": "#vine"
-        },
-        "west": {
-          "texture": "#vine"
+          "texture": "#cross",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
         }
       },
       "from": [
-        7,
+        0.8,
         0,
-        7
+        8
       ],
+      "shade": false,
       "to": [
-        9,
+        15.2,
         16,
-        9
+        8
+      ]
+    },
+    {
+      "faces": {
+        "east": {
+          "texture": "#cross",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#cross",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        }
+      },
+      "from": [
+        8,
+        0,
+        0.8
+      ],
+      "shade": false,
+      "to": [
+        8,
+        16,
+        15.2
+      ]
+    },
+    {
+      "faces": {
+        "north": {
+          "texture": "#cross",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#cross",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        }
+      },
+      "from": [
+        0.8,
+        0,
+        8
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "rescale": true
+      },
+      "shade": false,
+      "to": [
+        15.2,
+        16,
+        8
       ]
     }
   ],
   "textures": {
-    "particle": "alcoholic:block/red_grapevine_dormant",
-    "vine": "alcoholic:block/red_grapevine_dormant"
+    "cross": "alcoholic:block/red_grapevine_dormant",
+    "particle": "alcoholic:block/red_grapevine_dormant"
   }
 }

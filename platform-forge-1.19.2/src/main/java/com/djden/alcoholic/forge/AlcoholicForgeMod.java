@@ -9,6 +9,8 @@ import com.djden.alcoholic.forge.client.AlcoholicClient;
 import com.djden.alcoholic.forge.compatibility.ForgeModPresenceAdapter;
 import com.djden.alcoholic.forge.datagen.AlcoholicDataGenerators;
 import com.djden.alcoholic.forge.event.ForgeBeverageEvents;
+import com.djden.alcoholic.forge.event.ForgeDebugKitCommands;
+import com.djden.alcoholic.forge.event.ForgePlaceCommands;
 import com.djden.alcoholic.forge.event.ForgeInspectEvents;
 import com.djden.alcoholic.forge.event.ForgeViticultureEvents;
 import com.djden.alcoholic.forge.registry.ForgeRegistryPort;
@@ -30,6 +32,8 @@ import com.djden.alcoholic.minecraft.content.GrainContentRegistrar;
 import com.djden.alcoholic.minecraft.content.IndustrialContent;
 import com.djden.alcoholic.minecraft.content.ProcessingContent;
 import com.djden.alcoholic.minecraft.content.ProcessingContentRegistrar;
+import com.djden.alcoholic.minecraft.menu.MachineMenuContent;
+import com.djden.alcoholic.minecraft.menu.MachineMenuRegistrar;
 import com.djden.alcoholic.minecraft.viticulture.InternalGrapeProvider;
 import com.djden.alcoholic.minecraft.viticulture.ViticultureRuntime;
 import com.djden.alcoholic.forge.condition.ItemPresentCondition;
@@ -38,6 +42,7 @@ import com.djden.alcoholic.forge.fluid.ForgeFluidContent;
 import com.djden.alcoholic.forge.fluid.ForgeFluidInteraction;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -63,6 +68,7 @@ public final class AlcoholicForgeMod {
     private final ProcessingContent processing;
     private final GrainContent grain;
     private final IndustrialContent industrial;
+    private final MachineMenuContent menus;
     private final ForgeFluidContent fluids;
 
     public AlcoholicForgeMod(FMLJavaModLoadingContext loadingContext) {
@@ -87,6 +93,9 @@ public final class AlcoholicForgeMod {
                         ForgeRegistries.BLOCK_ENTITY_TYPES,
                         AlcoholicIds.MOD_ID
                 );
+        ForgeRegistryPort<MenuType<?>> menuTypes =
+                new ForgeRegistryPort<>(ForgeRegistries.MENU_TYPES, AlcoholicIds.MOD_ID);
+        ContentRegistrationPorts ports = new ContentRegistrationPorts(blocks, items, blockEntities, menuTypes);
         BeverageRuntime beverageRuntime = BeverageRuntime.shared();
         BeverageFrameworkBootstrap.install(beverageRuntime);
         ViticultureRuntime runtime = ViticultureRuntime.shared();
@@ -108,24 +117,21 @@ public final class AlcoholicForgeMod {
                 CropKind.GRAPES,
                 GameplaySource.CREATIVE_DISCOVERY
         );
-        content = GrapeContentRegistrar.register(
-                new ContentRegistrationPorts(blocks, items, blockEntities),
-                grapesDiscoverable
-        );
-        processing = ProcessingContentRegistrar.register(
-                new ContentRegistrationPorts(blocks, items, blockEntities)
-        );
+        content = GrapeContentRegistrar.register(ports, grapesDiscoverable);
+        processing = ProcessingContentRegistrar.register(ports);
         grain = GrainContentRegistrar.register(
-                new ContentRegistrationPorts(blocks, items, blockEntities),
+                ports,
                 () -> cropPolicy.isBuiltinAcquisitionEnabled(CropKind.BARLEY, GameplaySource.CREATIVE_DISCOVERY),
                 () -> cropPolicy.isBuiltinAcquisitionEnabled(CropKind.HOPS, GameplaySource.CREATIVE_DISCOVERY)
         );
-        industrial = registerIndustrial(new ContentRegistrationPorts(blocks, items, blockEntities));
+        industrial = registerIndustrial(ports);
+        menus = MachineMenuRegistrar.register(ports);
         fluids = new ForgeFluidContent();
 
         blocks.attach(modEventBus);
         items.attach(modEventBus);
         blockEntities.attach(modEventBus);
+        menuTypes.attach(modEventBus);
         fluids.attach(modEventBus);
         modEventBus.addListener(AlcoholicDataGenerators::gatherData);
         modEventBus.addListener(EventPriority.LOWEST, this::freezeBeverageApi);
@@ -138,11 +144,13 @@ public final class AlcoholicForgeMod {
         MinecraftForge.EVENT_BUS.register(new ForgeEnergyCapabilities());
         MinecraftForge.EVENT_BUS.register(new ForgeFluidInteraction());
         MinecraftForge.EVENT_BUS.register(new ForgeInspectEvents());
+        MinecraftForge.EVENT_BUS.register(new ForgeDebugKitCommands(content, processing, grain, industrial));
+        MinecraftForge.EVENT_BUS.register(new ForgePlaceCommands());
         MinecraftForge.EVENT_BUS.register(new ForgeIndustrialEvents());
 
         DistExecutor.unsafeRunWhenOn(
                 Dist.CLIENT,
-                () -> () -> AlcoholicClient.register(modEventBus, content, processing, grain, industrial)
+                () -> () -> AlcoholicClient.register(modEventBus, content, processing, grain, industrial, menus)
         );
 
         if (ForgeCreateIntegration.shouldActivate(compatibility)) {
@@ -173,6 +181,10 @@ public final class AlcoholicForgeMod {
 
     public IndustrialContent industrial() {
         return industrial;
+    }
+
+    public MachineMenuContent menus() {
+        return menus;
     }
 
     public ForgeFluidContent fluids() {

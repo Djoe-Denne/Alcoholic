@@ -15,6 +15,8 @@ import com.djden.alcoholic.domain.process.ProcessDefinition;
 import com.djden.alcoholic.domain.vessel.EnvironmentProfile;
 import com.djden.alcoholic.minecraft.environment.EnvironmentSampler;
 import com.djden.alcoholic.minecraft.environment.HeatSources;
+import com.djden.alcoholic.minecraft.menu.MachineAccess;
+import com.djden.alcoholic.minecraft.menu.MachineLayout;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -35,7 +37,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public final class MaltingFloorBlockEntity extends BlockEntity implements WorldlyContainer {
+public final class MaltingFloorBlockEntity extends BlockEntity implements WorldlyContainer, MachineAccess {
     public static final int INPUT_SLOT = 0;
     public static final int OUTPUT_SLOT = 1;
 
@@ -57,6 +59,11 @@ public final class MaltingFloorBlockEntity extends BlockEntity implements Worldl
 
     public int duration() {
         return duration;
+    }
+
+    @Override
+    public MachineLayout layout() {
+        return MachineLayout.TWO_SLOTS;
     }
 
     public static void serverTick(
