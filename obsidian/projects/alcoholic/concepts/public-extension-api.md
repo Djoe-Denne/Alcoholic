@@ -10,13 +10,14 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/a6b5797c-82f8-4021-9d63-10a82fed6899/a6b5797c-82f8-4021-9d63-10a82fed6899.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/c2ca3b27-ad63-4be9-af24-47c49c111f2f/c2ca3b27-ad63-4be9-af24-47c49c111f2f.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/dc49ea79-b9e5-4902-ad7f-795f762f8f52/dc49ea79-b9e5-4902-ad7f-795f762f8f52.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/d57caa3c-9de3-4ca9-8f7b-d53f8411e614/d57caa3c-9de3-4ca9-8f7b-d53f8411e614.jsonl"
 summary: Addons compile only against alcoholic-api. Executors advertise process types; vessels freeze with the rest of the API.
 provenance:
   extracted: 0.88
   inferred: 0.12
   ambiguous: 0.0
 created: 2026-08-25T12:50:00+02:00
-updated: 2026-08-25T16:01:00+02:00
+updated: 2026-08-27T16:20:00+02:00
 ---
 
 # Public Extension API
@@ -40,6 +41,8 @@ Application code selects an executor by capability, not machine identity. Phase 
 
 A compile-only `integration-test-addon` registers `testaddon:rice_polishing` and `testaddon:polishing_ratio` to prove a third-party process needs no core edits.
 
+Recipe viewers consume `ProcessDisplaySpec` from the registered `ProcessType`. Addon configs implement `ProcessDisplaying` (or pass a display function) so JEI does not need a core switch. See [[process-display-and-recipe-viewers]].
+
 ## Purity
 
 Generic engine Java must not name `Wine`, `Beer`, `Whisky`, or `Rum`. Those words belong in content, fixtures, tests, and compatibility. Gradle `checkBeverageFrameworkPurity` enforces that, including `domain/vessel`, `domain/multiblock`, `application/machine`, environment sampling, inspect helpers, and industrial adapters.
@@ -59,6 +62,8 @@ Generic engine Java must not name `Wine`, `Beer`, `Whisky`, or `Rum`. Those word
 - [[cursor-phase-4-processing-session]]
 - [[cursor-phase-5-aging-session]]
 - [[cursor-phase-6-industrial-session]]
+- [[cursor-jei-display-session]]
+- [[process-display-and-recipe-viewers]]
 - [[forge-1.19.2-phase-2-3-verification]]
 - [[forge-1.19.2-phase-4-verification]]
 - [[forge-1.19.2-phase-5-verification]]

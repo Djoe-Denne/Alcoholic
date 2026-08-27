@@ -22,7 +22,7 @@ final class MaltMillAssetData {
                 "assets/alcoholic/models/item/malt_mill.json",
                 """
                         {
-                          "parent": "alcoholic:block/malt_mill"
+                          "parent": "alcoholic:block/malt_mill_complete"
                         }
                         """
         );

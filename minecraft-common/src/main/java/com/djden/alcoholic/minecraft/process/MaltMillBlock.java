@@ -3,6 +3,9 @@ package com.djden.alcoholic.minecraft.process;
 import com.djden.alcoholic.minecraft.menu.MachineMenus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -91,6 +94,43 @@ public final class MaltMillBlock extends BaseEntityBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING);
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos position, RandomSource random) {
+        if (!(level.getBlockEntity(position) instanceof MaltMillBlockEntity entity)
+                || !entity.visualGrinding()) {
+            return;
+        }
+        ItemStack input = entity.getItem(MaltMillBlockEntity.INPUT_SLOT);
+        if (input.isEmpty()) {
+            return;
+        }
+
+        Direction facing = state.getValue(FACING);
+        Direction lateral = facing.getClockWise();
+        double lateralOffset = (random.nextDouble() - 0.5) * 0.20;
+        double x = position.getX() + 0.5
+                + facing.getStepX() * 0.28
+                + lateral.getStepX() * lateralOffset;
+        double y = position.getY() + 0.40 + random.nextDouble() * 0.04;
+        double z = position.getZ() + 0.5
+                + facing.getStepZ() * 0.28
+                + lateral.getStepZ() * lateralOffset;
+        double forwardSpeed = 0.01 + random.nextDouble() * 0.01;
+        double lateralSpeed = (random.nextDouble() - 0.5) * 0.01;
+
+        ItemStack particleStack = input.copy();
+        particleStack.setCount(1);
+        level.addParticle(
+                new ItemParticleOption(ParticleTypes.ITEM, particleStack),
+                x,
+                y,
+                z,
+                facing.getStepX() * forwardSpeed + lateral.getStepX() * lateralSpeed,
+                -0.02 - random.nextDouble() * 0.01,
+                facing.getStepZ() * forwardSpeed + lateral.getStepZ() * lateralSpeed
+        );
     }
 
     @Override

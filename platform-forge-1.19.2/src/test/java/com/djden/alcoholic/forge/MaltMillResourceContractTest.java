@@ -22,6 +22,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MaltMillResourceContractTest {
     private static final String MODEL_PATH = "assets/alcoholic/models/block/malt_mill.json";
+    private static final String COMPLETE_MODEL_PATH = "assets/alcoholic/models/block/malt_mill_complete.json";
+    private static final String ROLLER_FRONT_MODEL_PATH =
+            "assets/alcoholic/models/block/malt_mill_roller_front.json";
+    private static final String ROLLER_REAR_MODEL_PATH =
+            "assets/alcoholic/models/block/malt_mill_roller_rear.json";
+    private static final String DRIVE_AXLE_MODEL_PATH =
+            "assets/alcoholic/models/block/malt_mill_drive_axle.json";
     private static final String TEXTURE_PATH = "assets/alcoholic/textures/block/malt_mill.png";
     private static final Set<Double> JAVA_ANGLES = Set.of(-45.0, -22.5, 0.0, 22.5, 45.0);
 
@@ -39,12 +46,89 @@ class MaltMillResourceContractTest {
         assertEquals(90, variants.getAsJsonObject("facing=east").get("y").getAsInt());
 
         JsonObject item = resource("assets/alcoholic/models/item/malt_mill.json");
-        assertEquals("alcoholic:block/malt_mill", item.get("parent").getAsString());
+        assertEquals("alcoholic:block/malt_mill_complete", item.get("parent").getAsString());
     }
 
     @Test
-    void modelIsStaticJavaGeometryWithAnInternalChuteAndMotorCoupling() throws IOException {
-        JsonObject model = resource(MODEL_PATH);
+    void modelIsPartitionedIntoStaticAndMovingJavaGeometry() throws IOException {
+        JsonObject staticModel = resource(MODEL_PATH);
+        JsonObject completeModel = resource(COMPLETE_MODEL_PATH);
+        JsonObject rollerFrontModel = resource(ROLLER_FRONT_MODEL_PATH);
+        JsonObject rollerRearModel = resource(ROLLER_REAR_MODEL_PATH);
+        JsonObject driveAxleModel = resource(DRIVE_AXLE_MODEL_PATH);
+
+        for (JsonObject model : Set.of(
+                staticModel,
+                completeModel,
+                rollerFrontModel,
+                rollerRearModel,
+                driveAxleModel
+        )) {
+            assertJavaModel(model);
+        }
+
+        assertEquals(55, staticModel.getAsJsonArray("elements").size());
+        assertEquals(67, completeModel.getAsJsonArray("elements").size());
+        assertEquals(5, rollerFrontModel.getAsJsonArray("elements").size());
+        assertEquals(5, rollerRearModel.getAsJsonArray("elements").size());
+        assertEquals(2, driveAxleModel.getAsJsonArray("elements").size());
+        assertFalse(staticModel.has("display"));
+        assertFalse(rollerFrontModel.has("display"));
+        assertFalse(rollerRearModel.has("display"));
+        assertFalse(driveAxleModel.has("display"));
+
+        Set<String> staticNames = elementNames(staticModel);
+        Set<String> rollerFrontNames = elementNames(rollerFrontModel);
+        Set<String> rollerRearNames = elementNames(rollerRearModel);
+        Set<String> driveAxleNames = elementNames(driveAxleModel);
+        Set<String> completeNames = elementNames(completeModel);
+        Set<String> partitionNames = new HashSet<>(staticNames);
+        partitionNames.addAll(rollerFrontNames);
+        partitionNames.addAll(rollerRearNames);
+        partitionNames.addAll(driveAxleNames);
+
+        assertEquals(completeNames, partitionNames);
+        assertEquals(
+                completeNames.size(),
+                staticNames.size() + rollerFrontNames.size() + rollerRearNames.size() + driveAxleNames.size(),
+                "A cube belongs to more than one Malt Mill partition"
+        );
+        assertTrue(staticNames.containsAll(Set.of(
+                "oak_hopper_wall_front",
+                "oak_chute_floor",
+                "dark_grist_throat"
+        )));
+        assertTrue(rollerFrontNames.contains("roller_front_core"));
+        assertTrue(rollerRearNames.contains("roller_rear_core"));
+        assertTrue(driveAxleNames.contains("iron_axle_shaft"));
+        assertFalse(completeNames.stream().anyMatch(name -> name.contains("crank") || name.contains("handle")));
+
+        for (JsonElement value : staticModel.getAsJsonArray("elements")) {
+            JsonObject element = value.getAsJsonObject();
+            String name = element.get("name").getAsString();
+            if (name.startsWith("oak_chute_") || name.equals("dark_grist_throat")) {
+                JsonArray from = element.getAsJsonArray("from");
+                JsonArray to = element.getAsJsonArray("to");
+                assertTrue(from.get(0).getAsDouble() >= 0.0, name);
+                assertTrue(to.get(0).getAsDouble() <= 16.0, name);
+                assertTrue(from.get(2).getAsDouble() >= 0.0, name);
+                assertTrue(to.get(2).getAsDouble() <= 16.0, name);
+            }
+        }
+
+        JsonObject display = completeModel.getAsJsonObject("display");
+        assertTrue(display.keySet().containsAll(Set.of(
+                "thirdperson_righthand",
+                "thirdperson_lefthand",
+                "firstperson_righthand",
+                "firstperson_lefthand",
+                "ground",
+                "gui",
+                "fixed"
+        )));
+    }
+
+    private static void assertJavaModel(JsonObject model) {
         assertEquals("minecraft:block/block", model.get("parent").getAsString());
         assertFalse(model.has("format_version"), "Java 1.19.2 models must not use Bedrock metadata");
         assertFalse(model.has("texture_size"), "Java 1.19.2 models use normalized UV coordinates");
@@ -58,13 +142,9 @@ class MaltMillResourceContractTest {
         assertEquals("alcoholic:block/malt_mill", textures.get("particle").getAsString());
 
         JsonArray elements = model.getAsJsonArray("elements");
-        assertEquals(67, elements.size());
-
-        Set<String> names = new HashSet<>();
         for (JsonElement value : elements) {
             JsonObject element = value.getAsJsonObject();
             String name = element.get("name").getAsString();
-            names.add(name);
 
             JsonArray from = element.getAsJsonArray("from");
             JsonArray to = element.getAsJsonArray("to");
@@ -74,13 +154,6 @@ class MaltMillResourceContractTest {
                     assertTrue(from.get(axis).getAsDouble() >= 0.0, name);
                     assertTrue(to.get(axis).getAsDouble() <= 32.0, name);
                 }
-            }
-
-            if (name.startsWith("oak_chute_") || name.equals("dark_grist_throat")) {
-                assertTrue(from.get(0).getAsDouble() >= 0.0, name);
-                assertTrue(to.get(0).getAsDouble() <= 16.0, name);
-                assertTrue(from.get(2).getAsDouble() >= 0.0, name);
-                assertTrue(to.get(2).getAsDouble() <= 16.0, name);
             }
 
             if (element.has("rotation")) {
@@ -107,27 +180,14 @@ class MaltMillResourceContractTest {
                 }
             }
         }
+    }
 
-        assertTrue(names.containsAll(Set.of(
-                "oak_hopper_wall_front",
-                "roller_front_core",
-                "roller_rear_core",
-                "iron_axle_shaft",
-                "oak_chute_floor",
-                "dark_grist_throat"
-        )));
-        assertFalse(names.stream().anyMatch(name -> name.contains("crank") || name.contains("handle")));
-
-        JsonObject display = model.getAsJsonObject("display");
-        assertTrue(display.keySet().containsAll(Set.of(
-                "thirdperson_righthand",
-                "thirdperson_lefthand",
-                "firstperson_righthand",
-                "firstperson_lefthand",
-                "ground",
-                "gui",
-                "fixed"
-        )));
+    private static Set<String> elementNames(JsonObject model) {
+        Set<String> names = new HashSet<>();
+        for (JsonElement value : model.getAsJsonArray("elements")) {
+            assertTrue(names.add(value.getAsJsonObject().get("name").getAsString()), "Duplicate element name");
+        }
+        return names;
     }
 
     @Test

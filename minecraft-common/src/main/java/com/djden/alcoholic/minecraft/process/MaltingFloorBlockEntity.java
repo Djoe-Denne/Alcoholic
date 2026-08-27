@@ -66,6 +66,11 @@ public final class MaltingFloorBlockEntity extends BlockEntity implements Worldl
         return MachineLayout.TWO_SLOTS;
     }
 
+    @Override
+    public java.util.List<com.djden.alcoholic.api.ResourceId> displayedProcessTypes() {
+        return java.util.List.of(BuiltinRegistrations.MALT);
+    }
+
     public static void serverTick(
             Level level,
             BlockPos position,

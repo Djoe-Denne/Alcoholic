@@ -182,6 +182,14 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     }
 
     @Override
+    public java.util.List<ResourceId> displayedProcessTypes() {
+        return definition()
+                .flatMap(MultiblockDefinition::processType)
+                .map(java.util.List::of)
+                .orElse(java.util.List.of());
+    }
+
+    @Override
     public int progress() {
         return processProgress;
     }

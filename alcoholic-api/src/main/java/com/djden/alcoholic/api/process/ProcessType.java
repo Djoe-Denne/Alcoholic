@@ -7,6 +7,7 @@ import com.djden.alcoholic.api.ingredient.IngredientSelector;
 
 import java.util.Objects;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 
 @PublicApi
 public interface ProcessType<C> {
@@ -40,14 +41,36 @@ public interface ProcessType<C> {
         return acceptsSolid((C) config, item, matcher);
     }
 
+    default ProcessDisplaySpec display(C config) {
+        if (config instanceof ProcessDisplaying displaying) {
+            return displaying.display();
+        }
+        return ProcessDisplaySpec.fromAccepting(config);
+    }
+
+    @SuppressWarnings("unchecked")
+    default ProcessDisplaySpec displayDecoded(Object config) {
+        return display((C) config);
+    }
+
     static <C> ProcessType<C> of(ResourceId id, DataCodec<C> configCodec, ProcessHandler<C> handler) {
-        return new RegisteredProcessType<>(id, configCodec, handler);
+        return new RegisteredProcessType<>(id, configCodec, handler, null);
+    }
+
+    static <C> ProcessType<C> of(
+            ResourceId id,
+            DataCodec<C> configCodec,
+            ProcessHandler<C> handler,
+            Function<C, ProcessDisplaySpec> display
+    ) {
+        return new RegisteredProcessType<>(id, configCodec, handler, display);
     }
 
     record RegisteredProcessType<C>(
             ResourceId id,
             DataCodec<C> configCodec,
-            ProcessHandler<C> handler
+            ProcessHandler<C> handler,
+            Function<C, ProcessDisplaySpec> display
     ) implements ProcessType<C> {
         public RegisteredProcessType {
             Objects.requireNonNull(id, "id");
@@ -58,6 +81,14 @@ public interface ProcessType<C> {
         @Override
         public ProcessResult apply(ProcessRequest request, C config, ProcessContext context) {
             return handler.apply(request, config, context);
+        }
+
+        @Override
+        public ProcessDisplaySpec display(C config) {
+            if (display != null) {
+                return display.apply(config);
+            }
+            return ProcessType.super.display(config);
         }
     }
 }

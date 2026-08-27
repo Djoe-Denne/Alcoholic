@@ -6,6 +6,8 @@ import com.djden.alcoholic.api.data.DataCodecs;
 import com.djden.alcoholic.api.data.DataDecodeException;
 import com.djden.alcoholic.api.data.DataNode;
 import com.djden.alcoholic.api.process.LiquidAccepting;
+import com.djden.alcoholic.api.process.ProcessDisplaySpec;
+import com.djden.alcoholic.api.process.ProcessDisplaying;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +21,7 @@ public record BlendConfig(
         Optional<ResourceId> outputLiquid,
         int minInputs,
         Optional<Double> minFraction
-) implements LiquidAccepting, ReferencedLiquids {
+) implements LiquidAccepting, ReferencedLiquids, ProcessDisplaying {
     public BlendConfig {
         acceptedInputs = Set.copyOf(new LinkedHashSet<>(
                 acceptedInputs == null ? List.of() : acceptedInputs
@@ -29,6 +31,16 @@ public record BlendConfig(
             minInputs = 2;
         }
         minFraction = minFraction == null ? Optional.empty() : minFraction;
+    }
+
+    @Override
+    public ProcessDisplaySpec display() {
+        ProcessDisplaySpec.Builder builder = ProcessDisplaySpec.builder();
+        for (ResourceId fluid : acceptedInputs) {
+            builder.fluidIn(fluid, java.util.OptionalInt.empty());
+        }
+        outputLiquid.ifPresent(fluid -> builder.fluidOut(fluid, java.util.OptionalInt.empty()));
+        return builder.build();
     }
 
     public static final DataCodec<BlendConfig> CODEC = new DataCodec<>() {

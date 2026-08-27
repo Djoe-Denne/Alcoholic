@@ -11,13 +11,15 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/1ca21b6f-a077-4686-8f47-c41ee6e59fc7/1ca21b6f-a077-4686-8f47-c41ee6e59fc7.jsonl"
   - "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-15-09-01a03f48-7af6-7513-a3c9-b297e81b7a96.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/d120a5cc-91ff-47b3-99d0-392583b27834/d120a5cc-91ff-47b3-99d0-392583b27834.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/57568d0b-dbd3-4dd2-acc5-bcf3d6799ff6/57568d0b-dbd3-4dd2-acc5-bcf3d6799ff6.jsonl"
 summary: Small-scale machines execute process capabilities: wine vessels plus malting floor, mash tun, kettle, and malt mill.
 provenance:
   extracted: 0.86
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T14:10:00+02:00
-updated: 2026-08-27T13:30:00+02:00
+updated: 2026-08-27T16:20:00+02:00
 ---
 
 # Artisanal Processing
@@ -52,6 +54,10 @@ The malting floor is `MALT`-only (overlapping pale/amber/dark via sneak-cycle). 
 
 The floor, mill, and primitive engine are gaining [[artisanal-machine-voxel-models]] (Java Blockbench models, not GeckoLib). Visuals live on [[malting-floor-visual]], [[malt-mill-visual]], and [[primitive-combustion-engine-visual]]. IDs and process bindings do not change.
 
+Empty hand (no sneak) opens the machine screen. JEI clicks the process types from `displayedProcessTypes()`, not a shared GUI layout. See [[process-display-and-recipe-viewers]].
+
+Operator debug placement for the beer line is `/alcoholic debug place` — see [[cursor-artisanal-brewery-guide-session]].
+
 Right-click a vessel with `alcoholic:empty_bottle` to write a [[bottled-beverage-snapshot]].
 
 ## What they persist
@@ -78,6 +84,8 @@ Block entities store domain `LiquidTank` / `LiquidBatch` with vanilla NBT. Forge
 - [[resource-pack-resolution-chain]]
 - [[public-extension-api]]
 - [[alcoholic]]
+- [[process-display-and-recipe-viewers]]
+- [[cursor-artisanal-brewery-guide-session]]
 - [[codex-ajouter-modeles-3d-minecraft]]
 - [[cursor-phase-4-processing-session]]
 - [[cursor-phase-5-aging-session]]

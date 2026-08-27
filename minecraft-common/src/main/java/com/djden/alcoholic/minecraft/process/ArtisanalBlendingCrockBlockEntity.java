@@ -70,6 +70,11 @@ public final class ArtisanalBlendingCrockBlockEntity extends BlockEntity impleme
         return MachineLayout.TWO_TANKS;
     }
 
+    @Override
+    public java.util.List<com.djden.alcoholic.api.ResourceId> displayedProcessTypes() {
+        return java.util.List.of(BuiltinRegistrations.BLEND);
+    }
+
     public boolean tryBottle(Player player, ItemStack held) {
         LiquidTank source = first.contents().isPresent() ? first : second;
         boolean bottled = Bottling.bottle(player, held, source);

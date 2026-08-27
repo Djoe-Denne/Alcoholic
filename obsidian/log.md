@@ -49,3 +49,6 @@ title: Wiki Log
 - [2026-08-25T20:20:00+02:00] QUERY tool="qmd" collection="alcoholic-wiki" topic="industrial-processing MechanicalDrivePort beer mash wort hop FERMENT generic process type multiblock controller"
 - [2026-08-26T19:20:00+02:00] QUERY tool="qmd" collection="alcoholic-wiki" topic="artisanal beer brewery MALT MILL MASH BOIL FERMENT malting floor mash tun kettle malt mill" artifact="docs/guides/brasserie-artisanale.md"
 - [2026-08-27T13:30:00+02:00] CODEX_HISTORY_INGEST sessions=6 pages_updated=4 pages_created=8 mode=append topic="Ajouter modèles 3D Minecraft + 3 forks + Blockbench MCP"
+- [2026-08-27T16:20:00+02:00] CURSOR_HISTORY_INGEST conversations=9 pages_updated=11 pages_created=3 mode=append skipped_subagents=true topic="JEI display + brewery guide + mill texture + context-mode + Aug 25 red-team follow-up"
+- [2026-08-27T16:20:00+02:00] CODEX_HISTORY_INGEST sessions=20 pages_updated=3 pages_created=0 mode=append topic="01a03d10 red-team swarm + 01a03f62 brewery guide (Alcoholic cwd only)"
+- [2026-08-27T16:25:00+02:00] QMD_REFRESH collection="alcoholic-wiki" action=update+embed indexed="5 new, 14 updated" embedded="84 chunks / 29 documents"

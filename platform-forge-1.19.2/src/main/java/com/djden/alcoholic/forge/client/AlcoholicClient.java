@@ -54,6 +54,7 @@ public final class AlcoholicClient {
                     registerMenus(menus);
                 })
         );
+        MaltMillClient.register(modEventBus, processing);
         modEventBus.addListener((EntityRenderersEvent.RegisterRenderers event) -> {
             @SuppressWarnings("unchecked")
             BlockEntityType<MultiblockControllerBlockEntity> pressType =

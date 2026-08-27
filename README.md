@@ -171,7 +171,9 @@ Architecture decisions for this phase: [ADR-007](docs/adr/ADR-007-production-dag
 [ADR-027](docs/adr/ADR-027-boil-ingredient-extraction.md),
 [ADR-028](docs/adr/ADR-028-create-mill-executor-integration.md),
 [ADR-029](docs/adr/ADR-029-reusable-crop-provider-barley-hops.md),
-[ADR-030](docs/adr/ADR-030-native-mechanical-executors.md).
+[ADR-030](docs/adr/ADR-030-native-mechanical-executors.md),
+[ADR-031](docs/adr/ADR-031-crossroads-and-electric-motor.md),
+[ADR-032](docs/adr/ADR-032-process-display-and-recipe-viewers.md).
 
 Addon authors should depend only on `alcoholic-api`. See
 [`docs/addons/public-api.md`](docs/addons/public-api.md) and

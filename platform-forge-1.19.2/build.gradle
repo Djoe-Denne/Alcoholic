@@ -85,6 +85,13 @@ repositories {
             includeGroup 'curse.maven'
         }
     }
+    maven {
+        name = 'BlameJared'
+        url = 'https://maven.blamejared.com/'
+        content {
+            includeGroup 'mezz.jei'
+        }
+    }
 }
 
 dependencies {
@@ -100,6 +107,13 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     compileOnly fg.deobf('curse.maven:create-328085:4835190')
+    compileOnly fg.deobf("mezz.jei:jei-1.19.2-common-api:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-1.19.2-forge-api:${jei_version}")
+    testImplementation fg.deobf("mezz.jei:jei-1.19.2-common-api:${jei_version}")
+    testImplementation fg.deobf("mezz.jei:jei-1.19.2-forge-api:${jei_version}")
+    if (providers.gradleProperty('withJei').orNull == 'true') {
+        runtimeOnly fg.deobf("mezz.jei:jei-1.19.2-forge:${jei_version}")
+    }
     if (providers.gradleProperty('withCreate').orNull == 'true') {
         runtimeOnly fg.deobf('curse.maven:create-328085:4835190')
     }

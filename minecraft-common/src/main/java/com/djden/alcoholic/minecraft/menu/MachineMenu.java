@@ -1,5 +1,7 @@
 package com.djden.alcoholic.minecraft.menu;
 
+import com.djden.alcoholic.api.ResourceId;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -10,6 +12,10 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+
+import java.util.List;
 
 public final class MachineMenu extends AbstractContainerMenu {
     private final Container container;
@@ -102,6 +108,24 @@ public final class MachineMenu extends AbstractContainerMenu {
         return layout;
     }
 
+    public List<ResourceId> displayedProcessTypes(Level level) {
+        if (access != null) {
+            return access.displayedProcessTypes();
+        }
+        if (level == null) {
+            return List.of();
+        }
+        BlockEntity entity = level.getBlockEntity(new BlockPos(
+                data.get(MachineContainerData.BE_X),
+                data.get(MachineContainerData.BE_Y),
+                data.get(MachineContainerData.BE_Z)
+        ));
+        if (entity instanceof MachineAccess machine) {
+            return machine.displayedProcessTypes();
+        }
+        return List.of();
+    }
+
     public int progress() {
         return data.get(MachineContainerData.PROGRESS);
     }
@@ -176,22 +200,21 @@ public final class MachineMenu extends AbstractContainerMenu {
     }
 
     private void addPlayerInventory(Inventory inventory) {
-        for (int row = 0; row < 3; row++) {
-            for (int column = 0; column < 9; column++) {
-                addSlot(new Slot(
-                        inventory,
-                        column + row * 9 + 9,
-                        MachineLayout.PLAYER_INV_X + column * 18,
-                        MachineLayout.PLAYER_INV_Y + row * 18
-                ));
-            }
-        }
-        for (int column = 0; column < 9; column++) {
+        MachineLayout.SlotPos[] playerSlots = MachineLayout.PLAYER_SLOTS;
+        for (int index = 0; index < 27; index++) {
             addSlot(new Slot(
                     inventory,
-                    column,
-                    MachineLayout.PLAYER_INV_X + column * 18,
-                    MachineLayout.HOTBAR_Y
+                    index + 9,
+                    playerSlots[index].x(),
+                    playerSlots[index].y()
+            ));
+        }
+        for (int index = 0; index < 9; index++) {
+            addSlot(new Slot(
+                    inventory,
+                    index,
+                    playerSlots[27 + index].x(),
+                    playerSlots[27 + index].y()
             ));
         }
     }

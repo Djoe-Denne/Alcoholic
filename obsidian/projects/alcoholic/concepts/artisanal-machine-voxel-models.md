@@ -14,7 +14,7 @@ provenance:
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-27T13:30:00+02:00
-updated: 2026-08-27T13:30:00+02:00
+updated: 2026-08-27T16:20:00+02:00
 ---
 
 # Artisanal Machine Voxel Models
@@ -31,6 +31,7 @@ Block ids, recipes, loot, and process capabilities stay the same. The mill still
 - Author in `art/blockbench/<machine>/`. Export blockstates, block/item models, and textures into `assets/alcoholic/`.
 - Face the functional side toward `-Z` unless a machine-specific page says otherwise.
 - Grey silhouette first, then proportions, then UV pack, then painted atlas. Iterate with screenshots.
+- Oak on later machines copies the locked engine tile. See [[resource-pack-resolution-chain]].
 - The parent plan allowed visual overflow past the collision box. Later mill review pulled the lower receptacle back inside 16×16. Treat overflow as allowed until a machine page forbids it. ^[ambiguous]
 
 ## Motion without GeckoLib

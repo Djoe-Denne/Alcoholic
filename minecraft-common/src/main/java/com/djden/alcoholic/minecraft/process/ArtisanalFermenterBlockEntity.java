@@ -68,6 +68,11 @@ public final class ArtisanalFermenterBlockEntity extends BlockEntity implements 
     }
 
     @Override
+    public java.util.List<com.djden.alcoholic.api.ResourceId> displayedProcessTypes() {
+        return java.util.List.of(BuiltinRegistrations.FERMENT);
+    }
+
+    @Override
     public int temperatureDeci() {
         return MachineAccess.deci(temperatureCelsius());
     }

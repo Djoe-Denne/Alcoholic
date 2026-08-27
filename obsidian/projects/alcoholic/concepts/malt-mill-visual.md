@@ -5,13 +5,14 @@ tags: [minecraft, software-architecture, type/concept, project/alcoholic]
 aliases: [malt_mill model]
 sources:
   - "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T21-27-11-01a03f89-8bc5-7140-aa48-215bf4ba51ed_01a03f8a-6d29-7862-943b-e0e09c706834.jsonl"
-summary: Fork 4 mill: hopper, rollers, chute, no hand crank, two-block height, bottom bin inside 16×16, 512 paint then 32 default.
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/fa499a53-567a-462e-aa1e-cc2c5df0a700/fa499a53-567a-462e-aa1e-cc2c5df0a700.jsonl"
+summary: Fork 4 mill: hopper, rollers, chute, no crank; locked engine oak; rollers spin; a raised interior plate is still open.
 provenance:
-  extracted: 0.9
-  inferred: 0.08
-  ambiguous: 0.02
+  extracted: 0.86
+  inferred: 0.1
+  ambiguous: 0.04
 created: 2026-08-27T13:30:00+02:00
-updated: 2026-08-27T13:30:00+02:00
+updated: 2026-08-27T16:20:00+02:00
 ---
 
 # Malt Mill Visual
@@ -32,9 +33,15 @@ Gameplay stays the [[native-executor-invariant]] mill on [[mechanical-drive-port
 
 ## Texture
 
-512×512 BDcraft-like atlas, user-validated in Blockbench, then other sizes exported. Last instruction in the fork: **32×32 as the mod default** (enough pixels for this mill atlas). That differs from the 64×64 default chosen for the engine and floor. ^[ambiguous]
+512×512 BDcraft-like atlas, user-validated in Blockbench. Oak must copy the locked engine tile from [[resource-pack-resolution-chain]], not a darker chocolate wood. The unused middle animation pass was dropped; the approved silhouette stayed.
 
-Review stills were written under `art/blockbench/malt_mill/review/`.
+The Codex fork last asked for **32×32 as the mod default**. The later Java skill locks **64×64** as the shared machine default until the mill finishes the same pack export as the engine and mash tun. Treat the mill as painted-and-reviewed, not a finished example. ^[ambiguous]
+
+Review stills live under `art/blockbench/malt_mill/review/`.
+
+## Motion
+
+`MaltMillRenderer` spins the front/rear rollers and drive axle while the mill is working. The user then asked for two hopper-plate poses: idle plate down, raised plate when looking into the hopper. That second pose is not in the renderer yet. ^[inferred]
 
 ## Related
 

@@ -41,11 +41,15 @@ import java.util.Optional;
 public final class MaltMillBlockEntity extends BlockEntity implements WorldlyContainer, MachineAccess {
     public static final int INPUT_SLOT = 0;
     public static final int OUTPUT_SLOT = 1;
+    private static final String VISUAL_RUNNING_TAG = "VisualRunning";
+    private static final String VISUAL_GRINDING_TAG = "VisualGrinding";
 
     private final NonNullList<ItemStack> items = NonNullList.withSize(2, ItemStack.EMPTY);
     private int progress;
     private int duration = 80;
     private String runningJob = "";
+    private boolean visualRunning;
+    private boolean visualGrinding;
 
     public MaltMillBlockEntity(BlockEntityType<?> type, BlockPos position, BlockState state) {
         super(type, position, state);
@@ -59,6 +63,14 @@ public final class MaltMillBlockEntity extends BlockEntity implements WorldlyCon
         return duration;
     }
 
+    public boolean visualRunning() {
+        return visualRunning;
+    }
+
+    public boolean visualGrinding() {
+        return visualGrinding;
+    }
+
     public MechanicalDriveState driveState() {
         return MechanicalDrives.forMachine(level, worldPosition);
     }
@@ -66,6 +78,11 @@ public final class MaltMillBlockEntity extends BlockEntity implements WorldlyCon
     @Override
     public MachineLayout layout() {
         return MachineLayout.TWO_SLOTS;
+    }
+
+    @Override
+    public java.util.List<com.djden.alcoholic.api.ResourceId> displayedProcessTypes() {
+        return java.util.List.of(BuiltinRegistrations.MILL);
     }
 
     @Override
@@ -85,6 +102,7 @@ public final class MaltMillBlockEntity extends BlockEntity implements WorldlyCon
     private void tick() {
         ItemStack input = items.get(INPUT_SLOT);
         if (input.isEmpty()) {
+            setVisualState(false, false);
             progress = 0;
             runningJob = "";
             return;
@@ -92,6 +110,7 @@ public final class MaltMillBlockEntity extends BlockEntity implements WorldlyCon
         MechanicalDriveState drive = driveState();
         MechanicalRequirement requirement = MechanicalRequirement.maltMill();
         if (!requirement.satisfied(drive)) {
+            setVisualState(false, false);
             setChanged();
             return;
         }
@@ -105,15 +124,18 @@ public final class MaltMillBlockEntity extends BlockEntity implements WorldlyCon
                 Optional.empty()
         );
         if (invocation.isEmpty()) {
+            setVisualState(true, false);
             progress = 0;
             return;
         }
         MillConfig config = MillConfig.CODEC.decode(invocation.get().config());
         ExecutorModifiers modifiers = ExecutorModifiers.maltMill();
         if (!config.executable() || input.getCount() < config.inputAmount()) {
+            setVisualState(true, false);
             progress = 0;
             return;
         }
+        setVisualState(true, true);
         String job = invocation.get().nodeId() + "|" + ItemLots.id(input);
         if (!job.equals(runningJob)) {
             runningJob = job;
@@ -159,7 +181,11 @@ public final class MaltMillBlockEntity extends BlockEntity implements WorldlyCon
         input.shrink(config.inputAmount());
         progress = 0;
         setChanged();
-        sync();
+        if (input.isEmpty()) {
+            setVisualState(false, false);
+        } else {
+            sync();
+        }
     }
 
     public String debugDump() {
@@ -227,11 +253,16 @@ public final class MaltMillBlockEntity extends BlockEntity implements WorldlyCon
         progress = tag.getInt("Progress");
         duration = Math.max(1, tag.getInt("Duration"));
         runningJob = tag.getString("Job");
+        visualRunning = tag.contains(VISUAL_RUNNING_TAG) && tag.getBoolean(VISUAL_RUNNING_TAG);
+        visualGrinding = tag.contains(VISUAL_GRINDING_TAG) && tag.getBoolean(VISUAL_GRINDING_TAG);
     }
 
     @Override
     public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
+        CompoundTag tag = saveWithoutMetadata();
+        tag.putBoolean(VISUAL_RUNNING_TAG, visualRunning);
+        tag.putBoolean(VISUAL_GRINDING_TAG, visualGrinding);
+        return tag;
     }
 
     @Override
@@ -243,6 +274,15 @@ public final class MaltMillBlockEntity extends BlockEntity implements WorldlyCon
         if (level != null && !level.isClientSide) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
         }
+    }
+
+    private void setVisualState(boolean running, boolean grinding) {
+        if (visualRunning == running && visualGrinding == grinding) {
+            return;
+        }
+        visualRunning = running;
+        visualGrinding = grinding;
+        sync();
     }
 
     @Override

@@ -6,6 +6,8 @@ import com.djden.alcoholic.api.data.DataCodecs;
 import com.djden.alcoholic.api.data.DataDecodeException;
 import com.djden.alcoholic.api.data.DataNode;
 import com.djden.alcoholic.api.process.LiquidAccepting;
+import com.djden.alcoholic.api.process.ProcessDisplaySpec;
+import com.djden.alcoholic.api.process.ProcessDisplaying;
 import com.djden.alcoholic.domain.process.ConditionKinetics;
 import com.djden.alcoholic.domain.process.TemperatureProfile;
 
@@ -22,7 +24,7 @@ public record ConditionConfig(
         ResourceId maturityProperty,
         ResourceId sugarProperty,
         ResourceId carbonationProperty
-) implements LiquidAccepting, ReferencedLiquids {
+) implements LiquidAccepting, ReferencedLiquids, ProcessDisplaying {
     public ConditionConfig {
         inputLiquid = inputLiquid == null ? Optional.empty() : inputLiquid;
         outputLiquid = outputLiquid == null ? Optional.empty() : outputLiquid;
@@ -36,6 +38,14 @@ public record ConditionConfig(
         carbonationProperty = carbonationProperty == null
                 ? ResourceId.parse("alcoholic:carbonation")
                 : carbonationProperty;
+    }
+
+    @Override
+    public ProcessDisplaySpec display() {
+        ProcessDisplaySpec.Builder builder = ProcessDisplaySpec.builder();
+        inputLiquid.ifPresent(fluid -> builder.fluidIn(fluid, java.util.OptionalInt.empty()));
+        outputLiquid.ifPresent(fluid -> builder.fluidOut(fluid, java.util.OptionalInt.empty()));
+        return ProcessDisplays.preferred(builder.duration(processingTicks), temperature).build();
     }
 
     public static final DataCodec<ConditionConfig> CODEC = new DataCodec<>() {

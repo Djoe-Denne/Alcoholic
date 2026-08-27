@@ -1,5 +1,6 @@
 package com.djden.alcoholic.forge.datagen;
 
+import com.djden.alcoholic.minecraft.menu.MachineLayout;
 import com.google.common.hash.Hashing;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -61,13 +62,15 @@ final class AlcoholicTextureProvider implements DataProvider {
         fill(image, 1, 1, 174, 1, 0xFFFFFFFF);
         fill(image, 1, 1, 1, 164, 0xFFFFFFFF);
         fill(image, 7, 79, 162, 1, 0xFFA0A0A0);
+        for (MachineLayout.SlotPos slot : MachineLayout.PLAYER_SLOTS) {
+            drawSlotWell(image, slot.x() - 1, slot.y() - 1);
+        }
         return image;
     }
 
     private static BufferedImage machineElements() {
         BufferedImage image = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
-        fill(image, 0, 0, 18, 18, 0xFF373737);
-        rect(image, 0, 0, 18, 18, 0xFF8B8B8B);
+        drawSlotWell(image, 0, 0);
         fill(image, 18, 0, 18, 52, 0xFF2B2B2B);
         rect(image, 18, 0, 18, 52, 0xFF8B8B8B);
         drawArrow(image, 36, 0, 0xFF8B8B8B);
@@ -114,6 +117,16 @@ final class AlcoholicTextureProvider implements DataProvider {
         fill(image, x, y + height - 1, width, 1, argb);
         fill(image, x, y, 1, height, argb);
         fill(image, x + width - 1, y, 1, height, argb);
+    }
+
+    private static void drawSlotWell(BufferedImage image, int x, int y) {
+        fill(image, x, y, MachineLayout.SLOT_SIZE, MachineLayout.SLOT_SIZE, 0xFF8B8B8B);
+        fill(image, x, y, MachineLayout.SLOT_SIZE, 1, 0xFF373737);
+        fill(image, x, y, 1, MachineLayout.SLOT_SIZE, 0xFF373737);
+        fill(image, x, y + MachineLayout.SLOT_SIZE - 1, MachineLayout.SLOT_SIZE, 1, 0xFFFFFFFF);
+        fill(image, x + MachineLayout.SLOT_SIZE - 1, y, 1, MachineLayout.SLOT_SIZE, 0xFFFFFFFF);
+        image.setRGB(x + MachineLayout.SLOT_SIZE - 1, y, 0xFF8B8B8B);
+        image.setRGB(x, y + MachineLayout.SLOT_SIZE - 1, 0xFF8B8B8B);
     }
 
     private static void drawArrow(BufferedImage image, int x, int y, int argb) {

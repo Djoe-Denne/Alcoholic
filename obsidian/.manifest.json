@@ -398,10 +398,10 @@
       ]
     },
     "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/1ca21b6f-a077-4686-8f47-c41ee6e59fc7/1ca21b6f-a077-4686-8f47-c41ee6e59fc7.jsonl": {
-      "ingested_at": "2026-08-25T20:05:00+02:00",
-      "size_bytes": 30840,
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 116543,
       "modified_at": "2026-08-25T18:00:04.1928824Z",
-      "content_hash": "sha256:d9ada3f2438197dfd47edfa91d0dc846cdf4600c35b59eed6b0970adde79509f",
+      "content_hash": "sha256:65d755d9484442e6d6e06ed5c1b736e8878365494fecaf883c76fb2a1dcf044a",
       "source_type": "cursor-history",
       "project": "alcoholic",
       "pages_created": [
@@ -553,12 +553,376 @@
       "pages_updated": [
         "projects/alcoholic/concepts/artisanal-processing.md"
       ]
+    },
+    "C:/Users\\djden\\.cursor\\projects\\c-Users-djden-source-repos-Alcoholic\\agent-transcripts\\19c42dfd-fe5a-4cb8-9004-82b3f3a0f962\\19c42dfd-fe5a-4cb8-9004-82b3f3a0f962.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 574924,
+      "modified_at": "2026-08-26T17:19:18.421654Z",
+      "content_hash": "sha256:68d562250dfe296bfd81821771f90cfdd7f8fdfbd64382f70cf4b2d0bf4cf33b",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.cursor\\projects\\c-Users-djden-source-repos-Alcoholic\\agent-transcripts\\32b98669-8319-4ad5-a018-838bca70757c\\32b98669-8319-4ad5-a018-838bca70757c.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 73936,
+      "modified_at": "2026-08-25T18:56:31.977070Z",
+      "content_hash": "sha256:21b3a6d9f59b930cac2c6ef1afd641012eba3d312d2f342464abf97d8f8401ed",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.cursor\\projects\\c-Users-djden-source-repos-Alcoholic\\agent-transcripts\\38cdf6ba-d500-47a2-87ec-22f346732c8c\\38cdf6ba-d500-47a2-87ec-22f346732c8c.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 147140,
+      "modified_at": "2026-08-25T18:34:11.132313Z",
+      "content_hash": "sha256:1990ed51c1cefde75145e507ef008f44ab2be6b521933af01b011ece6017dbba",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/concepts/grain-processing.md"
+      ]
+    },
+    "C:/Users\\djden\\.cursor\\projects\\c-Users-djden-source-repos-Alcoholic\\agent-transcripts\\57568d0b-dbd3-4dd2-acc5-bcf3d6799ff6\\57568d0b-dbd3-4dd2-acc5-bcf3d6799ff6.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 115117,
+      "modified_at": "2026-08-27T13:26:21.582776Z",
+      "content_hash": "sha256:824b2fe8c52d0393b90e4cd3d28c95bc6f06e7b03261234225e0b5271abdadfd",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/references/cursor-jei-display-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/artisanal-processing.md"
+      ]
+    },
+    "C:/Users\\djden\\.cursor\\projects\\c-Users-djden-source-repos-Alcoholic\\agent-transcripts\\71c75251-42a8-478c-91d9-e4cace99b0d6\\71c75251-42a8-478c-91d9-e4cace99b0d6.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 11270,
+      "modified_at": "2026-08-27T11:13:06.337799Z",
+      "content_hash": "sha256:9ac82a96af196947d3472b64a9c7663ffbf3e21916e14daec3f94f5d5bb6cf70",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/skills/context-mode-project-mcp.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/skills/blockbench-java-block-workflow.md"
+      ]
+    },
+    "C:/Users\\djden\\.cursor\\projects\\c-Users-djden-source-repos-Alcoholic\\agent-transcripts\\a3c55add-caa0-4ee2-b1fa-7130ea510bd5\\a3c55add-caa0-4ee2-b1fa-7130ea510bd5.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 130590,
+      "modified_at": "2026-08-27T11:44:09.839438Z",
+      "content_hash": "sha256:a6ba816997441c8884f30be33658d1810db338c24403edddab04e381e85c7a17",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/skills/context-mode-project-mcp.md"
+      ]
+    },
+    "C:/Users\\djden\\.cursor\\projects\\c-Users-djden-source-repos-Alcoholic\\agent-transcripts\\d120a5cc-91ff-47b3-99d0-392583b27834\\d120a5cc-91ff-47b3-99d0-392583b27834.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 304213,
+      "modified_at": "2026-08-26T18:18:03.755680Z",
+      "content_hash": "sha256:5daeb0b7738c74cda3ef8019d8264a45ca7d9f04a55b88d8c638b19168c379db",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/references/cursor-artisanal-brewery-guide-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/artisanal-processing.md",
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users\\djden\\.cursor\\projects\\c-Users-djden-source-repos-Alcoholic\\agent-transcripts\\d57caa3c-9de3-4ca9-8f7b-d53f8411e614\\d57caa3c-9de3-4ca9-8f7b-d53f8411e614.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 29388,
+      "modified_at": "2026-08-27T13:57:49.086123Z",
+      "content_hash": "sha256:15dcbd69074f704e32a60b71fb26e0a0a909c54f1d7ea4d095c4de74b47fe70f",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-jei-display-session.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/public-extension-api.md",
+        "projects/alcoholic/concepts/loader-independent-minecraft-architecture.md",
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users\\djden\\.cursor\\projects\\c-Users-djden-source-repos-Alcoholic\\agent-transcripts\\fa499a53-567a-462e-aa1e-cc2c5df0a700\\fa499a53-567a-462e-aa1e-cc2c5df0a700.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 217835,
+      "modified_at": "2026-08-27T12:53:37.685653Z",
+      "content_hash": "sha256:78c5c9a215391218aba53bc75a16e5fd1d90463d4fa285740031a421f51fe820",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/concepts/malt-mill-visual.md",
+        "projects/alcoholic/skills/blockbench-java-block-workflow.md",
+        "projects/alcoholic/concepts/resource-pack-resolution-chain.md",
+        "projects/alcoholic/concepts/artisanal-machine-voxel-models.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-44-01a03d10-7901-7bb1-9920-2ca64e915e7b.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 49470,
+      "modified_at": "2026-08-26T07:54:44.867436Z",
+      "content_hash": "sha256:ba7ea052419051a2625266d53640049982c4b5b10ff06dcc1c632db6de67be36",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-44-01a03d10-7905-74e3-a217-68f9e2d500a1.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 139924,
+      "modified_at": "2026-08-26T07:54:44.871258Z",
+      "content_hash": "sha256:7c9c09a15b87bd3ddfa7fd4771ede8ad54969ba5d44e76686ec24ff0cbdca142",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-44-01a03d10-7907-70e0-88b7-3a0ed2ce9b9b.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 245211,
+      "modified_at": "2026-08-26T07:54:44.872723Z",
+      "content_hash": "sha256:ba1185d361dcbd79ebe95111171ad44ba953eabdf2858b0236bc1a333ced550d",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-44-01a03d10-790a-71b0-995d-4a41fb0b1339.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 305248,
+      "modified_at": "2026-08-26T07:54:44.875951Z",
+      "content_hash": "sha256:d040cd339b3fb5bb36f6765554be988ec8a2f5ac9de8f52869bfb9be7890cbca",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-44-01a03d10-790e-7f82-8e35-4984ce02c8dc.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 621111,
+      "modified_at": "2026-08-26T15:30:15.181043Z",
+      "content_hash": "sha256:5ede4d893315acba8aa961b873ad5953386b84f2c95962e2137ea9bdb8f15a5d",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-45-01a03d10-7cf2-7651-b5f1-5df7285d023d.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 54343,
+      "modified_at": "2026-08-26T07:54:45.875284Z",
+      "content_hash": "sha256:dd44dd9897be32c57a45d93197a513976082327bdd7ba3a81bcb58c630f7bed6",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-45-01a03d10-7d14-7de3-b2c9-50c1f64e9dc4.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 138432,
+      "modified_at": "2026-08-26T07:54:45.910693Z",
+      "content_hash": "sha256:0cb50f189e5e9d6c5b77e0fcba7a88802884b457bd180d6e6a4deb11f2e8fcff",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-45-01a03d10-7d4b-7eb2-8a22-23abba862f6e.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 1124449,
+      "modified_at": "2026-08-26T07:54:45.965494Z",
+      "content_hash": "sha256:2bf25f6a2a811529a656339542b10db5a3af098fcff990a3709349002b071d1f",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7db2-7d22-8cbe-ec4f07339a5e.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 217046,
+      "modified_at": "2026-08-26T07:54:46.068267Z",
+      "content_hash": "sha256:d3a5050f59ffc486d8c54cf17ea98790f1f45319d7993ea1485ca51c1dc9ce92",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7dc6-7cd3-8917-6a3959ca378c.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 270344,
+      "modified_at": "2026-08-26T07:54:46.088054Z",
+      "content_hash": "sha256:871cd815695ea9b7e7f9efd9d68517039f6daad9d66dfe8bccd89f774d645051",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7e09-7f73-ba04-07c3c999bc89.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 201330,
+      "modified_at": "2026-08-26T07:54:46.155161Z",
+      "content_hash": "sha256:8b63a41c6b34454858a7cbb5bcb86e19c465fc6999c63bb113ecc51ab58f93f5",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7e21-7780-a129-497c90d14d5f.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 974766,
+      "modified_at": "2026-08-26T07:54:46.179370Z",
+      "content_hash": "sha256:8e56d3919f74d49b6a2b75b88f71f77d2541e46437e29f2333f448bcb1e216ec",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7e50-75a1-a678-7ec34ee2fcac.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 968022,
+      "modified_at": "2026-08-26T07:54:46.226737Z",
+      "content_hash": "sha256:c3ff7b3e3e16d64066e9ebffc00baf5acc5d1fe9ea5ebb46cd695c30a21be100",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7eba-7b10-ba3d-f257a6883247.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 1066167,
+      "modified_at": "2026-08-26T07:54:46.332793Z",
+      "content_hash": "sha256:1820d0bec99aacb6bc32ce38c9d846e612826e1d071cf5fe38e9705c0a39a623",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7ecc-7ed3-843e-f0af8e8b8f37.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 707229,
+      "modified_at": "2026-08-26T07:54:46.350328Z",
+      "content_hash": "sha256:ad02c64471c22f8e1f78bc2d6ce6ac97f329e28f34c27e0aeb1e320a8a65d0ab",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7f0a-7cf1-9937-abe08c699cef.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 467834,
+      "modified_at": "2026-08-26T07:54:46.411787Z",
+      "content_hash": "sha256:8a6131bf8eb5f26d41be079e6ab55bba6f5ca620b581b2a855d9544326051cb8",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7f27-7773-b2cd-2153bd010b26.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 474456,
+      "modified_at": "2026-08-26T07:54:46.441319Z",
+      "content_hash": "sha256:99d58816aebdf67192a1d95cf2fb109c91c961f67b0195566e6e588681cbd952",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T20-44-02-01a03f62-e9dc-7663-b9a1-4d28c8337b60.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 596923,
+      "modified_at": "2026-08-26T18:44:02.145749Z",
+      "content_hash": "sha256:11d31e05de23d93c2c8bfb0e6ab07d0cca7002948dbee4673524eb4dfc772b9e",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-artisanal-brewery-guide-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-45-01a03d10-7d55-7280-90fa-6f7169fa8a86.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 889970,
+      "modified_at": "2026-08-26T07:54:45.976011Z",
+      "content_hash": "sha256:a0f3de24dfebb51a8c801951b8f67ec8bca8f4d9e364519a2618332da8772a01",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
+    },
+    "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7ded-7022-b687-9e0a905249ca.jsonl": {
+      "ingested_at": "2026-08-27T16:20:00+02:00",
+      "size_bytes": 824737,
+      "modified_at": "2026-08-26T07:54:46.127434Z",
+      "content_hash": "sha256:6ed5a6ca0351bfa96c58a88830594e90decdb3462d489b61cb2b0b7cff085e2d",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-create-independence-session.md"
+      ]
     }
   },
   "projects": {
     "alcoholic": {
       "source_cwd": "C:/Users/djden/source/repos/Alcoholic",
-      "last_synced": "2026-08-25T20:05:00+02:00",
+      "last_synced": "2026-08-27T16:20:00+02:00",
       "last_commit_synced": "5c5d26d4ba471e23dd22c9fef857086960e924d2",
       "pages_in_vault": [
         "projects/alcoholic/alcoholic.md",
@@ -602,17 +966,21 @@
         "projects/alcoholic/concepts/electric-motor.md",
         "projects/alcoholic/concepts/crossroads-rotary-adapter.md",
         "projects/alcoholic/skills/forge-1.19.2-crossroads-fe-verification.md",
-        "projects/alcoholic/references/cursor-crossroads-electric-motor-session.md"
+        "projects/alcoholic/references/cursor-crossroads-electric-motor-session.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/references/cursor-jei-display-session.md",
+        "projects/alcoholic/references/cursor-artisanal-brewery-guide-session.md",
+        "projects/alcoholic/skills/context-mode-project-mcp.md"
       ]
     }
   },
   "stats": {
-    "total_sources_ingested": 36,
-    "total_pages": 50
+    "total_sources_ingested": 65,
+    "total_pages": 54
   },
   "alcoholic_codex_3d": {
     "source_path": "C:/Users/djden/.codex/sessions/2026/08/26",
-    "last_ingested": "2026-08-27T13:30:00+02:00",
+    "last_ingested": "2026-08-27T16:20:00+02:00",
     "sessions_ingested": 6,
     "sessions_total": 6,
     "thread_ids": [
@@ -623,6 +991,16 @@
       "01a03f6d-f9dd-71c2-8d26-3fc369bd905a",
       "01a03f89-8bc5-7140-aa48-215bf4ba51ed"
     ],
-    "index_updated_at": "2026-08-27T13:30:00+02:00"
+    "index_updated_at": "2026-08-27T16:20:00+02:00"
+  },
+  "alcoholic_cursor_delta": {
+    "last_ingested": "2026-08-27T16:20:00+02:00",
+    "parent_conversations_ingested": 9,
+    "skipped_subagents": true
+  },
+  "alcoholic_codex_extra": {
+    "last_ingested": "2026-08-27T16:20:00+02:00",
+    "sessions_ingested": 20,
+    "note": "01a03d10 red-team swarm + 01a03f62 brewery guide; Alcoholic cwd only"
   }
 }

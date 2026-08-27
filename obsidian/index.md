@@ -4,7 +4,7 @@ title: Wiki Index
 
 # Wiki Index
 
-*This index is automatically maintained. Last updated: 2026-08-27T13:30:00+02:00*
+*This index is automatically maintained. Last updated: 2026-08-27T16:20:00+02:00*
 
 ## Concepts
 
@@ -16,6 +16,7 @@ title: Wiki Index
 - [[projects/alcoholic/concepts/beverage-framework|Beverage Framework]] — Data-driven beverage graphs; wine and grain beer execute without drink-family Java. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/process-capability-graph|Process Capability Graph]] — Acyclic process nodes; no process is mandatory; official nodes need a native executor. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/public-extension-api|Public Extension API]] — Versioned alcoholic-api including vessel profiles. ( #minecraft #compatibility)
+- [[projects/alcoholic/concepts/process-display-and-recipe-viewers|Process Display and Recipe Viewers]] — ProcessDisplaySpec port; JEI is a Forge adapter; machines advertise process types. ( #minecraft #compatibility)
 - [[projects/alcoholic/concepts/liquid-batch|Liquid Batch]] — Datapack liquid identity plus volume, properties, and flattened provenance. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/fermentation-physics|Fermentation Physics]] — Continuous FERMENT kinetics with temperature bands and vented CO2. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/artisanal-processing|Artisanal Processing]] — Small-scale wine vessels plus malting floor, mash tun, kettle, and malt mill. ( #minecraft #software-architecture)
@@ -52,7 +53,8 @@ title: Wiki Index
 - [[projects/alcoholic/skills/forge-1.19.2-phase-6-verification|Forge 1.19.2 Phase 6 Verification]] — Multiblock purity, industrial catalog, and industrial_pad GameTests. ( #minecraft #testing)
 - [[projects/alcoholic/skills/forge-1.19.2-phase-7a-verification|Forge 1.19.2 Phase 7A Verification]] — Grain GameTests, mechanical mill, Create isolation, and debug-NBT compile gate. ( #minecraft #testing)
 - [[projects/alcoholic/skills/forge-1.19.2-crossroads-fe-verification|Forge 1.19.2 Crossroads and FE Verification]] — Architecture, mapping tests, FE GameTests, optional Crossroads and IE client paths. ( #minecraft #testing)
-- [[projects/alcoholic/skills/blockbench-java-block-workflow|Blockbench Java Block Workflow]] — One machine, grey silhouette, 512 paint, user stop, then downsample. ( #minecraft)
+- [[projects/alcoholic/skills/blockbench-java-block-workflow|Blockbench Java Block Workflow]] — One machine, grey silhouette, locked oak, 512 paint, user stop, then downsample. ( #minecraft)
+- [[projects/alcoholic/skills/context-mode-project-mcp|Context-Mode Project MCP]] — One context-mode server per repo via .cursor/mcp.json, never the user mcp.json. ( #software-architecture)
 
 ## References
 
@@ -66,6 +68,8 @@ title: Wiki Index
 - [[projects/alcoholic/references/cursor-create-independence-session|Cursor Create Independence Session]] — Red-team P0/P1 fixes, native mill, then compile-time debug kinetic NBT. ( #minecraft #software-architecture)
 - [[projects/alcoholic/references/cursor-crossroads-electric-motor-session|Cursor Crossroads Electric Motor Session]] — Optional Crossroads axle bridge, generic FE motor, then winning-port billing. ( #minecraft #software-architecture)
 - [[projects/alcoholic/references/codex-ajouter-modeles-3d-minecraft|Codex Ajouter Modèles 3D Minecraft]] — Parent plan plus three machine forks and the Blockbench MCP install. ( #minecraft #software-architecture)
+- [[projects/alcoholic/references/cursor-jei-display-session|Cursor JEI Display Session]] — JEI recipes via ProcessDisplaySpec after a red-team of the first closed switch. ( #minecraft #software-architecture)
+- [[projects/alcoholic/references/cursor-artisanal-brewery-guide-session|Cursor Artisanal Brewery Guide Session]] — QMD beer guide plus /alcoholic debug place layouts. ( #minecraft #software-architecture)
 
 ## Synthesis
 

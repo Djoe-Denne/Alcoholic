@@ -7,13 +7,14 @@ sources:
   - "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-56-07-01a03f6d-f9dd-71c2-8d26-3fc369bd905a.jsonl"
   - "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-48-08-01a03f66-acf1-7931-95db-a9b0b9d8961f.jsonl"
   - "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T21-27-11-01a03f89-8bc5-7140-aa48-215bf4ba51ed_01a03f8a-6d29-7862-943b-e0e09c706834.jsonl"
-summary: Paint a 512×512 BDcraft-like master, downsample each size from that master, and ship a mid-res atlas as the mod default.
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/fa499a53-567a-462e-aa1e-cc2c5df0a700/fa499a53-567a-462e-aa1e-cc2c5df0a700.jsonl"
+summary: Paint a 512×512 BDcraft-like master, copy locked engine oak, downsample each size from that master, ship mid-res in the mod.
 provenance:
   extracted: 0.84
   inferred: 0.1
   ambiguous: 0.06
 created: 2026-08-27T13:30:00+02:00
-updated: 2026-08-27T13:30:00+02:00
+updated: 2026-08-27T16:20:00+02:00
 ---
 
 # Resource Pack Resolution Chain
@@ -25,6 +26,8 @@ Machine textures are no longer vanilla-noisy 16×16 cubes. Codex locked a **mast
 Paint once at **512×512** in Blockbench. Stop for user validation before any downsample or runtime export. Archive the master with the `.bbmodel` and, for the engine, under `art/blockbench/primitive_combustion_engine/textures/master-512/` with SHA-256 sums.
 
 Style: comic / semi-realistic materials — soft gradients, rivets, wood grain, copper warmth, metal bevels. No harsh per-pixel noise and no dirty 1px grid on every face.
+
+**Locked oak** for later machines: copy tile `(384,0)–(512,128)` from the engine 512 master. Warm medium oak (hue ≈ 28°, mean RGB ≈ 108, 69, 35), painted planks, oval knots. Forbidden: a new chocolate brown, malting-floor honey posts, or hard 4-stripe bars. See [[blockbench-java-block-workflow]].
 
 ## Downsample rule
 

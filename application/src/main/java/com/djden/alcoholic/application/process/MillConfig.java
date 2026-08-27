@@ -6,6 +6,8 @@ import com.djden.alcoholic.api.data.DataCodecs;
 import com.djden.alcoholic.api.data.DataDecodeException;
 import com.djden.alcoholic.api.data.DataNode;
 import com.djden.alcoholic.api.ingredient.IngredientSelector;
+import com.djden.alcoholic.api.process.ProcessDisplaySpec;
+import com.djden.alcoholic.api.process.ProcessDisplaying;
 import com.djden.alcoholic.api.process.SolidAccepting;
 
 import java.util.Optional;
@@ -17,7 +19,7 @@ public record MillConfig(
         int outputAmount,
         int processingTicks,
         boolean createCompatible
-) implements SolidAccepting {
+) implements SolidAccepting, ProcessDisplaying {
     public MillConfig {
         inputSelector = inputSelector == null ? Optional.empty() : inputSelector;
         if (inputAmount < 1) {
@@ -30,6 +32,14 @@ public record MillConfig(
         if (processingTicks < 1) {
             processingTicks = 1;
         }
+    }
+
+    @Override
+    public ProcessDisplaySpec display() {
+        ProcessDisplaySpec.Builder builder = ProcessDisplaySpec.builder();
+        inputSelector.ifPresent(selector -> builder.itemIn(selector, inputAmount));
+        outputItem.ifPresent(item -> builder.itemOut(item, outputAmount));
+        return builder.duration(processingTicks).build();
     }
 
     public static final DataCodec<MillConfig> CODEC = new DataCodec<>() {

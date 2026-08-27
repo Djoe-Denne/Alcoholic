@@ -1,5 +1,6 @@
 package com.djden.alcoholic.minecraft.menu;
 
+import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.minecraft.energy.EnergyHolder;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
@@ -15,8 +16,30 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+import java.util.List;
+
 public interface MachineAccess extends MenuProvider {
     MachineLayout layout();
+
+    /**
+     * Process types this machine can execute. Recipe viewers must use this
+     * list, not the GUI {@link MachineLayout}.
+     */
+    default List<ResourceId> displayedProcessTypes() {
+        return List.of();
+    }
+
+    default int blockX() {
+        return this instanceof BlockEntity entity ? entity.getBlockPos().getX() : 0;
+    }
+
+    default int blockY() {
+        return this instanceof BlockEntity entity ? entity.getBlockPos().getY() : 0;
+    }
+
+    default int blockZ() {
+        return this instanceof BlockEntity entity ? entity.getBlockPos().getZ() : 0;
+    }
 
     default Container items() {
         if (this instanceof Container container) {

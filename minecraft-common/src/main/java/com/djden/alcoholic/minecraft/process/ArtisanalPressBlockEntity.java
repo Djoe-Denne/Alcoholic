@@ -65,6 +65,11 @@ public final class ArtisanalPressBlockEntity extends BlockEntity implements Worl
         return MachineLayout.TWO_SLOTS_ONE_TANK;
     }
 
+    @Override
+    public java.util.List<com.djden.alcoholic.api.ResourceId> displayedProcessTypes() {
+        return java.util.List.of(BuiltinRegistrations.PRESS);
+    }
+
     public static void serverTick(
             Level level,
             BlockPos position,

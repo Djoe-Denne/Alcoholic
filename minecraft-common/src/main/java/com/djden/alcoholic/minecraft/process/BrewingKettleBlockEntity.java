@@ -81,6 +81,11 @@ public final class BrewingKettleBlockEntity extends BlockEntity implements World
     }
 
     @Override
+    public java.util.List<com.djden.alcoholic.api.ResourceId> displayedProcessTypes() {
+        return java.util.List.of(BuiltinRegistrations.BOIL);
+    }
+
+    @Override
     public int temperatureDeci() {
         return MachineAccess.deci(temperatureCelsius());
     }

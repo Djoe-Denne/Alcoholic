@@ -7,12 +7,15 @@ import com.djden.alcoholic.api.data.DataDecodeException;
 import com.djden.alcoholic.api.data.DataNode;
 import com.djden.alcoholic.api.ingredient.IngredientSelector;
 import com.djden.alcoholic.api.process.LiquidAccepting;
+import com.djden.alcoholic.api.process.ProcessDisplaySpec;
+import com.djden.alcoholic.api.process.ProcessDisplaying;
 import com.djden.alcoholic.api.process.SolidAccepting;
 import com.djden.alcoholic.domain.process.HopProfile;
 import com.djden.alcoholic.domain.process.TemperatureProfile;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 public record BoilConfig(
         Optional<ResourceId> inputLiquid,
@@ -25,7 +28,7 @@ public record BoilConfig(
         ResourceId bitternessProperty,
         ResourceId aromaProperty,
         List<BoilAddition> additions
-) implements SolidAccepting, LiquidAccepting, ReferencedLiquids {
+) implements SolidAccepting, LiquidAccepting, ReferencedLiquids, ProcessDisplaying {
     public BoilConfig {
         inputLiquid = inputLiquid == null ? Optional.empty() : inputLiquid;
         outputLiquid = outputLiquid == null ? Optional.empty() : outputLiquid;
@@ -45,6 +48,25 @@ public record BoilConfig(
                 ? ResourceId.parse("alcoholic:aroma")
                 : aromaProperty;
         additions = additions == null ? List.of() : List.copyOf(additions);
+    }
+
+    @Override
+    public ProcessDisplaySpec display() {
+        ProcessDisplaySpec.Builder builder = ProcessDisplaySpec.builder();
+        if (!additions.isEmpty()) {
+            for (BoilAddition addition : additions) {
+                builder.itemIn(
+                        addition.selector(),
+                        additionAmount,
+                        addition.role() + " @" + Math.round(addition.atProgress() * 100.0) + "%"
+                );
+            }
+        } else {
+            additionSelector.ifPresent(selector -> builder.itemIn(selector, additionAmount));
+        }
+        inputLiquid.ifPresent(fluid -> builder.fluidIn(fluid, OptionalInt.empty()));
+        outputLiquid.ifPresent(fluid -> builder.fluidOut(fluid, OptionalInt.empty()));
+        return ProcessDisplays.preferred(builder.duration(processingTicks), temperature).build();
     }
 
     /**

@@ -72,9 +72,11 @@ public enum MachineLayout {
 
     public static final int PANEL_WIDTH = 176;
     public static final int PANEL_HEIGHT = 166;
+    public static final int SLOT_SIZE = 18;
     public static final int PLAYER_INV_X = 8;
     public static final int PLAYER_INV_Y = 84;
     public static final int HOTBAR_Y = 142;
+    public static final SlotPos[] PLAYER_SLOTS = playerInventorySlots();
     public static final int GAUGE_WIDTH = 18;
     public static final int GAUGE_HEIGHT = 52;
     public static final int ARROW_WIDTH = 24;
@@ -138,6 +140,23 @@ public enum MachineLayout {
 
     public record SlotPos(int x, int y) {
         static final SlotPos[] NONE = new SlotPos[0];
+    }
+
+    private static SlotPos[] playerInventorySlots() {
+        SlotPos[] slots = new SlotPos[36];
+        int index = 0;
+        for (int row = 0; row < 3; row++) {
+            for (int column = 0; column < 9; column++) {
+                slots[index++] = new SlotPos(
+                        PLAYER_INV_X + column * SLOT_SIZE,
+                        PLAYER_INV_Y + row * SLOT_SIZE
+                );
+            }
+        }
+        for (int column = 0; column < 9; column++) {
+            slots[index++] = new SlotPos(PLAYER_INV_X + column * SLOT_SIZE, HOTBAR_Y);
+        }
+        return slots;
     }
 
     public record GaugePos(int x, int y) {

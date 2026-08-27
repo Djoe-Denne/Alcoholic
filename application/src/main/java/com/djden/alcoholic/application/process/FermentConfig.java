@@ -7,6 +7,8 @@ import com.djden.alcoholic.api.data.DataDecodeException;
 import com.djden.alcoholic.api.data.DataNode;
 import com.djden.alcoholic.api.ingredient.IngredientSelector;
 import com.djden.alcoholic.api.process.LiquidAccepting;
+import com.djden.alcoholic.api.process.ProcessDisplaySpec;
+import com.djden.alcoholic.api.process.ProcessDisplaying;
 import com.djden.alcoholic.domain.process.FermentationKinetics;
 import com.djden.alcoholic.domain.process.TemperatureBand;
 import com.djden.alcoholic.domain.process.TemperatureProfile;
@@ -23,7 +25,7 @@ public record FermentConfig(
         ResourceId sugarProperty,
         ResourceId ethanolProperty,
         ResourceId stressProperty
-) implements LiquidAccepting, ReferencedLiquids {
+) implements LiquidAccepting, ReferencedLiquids, ProcessDisplaying {
     public FermentConfig {
         inputLiquid = inputLiquid == null ? Optional.empty() : inputLiquid;
         outputLiquid = outputLiquid == null ? Optional.empty() : outputLiquid;
@@ -33,6 +35,15 @@ public record FermentConfig(
         sugarProperty = sugarProperty == null ? ResourceId.parse("alcoholic:sugar") : sugarProperty;
         ethanolProperty = ethanolProperty == null ? ResourceId.parse("alcoholic:ethanol") : ethanolProperty;
         stressProperty = stressProperty == null ? ResourceId.parse("alcoholic:fermentation_stress") : stressProperty;
+    }
+
+    @Override
+    public ProcessDisplaySpec display() {
+        ProcessDisplaySpec.Builder builder = ProcessDisplaySpec.builder();
+        yeast.ifPresent(selector -> builder.itemIn(selector, 1));
+        inputLiquid.ifPresent(fluid -> builder.fluidIn(fluid, java.util.OptionalInt.empty()));
+        outputLiquid.ifPresent(fluid -> builder.fluidOut(fluid, java.util.OptionalInt.empty()));
+        return ProcessDisplays.preferred(builder, temperature).build();
     }
 
     public static final DataCodec<FermentConfig> CODEC = new DataCodec<>() {

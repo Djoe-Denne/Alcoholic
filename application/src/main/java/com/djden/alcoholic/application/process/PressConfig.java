@@ -7,6 +7,8 @@ import com.djden.alcoholic.api.data.DataDecodeException;
 import com.djden.alcoholic.api.data.DataNode;
 import com.djden.alcoholic.api.ingredient.IngredientSelector;
 import com.djden.alcoholic.api.process.ItemOutput;
+import com.djden.alcoholic.api.process.ProcessDisplaySpec;
+import com.djden.alcoholic.api.process.ProcessDisplaying;
 import com.djden.alcoholic.api.process.SolidAccepting;
 
 import java.util.Optional;
@@ -20,7 +22,7 @@ public record PressConfig(
         int processingTicks,
         double yield,
         boolean createCompatible
-) implements SolidAccepting, ReferencedLiquids {
+) implements SolidAccepting, ReferencedLiquids, ProcessDisplaying {
     public PressConfig {
         inputSelector = inputSelector == null ? Optional.empty() : inputSelector;
         if (inputAmount < 1) {
@@ -37,6 +39,16 @@ public record PressConfig(
         if (!Double.isFinite(yield) || yield < 0.0) {
             yield = 1.0;
         }
+    }
+
+    @Override
+    public ProcessDisplaySpec display() {
+        ProcessDisplaySpec.Builder builder = ProcessDisplaySpec.builder();
+        inputSelector.ifPresent(selector -> builder.itemIn(selector, inputAmount));
+        byproduct.filter(item -> item.amount() >= 1)
+                .ifPresent(item -> builder.itemOut(item.item(), item.amount()));
+        outputLiquid.ifPresent(fluid -> builder.fluidOut(fluid, ProcessDisplaySpec.millibuckets(outputVolume)));
+        return builder.duration(processingTicks).build();
     }
 
     public static final DataCodec<PressConfig> CODEC = new DataCodec<>() {

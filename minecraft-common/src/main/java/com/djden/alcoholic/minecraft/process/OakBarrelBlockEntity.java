@@ -71,6 +71,11 @@ public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVes
     }
 
     @Override
+    public java.util.List<com.djden.alcoholic.api.ResourceId> displayedProcessTypes() {
+        return java.util.List.of(BuiltinRegistrations.AGE);
+    }
+
+    @Override
     public int temperatureDeci() {
         return MachineAccess.deci(environment.temperature());
     }

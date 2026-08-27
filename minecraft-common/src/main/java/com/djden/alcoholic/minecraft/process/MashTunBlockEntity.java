@@ -128,6 +128,11 @@ public final class MashTunBlockEntity extends BlockEntity implements WorldlyCont
     }
 
     @Override
+    public java.util.List<com.djden.alcoholic.api.ResourceId> displayedProcessTypes() {
+        return java.util.List.of(BuiltinRegistrations.MASH);
+    }
+
+    @Override
     public int temperatureDeci() {
         return MachineAccess.deci(temperatureCelsius());
     }

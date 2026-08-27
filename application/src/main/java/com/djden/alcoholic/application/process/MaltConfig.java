@@ -6,6 +6,8 @@ import com.djden.alcoholic.api.data.DataCodecs;
 import com.djden.alcoholic.api.data.DataDecodeException;
 import com.djden.alcoholic.api.data.DataNode;
 import com.djden.alcoholic.api.ingredient.IngredientSelector;
+import com.djden.alcoholic.api.process.ProcessDisplaySpec;
+import com.djden.alcoholic.api.process.ProcessDisplaying;
 import com.djden.alcoholic.api.process.SolidAccepting;
 import com.djden.alcoholic.domain.process.KilnProfile;
 import com.djden.alcoholic.domain.process.TemperatureProfile;
@@ -21,7 +23,7 @@ public record MaltConfig(
         double moistureRequirement,
         TemperatureProfile temperature,
         KilnProfile kiln
-) implements SolidAccepting {
+) implements SolidAccepting, ProcessDisplaying {
     public MaltConfig {
         inputSelector = inputSelector == null ? Optional.empty() : inputSelector;
         if (inputAmount < 1) {
@@ -39,6 +41,14 @@ public record MaltConfig(
         }
         temperature = temperature == null ? TemperatureProfiles.maltDefault() : temperature;
         kiln = kiln == null ? KilnProfile.pale() : kiln;
+    }
+
+    @Override
+    public ProcessDisplaySpec display() {
+        ProcessDisplaySpec.Builder builder = ProcessDisplaySpec.builder();
+        inputSelector.ifPresent(selector -> builder.itemIn(selector, inputAmount));
+        outputItem.ifPresent(item -> builder.itemOut(item, outputAmount));
+        return ProcessDisplays.preferred(builder.duration(processingTicks), temperature).build();
     }
 
     public static final DataCodec<MaltConfig> CODEC = new DataCodec<>() {

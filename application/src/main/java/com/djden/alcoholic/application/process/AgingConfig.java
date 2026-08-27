@@ -6,6 +6,8 @@ import com.djden.alcoholic.api.data.DataCodecs;
 import com.djden.alcoholic.api.data.DataDecodeException;
 import com.djden.alcoholic.api.data.DataNode;
 import com.djden.alcoholic.api.process.LiquidAccepting;
+import com.djden.alcoholic.api.process.ProcessDisplaySpec;
+import com.djden.alcoholic.api.process.ProcessDisplaying;
 import com.djden.alcoholic.domain.process.AgingKinetics;
 import com.djden.alcoholic.domain.process.TemperatureBand;
 import com.djden.alcoholic.domain.process.TemperatureProfile;
@@ -22,7 +24,7 @@ public record AgingConfig(
         ResourceId maturityProperty,
         ResourceId woodProperty,
         ResourceId oxidationProperty
-) implements LiquidAccepting, ReferencedLiquids {
+) implements LiquidAccepting, ReferencedLiquids, ProcessDisplaying {
     public AgingConfig {
         inputLiquid = inputLiquid == null ? Optional.empty() : inputLiquid;
         outputLiquid = outputLiquid == null ? Optional.empty() : outputLiquid;
@@ -33,6 +35,14 @@ public record AgingConfig(
         oxidationProperty = oxidationProperty == null
                 ? ResourceId.parse("alcoholic:oxidation_exposure")
                 : oxidationProperty;
+    }
+
+    @Override
+    public ProcessDisplaySpec display() {
+        ProcessDisplaySpec.Builder builder = ProcessDisplaySpec.builder();
+        inputLiquid.ifPresent(fluid -> builder.fluidIn(fluid, java.util.OptionalInt.empty()));
+        outputLiquid.ifPresent(fluid -> builder.fluidOut(fluid, java.util.OptionalInt.empty()));
+        return ProcessDisplays.preferred(builder, temperature).build();
     }
 
     public static final DataCodec<AgingConfig> CODEC = new DataCodec<>() {

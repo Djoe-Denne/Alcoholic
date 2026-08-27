@@ -2,16 +2,31 @@ package com.djden.alcoholic.application.process;
 
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.api.data.DataCodec;
+import com.djden.alcoholic.api.ingredient.IngredientSelector;
+import com.djden.alcoholic.api.process.ProcessDisplaySpec;
+import com.djden.alcoholic.api.process.ProcessDisplaying;
 import com.djden.alcoholic.api.data.DataCodecs;
 import com.djden.alcoholic.api.data.DataDecodeException;
 import com.djden.alcoholic.api.data.DataNode;
 
-public record BottleConfig(int volumeMillibuckets, ResourceId bottleItem) {
+public record BottleConfig(int volumeMillibuckets, ResourceId bottleItem) implements ProcessDisplaying {
     public BottleConfig {
         if (volumeMillibuckets < 1) {
             volumeMillibuckets = 250;
         }
         bottleItem = bottleItem == null ? ResourceId.parse("alcoholic:beverage_bottle") : bottleItem;
+    }
+
+    @Override
+    public ProcessDisplaySpec display() {
+        return ProcessDisplaySpec.builder()
+                .itemIn(
+                        new IngredientSelector.Item(ResourceId.parse("alcoholic:empty_bottle")),
+                        1,
+                        volumeMillibuckets + " mB"
+                )
+                .itemOut(bottleItem, 1)
+                .build();
     }
 
     public static final DataCodec<BottleConfig> CODEC = new DataCodec<>() {

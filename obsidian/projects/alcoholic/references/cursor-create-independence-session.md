@@ -8,13 +8,16 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/90c9366f-54dc-42d2-a75c-8cd21aeccd26/90c9366f-54dc-42d2-a75c-8cd21aeccd26.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/1669d4f7-1702-43e2-af12-4c03301d7b17/1669d4f7-1702-43e2-af12-4c03301d7b17.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/14805ad4-dec0-4781-92a1-c718c5113dde/14805ad4-dec0-4781-92a1-c718c5113dde.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/32b98669-8319-4ad5-a018-838bca70757c/32b98669-8319-4ad5-a018-838bca70757c.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/19c42dfd-fe5a-4cb8-9004-82b3f3a0f962/19c42dfd-fe5a-4cb8-9004-82b3f3a0f962.jsonl"
+  - "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T09-54-44-01a03d10-7901-7bb1-9920-2ca64e915e7b.jsonl"
 summary: Red-team reviews of Phase 7A, native mill, then compile-time stripping of debug kinetic NBT.
 provenance:
   extracted: 0.85
   inferred: 0.11
   ambiguous: 0.04
 created: 2026-08-25T18:55:00+02:00
-updated: 2026-08-25T20:05:00+02:00
+updated: 2026-08-27T16:20:00+02:00
 ---
 
 # Cursor Create Independence Session
@@ -54,6 +57,10 @@ The malting floor stopped executing MILL.
 ## Follow-up: debug kinetic NBT
 
 A later red-team pass on uncommitted local changes found no critical or high issues. The remaining medium finding was persisted `Rpm` / `DebugRpm` on kinetic ports. The fix is compile-time: Gradle writes `AlcoholicDebug.ENABLED`; `javac` strips save and load when false. `javap` confirmed the keys are gone from published bytecode. See [[mechanical-drive-port#Debug RPM is compile-time]].
+
+## Follow-up reviews (25–26 Aug)
+
+A second Cursor red-team (`32b98669`) plus an evaluation of `docs/reviews/red-team-uncommitted-2026-08-25.md` (`19c42dfd`) asked to fix the remaining findings. A Codex swarm (`01a03d10`, same prompt family) reviewed the same uncommitted tree. Those chats do not replace this page; they are extra sources for the same Create-independence cut. The later JEI work is [[cursor-jei-display-session]].
 
 ## Distilled pages
 

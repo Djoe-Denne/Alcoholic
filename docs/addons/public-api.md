@@ -113,6 +113,11 @@ Do not persist a recursive parent tree.
 `ProcessType.acceptsLiquid` lets AGE, FERMENT, and BLEND bind to an input
 liquid without a hard-coded config decode in the resolver.
 
+Recipe viewers consume `ProcessDisplaySpec`. Implement `ProcessDisplaying`
+on the addon config (or pass a display function to `ProcessType.of`) so
+JEI/REI do not need a core switch. Omit volumes you do not know; do not
+invent 1000 mB.
+
 ## Bottling
 
 `alcoholic:bottle` writes a consumer snapshot (definition, ethanol, sugar,

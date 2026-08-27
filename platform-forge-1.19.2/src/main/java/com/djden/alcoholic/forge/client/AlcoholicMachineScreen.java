@@ -31,7 +31,10 @@ public final class AlcoholicMachineScreen extends AbstractContainerScreen<Machin
         MachineLayout layout = menu.layout();
         RenderSystem.setShaderTexture(0, FluidGaugeWidget.ELEMENTS);
         for (MachineLayout.SlotPos slot : layout.slots()) {
-            blit(pose, leftPos + slot.x() - 1, topPos + slot.y() - 1, 0, 0, 18, 18, 256, 256);
+            blitSlot(pose, slot);
+        }
+        for (MachineLayout.SlotPos slot : MachineLayout.PLAYER_SLOTS) {
+            blitSlot(pose, slot);
         }
         if (layout.progressArrow() && layout.arrow().present()) {
             blit(
@@ -154,6 +157,20 @@ public final class AlcoholicMachineScreen extends AbstractContainerScreen<Machin
                 renderComponentTooltip(pose, tooltip, mouseX, mouseY);
             }
         }
+    }
+
+    private void blitSlot(PoseStack pose, MachineLayout.SlotPos slot) {
+        blit(
+                pose,
+                leftPos + slot.x() - 1,
+                topPos + slot.y() - 1,
+                0,
+                0,
+                MachineLayout.SLOT_SIZE,
+                MachineLayout.SLOT_SIZE,
+                256,
+                256
+        );
     }
 
     private static int scaled(int value, int max, int pixels) {

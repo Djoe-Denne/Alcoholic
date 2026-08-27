@@ -280,6 +280,19 @@ class GeneratedResourceContractTest {
                     "message.alcoholic.mash.status",
                     "container.alcoholic.machine",
                     "gui.alcoholic.temperature",
+                    "jei.alcoholic.category.mill",
+                    "jei.alcoholic.category.mash",
+                    "jei.alcoholic.category.boil",
+                    "jei.alcoholic.category.malt",
+                    "jei.alcoholic.category.press",
+                    "jei.alcoholic.category.ferment",
+                    "jei.alcoholic.category.age",
+                    "jei.alcoholic.category.blend",
+                    "jei.alcoholic.category.condition",
+                    "jei.alcoholic.category.bottle",
+                    "jei.alcoholic.category.addon",
+                    "jei.alcoholic.duration",
+                    "jei.alcoholic.volume.unspecified",
                     "tooltip.alcoholic.gauge.fluid"
             }) {
                 assertTrue(

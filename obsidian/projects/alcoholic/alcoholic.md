@@ -14,13 +14,15 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/1ca21b6f-a077-4686-8f47-c41ee6e59fc7/1ca21b6f-a077-4686-8f47-c41ee6e59fc7.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/ede9eb58-09ac-4ccc-9fea-74a521453d14/ede9eb58-09ac-4ccc-9fea-74a521453d14.jsonl"
   - "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-15-09-01a03f48-7af6-7513-a3c9-b297e81b7a96.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/d57caa3c-9de3-4ca9-8f7b-d53f8411e614/d57caa3c-9de3-4ca9-8f7b-d53f8411e614.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/d120a5cc-91ff-47b3-99d0-392583b27834/d120a5cc-91ff-47b3-99d0-392583b27834.jsonl"
 summary: Loader-independent brewing mod. Grain beer on generic processes; rotary power from native engines, Create, or Crossroads.
 provenance:
   extracted: 0.82
   inferred: 0.16
   ambiguous: 0.02
 created: 2026-08-25T09:20:00+02:00
-updated: 2026-08-27T13:30:00+02:00
+updated: 2026-08-27T16:20:00+02:00
 ---
 
 # Alcoholic
@@ -47,6 +49,8 @@ Alcoholic is a Minecraft mod for realistic brewing, winemaking, and distillation
 
 **Artisanal visuals** — Codex replaced the cube placeholders for the malting floor, primitive engine, and malt mill with Java voxel models authored in [[blockbench]]. See [[artisanal-machine-voxel-models]] and [[resource-pack-resolution-chain]].
 
+**Recipe viewers (ADR-032)** — JEI is a Forge adapter over [[process-display-and-recipe-viewers]]. Addon processes appear without a core switch.
+
 The Forge artifact still embeds the inward-pointing modules. Fabric remains a future adapter.
 
 ## Key concepts
@@ -72,6 +76,7 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[native-executor-invariant]]
 - [[artisanal-machine-voxel-models]]
 - [[resource-pack-resolution-chain]]
+- [[process-display-and-recipe-viewers]]
 
 ## Verification
 
@@ -95,3 +100,5 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[cursor-create-independence-session]]
 - [[cursor-crossroads-electric-motor-session]]
 - [[codex-ajouter-modeles-3d-minecraft]]
+- [[cursor-jei-display-session]]
+- [[cursor-artisanal-brewery-guide-session]]

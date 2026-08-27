@@ -47,6 +47,31 @@ class MachineLayoutTest {
 
         assertEquals(0, MachineLayout.ENERGY.machineSlotCount());
         assertTrue(MachineLayout.ENERGY.energyGauge());
-        assertEquals(12, MachineContainerData.SIZE);
+        assertEquals(15, MachineContainerData.SIZE);
+    }
+
+    @Test
+    void playerInventoryIsVanillaNineByFourGridInsideThePanel() {
+        assertEquals(36, MachineLayout.PLAYER_SLOTS.length);
+        assertEquals(new MachineLayout.SlotPos(8, 84), MachineLayout.PLAYER_SLOTS[0]);
+        assertEquals(new MachineLayout.SlotPos(152, 120), MachineLayout.PLAYER_SLOTS[26]);
+        assertEquals(new MachineLayout.SlotPos(8, 142), MachineLayout.PLAYER_SLOTS[27]);
+        assertEquals(new MachineLayout.SlotPos(152, 142), MachineLayout.PLAYER_SLOTS[35]);
+        assertEquals(4, MachineLayout.HOTBAR_Y - (MachineLayout.PLAYER_INV_Y + 3 * MachineLayout.SLOT_SIZE));
+
+        boolean[][] occupied = new boolean[MachineLayout.PANEL_WIDTH][MachineLayout.PANEL_HEIGHT];
+        for (MachineLayout.SlotPos slot : MachineLayout.PLAYER_SLOTS) {
+            int wellX = slot.x() - 1;
+            int wellY = slot.y() - 1;
+            assertTrue(wellX >= 0 && wellY >= 0, slot.toString());
+            assertTrue(wellX + MachineLayout.SLOT_SIZE <= MachineLayout.PANEL_WIDTH, slot.toString());
+            assertTrue(wellY + MachineLayout.SLOT_SIZE <= MachineLayout.PANEL_HEIGHT, slot.toString());
+            for (int x = wellX; x < wellX + MachineLayout.SLOT_SIZE; x++) {
+                for (int y = wellY; y < wellY + MachineLayout.SLOT_SIZE; y++) {
+                    assertFalse(occupied[x][y], "overlapping well at " + x + "," + y);
+                    occupied[x][y] = true;
+                }
+            }
+        }
     }
 }

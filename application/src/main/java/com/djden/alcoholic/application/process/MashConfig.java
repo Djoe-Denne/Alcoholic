@@ -8,6 +8,8 @@ import com.djden.alcoholic.api.data.DataNode;
 import com.djden.alcoholic.api.ingredient.IngredientSelector;
 import com.djden.alcoholic.api.process.ItemOutput;
 import com.djden.alcoholic.api.process.LiquidAccepting;
+import com.djden.alcoholic.api.process.ProcessDisplaySpec;
+import com.djden.alcoholic.api.process.ProcessDisplaying;
 import com.djden.alcoholic.api.process.SolidAccepting;
 import com.djden.alcoholic.domain.process.TemperatureProfile;
 
@@ -27,7 +29,7 @@ public record MashConfig(
         ResourceId sugarProperty,
         ResourceId colorProperty,
         ResourceId temperatureProperty
-) implements SolidAccepting, LiquidAccepting, ReferencedLiquids {
+) implements SolidAccepting, LiquidAccepting, ReferencedLiquids, ProcessDisplaying {
     public MashConfig {
         inputSelector = inputSelector == null ? Optional.empty() : inputSelector;
         if (inputAmount < 1) {
@@ -51,6 +53,17 @@ public record MashConfig(
         temperatureProperty = temperatureProperty == null
                 ? ResourceId.parse("alcoholic:temperature")
                 : temperatureProperty;
+    }
+
+    @Override
+    public ProcessDisplaySpec display() {
+        ProcessDisplaySpec.Builder builder = ProcessDisplaySpec.builder();
+        inputSelector.ifPresent(selector -> builder.itemIn(selector, inputAmount));
+        inputLiquid.ifPresent(fluid -> builder.fluidIn(fluid, ProcessDisplaySpec.millibuckets(inputLiquidVolume)));
+        byproduct.filter(item -> item.amount() >= 1)
+                .ifPresent(item -> builder.itemOut(item.item(), item.amount()));
+        outputLiquid.ifPresent(fluid -> builder.fluidOut(fluid, ProcessDisplaySpec.millibuckets(outputVolume)));
+        return ProcessDisplays.preferred(builder.duration(processingTicks), temperature).build();
     }
 
     public static final DataCodec<MashConfig> CODEC = new DataCodec<>() {
