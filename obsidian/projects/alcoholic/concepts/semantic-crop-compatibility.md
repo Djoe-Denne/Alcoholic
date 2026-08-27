@@ -49,7 +49,7 @@ Phase 4 PRESS definitions consume `#alcoholic:grapes/red` and `#alcoholic:grapes
 
 ## Barley and hops
 
-ADR-029 reuses `CropProviderSelectionPolicy` for `CropKind.BARLEY` and `HOPS`. When Brewery is present, creative acquisition for native barley/hops is disabled and wild barley worldgen is gated; Alcoholic registry ids stay registered. Optional `brewery:*` items join tags with `required: false`. NBT is not ingredient identity.
+ADR-029 reuses `CropProviderSelectionPolicy` for `CropKind.BARLEY` and `HOPS`. When Brewery is present, creative acquisition for native barley/hops is disabled and wild barley / wild hops worldgen is gated; Alcoholic registry ids stay registered. Optional `brewery:*` items join tags with `required: false`. NBT is not ingredient identity.
 
 Grain tags:
 
@@ -57,7 +57,7 @@ Grain tags:
 - `#alcoholic:malted_barley`, `#alcoholic:malted_grain`
 - `#alcoholic:grist`, `#alcoholic:hops`, `#alcoholic:spent_grain`
 
-Barley is an annual cereal. Hops grow as a vertical bine on generic trellis posts and wire, not as a grapevine subclass. External agriculture mods contribute ingredients, not their brewing machines. See [[grain-processing]].
+Barley is an annual cereal. Hops grow as a vertical bine on generic trellis posts and wire, not as a grapevine subclass. `alcoholic:wild_hops` is a ground bush for survival bootstrap (rhizome + hops), gated like wild barley when Brewery is present. External agriculture mods contribute ingredients, not their brewing machines. See [[grain-processing]].
 
 ## Related
 

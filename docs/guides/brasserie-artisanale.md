@@ -164,7 +164,7 @@ Bine verticale, pas une vigne. Elle **meurt** sans fil de palissage au-dessus (m
 5. Clic droit sur une bine mature : 1 houblon, l’étage revient à l’âge 0.
 6. Casser une bine : 1 rhizome (+ 1 houblon si mature).
 
-Pas de génération sauvage de houblon dans le datapack actuel : premier rhizome via créatif, kit debug, ou un fournisseur externe (Brewery).
+Premier rhizome : casser du **houblon sauvage** (`alcoholic:wild_hops`) en forêt, forêt fleurie, forêt de bouleaux, taïga ou rivière. Drop : 1 rhizome + 1 houblon. Si Brewery est chargé, ce worldgen est coupé.
 
 ---
 

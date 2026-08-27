@@ -3,6 +3,7 @@ package com.djden.alcoholic.minecraft.content;
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.minecraft.agriculture.CerealCropBlock;
 import com.djden.alcoholic.minecraft.agriculture.HopBineBlock;
+import com.djden.alcoholic.minecraft.agriculture.WildHopsBlock;
 import com.djden.alcoholic.minecraft.process.SolidPropertyNbt;
 import com.djden.alcoholic.platform.api.registry.RegistryRef;
 import net.minecraft.world.item.CreativeModeTab;
@@ -59,6 +60,10 @@ public final class GrainContentRegistrar {
                 AlcoholicIds.HOP_RHIZOME,
                 () -> new ItemNameBlockItem(hopBine.get(), tab(hopsDiscoverable, CreativeModeTab.TAB_MISC))
         );
+        RegistryRef<Block> wildHops = ports.blocks().register(
+                AlcoholicIds.WILD_HOPS,
+                () -> new WildHopsBlock(cropProperties(), hopRhizome::get)
+        );
         RegistryRef<Item> maltedBarley = ports.items().register(
                 AlcoholicIds.MALTED_BARLEY,
                 () -> new Item(tab(barleyDiscoverable, CreativeModeTab.TAB_MISC))
@@ -70,6 +75,7 @@ public final class GrainContentRegistrar {
         return new GrainContent(
                 barleyCrop,
                 hopBine,
+                wildHops,
                 barley,
                 barleySeeds,
                 hops,

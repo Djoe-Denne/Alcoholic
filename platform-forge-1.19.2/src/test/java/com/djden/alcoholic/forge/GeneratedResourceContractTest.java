@@ -69,6 +69,44 @@ class GeneratedResourceContractTest {
     }
 
     @Test
+    void hopsWorldgenIsConditionallyDisabledWhenBreweryIsPresent() throws IOException {
+        JsonObject modifier = resource(
+                "data/alcoholic/forge/biome_modifier/wild_hops.json"
+        );
+        JsonObject condition = modifier.getAsJsonArray("forge:conditions")
+                .get(0)
+                .getAsJsonObject();
+        assertEquals("forge:not", condition.get("type").getAsString());
+        JsonObject nested = condition.getAsJsonObject("value");
+        assertEquals("alcoholic:item_present", nested.get("type").getAsString());
+        assertEquals("brewery:hops", nested.get("item").getAsString());
+        assertEquals("forge:add_features", modifier.get("type").getAsString());
+        assertEquals("#alcoholic:has_wild_hops", modifier.get("biomes").getAsString());
+    }
+
+    @Test
+    void wildHopsWorldgenAndAssetsArePresent() throws IOException {
+        resource("data/alcoholic/tags/worldgen/biome/has_wild_hops.json");
+        resource("data/alcoholic/worldgen/configured_feature/wild_hops.json");
+        resource("data/alcoholic/worldgen/placed_feature/wild_hops.json");
+        JsonObject loot = resource("data/alcoholic/loot_tables/blocks/wild_hops.json");
+        assertEquals(2, loot.getAsJsonArray("pools").size());
+        resource("assets/alcoholic/blockstates/wild_hops.json");
+        JsonObject model = resource("assets/alcoholic/models/block/wild_hops.json");
+        assertEquals("minecraft:block/cross", model.get("parent").getAsString());
+        assertEquals(
+                "alcoholic:block/wild_hops",
+                model.getAsJsonObject("textures").get("cross").getAsString()
+        );
+        JsonObject itemModel = resource("assets/alcoholic/models/item/wild_hops.json");
+        assertEquals("minecraft:item/generated", itemModel.get("parent").getAsString());
+        assertEquals(
+                "alcoholic:item/wild_hops",
+                itemModel.getAsJsonObject("textures").get("layer0").getAsString()
+        );
+    }
+
+    @Test
     void viticultureProfilesMatchRuntimeLoaderContract() throws IOException {
         JsonObject settings = resource("data/alcoholic/viticulture/settings.json");
         JsonObject red = resource("data/alcoholic/viticulture/red_grape.json");
@@ -181,6 +219,13 @@ class GeneratedResourceContractTest {
                 "artisanal_press",
                 "oak_barrel",
                 "artisanal_blending_crock",
+                "electric_motor"
+        }) {
+            resource("assets/alcoholic/blockstates/" + block + ".json");
+            resource("assets/alcoholic/models/block/" + block + ".json");
+            resource("assets/alcoholic/models/item/" + block + ".json");
+        }
+        for (String block : new String[]{
                 "industrial_casing",
                 "machine_window",
                 "access_hatch",

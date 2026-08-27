@@ -1,0 +1,17 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#alcoholic:has_wild_hops",
+  "features": [
+    "alcoholic:wild_hops"
+  ],
+  "forge:conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "alcoholic:item_present",
+        "item": "brewery:hops"
+      }
+    }
+  ],
+  "step": "vegetal_decoration"
+}

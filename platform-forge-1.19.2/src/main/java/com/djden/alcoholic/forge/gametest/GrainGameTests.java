@@ -5,6 +5,7 @@ import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
 import com.djden.alcoholic.minecraft.agriculture.CerealCropBlock;
 import com.djden.alcoholic.minecraft.agriculture.HopBineBlock;
+import com.djden.alcoholic.minecraft.agriculture.WildHopsBlock;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
 import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlockEntity;
 import com.djden.alcoholic.minecraft.process.ArtisanalFermenterBlockEntity;
@@ -19,9 +20,11 @@ import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -75,6 +78,36 @@ public final class GrainGameTests {
                 helper,
                 helper.getBlockState(ORIGIN).getBlock() instanceof HopBineBlock,
                 "Hop bine did not place under a trellis run"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void wildHopsSurviveOnGrassWithoutTrellis(GameTestHelper helper) {
+        helper.setBlock(ORIGIN.below(), Blocks.GRASS_BLOCK.defaultBlockState());
+        helper.setBlock(ORIGIN, block("wild_hops").defaultBlockState());
+        require(
+                helper,
+                helper.getBlockState(ORIGIN).getBlock() instanceof WildHopsBlock,
+                "Wild hops did not survive on grass without a trellis"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void breakingWildHopsDropsRhizomeAndHops(GameTestHelper helper) {
+        helper.setBlock(ORIGIN.below(), Blocks.GRASS_BLOCK.defaultBlockState());
+        helper.setBlock(ORIGIN, block("wild_hops").defaultBlockState());
+        helper.getLevel().destroyBlock(helper.absolutePos(ORIGIN), true);
+        require(
+                helper,
+                itemCountNear(helper, ORIGIN, item("hop_rhizome")) == 1,
+                "Breaking wild hops did not drop a rhizome"
+        );
+        require(
+                helper,
+                itemCountNear(helper, ORIGIN, item("hops")) == 1,
+                "Breaking wild hops did not drop hops"
         );
         helper.succeed();
     }
@@ -442,6 +475,18 @@ public final class GrainGameTests {
             throw new IllegalStateException("Create is loaded but create:fluid_tank is missing");
         }
         return tankBlock;
+    }
+
+    private static int itemCountNear(GameTestHelper helper, BlockPos position, Item item) {
+        return helper.getLevel()
+                .getEntitiesOfClass(
+                        ItemEntity.class,
+                        new AABB(helper.absolutePos(position)).inflate(3.0)
+                )
+                .stream()
+                .filter(entity -> entity.getItem().is(item))
+                .mapToInt(entity -> entity.getItem().getCount())
+                .sum();
     }
 
     private static Block block(String path) {

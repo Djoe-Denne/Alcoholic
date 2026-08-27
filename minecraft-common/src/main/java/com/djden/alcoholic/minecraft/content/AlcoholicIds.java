@@ -76,6 +76,7 @@ public final class AlcoholicIds {
     public static final ResourceId HOPS = id("hops");
     public static final ResourceId HOP_RHIZOME = id("hop_rhizome");
     public static final ResourceId HOP_BINE = id("hop_bine");
+    public static final ResourceId WILD_HOPS = id("wild_hops");
     public static final ResourceId SPENT_GRAIN = id("spent_grain");
     public static final ResourceId MALTING_FLOOR = id("malting_floor");
     public static final ResourceId MALTING_FLOOR_ENTITY = id("malting_floor");

@@ -16,7 +16,8 @@ Brewery when that mod is present. Alcoholic still registers its items and
 blocks. When Brewery is preferred:
 
 - creative acquisition for native barley/hops is disabled;
-- wild barley worldgen is gated with `forge:not` / `mod_loaded brewery`;
+- wild barley worldgen is gated with `forge:not` / `alcoholic:item_present` on `brewery:barley`;
+- wild hops worldgen (`alcoholic:wild_hops`) is gated the same way on `brewery:hops`;
 - native blocks remain in the registry for save compatibility.
 
 Semantic tags are the ingredient identity:

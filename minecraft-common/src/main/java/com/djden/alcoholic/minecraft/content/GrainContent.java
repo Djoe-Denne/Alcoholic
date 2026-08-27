@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.Block;
 public record GrainContent(
         RegistryRef<Block> barleyCrop,
         RegistryRef<Block> hopBine,
+        RegistryRef<Block> wildHops,
         RegistryRef<Item> barley,
         RegistryRef<Item> barleySeeds,
         RegistryRef<Item> hops,

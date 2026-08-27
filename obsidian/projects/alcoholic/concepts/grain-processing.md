@@ -51,7 +51,7 @@ Mixed solid/liquid ports reuse `ProcessInputs` (ADR-025). There is no brewing-wa
 
 ## Agriculture
 
-Barley is an annual cereal (`CerealCropBlock`). Hops grow as a vertical bine on generic `CropSupportPost` plus trellis wire, not as a grapevine subclass. Ingredient identity is tags: `#alcoholic:barley`, `#alcoholic:malted_barley`, `#alcoholic:malted_grain`, `#alcoholic:grist`, `#alcoholic:hops`, `#alcoholic:spent_grain`. Brewery is a preferred crop provider when present; Alcoholic ids stay registered. See [[semantic-crop-compatibility]].
+Barley is an annual cereal (`CerealCropBlock`). Hops grow as a vertical bine on generic `CropSupportPost` plus trellis wire, not as a grapevine subclass. Survival bootstrap is `alcoholic:wild_hops`, a ground bush (no trellis) that drops a rhizome and hops; worldgen is gated when Brewery is present. Ingredient identity is tags: `#alcoholic:barley`, `#alcoholic:malted_barley`, `#alcoholic:malted_grain`, `#alcoholic:grist`, `#alcoholic:hops`, `#alcoholic:spent_grain`. Brewery is a preferred crop provider when present; Alcoholic ids stay registered. See [[semantic-crop-compatibility]].
 
 ## Native machines
 

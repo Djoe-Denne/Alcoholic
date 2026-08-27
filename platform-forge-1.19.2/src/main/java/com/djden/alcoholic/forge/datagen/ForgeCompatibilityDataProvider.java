@@ -54,6 +54,28 @@ final class ForgeCompatibilityDataProvider extends AlcoholicJsonProvider {
                         }
                         """
         );
+        sink.add(
+                "data/alcoholic/forge/biome_modifier/wild_hops.json",
+                """
+                        {
+                          "forge:conditions": [
+                            {
+                              "type": "forge:not",
+                              "value": {
+                                "type": "alcoholic:item_present",
+                                "item": "brewery:hops"
+                              }
+                            }
+                          ],
+                          "type": "forge:add_features",
+                          "biomes": "#alcoholic:has_wild_hops",
+                          "features": [
+                            "alcoholic:wild_hops"
+                          ],
+                          "step": "vegetal_decoration"
+                        }
+                        """
+        );
     }
 
     @Override

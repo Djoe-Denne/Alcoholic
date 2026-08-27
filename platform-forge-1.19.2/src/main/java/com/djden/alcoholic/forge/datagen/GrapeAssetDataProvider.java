@@ -158,6 +158,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "death.attack.alcoholic.industrial_press": "%1$s was crushed in an industrial press",
                           "block.alcoholic.barley_crop": "Barley",
                           "block.alcoholic.hop_bine": "Hop Bine",
+                          "block.alcoholic.wild_hops": "Wild Hops",
                           "block.alcoholic.malting_floor": "Malting Floor",
                           "block.alcoholic.mash_tun": "Mash Tun",
                           "block.alcoholic.brewing_kettle": "Brewing Kettle",
@@ -339,6 +340,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "death.attack.alcoholic.industrial_press": "%1$s a été écrasé dans un pressoir industriel",
                           "block.alcoholic.barley_crop": "Orge",
                           "block.alcoholic.hop_bine": "Bine de houblon",
+                          "block.alcoholic.wild_hops": "Houblon sauvage",
                           "block.alcoholic.malting_floor": "Aire de maltage",
                           "block.alcoholic.mash_tun": "Cuve de brassage",
                           "block.alcoholic.brewing_kettle": "Chaudron de houblonnage",
@@ -676,88 +678,11 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
     }
 
     private static void addProcessingAssets(JsonSink sink) {
-        sink.add(
-                "assets/alcoholic/blockstates/artisanal_press.json",
-                """
-                        {
-                          "variants": {
-                            "facing=north": { "model": "alcoholic:block/artisanal_press" },
-                            "facing=south": { "model": "alcoholic:block/artisanal_press", "y": 180 },
-                            "facing=west": { "model": "alcoholic:block/artisanal_press", "y": 270 },
-                            "facing=east": { "model": "alcoholic:block/artisanal_press", "y": 90 }
-                          }
-                        }
-                        """
-        );
-        sink.add(
-                "assets/alcoholic/models/block/artisanal_press.json",
-                """
-                        {
-                          "parent": "minecraft:block/block",
-                          "textures": {
-                            "particle": "alcoholic:block/artisanal_press",
-                            "wood": "alcoholic:block/artisanal_press",
-                            "iron": "alcoholic:block/trellis_wire"
-                          },
-                          "elements": [
-                            {
-                              "from": [1, 0, 1],
-                              "to": [15, 6, 15],
-                              "faces": {
-                                "down": { "texture": "#wood" },
-                                "up": { "texture": "#wood" },
-                                "north": { "texture": "#wood" },
-                                "south": { "texture": "#wood" },
-                                "west": { "texture": "#wood" },
-                                "east": { "texture": "#wood" }
-                              }
-                            },
-                            {
-                              "from": [3, 6, 3],
-                              "to": [13, 12, 13],
-                              "faces": {
-                                "down": { "texture": "#wood" },
-                                "up": { "texture": "#wood" },
-                                "north": { "texture": "#wood" },
-                                "south": { "texture": "#wood" },
-                                "west": { "texture": "#wood" },
-                                "east": { "texture": "#wood" }
-                              }
-                            },
-                            {
-                              "from": [7, 12, 7],
-                              "to": [9, 16, 9],
-                              "faces": {
-                                "down": { "texture": "#iron" },
-                                "up": { "texture": "#iron" },
-                                "north": { "texture": "#iron" },
-                                "south": { "texture": "#iron" },
-                                "west": { "texture": "#iron" },
-                                "east": { "texture": "#iron" }
-                              }
-                            },
-                            {
-                              "from": [5, 14, 5],
-                              "to": [11, 16, 11],
-                              "faces": {
-                                "down": { "texture": "#iron" },
-                                "up": { "texture": "#iron" },
-                                "north": { "texture": "#iron" },
-                                "south": { "texture": "#iron" },
-                                "west": { "texture": "#iron" },
-                                "east": { "texture": "#iron" }
-                              }
-                            }
-                          ]
-                        }
-                        """
-        );
-        addBlockItem(sink, "artisanal_press");
+        ArtisanalPressAssetData.add(sink);
         ArtisanalFermenterAssetData.add(sink);
-        addSimpleBlock(sink, "oak_barrel");
-        addSimpleBlock(sink, "artisanal_blending_crock");
-        addBlockItem(sink, "oak_barrel");
-        addBlockItem(sink, "artisanal_blending_crock");
+        OakBarrelAssetData.add(sink);
+        ArtisanalBlendingCrockAssetData.add(sink);
+        ElectricMotorAssetData.add(sink);
         addGeneratedItem(sink, "yeast");
         addGeneratedItem(sink, "grape_pomace");
         addGeneratedItem(sink, "empty_bottle");
@@ -1011,17 +936,37 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
         hopVariants.append("\n  }\n}\n");
         sink.add("assets/alcoholic/blockstates/hop_bine.json", hopVariants.toString());
 
+        sink.add(
+                "assets/alcoholic/models/block/wild_hops.json",
+                """
+                        {
+                          "parent": "minecraft:block/cross",
+                          "textures": { "cross": "alcoholic:block/wild_hops" }
+                        }
+                        """
+        );
+        sink.add(
+                "assets/alcoholic/blockstates/wild_hops.json",
+                """
+                        {
+                          "variants": {
+                            "": { "model": "alcoholic:block/wild_hops" }
+                          }
+                        }
+                        """
+        );
+
         MaltingFloorAssetData.add(sink);
         MashTunAssetData.add(sink);
         BrewingKettleAssetData.add(sink);
         MaltMillAssetData.add(sink);
-        addLitMachine(sink, "electric_motor");
         addGeneratedItem(sink, "barley");
         addGeneratedItem(sink, "barley_seeds");
         addGeneratedItem(sink, "malted_barley");
         addGeneratedItem(sink, "grist");
         addGeneratedItem(sink, "hops");
         addGeneratedItem(sink, "hop_rhizome");
+        addGeneratedItem(sink, "wild_hops");
         addGeneratedItem(sink, "spent_grain");
         addGeneratedItem(sink, "wort_bucket");
         addGeneratedItem(sink, "hopped_wort_bucket");
@@ -1056,45 +1001,6 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                         {
                           "parent": "minecraft:block/cube_all",
                           "textures": { "all": "alcoholic:block/%s" }
-                        }
-                        """.formatted(name)
-        );
-        addBlockItem(sink, name);
-    }
-
-    private static void addLitMachine(JsonSink sink, String name) {
-        sink.add(
-                "assets/alcoholic/blockstates/" + name + ".json",
-                """
-                        {
-                          "variants": {
-                            "facing=north,lit=false": { "model": "alcoholic:block/%1$s" },
-                            "facing=south,lit=false": { "model": "alcoholic:block/%1$s", "y": 180 },
-                            "facing=west,lit=false": { "model": "alcoholic:block/%1$s", "y": 270 },
-                            "facing=east,lit=false": { "model": "alcoholic:block/%1$s", "y": 90 },
-                            "facing=north,lit=true": { "model": "alcoholic:block/%1$s_on" },
-                            "facing=south,lit=true": { "model": "alcoholic:block/%1$s_on", "y": 180 },
-                            "facing=west,lit=true": { "model": "alcoholic:block/%1$s_on", "y": 270 },
-                            "facing=east,lit=true": { "model": "alcoholic:block/%1$s_on", "y": 90 }
-                          }
-                        }
-                        """.formatted(name)
-        );
-        sink.add(
-                "assets/alcoholic/models/block/" + name + ".json",
-                """
-                        {
-                          "parent": "minecraft:block/cube_all",
-                          "textures": { "all": "alcoholic:block/%s" }
-                        }
-                        """.formatted(name)
-        );
-        sink.add(
-                "assets/alcoholic/models/block/" + name + "_on.json",
-                """
-                        {
-                          "parent": "minecraft:block/cube_all",
-                          "textures": { "all": "alcoholic:block/%s_on" }
                         }
                         """.formatted(name)
         );

@@ -39,6 +39,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         addEmptyLoot(sink, "white_grapevine_canopy");
         addBarleyLoot(sink);
         addHopBineLoot(sink);
+        addWildHopsLoot(sink);
         addRecipes(sink);
         addProcessing(sink);
         addIndustrial(sink);
@@ -46,6 +47,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         addWildGrapevines(sink, "red", 18);
         addWildGrapevines(sink, "white", 22);
         addWildBarley(sink);
+        addWildHops(sink);
 
         sink.add(
                 "data/alcoholic/tags/worldgen/biome/has_wild_grapevines.json",
@@ -202,7 +204,8 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                             "alcoholic:red_grapevine",
                             "alcoholic:white_grapevine",
                             "alcoholic:barley_crop",
-                            "alcoholic:hop_bine"
+                            "alcoholic:hop_bine",
+                            "alcoholic:wild_hops"
                           ]
                         }
                         """
@@ -230,7 +233,8 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                             "alcoholic:red_grapevine",
                             "alcoholic:white_grapevine",
                             "alcoholic:barley_crop",
-                            "alcoholic:hop_bine"
+                            "alcoholic:hop_bine",
+                            "alcoholic:wild_hops"
                           ]
                         }
                         """
@@ -1773,6 +1777,31 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         );
     }
 
+    private static void addWildHopsLoot(JsonSink sink) {
+        sink.add(
+                "data/alcoholic/loot_tables/blocks/wild_hops.json",
+                """
+                        {
+                          "type": "minecraft:block",
+                          "pools": [
+                            {
+                              "rolls": 1,
+                              "entries": [
+                                { "type": "minecraft:item", "name": "alcoholic:hop_rhizome" }
+                              ]
+                            },
+                            {
+                              "rolls": 1,
+                              "entries": [
+                                { "type": "minecraft:item", "name": "alcoholic:hops" }
+                              ]
+                            }
+                          ]
+                        }
+                        """
+        );
+    }
+
     private static void addHopBineLoot(JsonSink sink) {
         sink.add(
                 "data/alcoholic/loot_tables/blocks/hop_bine.json",
@@ -1862,6 +1891,73 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "feature": "alcoholic:wild_barley",
                           "placement": [
                             { "type": "minecraft:rarity_filter", "chance": 18 },
+                            { "type": "minecraft:in_square" },
+                            { "type": "minecraft:heightmap", "heightmap": "WORLD_SURFACE_WG" },
+                            { "type": "minecraft:biome" }
+                          ]
+                        }
+                        """
+        );
+    }
+
+    private static void addWildHops(JsonSink sink) {
+        sink.add(
+                "data/alcoholic/tags/worldgen/biome/has_wild_hops.json",
+                """
+                        {
+                          "replace": false,
+                          "values": [
+                            "minecraft:forest",
+                            "minecraft:flower_forest",
+                            "minecraft:birch_forest",
+                            "minecraft:taiga",
+                            "minecraft:river"
+                          ]
+                        }
+                        """
+        );
+        sink.add(
+                "data/alcoholic/worldgen/configured_feature/wild_hops.json",
+                """
+                        {
+                          "type": "minecraft:random_patch",
+                          "config": {
+                            "tries": 10,
+                            "xz_spread": 5,
+                            "y_spread": 2,
+                            "feature": {
+                              "feature": {
+                                "type": "minecraft:simple_block",
+                                "config": {
+                                  "to_place": {
+                                    "type": "minecraft:simple_state_provider",
+                                    "state": {
+                                      "Name": "alcoholic:wild_hops"
+                                    }
+                                  }
+                                }
+                              },
+                              "placement": [
+                                {
+                                  "type": "minecraft:block_predicate_filter",
+                                  "predicate": {
+                                    "type": "minecraft:matching_blocks",
+                                    "blocks": "minecraft:air"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                        """
+        );
+        sink.add(
+                "data/alcoholic/worldgen/placed_feature/wild_hops.json",
+                """
+                        {
+                          "feature": "alcoholic:wild_hops",
+                          "placement": [
+                            { "type": "minecraft:rarity_filter", "chance": 36 },
                             { "type": "minecraft:in_square" },
                             { "type": "minecraft:heightmap", "heightmap": "WORLD_SURFACE_WG" },
                             { "type": "minecraft:biome" }

@@ -29,8 +29,6 @@ final class AlcoholicTextureProvider implements DataProvider {
         textures.put("block/hop_bine_0", 0xFF3F7A32);
         textures.put("block/hop_bine_1", 0xFF4C8F3C);
         textures.put("block/hop_bine_2", 0xFF5EA24A);
-        textures.put("block/electric_motor", 0xFF3A4A5A);
-        textures.put("block/electric_motor_on", 0xFF2A7A9A);
         textures.put("item/barley", 0xFFC9A227);
         textures.put("item/barley_seeds", 0xFF8C6B2A);
         textures.put("item/malted_barley", 0xFFA36A2B);

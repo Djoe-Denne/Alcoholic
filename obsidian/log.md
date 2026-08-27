@@ -52,3 +52,4 @@ title: Wiki Log
 - [2026-08-27T16:20:00+02:00] CURSOR_HISTORY_INGEST conversations=9 pages_updated=11 pages_created=3 mode=append skipped_subagents=true topic="JEI display + brewery guide + mill texture + context-mode + Aug 25 red-team follow-up"
 - [2026-08-27T16:20:00+02:00] CODEX_HISTORY_INGEST sessions=20 pages_updated=3 pages_created=0 mode=append topic="01a03d10 red-team swarm + 01a03f62 brewery guide (Alcoholic cwd only)"
 - [2026-08-27T16:25:00+02:00] QMD_REFRESH collection="alcoholic-wiki" action=update+embed indexed="5 new, 14 updated" embedded="84 chunks / 29 documents"
+- [2026-08-27T20:45:00+02:00] QUERY query="comment on récupère du houblon, orge, malt" result_pages=4 mode=normal escalated=true vault="C:/Users/djden/source/repos/Alcoholic/obsidian" collection="alcoholic-wiki"

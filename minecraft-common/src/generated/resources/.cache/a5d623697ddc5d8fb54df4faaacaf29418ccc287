@@ -1,4 +1,4 @@
-// 1.19.2	2026-08-26T19:17:57.0379352	Alcoholic grape server data
+// 1.19.2	2026-08-27T21:25:18.1293548	Alcoholic grape server data
 d8aafbaa0a3362dfa9726af368b2620c0d121d59 data/alcoholic/alcoholic/beverages/beer.json
 01a7f10047397133d2d7633625d96476cf4f72f0 data/alcoholic/alcoholic/beverages/red_wine.json
 b07fa9fb623a6ad7d917df34135b761220f93418 data/alcoholic/alcoholic/beverages/white_wine.json
@@ -72,6 +72,7 @@ b90e0ed782ded2f0ce99a55581e5807e3ed9b3e0 data/alcoholic/loot_tables/blocks/trell
 e564bf4d7dc1407a3b84e0aa7a796d23f9c7db00 data/alcoholic/loot_tables/blocks/white_grapevine.json
 b90e0ed782ded2f0ce99a55581e5807e3ed9b3e0 data/alcoholic/loot_tables/blocks/white_grapevine_canopy.json
 b90e0ed782ded2f0ce99a55581e5807e3ed9b3e0 data/alcoholic/loot_tables/blocks/white_grapevine_stem.json
+66bbf1d00cd66b1361f264af2e6245c3c5ada951 data/alcoholic/loot_tables/blocks/wild_hops.json
 961a4b19315ceed15f81c7d72302bdda5ddb939e data/alcoholic/recipes/access_hatch.json
 619eb351915a7a9f9ddf6c733af69f9efe42499f data/alcoholic/recipes/artisanal_blending_crock.json
 a059fcc85c9211a7dceeb3c4648ff3bb33d7a9fd data/alcoholic/recipes/artisanal_fermenter.json
@@ -125,16 +126,19 @@ c3c761eae1896b3010afb1b3dacd2fd59bbc0364 data/alcoholic/tags/items/grapes/white.
 5069e0836de46cc7d4eff72c2aa011950c3e50a4 data/alcoholic/tags/items/yeast.json
 19a03a5c21a1ca0a78d93b9e1efc7ed65affc0bd data/alcoholic/tags/worldgen/biome/has_wild_barley.json
 a371c320199954decb28c20166f992e9ad87cab7 data/alcoholic/tags/worldgen/biome/has_wild_grapevines.json
+131e8cf90f3629dbdb9fb83ff4305e4b90dfedf8 data/alcoholic/tags/worldgen/biome/has_wild_hops.json
 197b1f721d86d4d12da1d07c8d35374224840c54 data/alcoholic/viticulture/red_grape.json
 ff8cc8ab3fe630406eacb4c77bd3646881519c4e data/alcoholic/viticulture/settings.json
 07545f5dd998090b2acbb0e491c23552da7d1449 data/alcoholic/viticulture/white_grape.json
 157fed98d8ac24cd8d7539dafafff334bfe63964 data/alcoholic/worldgen/configured_feature/wild_barley.json
+537954666c99c952420876f6da40c1aea92ffeca data/alcoholic/worldgen/configured_feature/wild_hops.json
 01868e5a7847475f7e99774ff09448aad6522155 data/alcoholic/worldgen/configured_feature/wild_red_grapevines.json
 f5848947664b3a4010d2dfbd2f00d2e1102e38a4 data/alcoholic/worldgen/configured_feature/wild_white_grapevines.json
 4272a2bb0d428808552c86fb73bc33e77c9a91ec data/alcoholic/worldgen/placed_feature/wild_barley.json
+3fc4e66a73613a8d7dbc6e7855b56f9b6d6d9153 data/alcoholic/worldgen/placed_feature/wild_hops.json
 79b8fa3a937c565f46b8796623f1a68efdc8a887 data/alcoholic/worldgen/placed_feature/wild_red_grapevines.json
 b9fbd4e6d5fa458d5914e26cf468057527aba38c data/alcoholic/worldgen/placed_feature/wild_white_grapevines.json
-3736cbe7ed5562ccc50f37bbf7c2a78fc24e8823 data/forge/tags/blocks/crops.json
-3736cbe7ed5562ccc50f37bbf7c2a78fc24e8823 data/minecraft/tags/blocks/crops.json
+6435cde589cfef36ceac53be6236e3e7ebf5390d data/forge/tags/blocks/crops.json
+6435cde589cfef36ceac53be6236e3e7ebf5390d data/minecraft/tags/blocks/crops.json
 73d83c7db40036da3397f3c96698cad837c9a8ad data/minecraft/tags/blocks/mineable/pickaxe.json
 26d4456069403a7af097349a19ca67756cc50ee0 data/minecraft/tags/items/villager_plantable_seeds.json

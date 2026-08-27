@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "alcoholic:block/oak_barrel",
+      "y": 90
+    },
+    "facing=north": {
       "model": "alcoholic:block/oak_barrel"
+    },
+    "facing=south": {
+      "model": "alcoholic:block/oak_barrel",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "alcoholic:block/oak_barrel",
+      "y": 270
     }
   }
 }
