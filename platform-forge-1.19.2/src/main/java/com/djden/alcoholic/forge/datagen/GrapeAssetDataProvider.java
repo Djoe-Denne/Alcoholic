@@ -1034,10 +1034,9 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
         sink.add("assets/alcoholic/blockstates/hop_bine.json", hopVariants.toString());
 
         MaltingFloorAssetData.add(sink);
-        addSimpleMachine(sink, "mash_tun");
+        MashTunAssetData.add(sink);
         addSimpleMachine(sink, "brewing_kettle");
-        addSimpleMachine(sink, "malt_mill");
-        addLitMachine(sink, "primitive_combustion_engine");
+        MaltMillAssetData.add(sink);
         addLitMachine(sink, "electric_motor");
         addGeneratedItem(sink, "barley");
         addGeneratedItem(sink, "barley_seeds");

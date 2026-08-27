@@ -16,6 +16,7 @@ import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
 import com.djden.alcoholic.minecraft.menu.MachineAccess;
 import com.djden.alcoholic.minecraft.menu.MachineLayout;
+import com.djden.alcoholic.minecraft.menu.MachineMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -23,6 +24,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
@@ -31,6 +35,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
@@ -50,6 +55,28 @@ public final class MashTunBlockEntity extends BlockEntity implements WorldlyCont
     private int progress;
     private int duration = 200;
     private String runningJob = "";
+    private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
+        @Override
+        protected void onOpen(Level level, BlockPos pos, BlockState state) {
+            playLidSound(SoundEvents.BARREL_OPEN);
+            setOpen(state, true);
+        }
+
+        @Override
+        protected void onClose(Level level, BlockPos pos, BlockState state) {
+            playLidSound(SoundEvents.BARREL_CLOSE);
+            setOpen(state, false);
+        }
+
+        @Override
+        protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int previous, int current) {
+        }
+
+        @Override
+        protected boolean isOwnContainer(Player player) {
+            return player.containerMenu instanceof MachineMenu menu && menu.uses(MashTunBlockEntity.this);
+        }
+    };
 
     public MashTunBlockEntity(BlockEntityType<?> type, BlockPos position, BlockState state) {
         super(type, position, state);
@@ -115,6 +142,9 @@ public final class MashTunBlockEntity extends BlockEntity implements WorldlyCont
     }
 
     private void tick() {
+        if (level != null) {
+            openersCounter.recheckOpeners(level, worldPosition, getBlockState());
+        }
         Optional<LiquidBatch> water = inputTank.contents();
         ItemStack input = items.get(INPUT_SLOT);
         if (input.isEmpty() || water.isEmpty()) {
@@ -324,7 +354,43 @@ public final class MashTunBlockEntity extends BlockEntity implements WorldlyCont
 
     @Override
     public boolean stillValid(Player player) {
-        return true;
+        return MachineAccess.super.stillValid(player);
+    }
+
+    @Override
+    public void startOpen(Player player) {
+        if (!remove && !player.isSpectator() && getLevel() != null) {
+            openersCounter.incrementOpeners(player, getLevel(), getBlockPos(), getBlockState());
+        }
+    }
+
+    @Override
+    public void stopOpen(Player player) {
+        if (!remove && !player.isSpectator() && getLevel() != null) {
+            openersCounter.decrementOpeners(player, getLevel(), getBlockPos(), getBlockState());
+        }
+    }
+
+    private void setOpen(BlockState state, boolean open) {
+        if (level != null && state.hasProperty(MashTunBlock.OPEN) && state.getValue(MashTunBlock.OPEN) != open) {
+            level.setBlock(worldPosition, state.setValue(MashTunBlock.OPEN, open), Block.UPDATE_ALL);
+        }
+    }
+
+    private void playLidSound(SoundEvent sound) {
+        if (level == null) {
+            return;
+        }
+        level.playSound(
+                null,
+                worldPosition.getX() + 0.5,
+                worldPosition.getY() + 0.5,
+                worldPosition.getZ() + 0.5,
+                sound,
+                SoundSource.BLOCKS,
+                0.5F,
+                level.random.nextFloat() * 0.1F + 0.9F
+        );
     }
 
     @Override

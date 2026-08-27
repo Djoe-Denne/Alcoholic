@@ -4,7 +4,7 @@ title: Wiki Index
 
 # Wiki Index
 
-*This index is automatically maintained. Last updated: 2026-08-25T20:05:00+02:00*
+*This index is automatically maintained. Last updated: 2026-08-27T13:30:00+02:00*
 
 ## Concepts
 
@@ -33,8 +33,15 @@ title: Wiki Index
 - [[projects/alcoholic/concepts/electric-motor|Electric Motor]] — Native FE consumer that emits MechanicalDrivePort; idle machines do not drain. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/crossroads-rotary-adapter|Crossroads Rotary Adapter]] — Optional IAxleHandler on Alcoholic inputs; joule billing stays in the adapter. ( #minecraft #compatibility)
 - [[projects/alcoholic/concepts/native-executor-invariant|Native Executor Invariant]] — Official DAGs ship a native executor; Create, Crossroads, and IE stay optional. ( #minecraft #software-architecture)
+- [[projects/alcoholic/concepts/artisanal-machine-voxel-models|Artisanal Machine Voxel Models]] — Java Blockbench models for floor, engine, and mill; no GeckoLib. ( #minecraft #software-architecture)
+- [[projects/alcoholic/concepts/resource-pack-resolution-chain|Resource Pack Resolution Chain]] — 512 master, downsample from master only, mid-res default. ( #minecraft)
+- [[projects/alcoholic/concepts/malting-floor-visual|Malting Floor Visual]] — Fork 2 oak tray, mat, and barley; 64 default after 512 master. ( #minecraft)
+- [[projects/alcoholic/concepts/primitive-combustion-engine-visual|Primitive Combustion Engine Visual]] — Fork 3 off/lit BDcraft atlases and archived 512 master. ( #minecraft)
+- [[projects/alcoholic/concepts/malt-mill-visual|Malt Mill Visual]] — Fork 4 hopper and rollers; no crank; 32 default. ( #minecraft)
 
 ## Entities
+
+- [[projects/alcoholic/entities/blockbench|Blockbench]] — Desktop 5.1.x plus MCP on 127.0.0.1:8787 for Java block models. ( #minecraft)
 
 ## Skills
 
@@ -45,6 +52,7 @@ title: Wiki Index
 - [[projects/alcoholic/skills/forge-1.19.2-phase-6-verification|Forge 1.19.2 Phase 6 Verification]] — Multiblock purity, industrial catalog, and industrial_pad GameTests. ( #minecraft #testing)
 - [[projects/alcoholic/skills/forge-1.19.2-phase-7a-verification|Forge 1.19.2 Phase 7A Verification]] — Grain GameTests, mechanical mill, Create isolation, and debug-NBT compile gate. ( #minecraft #testing)
 - [[projects/alcoholic/skills/forge-1.19.2-crossroads-fe-verification|Forge 1.19.2 Crossroads and FE Verification]] — Architecture, mapping tests, FE GameTests, optional Crossroads and IE client paths. ( #minecraft #testing)
+- [[projects/alcoholic/skills/blockbench-java-block-workflow|Blockbench Java Block Workflow]] — One machine, grey silhouette, 512 paint, user stop, then downsample. ( #minecraft)
 
 ## References
 
@@ -57,6 +65,7 @@ title: Wiki Index
 - [[projects/alcoholic/references/cursor-phase-7a-grain-session|Cursor Phase 7A Grain Session]] — Source session for beer DAG, barley/hops, and generic malt/mill/mash/boil. ( #minecraft #software-architecture)
 - [[projects/alcoholic/references/cursor-create-independence-session|Cursor Create Independence Session]] — Red-team P0/P1 fixes, native mill, then compile-time debug kinetic NBT. ( #minecraft #software-architecture)
 - [[projects/alcoholic/references/cursor-crossroads-electric-motor-session|Cursor Crossroads Electric Motor Session]] — Optional Crossroads axle bridge, generic FE motor, then winning-port billing. ( #minecraft #software-architecture)
+- [[projects/alcoholic/references/codex-ajouter-modeles-3d-minecraft|Codex Ajouter Modèles 3D Minecraft]] — Parent plan plus three machine forks and the Blockbench MCP install. ( #minecraft #software-architecture)
 
 ## Synthesis
 

@@ -13,13 +13,14 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/1ca21b6f-a077-4686-8f47-c41ee6e59fc7/1ca21b6f-a077-4686-8f47-c41ee6e59fc7.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/ede9eb58-09ac-4ccc-9fea-74a521453d14/ede9eb58-09ac-4ccc-9fea-74a521453d14.jsonl"
+  - "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-15-09-01a03f48-7af6-7513-a3c9-b297e81b7a96.jsonl"
 summary: Loader-independent brewing mod. Grain beer on generic processes; rotary power from native engines, Create, or Crossroads.
 provenance:
   extracted: 0.82
   inferred: 0.16
   ambiguous: 0.02
 created: 2026-08-25T09:20:00+02:00
-updated: 2026-08-25T20:05:00+02:00
+updated: 2026-08-27T13:30:00+02:00
 ---
 
 # Alcoholic
@@ -44,6 +45,8 @@ Alcoholic is a Minecraft mod for realistic brewing, winemaking, and distillation
 
 **Mechanical supplies (ADR-031)** — four ways to feed the same port: primitive combustion engine, [[electric-motor]] (generic FE; IE connector is one provider), optional Create, optional [[crossroads-rotary-adapter]]. Machines never branch on which mod is installed.
 
+**Artisanal visuals** — Codex replaced the cube placeholders for the malting floor, primitive engine, and malt mill with Java voxel models authored in [[blockbench]]. See [[artisanal-machine-voxel-models]] and [[resource-pack-resolution-chain]].
+
 The Forge artifact still embeds the inward-pointing modules. Fabric remains a future adapter.
 
 ## Key concepts
@@ -67,6 +70,8 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[electric-motor]]
 - [[crossroads-rotary-adapter]]
 - [[native-executor-invariant]]
+- [[artisanal-machine-voxel-models]]
+- [[resource-pack-resolution-chain]]
 
 ## Verification
 
@@ -89,3 +94,4 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[cursor-phase-7a-grain-session]]
 - [[cursor-create-independence-session]]
 - [[cursor-crossroads-electric-motor-session]]
+- [[codex-ajouter-modeles-3d-minecraft]]

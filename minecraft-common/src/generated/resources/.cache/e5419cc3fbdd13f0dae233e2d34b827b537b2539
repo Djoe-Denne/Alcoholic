@@ -1,4 +1,4 @@
-// 1.19.2	2026-08-25T21:18:30.5485843	Alcoholic generated textures
+// 1.19.2	2026-08-27T14:50:09.0576461	Alcoholic generated textures
 8e41c39e4652d93f7abbf9547649b6c50b01717a assets/alcoholic/textures/block/barley_crop_0.png
 789cc05ecfe288a38b35931c5e8e183a9e97a364 assets/alcoholic/textures/block/barley_crop_1.png
 8baed5b41a83f519f955ab022ef12c0aa0a1b130 assets/alcoholic/textures/block/barley_crop_2.png
@@ -14,10 +14,8 @@ c5095544950a72335de5dab894ebb0c6630b71c3 assets/alcoholic/textures/block/industr
 8cfdd24acffa9922f97790fa0752cb9cb6ad9d27 assets/alcoholic/textures/block/industrial_mash_tun_controller.png
 810073de27fa580c668904adf5a19de230560c91 assets/alcoholic/textures/block/industrial_roller_mill_controller.png
 f5aa59bada3c9a84ce2235f80dd968492ac4349e assets/alcoholic/textures/block/industrial_roller_mill_controller_formed.png
-4af2a42c9551556ead7de9a40f4df1310e3159c3 assets/alcoholic/textures/block/malt_mill.png
-8cfdd24acffa9922f97790fa0752cb9cb6ad9d27 assets/alcoholic/textures/block/mash_tun.png
-29db5488fcd18ea743f8a61cbd7a328000330930 assets/alcoholic/textures/block/primitive_combustion_engine.png
-8121cac391af1cf79f83ceda4186cbf5710d84ae assets/alcoholic/textures/block/primitive_combustion_engine_on.png
+925554ff85d998fc5abfd39e06a18fe3c85e79cd assets/alcoholic/textures/gui/elements.png
+a935b5a687eed05c1358616a66637eb2a7b3cd1e assets/alcoholic/textures/gui/machine.png
 eea012cf45076a94b536c5a4d42f6f3e9c5125a5 assets/alcoholic/textures/item/barley.png
 019413ff05658d9aa878f6efa318175d5c4daba2 assets/alcoholic/textures/item/barley_seeds.png
 f5344d78f8df7b6a1a6d70571c494e68ff01fff4 assets/alcoholic/textures/item/beer_bucket.png

@@ -8,13 +8,14 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/14805ad4-dec0-4781-92a1-c718c5113dde/14805ad4-dec0-4781-92a1-c718c5113dde.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/1ca21b6f-a077-4686-8f47-c41ee6e59fc7/1ca21b6f-a077-4686-8f47-c41ee6e59fc7.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/ede9eb58-09ac-4ccc-9fea-74a521453d14/ede9eb58-09ac-4ccc-9fea-74a521453d14.jsonl"
+  - "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-56-07-01a03f6d-f9dd-71c2-8d26-3fc369bd905a.jsonl"
 summary: Loader-independent rotary port. Four supplies; consumeWork bills the winning source. Debug RPM NBT is compile-stripped.
 provenance:
   extracted: 0.84
   inferred: 0.14
   ambiguous: 0.02
 created: 2026-08-25T18:55:00+02:00
-updated: 2026-08-25T20:05:00+02:00
+updated: 2026-08-27T13:30:00+02:00
 ---
 
 # Mechanical Drive Port
@@ -51,7 +52,7 @@ Primitive Engine       Electric Motor      external adapters
 
 ## Primitive combustion engine
 
-`alcoholic:primitive_combustion_engine` burns furnace-compatible fuel (coal, charcoal, wood). It provides a low fixed speed and limited capacity, and sits **adjacent** to a machine or an [[industrial-ports|industrial kinetic port]]. It is a standalone fallback so official mechanical processes stay playable without Create.
+`alcoholic:primitive_combustion_engine` burns furnace-compatible fuel (coal, charcoal, wood). It provides a low fixed speed and limited capacity, and sits **adjacent** to a machine or an [[industrial-ports|industrial kinetic port]]. It is a standalone fallback so official mechanical processes stay playable without Create. The visible voxel and off/lit atlases are documented on [[primitive-combustion-engine-visual]]; they do not change the port contract.
 
 Alcoholic does not add shafts, gearboxes, cogwheels, clutches, transmissions, belts, or pipes. That would duplicate Create. The intended factory still uses Create logistics when the mod is present.
 
@@ -81,6 +82,7 @@ Both write and read are gated. Gating only save still loads injected NBT. `debug
 - [[industrial-ports]]
 - [[industrial-processing]]
 - [[grain-processing]]
+- [[primitive-combustion-engine-visual]]
 - [[create-press-adapter]]
 - [[loader-independent-minecraft-architecture]]
 - [[cursor-create-independence-session]]

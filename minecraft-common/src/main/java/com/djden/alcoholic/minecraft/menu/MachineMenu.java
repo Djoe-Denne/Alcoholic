@@ -81,6 +81,21 @@ public final class MachineMenu extends AbstractContainerMenu {
         }
         addPlayerInventory(inventory);
         addDataSlots(data);
+        if (access != null) {
+            container.startOpen(inventory.player);
+        }
+    }
+
+    public boolean uses(MachineAccess other) {
+        return access == other;
+    }
+
+    @Override
+    public void removed(Player player) {
+        super.removed(player);
+        if (access != null) {
+            container.stopOpen(player);
+        }
     }
 
     public MachineLayout layout() {

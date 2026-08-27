@@ -1,18 +1,33 @@
 {
   "variants": {
-    "facing=east": {
+    "facing=east,open=false": {
       "model": "alcoholic:block/mash_tun",
       "y": 90
     },
-    "facing=north": {
+    "facing=east,open=true": {
+      "model": "alcoholic:block/mash_tun_open",
+      "y": 90
+    },
+    "facing=north,open=false": {
       "model": "alcoholic:block/mash_tun"
     },
-    "facing=south": {
+    "facing=north,open=true": {
+      "model": "alcoholic:block/mash_tun_open"
+    },
+    "facing=south,open=false": {
       "model": "alcoholic:block/mash_tun",
       "y": 180
     },
-    "facing=west": {
+    "facing=south,open=true": {
+      "model": "alcoholic:block/mash_tun_open",
+      "y": 180
+    },
+    "facing=west,open=false": {
       "model": "alcoholic:block/mash_tun",
+      "y": 270
+    },
+    "facing=west,open=true": {
+      "model": "alcoholic:block/mash_tun_open",
       "y": 270
     }
   }

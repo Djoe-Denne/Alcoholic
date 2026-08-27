@@ -448,6 +448,111 @@
       "project": "alcoholic",
       "pages_created": [],
       "pages_updated": []
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-11-32-01a03f45-29de-7df3-a840-d62271c376d5.jsonl": {
+      "ingested_at": "2026-08-27T13:30:00+02:00",
+      "size_bytes": 8043517,
+      "modified_at": "2026-08-26T18:11:38.2181188Z",
+      "content_hash": "sha256:1c9149491d62b2ef44a0746a2cf577e4fa01a08134fe5229ffce8c1db2cb6dd3",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/references/codex-ajouter-modeles-3d-minecraft.md"
+      ],
+      "pages_updated": []
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-15-09-01a03f48-7af6-7513-a3c9-b297e81b7a96.jsonl": {
+      "ingested_at": "2026-08-27T13:30:00+02:00",
+      "size_bytes": 9568403,
+      "modified_at": "2026-08-26T18:48:03.1412710Z",
+      "content_hash": "sha256:df5f47376fd4b3434851940d6449ebd050fe3a988cbf88304def3b431a885c1e",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/references/codex-ajouter-modeles-3d-minecraft.md",
+        "projects/alcoholic/concepts/artisanal-machine-voxel-models.md",
+        "projects/alcoholic/concepts/resource-pack-resolution-chain.md",
+        "projects/alcoholic/concepts/malting-floor-visual.md",
+        "projects/alcoholic/concepts/primitive-combustion-engine-visual.md",
+        "projects/alcoholic/concepts/malt-mill-visual.md",
+        "projects/alcoholic/skills/blockbench-java-block-workflow.md",
+        "projects/alcoholic/entities/blockbench.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/artisanal-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/mechanical-drive-port.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-28-31-01a03f54-b465-7cc3-9e92-2bcfc0c8e291.jsonl": {
+      "ingested_at": "2026-08-27T13:30:00+02:00",
+      "size_bytes": 1411414,
+      "modified_at": "2026-08-26T18:49:44.3419878Z",
+      "content_hash": "sha256:1c5b3db53545f0fc3aab34d7311000bafdb87bd3e36f55866f94987a395e4a6c",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/entities/blockbench.md",
+        "projects/alcoholic/skills/blockbench-java-block-workflow.md"
+      ],
+      "pages_updated": []
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-48-08-01a03f66-acf1-7931-95db-a9b0b9d8961f.jsonl": {
+      "ingested_at": "2026-08-27T13:30:00+02:00",
+      "size_bytes": 34613083,
+      "modified_at": "2026-08-27T09:25:19.4882161Z",
+      "content_hash": "sha256:e343e569be29ff62c9eabb8134fe5f543ddaae0cbc02de83486343a33aab2e97",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/malting-floor-visual.md",
+        "projects/alcoholic/concepts/resource-pack-resolution-chain.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/concepts/grain-processing.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-56-07-01a03f6d-f9dd-71c2-8d26-3fc369bd905a.jsonl": {
+      "ingested_at": "2026-08-27T13:30:00+02:00",
+      "size_bytes": 35390572,
+      "modified_at": "2026-08-27T09:21:25.8466928Z",
+      "content_hash": "sha256:b43ef442a18da05ee032f867ea838cdf256f5b9967587c6658cbbe010e017db0",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/primitive-combustion-engine-visual.md",
+        "projects/alcoholic/concepts/resource-pack-resolution-chain.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/concepts/mechanical-drive-port.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T21-26-14-01a03f89-8bc5-7140-aa48-215bf4ba51ed.jsonl": {
+      "ingested_at": "2026-08-27T13:30:00+02:00",
+      "size_bytes": 31197,
+      "modified_at": "2026-08-26T19:26:14.1500961Z",
+      "content_hash": "sha256:eee2e99faa03bfece0da7b713d176b97bcf817680cce2e7129973450334e72e2",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/references/codex-ajouter-modeles-3d-minecraft.md"
+      ],
+      "pages_updated": []
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T21-27-11-01a03f89-8bc5-7140-aa48-215bf4ba51ed_01a03f8a-6d29-7862-943b-e0e09c706834.jsonl": {
+      "ingested_at": "2026-08-27T13:30:00+02:00",
+      "size_bytes": 37934619,
+      "modified_at": "2026-08-27T10:52:17.9227973Z",
+      "content_hash": "sha256:6a315ffb13e65766a372ec3d995b478fc7ac2dd3d0c835458499230f9f5705b0",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/malt-mill-visual.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/concepts/artisanal-processing.md"
+      ]
     }
   },
   "projects": {
@@ -502,7 +607,22 @@
     }
   },
   "stats": {
-    "total_sources_ingested": 29,
-    "total_pages": 42
+    "total_sources_ingested": 36,
+    "total_pages": 50
+  },
+  "alcoholic_codex_3d": {
+    "source_path": "C:/Users/djden/.codex/sessions/2026/08/26",
+    "last_ingested": "2026-08-27T13:30:00+02:00",
+    "sessions_ingested": 6,
+    "sessions_total": 6,
+    "thread_ids": [
+      "01a03f45-29de-7df3-a840-d62271c376d5",
+      "01a03f48-7af6-7513-a3c9-b297e81b7a96",
+      "01a03f54-b465-7cc3-9e92-2bcfc0c8e291",
+      "01a03f66-acf1-7931-95db-a9b0b9d8961f",
+      "01a03f6d-f9dd-71c2-8d26-3fc369bd905a",
+      "01a03f89-8bc5-7140-aa48-215bf4ba51ed"
+    ],
+    "index_updated_at": "2026-08-27T13:30:00+02:00"
   }
 }

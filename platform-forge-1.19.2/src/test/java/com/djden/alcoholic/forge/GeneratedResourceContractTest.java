@@ -182,7 +182,6 @@ class GeneratedResourceContractTest {
                 "artisanal_fermenter",
                 "oak_barrel",
                 "artisanal_blending_crock",
-                "mash_tun",
                 "brewing_kettle",
                 "industrial_casing",
                 "machine_window",

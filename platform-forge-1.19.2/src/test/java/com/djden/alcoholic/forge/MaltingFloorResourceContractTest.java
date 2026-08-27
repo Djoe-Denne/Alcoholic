@@ -134,8 +134,8 @@ class MaltingFloorResourceContractTest {
             assertNotNull(stream, "Missing malting floor texture");
             BufferedImage image = ImageIO.read(stream);
             assertNotNull(image, "Invalid malting floor PNG");
-            assertEquals(128, image.getWidth());
-            assertEquals(128, image.getHeight());
+            assertEquals(64, image.getWidth());
+            assertEquals(64, image.getHeight());
 
             Set<Integer> colors = new HashSet<>();
             for (int y = 0; y < image.getHeight(); y++) {

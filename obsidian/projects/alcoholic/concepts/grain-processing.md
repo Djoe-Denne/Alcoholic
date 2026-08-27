@@ -7,13 +7,14 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/95c81b7c-fa88-4055-9741-14cb948964c9/95c81b7c-fa88-4055-9741-14cb948964c9.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/1ca21b6f-a077-4686-8f47-c41ee6e59fc7/1ca21b6f-a077-4686-8f47-c41ee6e59fc7.jsonl"
+  - "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-48-08-01a03f66-acf1-7931-95db-a9b0b9d8961f.jsonl"
 summary: Phase 7A ships a beer DAG through generic MALT, MILL, MASH, and BOIL. No drink-family Java branches.
 provenance:
   extracted: 0.86
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T18:55:00+02:00
-updated: 2026-08-25T20:20:00+02:00
+updated: 2026-08-27T13:30:00+02:00
 ---
 
 # Grain Processing
@@ -56,6 +57,8 @@ The malting floor executes `MALT` only. An earlier Phase 7A cut also ran `MILL` 
 
 The mash tun and brewing kettle are artisanal mixed-input executors. Phase 7B adds industrial executors for the same process types: malt house, roller mill, mash tun, brewing kettle, plus an optional conditioning vessel. See [[industrial-processing]].
 
+Floor and mill cube placeholders are being replaced by [[malting-floor-visual]] and [[malt-mill-visual]]. Process types stay generic.
+
 ## Related
 
 - [[alcoholic]]
@@ -66,6 +69,7 @@ The mash tun and brewing kettle are artisanal mixed-input executors. Phase 7B ad
 - [[electric-motor]]
 - [[crossroads-rotary-adapter]]
 - [[native-executor-invariant]]
+- [[artisanal-machine-voxel-models]]
 - [[create-press-adapter]]
 - [[semantic-crop-compatibility]]
 - [[fermentation-physics]]
