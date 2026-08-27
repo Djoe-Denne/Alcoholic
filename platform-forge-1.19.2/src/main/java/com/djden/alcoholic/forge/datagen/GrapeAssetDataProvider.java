@@ -1061,7 +1061,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
 
         MaltingFloorAssetData.add(sink);
         MashTunAssetData.add(sink);
-        addSimpleMachine(sink, "brewing_kettle");
+        BrewingKettleAssetData.add(sink);
         MaltMillAssetData.add(sink);
         addLitMachine(sink, "electric_motor");
         addGeneratedItem(sink, "barley");

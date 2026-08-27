@@ -1,4 +1,4 @@
-// 1.19.2	2026-08-27T15:34:14.143396	Alcoholic grape assets
+// 1.19.2	2026-08-27T17:43:27.6648116	Alcoholic grape assets
 11ed65315ca367e92b7766e736bb9f0904242a66 assets/alcoholic/blockstates/access_hatch.json
 2d43dae9cf8c18b9e6ae84446d7975651a84f3bf assets/alcoholic/blockstates/artisanal_blending_crock.json
 62d657bda3e8bc3ac5f0366a403f4a1bb6db3f2e assets/alcoholic/blockstates/artisanal_fermenter.json
@@ -33,8 +33,8 @@ ffa9d5ee1cb35f049c3988f3b201db167828ef63 assets/alcoholic/blockstates/vineyard_p
 7e04356bb421bffe437be5bf97505bdbcd88d72b assets/alcoholic/blockstates/white_grapevine.json
 36d8895aa2f9c292b8c0f673da1641de7b224a45 assets/alcoholic/blockstates/white_grapevine_canopy.json
 8a9ad6d25c6f60237ea670bba7f636078ab5c532 assets/alcoholic/blockstates/white_grapevine_stem.json
-e77276a741e4633bf755c809ea89cdab813fe368 assets/alcoholic/lang/en_us.json
-1fa444cc0771d1191b5ae0a426562a704a34c74c assets/alcoholic/lang/fr_fr.json
+44576471c16c87099321ccd2453ecc2c4ac1b671 assets/alcoholic/lang/en_us.json
+7b555bfbd6dd2f6d419ea93b175f2d645b2be9b1 assets/alcoholic/lang/fr_fr.json
 1131bfe6316ddec684df337e69ef9982d2c999b0 assets/alcoholic/models/block/access_hatch.json
 573d4ce7631b24bdf6514953d097ccfe43e794c9 assets/alcoholic/models/block/artisanal_blending_crock.json
 a70d16c87e3de445ce92dea36bb946061fc9a733 assets/alcoholic/models/block/artisanal_fermenter.json
@@ -42,7 +42,6 @@ a70d16c87e3de445ce92dea36bb946061fc9a733 assets/alcoholic/models/block/artisanal
 94e177f68d06b1436f13fd8a5ed800529277dbae assets/alcoholic/models/block/barley_crop_0.json
 f39239f7de551e5123c1649f1bda8f4de209e68a assets/alcoholic/models/block/barley_crop_1.json
 54f077622b3a8798df7e77fa7114972867d64522 assets/alcoholic/models/block/barley_crop_2.json
-5bf924b1ec3cd42f2a8c7eba94f782862782daee assets/alcoholic/models/block/brewing_kettle.json
 6e7e7f47282a6446d92b8640ddf40f2fd1e9f336 assets/alcoholic/models/block/electric_motor.json
 a56c5e81673f1a9a23f81966a016103be12d32a4 assets/alcoholic/models/block/electric_motor_on.json
 759164337932ad59461e37a5ee35a22fbca95a43 assets/alcoholic/models/block/end_post.json
