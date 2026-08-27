@@ -3,6 +3,7 @@ package com.djden.alcoholic.minecraft.content;
 import com.djden.alcoholic.application.machine.BuiltinMachines;
 import com.djden.alcoholic.domain.multiblock.PartRole;
 import com.djden.alcoholic.minecraft.content.KineticEntityFactory;
+import com.djden.alcoholic.minecraft.multiblock.AccessHatchBlock;
 import com.djden.alcoholic.minecraft.multiblock.FluidPortBlock;
 import com.djden.alcoholic.minecraft.multiblock.FluidPortBlockEntity;
 import com.djden.alcoholic.minecraft.multiblock.IndustrialPartBlock;
@@ -72,7 +73,7 @@ public final class IndustrialContentRegistrar {
         );
         RegistryRef<Block> hatch = ports.blocks().register(
                 AlcoholicIds.ACCESS_HATCH,
-                () -> new IndustrialPartBlock(steel(), PartRole.HATCH)
+                () -> new AccessHatchBlock(steel())
         );
         RegistryRef<Block> fluidPort = ports.blocks().register(
                 AlcoholicIds.FLUID_PORT,

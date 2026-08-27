@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "alcoholic:block/access_hatch",
+      "y": 90
+    },
+    "facing=north": {
       "model": "alcoholic:block/access_hatch"
+    },
+    "facing=south": {
+      "model": "alcoholic:block/access_hatch",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "alcoholic:block/access_hatch",
+      "y": 270
     }
   }
 }

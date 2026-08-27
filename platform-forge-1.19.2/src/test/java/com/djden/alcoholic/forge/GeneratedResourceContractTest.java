@@ -104,6 +104,8 @@ class GeneratedResourceContractTest {
                 "alcoholic:item/wild_hops",
                 itemModel.getAsJsonObject("textures").get("layer0").getAsString()
         );
+        assertPng16("assets/alcoholic/textures/block/wild_hops.png");
+        assertPng16("assets/alcoholic/textures/item/wild_hops.png");
     }
 
     @Test
@@ -219,7 +221,8 @@ class GeneratedResourceContractTest {
                 "artisanal_press",
                 "oak_barrel",
                 "artisanal_blending_crock",
-                "electric_motor"
+                "electric_motor",
+                "access_hatch"
         }) {
             resource("assets/alcoholic/blockstates/" + block + ".json");
             resource("assets/alcoholic/models/block/" + block + ".json");
@@ -228,7 +231,6 @@ class GeneratedResourceContractTest {
         for (String block : new String[]{
                 "industrial_casing",
                 "machine_window",
-                "access_hatch",
                 "fluid_port",
                 "item_port",
                 "kinetic_port",

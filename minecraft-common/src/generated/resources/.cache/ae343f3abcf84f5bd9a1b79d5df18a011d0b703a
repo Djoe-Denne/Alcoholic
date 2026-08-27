@@ -1,5 +1,5 @@
-// 1.19.2	2026-08-27T21:49:46.3815479	Alcoholic grape assets
-11ed65315ca367e92b7766e736bb9f0904242a66 assets/alcoholic/blockstates/access_hatch.json
+// 1.19.2	2026-08-27T22:15:20.6591254	Alcoholic grape assets
+0ed90493e78071b55b0e461e4347ae3d20f465dd assets/alcoholic/blockstates/access_hatch.json
 8d1f3a810a06671734e4cdda2bd2e54de0eae686 assets/alcoholic/blockstates/artisanal_blending_crock.json
 9728902e729a27abdfb3be27266e0fde6a406cbe assets/alcoholic/blockstates/artisanal_fermenter.json
 7d4cae28e7cbd0da90da47a1edec85c57768adff assets/alcoholic/blockstates/artisanal_press.json
@@ -36,7 +36,6 @@ ffa9d5ee1cb35f049c3988f3b201db167828ef63 assets/alcoholic/blockstates/vineyard_p
 7a19996edb48d79b46796771b62666f57b821de5 assets/alcoholic/blockstates/wild_hops.json
 e6a03bafabb495e82d38b2c37a220225b653ed7f assets/alcoholic/lang/en_us.json
 ee579ef867c3b10515149987de40a7807a8bc0ea assets/alcoholic/lang/fr_fr.json
-1131bfe6316ddec684df337e69ef9982d2c999b0 assets/alcoholic/models/block/access_hatch.json
 94e177f68d06b1436f13fd8a5ed800529277dbae assets/alcoholic/models/block/barley_crop_0.json
 f39239f7de551e5123c1649f1bda8f4de209e68a assets/alcoholic/models/block/barley_crop_1.json
 54f077622b3a8798df7e77fa7114972867d64522 assets/alcoholic/models/block/barley_crop_2.json
