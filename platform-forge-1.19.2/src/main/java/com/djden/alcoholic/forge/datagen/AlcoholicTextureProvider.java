@@ -28,7 +28,6 @@ final class AlcoholicTextureProvider implements DataProvider {
         textures.put("block/hop_bine_0", 0xFF3F7A32);
         textures.put("block/hop_bine_1", 0xFF4C8F3C);
         textures.put("block/hop_bine_2", 0xFF5EA24A);
-        textures.put("block/malting_floor", 0xFF8B6914);
         textures.put("block/mash_tun", 0xFF6B4F2A);
         textures.put("block/brewing_kettle", 0xFF6E7A84);
         textures.put("block/malt_mill", 0xFF8A7A5A);
