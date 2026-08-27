@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "alcoholic:block/machine_window",
+      "y": 90
+    },
+    "facing=north": {
       "model": "alcoholic:block/machine_window"
+    },
+    "facing=south": {
+      "model": "alcoholic:block/machine_window",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "alcoholic:block/machine_window",
+      "y": 270
     }
   }
 }

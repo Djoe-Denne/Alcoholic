@@ -9,6 +9,7 @@ import com.djden.alcoholic.minecraft.multiblock.FluidPortBlockEntity;
 import com.djden.alcoholic.minecraft.multiblock.IndustrialPartBlock;
 import com.djden.alcoholic.minecraft.multiblock.ItemPortBlock;
 import com.djden.alcoholic.minecraft.multiblock.ItemPortBlockEntity;
+import com.djden.alcoholic.minecraft.multiblock.MachineWindowBlock;
 import com.djden.alcoholic.minecraft.multiblock.KineticPortBlock;
 import com.djden.alcoholic.minecraft.multiblock.KineticPortBlockEntity;
 import com.djden.alcoholic.minecraft.multiblock.MultiblockControllerBlock;
@@ -69,7 +70,7 @@ public final class IndustrialContentRegistrar {
         );
         RegistryRef<Block> window = ports.blocks().register(
                 AlcoholicIds.MACHINE_WINDOW,
-                () -> new IndustrialPartBlock(steel().noOcclusion(), PartRole.WINDOW)
+                () -> new MachineWindowBlock(steel().noOcclusion())
         );
         RegistryRef<Block> hatch = ports.blocks().register(
                 AlcoholicIds.ACCESS_HATCH,

@@ -222,15 +222,15 @@ class GeneratedResourceContractTest {
                 "oak_barrel",
                 "artisanal_blending_crock",
                 "electric_motor",
-                "access_hatch"
+                "access_hatch",
+                "industrial_casing",
+                "machine_window"
         }) {
             resource("assets/alcoholic/blockstates/" + block + ".json");
             resource("assets/alcoholic/models/block/" + block + ".json");
             resource("assets/alcoholic/models/item/" + block + ".json");
         }
         for (String block : new String[]{
-                "industrial_casing",
-                "machine_window",
                 "fluid_port",
                 "item_port",
                 "kinetic_port",

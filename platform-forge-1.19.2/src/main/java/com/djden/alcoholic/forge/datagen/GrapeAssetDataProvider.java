@@ -697,9 +697,9 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
 
     private static void addIndustrialAssets(JsonSink sink) {
         AccessHatchAssetData.add(sink);
+        IndustrialCasingAssetData.add(sink);
+        MachineWindowAssetData.add(sink);
         for (String name : new String[]{
-                "industrial_casing",
-                "machine_window",
                 "fluid_port",
                 "item_port",
                 "kinetic_port",
