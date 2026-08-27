@@ -179,7 +179,6 @@ class GeneratedResourceContractTest {
         resource("assets/alcoholic/blockstates/hop_bine.json");
         for (String block : new String[]{
                 "artisanal_press",
-                "artisanal_fermenter",
                 "oak_barrel",
                 "artisanal_blending_crock",
                 "industrial_casing",

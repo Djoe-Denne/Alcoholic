@@ -13,12 +13,16 @@ import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
 import com.djden.alcoholic.minecraft.menu.MachineAccess;
 import com.djden.alcoholic.minecraft.menu.MachineLayout;
+import com.djden.alcoholic.minecraft.menu.MachineMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
@@ -27,6 +31,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
@@ -39,6 +44,28 @@ public final class ArtisanalFermenterBlockEntity extends BlockEntity implements 
     private final LiquidTank tank;
     private boolean yeastPitched;
     private double ventedCo2;
+    private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
+        @Override
+        protected void onOpen(Level level, BlockPos pos, BlockState state) {
+            playHatchSound(SoundEvents.BARREL_OPEN);
+            setOpen(state, true);
+        }
+
+        @Override
+        protected void onClose(Level level, BlockPos pos, BlockState state) {
+            playHatchSound(SoundEvents.BARREL_CLOSE);
+            setOpen(state, false);
+        }
+
+        @Override
+        protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int previous, int current) {
+        }
+
+        @Override
+        protected boolean isOwnContainer(Player player) {
+            return player.containerMenu instanceof MachineMenu menu && menu.uses(ArtisanalFermenterBlockEntity.this);
+        }
+    };
 
     public ArtisanalFermenterBlockEntity(BlockEntityType<?> type, BlockPos position, BlockState state) {
         super(type, position, state);
@@ -52,6 +79,11 @@ public final class ArtisanalFermenterBlockEntity extends BlockEntity implements 
 
     public boolean yeastPitched() {
         return yeastPitched;
+    }
+
+    public boolean visualVenting() {
+        return tank.contents().filter(batch -> !batch.baseLiquid().isEmpty()).isPresent()
+                && (yeastPitched || ventedCo2 > 0.0);
     }
 
     public double temperatureCelsius() {
@@ -92,6 +124,9 @@ public final class ArtisanalFermenterBlockEntity extends BlockEntity implements 
     }
 
     private void tick() {
+        if (level != null) {
+            openersCounter.recheckOpeners(level, worldPosition, getBlockState());
+        }
         Optional<LiquidBatch> contents = tank.contents();
         if (contents.isEmpty()) {
             yeastPitched = false;
@@ -122,6 +157,8 @@ public final class ArtisanalFermenterBlockEntity extends BlockEntity implements 
             }
             yeast.shrink(1);
             yeastPitched = true;
+            setChanged();
+            syncToClient();
         }
         ProcessResult result = runtime.engine().execute(
                 runtime.fermentExecutor(),
@@ -182,12 +219,14 @@ public final class ArtisanalFermenterBlockEntity extends BlockEntity implements 
         if (existing.isEmpty()) {
             items.set(YEAST_SLOT, stack.split(1));
             setChanged();
+            syncToClient();
             return true;
         }
         if (ItemStack.isSameItemSameTags(existing, stack) && existing.getCount() < existing.getMaxStackSize()) {
             existing.grow(1);
             stack.shrink(1);
             setChanged();
+            syncToClient();
             return true;
         }
         return false;
@@ -264,7 +303,50 @@ public final class ArtisanalFermenterBlockEntity extends BlockEntity implements 
 
     @Override
     public boolean stillValid(Player player) {
-        return true;
+        return MachineAccess.super.stillValid(player);
+    }
+
+    @Override
+    public void startOpen(Player player) {
+        if (!remove && !player.isSpectator() && getLevel() != null) {
+            openersCounter.incrementOpeners(player, getLevel(), getBlockPos(), getBlockState());
+        }
+    }
+
+    @Override
+    public void stopOpen(Player player) {
+        if (!remove && !player.isSpectator() && getLevel() != null) {
+            openersCounter.decrementOpeners(player, getLevel(), getBlockPos(), getBlockState());
+        }
+    }
+
+    private void setOpen(BlockState state, boolean open) {
+        if (level != null && state.hasProperty(ArtisanalFermenterBlock.OPEN)
+                && state.getValue(ArtisanalFermenterBlock.OPEN) != open) {
+            level.setBlock(worldPosition, state.setValue(ArtisanalFermenterBlock.OPEN, open), Block.UPDATE_ALL);
+        }
+    }
+
+    private void playHatchSound(SoundEvent sound) {
+        if (level == null) {
+            return;
+        }
+        level.playSound(
+                null,
+                worldPosition.getX() + 0.5,
+                worldPosition.getY() + 0.5,
+                worldPosition.getZ() + 0.5,
+                sound,
+                SoundSource.BLOCKS,
+                0.5F,
+                level.random.nextFloat() * 0.1F + 0.9F
+        );
+    }
+
+    private void syncToClient() {
+        if (level != null && !level.isClientSide) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
+        }
     }
 
     @Override

@@ -752,56 +752,8 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                         }
                         """
         );
-        sink.add(
-                "assets/alcoholic/blockstates/artisanal_fermenter.json",
-                """
-                        {
-                          "variants": {
-                            "": { "model": "alcoholic:block/artisanal_fermenter" }
-                          }
-                        }
-                        """
-        );
-        sink.add(
-                "assets/alcoholic/models/block/artisanal_fermenter.json",
-                """
-                        {
-                          "parent": "minecraft:block/block",
-                          "textures": {
-                            "particle": "alcoholic:block/artisanal_fermenter",
-                            "wood": "alcoholic:block/artisanal_fermenter"
-                          },
-                          "elements": [
-                            {
-                              "from": [1, 0, 1],
-                              "to": [15, 2, 15],
-                              "faces": {
-                                "down": { "texture": "#wood" },
-                                "up": { "texture": "#wood" },
-                                "north": { "texture": "#wood" },
-                                "south": { "texture": "#wood" },
-                                "west": { "texture": "#wood" },
-                                "east": { "texture": "#wood" }
-                              }
-                            },
-                            {
-                              "from": [2, 2, 2],
-                              "to": [14, 14, 14],
-                              "faces": {
-                                "down": { "texture": "#wood" },
-                                "up": { "texture": "#wood" },
-                                "north": { "texture": "#wood" },
-                                "south": { "texture": "#wood" },
-                                "west": { "texture": "#wood" },
-                                "east": { "texture": "#wood" }
-                              }
-                            }
-                          ]
-                        }
-                        """
-        );
         addBlockItem(sink, "artisanal_press");
-        addBlockItem(sink, "artisanal_fermenter");
+        ArtisanalFermenterAssetData.add(sink);
         addSimpleBlock(sink, "oak_barrel");
         addSimpleBlock(sink, "artisanal_blending_crock");
         addBlockItem(sink, "oak_barrel");
