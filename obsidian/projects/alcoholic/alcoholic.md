@@ -19,13 +19,15 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/76150f12-2be0-4b0e-b613-5c8b2a34469d/76150f12-2be0-4b0e-b613-5c8b2a34469d.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/a30f841a-d551-4974-a9fe-d7eb5c6d8440/a30f841a-d551-4974-a9fe-d7eb5c6d8440.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/7709dbb4-6adc-48f3-ad6f-7de969fd9878/7709dbb4-6adc-48f3-ad6f-7de969fd9878.jsonl"
-summary: Loader-independent brewing mod. Grain beer on generic processes; rotary power from native engines, Create, or Crossroads.
+  - "C:/Users/djden/source/repos/Alcoholic/docs/adr/ADR-036-wine-beer-progression-graph.md"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/07a9f6b4-cb15-4290-9926-14a35cd01c5a/07a9f6b4-cb15-4290-9926-14a35cd01c5a.jsonl"
+summary: Loader-independent brewing mod. Wine/beer progression graph; painted world fluids; optional FTB template.
 provenance:
   extracted: 0.82
   inferred: 0.16
   ambiguous: 0.02
 created: 2026-08-25T09:20:00+02:00
-updated: 2026-08-28T19:15:00+02:00
+updated: 2026-08-28T22:30:00+02:00
 ---
 
 # Alcoholic
@@ -57,6 +59,10 @@ Alcoholic is a Minecraft mod for realistic brewing, winemaking, and distillation
 **Survival hops** — [[wild-hops]] worldgens a bush with no BlockItem. Cultivated bines still need a trellis. Columns use [[climbing-plant-visual]] (crossed leaves; wood trunk only when taller than one block).
 
 **More artisanal voxels** — mash tun, kettle, fermenter, oak barrel, crock, press, electric motor, hatch, casing, and window joined the Blockbench chain. Formed industrials use [[formed-multiblock-visual]]. Machine crafts are [[vanilla-xor-create-crafts]].
+
+**Progression (ADR-033–036)** — vanilla advancements are the only source in the JAR ([[advancements-as-progression-source]]). [[wine-beer-progression-graph]] owns tab and FTB shape (wine left, beer right, shared center). [[optional-ftb-quests-chapter]] is a pack-author template. Industrial formation uses `alcoholic:multiblock_formed` plus a JEI min-hull category ([[industrial-progression-and-jei-formation]]).
+
+**World fluids** — four painted still/flow tiles ([[world-fluid-textures]]). Shader waves stay a pack-author `block.properties` edit ([[shader-world-fluids]]).
 
 The Forge artifact still embeds the inward-pointing modules. Fabric remains a future adapter.
 
@@ -90,6 +96,12 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[vanilla-xor-create-crafts]]
 - [[mash-tun-visual]]
 - [[brewing-kettle-visual]]
+- [[wine-beer-progression-graph]]
+- [[advancements-as-progression-source]]
+- [[optional-ftb-quests-chapter]]
+- [[industrial-progression-and-jei-formation]]
+- [[world-fluid-textures]]
+- [[shader-world-fluids]]
 
 ## Verification
 
@@ -100,6 +112,7 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[forge-1.19.2-phase-6-verification]]
 - [[forge-1.19.2-phase-7a-verification]]
 - [[forge-1.19.2-crossroads-fe-verification]]
+- [[alcoholic-progression-graph]]
 
 ## Session sources
 
@@ -119,3 +132,4 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[cursor-survival-plants-session]]
 - [[cursor-formed-hull-session]]
 - [[cursor-machine-port-audit-session]]
+- [[cursor-progression-and-fluids-session]]

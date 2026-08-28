@@ -56,3 +56,11 @@ title: Wiki Log
 - [2026-08-28T19:15:00+02:00] CURSOR_HISTORY_INGEST conversations=17 pages_updated=16 pages_created=13 mode=append skipped_subagents=true topic="voxels + wild hops + formed hull + ports + XOR crafts + deploy"
 - [2026-08-28T19:15:00+02:00] CODEX_HISTORY_INGEST sessions=16 pages_updated=16 pages_created=13 mode=append topic="Alcoholic cwd Aug 27-28 (taps, plants, mash tun, GrepAI, 512 items meta)"
 - [2026-08-28T19:16:00+02:00] QMD_REFRESH collection="alcoholic-wiki" action=update+embed indexed="46 new, 27 updated" embedded="217 chunks / 84 documents"
+- [2026-08-28T22:30:00+02:00] WIKI_UPDATE project=alcoholic pages_updated=7 pages_created=8 source_cwd=C:/Users/djden/source/repos/Alcoholic last_commit=95e5b5b
+- [2026-08-28T22:30:00+02:00] INGEST source="C:/Users/djden/source/repos/Alcoholic/docs/adr/ADR-033-advancements-as-progression-source.md" pages_updated=1 pages_created=1 mode=append
+- [2026-08-28T22:30:00+02:00] INGEST source="C:/Users/djden/source/repos/Alcoholic/docs/adr/ADR-034-ftb-quests-optional-chapter.md" pages_updated=1 pages_created=1 mode=append
+- [2026-08-28T22:30:00+02:00] INGEST source="C:/Users/djden/source/repos/Alcoholic/docs/adr/ADR-035-industrial-progression-and-jei-formation.md" pages_updated=2 pages_created=1 mode=append
+- [2026-08-28T22:30:00+02:00] INGEST source="C:/Users/djden/source/repos/Alcoholic/docs/adr/ADR-036-wine-beer-progression-graph.md" pages_updated=3 pages_created=1 mode=append
+- [2026-08-28T22:30:00+02:00] INGEST source="C:/Users/djden/source/repos/Alcoholic/docs/guides/shaders.md" pages_updated=1 pages_created=1 mode=append
+- [2026-08-28T22:30:00+02:00] CURSOR_HISTORY_INGEST conversations=4 pages_updated=3 pages_created=1 mode=append skipped_subagents=true topic="progression graph + world fluids + shaders"
+- [2026-08-28T22:32:00+02:00] QMD_REFRESH collection="alcoholic-wiki" action=update+embed indexed="11 new, 17 updated" embedded="96 chunks / 30 documents"

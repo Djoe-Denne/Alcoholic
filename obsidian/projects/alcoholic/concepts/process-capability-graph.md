@@ -19,7 +19,7 @@ provenance:
   inferred: 0.1
   ambiguous: 0.02
 created: 2026-08-25T12:50:00+02:00
-updated: 2026-08-28T20:54:00+02:00
+updated: 2026-08-28T22:30:00+02:00
 ---
 
 # Process Capability Graph
@@ -37,6 +37,8 @@ The validator rejects cycles, unknown nodes or ports, unknown process types or p
 The graph is the only authority over which nodes exist. The engine never injects PRESS, FERMENT, DISTILL, AGE, BLEND, BOTTLE, MALT, MILL, MASH, or BOIL because a drink “should” have them. Wine and cider use PRESS then FERMENT. The shipped wine DAG is PRESS → FERMENT → AGE. BLEND is an optional crock capability, not a graph node. BOTTLE is a vessel action, not a DAG node. Shipped beer uses MALT → MILL → MASH → BOIL → FERMENT. There is no official beer AGE definition. CONDITION is industrial-only and off-DAG. A rum-style fixture may FERMENT only, then optionally AGE in data. Fruit liqueur may INFUSE only. Tests cover omitted nodes, cycles named by remaining node IDs, and a press→ferment+infuse branch.
 
 Once a process type is part of official progression, the [[native-executor-invariant]] requires a native Alcoholic machine. Optional integrations may add extra executors for the same node type.
+
+The player-facing [[wine-beer-progression-graph]] is a separate graph: wine versus beer columns over the same drink-agnostic machines. Coverage tests require a `ProgressionNode` for shipped processes, official crops, and industrial families.
 
 ## Capability versus identity
 
@@ -62,6 +64,7 @@ Cider in `testpack:` proves the engine is not a wine framework and needs no cide
 - [[mechanical-drive-port]]
 - [[electric-motor]]
 - [[aging-process]]
+- [[wine-beer-progression-graph]]
 - [[blend-versus-tank-merge]]
 - [[loader-independent-minecraft-architecture]]
 - [[cursor-phase-3-beverage-framework-session]]

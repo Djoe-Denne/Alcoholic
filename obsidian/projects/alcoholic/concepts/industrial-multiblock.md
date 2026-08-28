@@ -5,13 +5,14 @@ tags: [minecraft, software-architecture, type/concept, project/alcoholic]
 aliases: [hollow cuboid, multiblock framework]
 sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/dc49ea79-b9e5-4902-ad7f-795f762f8f52/dc49ea79-b9e5-4902-ad7f-795f762f8f52.jsonl"
+  - "C:/Users/djden/source/repos/Alcoholic/docs/adr/ADR-035-industrial-progression-and-jei-formation.md"
 summary: Variable-size hollow cuboid machines. Capacity is interior volume. State lives on the controller.
 provenance:
   extracted: 0.9
   inferred: 0.1
   ambiguous: 0.0
 created: 2026-08-25T15:30:00+02:00
-updated: 2026-08-28T19:15:00+02:00
+updated: 2026-08-28T22:30:00+02:00
 ---
 
 # Industrial Multiblock
@@ -36,11 +37,14 @@ Semantic casing tags allow compatible materials without framework changes. Futur
 
 Formed look is client-only: [[formed-multiblock-visual]] (9-slice hull at any size, mega-mesh at art size). Capacity and validation stay on this page.
 
+The rising edge of `formed` fires `alcoholic:multiblock_formed` for [[industrial-progression-and-jei-formation]]. Attribution uses the last actor, nearby players, then a pending queue. JEI shows the min hull; it does not re-validate geometry.
+
 ## Related
 
 - [[industrial-processing]]
 - [[industrial-ports]]
 - [[formed-multiblock-visual]]
+- [[industrial-progression-and-jei-formation]]
 - [[cursor-formed-hull-session]]
 - [[process-capability-graph]]
 - [[liquid-batch]]

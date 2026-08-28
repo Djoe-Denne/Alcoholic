@@ -1368,13 +1368,170 @@
         "projects/alcoholic/concepts/resource-pack-resolution-chain.md"
       ],
       "note": "meta-only 170MB AGENTS+items/plants 512 campaign"
+    },
+    "C:/Users/djden/source/repos/Alcoholic/docs/adr/ADR-033-advancements-as-progression-source.md": {
+      "ingested_at": "2026-08-28T22:30:00+02:00",
+      "size_bytes": 2351,
+      "modified_at": "2026-08-28T19:55:22.012187+00:00",
+      "content_hash": "sha256:b0c47020ceb84848679d490b43267fb0705b640c1e583da8d4b0007cbd9792d0",
+      "source_type": "document",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/advancements-as-progression-source.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/source/repos/Alcoholic/docs/adr/ADR-034-ftb-quests-optional-chapter.md": {
+      "ingested_at": "2026-08-28T22:30:00+02:00",
+      "size_bytes": 2516,
+      "modified_at": "2026-08-28T19:52:55.640561+00:00",
+      "content_hash": "sha256:03fa21269459982cdd2b36fa5707600a212ad1559f0c624f34e1c8c7f52869b4",
+      "source_type": "document",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/optional-ftb-quests-chapter.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/source/repos/Alcoholic/docs/adr/ADR-035-industrial-progression-and-jei-formation.md": {
+      "ingested_at": "2026-08-28T22:30:00+02:00",
+      "size_bytes": 3297,
+      "modified_at": "2026-08-28T19:55:20.487079+00:00",
+      "content_hash": "sha256:b96668efc16cdfbfccb35ee9e93f4f14aa702520fc576572aa782de2a135d7d8",
+      "source_type": "document",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/industrial-progression-and-jei-formation.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/industrial-processing.md"
+      ]
+    },
+    "C:/Users/djden/source/repos/Alcoholic/docs/adr/ADR-036-wine-beer-progression-graph.md": {
+      "ingested_at": "2026-08-28T22:30:00+02:00",
+      "size_bytes": 2266,
+      "modified_at": "2026-08-28T19:52:51.836244+00:00",
+      "content_hash": "sha256:ee2acb7d07174c9dfa4982cedfc8a14dfcb79347c2ffadfa1ff611922509e503",
+      "source_type": "document",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/wine-beer-progression-graph.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-capability-graph.md"
+      ]
+    },
+    "C:/Users/djden/source/repos/Alcoholic/docs/guides/shaders.md": {
+      "ingested_at": "2026-08-28T22:30:00+02:00",
+      "size_bytes": 2179,
+      "modified_at": "2026-08-28T20:17:56.450474+00:00",
+      "content_hash": "sha256:a55dea5f201736563d975f51ac768e045067950458fe4b6efabeff4c3b4cac06",
+      "source_type": "document",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/shader-world-fluids.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/concepts/world-fluid-textures.md"
+      ]
+    },
+    "C:/Users/djden/source/repos/Alcoholic/resourcepacks/README.md": {
+      "ingested_at": "2026-08-28T22:30:00+02:00",
+      "size_bytes": 2030,
+      "modified_at": "2026-08-28T20:17:59.941133+00:00",
+      "content_hash": "sha256:42b72684d1c736c1a4601f7f4133c6aeb5f9cae89af0977af10ee895d82bdaba",
+      "source_type": "document",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/world-fluid-textures.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/concepts/resource-pack-resolution-chain.md"
+      ]
+    },
+    "C:/Users/djden/source/repos/Alcoholic/.cursor/skills/alcoholic-progression-graph/SKILL.md": {
+      "ingested_at": "2026-08-28T22:30:00+02:00",
+      "size_bytes": 2116,
+      "modified_at": "2026-08-28T19:53:21.998708+00:00",
+      "content_hash": "sha256:705992cb69c1ddb9cadfa54584dbb111660917b8490017ebff6db6e2ffdbc7fe",
+      "source_type": "document",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/skills/alcoholic-progression-graph.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/concepts/wine-beer-progression-graph.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/263b0aee-ba36-4d6d-9a24-bf4dda50908a/263b0aee-ba36-4d6d-9a24-bf4dda50908a.jsonl": {
+      "ingested_at": "2026-08-28T22:30:00+02:00",
+      "size_bytes": 469693,
+      "modified_at": "2026-08-28T19:34:23.513752+00:00",
+      "content_hash": "sha256:1a7d1090af08a1dd16936e6c75e2ed274f29807f32bca22e22a0eba7a1ce7088",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/advancements-as-progression-source.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-progression-and-fluids-session.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/e4a5d703-7608-4d76-b4e5-da0e31cdf2d1/e4a5d703-7608-4d76-b4e5-da0e31cdf2d1.jsonl": {
+      "ingested_at": "2026-08-28T22:30:00+02:00",
+      "size_bytes": 207390,
+      "modified_at": "2026-08-28T19:21:25.162529+00:00",
+      "content_hash": "sha256:bb06f6994ecbfccc9184fa6810cd374fcc89bb82efd6650e4b31adcf479362ef",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-progression-and-fluids-session.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/07a9f6b4-cb15-4290-9926-14a35cd01c5a/07a9f6b4-cb15-4290-9926-14a35cd01c5a.jsonl": {
+      "ingested_at": "2026-08-28T22:30:00+02:00",
+      "size_bytes": 161544,
+      "modified_at": "2026-08-28T19:58:19.920758+00:00",
+      "content_hash": "sha256:e8969781ae779360d5aa5d118f01a90982a6adcb6cc082b2622b0b10b755196f",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/wine-beer-progression-graph.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/references/cursor-progression-and-fluids-session.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/b8ca2270-f9dc-4b57-841d-bcce0617c10d/b8ca2270-f9dc-4b57-841d-bcce0617c10d.jsonl": {
+      "ingested_at": "2026-08-28T22:30:00+02:00",
+      "size_bytes": 215228,
+      "modified_at": "2026-08-28T20:18:04.860883+00:00",
+      "content_hash": "sha256:cc8ae614a39134d35f41c6983300f4937180dd21c58ebceed53051604538362b",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/world-fluid-textures.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/concepts/shader-world-fluids.md",
+        "projects/alcoholic/references/cursor-progression-and-fluids-session.md"
+      ]
     }
   },
   "projects": {
     "alcoholic": {
       "source_cwd": "C:/Users/djden/source/repos/Alcoholic",
-      "last_synced": "2026-08-28T19:15:00+02:00",
-      "last_commit_synced": "4d3fa6b22554042eb6117cd86bbdc6459e2a7a70",
+      "last_synced": "2026-08-28T22:30:00+02:00",
+      "last_commit_synced": "95e5b5b602009ef53ac31bf256403a343985c175",
       "pages_in_vault": [
         "projects/alcoholic/alcoholic.md",
         "projects/alcoholic/concepts/loader-independent-minecraft-architecture.md",
@@ -1434,13 +1591,21 @@
         "projects/alcoholic/references/cursor-voxel-campaign-session.md",
         "projects/alcoholic/references/cursor-survival-plants-session.md",
         "projects/alcoholic/references/cursor-formed-hull-session.md",
-        "projects/alcoholic/references/cursor-machine-port-audit-session.md"
+        "projects/alcoholic/references/cursor-machine-port-audit-session.md",
+        "projects/alcoholic/concepts/wine-beer-progression-graph.md",
+        "projects/alcoholic/concepts/advancements-as-progression-source.md",
+        "projects/alcoholic/concepts/optional-ftb-quests-chapter.md",
+        "projects/alcoholic/concepts/industrial-progression-and-jei-formation.md",
+        "projects/alcoholic/concepts/world-fluid-textures.md",
+        "projects/alcoholic/concepts/shader-world-fluids.md",
+        "projects/alcoholic/skills/alcoholic-progression-graph.md",
+        "projects/alcoholic/references/cursor-progression-and-fluids-session.md"
       ]
     }
   },
   "stats": {
-    "total_sources_ingested": 98,
-    "total_pages": 67
+    "total_sources_ingested": 109,
+    "total_pages": 75
   },
   "alcoholic_codex_3d": {
     "source_path": "C:/Users/djden/.codex/sessions/2026/08/26",
@@ -1458,10 +1623,11 @@
     "index_updated_at": "2026-08-27T16:20:00+02:00"
   },
   "alcoholic_cursor_delta": {
-    "last_ingested": "2026-08-28T19:15:00+02:00",
-    "parent_conversations_ingested": 17,
+    "last_ingested": "2026-08-28T22:30:00+02:00",
+    "parent_conversations_ingested": 4,
     "skipped_subagents": true,
-    "skipped_current_chat_knowledge": "42495efa recorded, no project claims"
+    "skipped_current_chat": "8ae6a9b0 wiki ingest + qmd refresh",
+    "note": "progression graph + world fluids + shaders after 19:15 sync"
   },
   "alcoholic_codex_extra": {
     "last_ingested": "2026-08-27T16:20:00+02:00",

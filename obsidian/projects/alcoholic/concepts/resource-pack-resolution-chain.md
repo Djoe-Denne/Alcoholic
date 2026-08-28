@@ -10,13 +10,14 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/fa499a53-567a-462e-aa1e-cc2c5df0a700/fa499a53-567a-462e-aa1e-cc2c5df0a700.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/48cf13a3-9ec8-4348-b31e-37330cedae92/48cf13a3-9ec8-4348-b31e-37330cedae92.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/a7306cd0-8e92-41f3-8d5b-caf85717ddcb/a7306cd0-8e92-41f3-8d5b-caf85717ddcb.jsonl"
+  - "C:/Users/djden/source/repos/Alcoholic/resourcepacks/README.md"
 summary: Paint a 512×512 BDcraft-like master, copy locked engine oak, downsample each size from that master, ship mid-res in the mod.
 provenance:
   extracted: 0.84
   inferred: 0.1
   ambiguous: 0.06
 created: 2026-08-27T13:30:00+02:00
-updated: 2026-08-28T19:15:00+02:00
+updated: 2026-08-28T22:30:00+02:00
 ---
 
 # Resource Pack Resolution Chain
@@ -59,6 +60,8 @@ The mash-tun campaign **skipped the mid-res grey pass**: approved silhouette, th
 
 `end_post` and `trellis_wire` now have 512 masters and ride `PLANT_TEXTURES` down to 16. Item/plant 512 boards started under `art/prompts/items-plants-vineyard-512.md`.
 
+Painted [[world-fluid-textures]] (`beer`, `hopped_wort`, `red_grape_must`, `white_grape_must`) downsample from 512 masters via `tools/build_fluid_texture_packs.py`. Do not ship `shaders/block.properties` in these packs; see [[shader-world-fluids]].
+
 ## Deployed zip packs
 
 A 1.19.2 zip is ignored or magenta if `pack.mcmeta` is not at the zip root, or if entries use Windows `\`. Gameplay textures named by a model (for example `wild_hops`) must also exist as 16× in the **mod jar**. See [[curseforge-create2-deploy]].
@@ -74,3 +77,5 @@ A 1.19.2 zip is ignored or magenta if `pack.mcmeta` is not at the zip root, or i
 - [[mash-tun-visual]]
 - [[curseforge-create2-deploy]]
 - [[wild-hops]]
+- [[world-fluid-textures]]
+- [[shader-world-fluids]]

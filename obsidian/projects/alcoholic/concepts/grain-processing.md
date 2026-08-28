@@ -10,13 +10,14 @@ sources:
   - "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-48-08-01a03f66-acf1-7931-95db-a9b0b9d8961f.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/38cdf6ba-d500-47a2-87ec-22f346732c8c/38cdf6ba-d500-47a2-87ec-22f346732c8c.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/d120a5cc-91ff-47b3-99d0-392583b27834/d120a5cc-91ff-47b3-99d0-392583b27834.jsonl"
+  - "C:/Users/djden/source/repos/Alcoholic/docs/adr/ADR-036-wine-beer-progression-graph.md"
 summary: Phase 7A ships a beer DAG through generic MALT, MILL, MASH, and BOIL. No drink-family Java branches.
 provenance:
   extracted: 0.86
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T18:55:00+02:00
-updated: 2026-08-28T20:54:00+02:00
+updated: 2026-08-28T22:30:00+02:00
 ---
 
 # Grain Processing
@@ -62,6 +63,8 @@ Floor, mill, mash tun, and kettle have Java voxels: [[malting-floor-visual]], [[
 
 Player walkthrough: `docs/guides/brasserie-artisanale.md` from [[cursor-artisanal-brewery-guide-session]]. Recipe viewers show the same generic types via [[process-display-and-recipe-viewers]].
 
+On the player-facing [[wine-beer-progression-graph]], `produce_must` is press-only. Beer mash completions grant `alcoholic:mash`, not `produce_must`. Harvest barley is `alcoholic:harvest_barley`. Painted world tiles for beer and hopped wort are [[world-fluid-textures]].
+
 ## Related
 
 - [[alcoholic]]
@@ -86,4 +89,6 @@ Player walkthrough: `docs/guides/brasserie-artisanale.md` from [[cursor-artisana
 - [[cursor-phase-7a-grain-session]]
 - [[cursor-create-independence-session]]
 - [[industrial-processing]]
+- [[wine-beer-progression-graph]]
+- [[world-fluid-textures]]
 - [[forge-1.19.2-phase-7a-verification]]

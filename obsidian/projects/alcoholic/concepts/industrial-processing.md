@@ -13,7 +13,7 @@ provenance:
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T15:30:00+02:00
-updated: 2026-08-25T20:20:00+02:00
+updated: 2026-08-28T22:30:00+02:00
 ---
 
 # Industrial Processing
@@ -70,4 +70,5 @@ Alcoholic does not add pipes, pumps, belts, or shafts. The intended factory is v
 - [[cursor-create-independence-session]]
 - [[cursor-crossroads-electric-motor-session]]
 - [[grain-processing]]
+- [[industrial-progression-and-jei-formation]]
 - [[forge-1.19.2-phase-6-verification]]

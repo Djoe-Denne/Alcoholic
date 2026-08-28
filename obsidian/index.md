@@ -4,7 +4,7 @@ title: Wiki Index
 
 # Wiki Index
 
-*This index is automatically maintained. Last updated: 2026-08-28T19:15:00+02:00*
+*This index is automatically maintained. Last updated: 2026-08-28T22:30:00+02:00*
 
 ## Concepts
 
@@ -45,6 +45,12 @@ title: Wiki Index
 - [[projects/alcoholic/concepts/vanilla-xor-create-crafts|Vanilla XOR Create Crafts]] — 27 machine crafts switch to Create parts when Create is loaded. ( #minecraft #compatibility)
 - [[projects/alcoholic/concepts/mash-tun-visual|Mash Tun Visual]] — Locked oak; skip mid-res; open lid is a second model. ( #minecraft)
 - [[projects/alcoholic/concepts/brewing-kettle-visual|Brewing Kettle Visual]] — Copper kettle with front gauges after the first paint. ( #minecraft)
+- [[projects/alcoholic/concepts/wine-beer-progression-graph|Wine / Beer Progression Graph]] — ProgressionCatalog owns tab and FTB shape; wine left, beer right, shared center. ( #minecraft #software-architecture)
+- [[projects/alcoholic/concepts/advancements-as-progression-source|Advancements as Progression Source]] — Vanilla advancements are the only progression source in the JAR. ( #minecraft #software-architecture)
+- [[projects/alcoholic/concepts/optional-ftb-quests-chapter|Optional FTB Quests Chapter]] — Pack-author SNBT template; each quest is one AdvancementTask. ( #minecraft #compatibility)
+- [[projects/alcoholic/concepts/industrial-progression-and-jei-formation|Industrial Progression and JEI Formation]] — Second tab plus JEI min-hull; trigger is multiblock_formed. ( #minecraft #software-architecture)
+- [[projects/alcoholic/concepts/world-fluid-textures|World Fluid Textures]] — Four painted still/flow fluids; wines and wort stay tinted water. ( #minecraft)
+- [[projects/alcoholic/concepts/shader-world-fluids|Shader World Fluids]] — Complementary r5.x uses block.32000; Alcoholic never patches shaders. ( #minecraft #compatibility)
 
 ## Entities
 
@@ -64,6 +70,7 @@ title: Wiki Index
 - [[projects/alcoholic/skills/curseforge-create2-deploy|CurseForge Create 2 Mekanism Deploy]] — Remapped jar plus 128 pack; zip needs slash paths and pack.mcmeta at root. ( #minecraft)
 - [[projects/alcoholic/skills/alcoholic-debug-commands|Alcoholic Debug Commands]] — OP-2 place, ports, kits, and inspect on one pad. ( #minecraft)
 - [[projects/alcoholic/skills/grepai-serena-project-index|GrepAI and Serena Project Index]] — GrepAI can index many repos; Cursor MCP path pins one; switch Serena. ( #software-architecture)
+- [[projects/alcoholic/skills/alcoholic-progression-graph|Alcoholic Progression Graph]] — Edit ProgressionCatalog, then datagen; never hand-edit SNBT. ( #minecraft #software-architecture)
 
 ## References
 
@@ -83,6 +90,7 @@ title: Wiki Index
 - [[projects/alcoholic/references/cursor-survival-plants-session|Cursor Survival Plants Session]] — Wild hops plus height-gated vine/hop trunk. ( #minecraft)
 - [[projects/alcoholic/references/cursor-formed-hull-session|Cursor Formed Hull Session]] — Beer industrial place showed loose cubes; 9-slice plus mega-mesh. ( #minecraft #software-architecture)
 - [[projects/alcoholic/references/cursor-machine-port-audit-session|Cursor Machine Port Audit Session]] — Decorative taps; kinetic only on the engine shaft face. ( #minecraft #software-architecture)
+- [[projects/alcoholic/references/cursor-progression-and-fluids-session|Cursor Progression and Fluids Session]] — Hybrid advancements plus optional FTB, then wine/beer graph and painted fluids. ( #minecraft #software-architecture)
 
 ## Synthesis
 
@@ -90,4 +98,4 @@ title: Wiki Index
 
 ## Projects
 
-- [[projects/alcoholic/alcoholic|Alcoholic]] — Loader-independent brewing mod: viticulture, grain beer, artisanal process, and industrial multiblocks. ( #minecraft #project/alcoholic)
+- [[projects/alcoholic/alcoholic|Alcoholic]] — Loader-independent brewing mod: wine/beer progression graph, painted world fluids, optional FTB template. ( #minecraft #project/alcoholic)
