@@ -1,0 +1,241 @@
+{
+	id: "A1C0A01C00000002"
+	group: ""
+	order_index: 1
+	filename: "alcoholic_industrial"
+	title: "{translate:ftbquests.alcoholic.industrial.chapter.title}"
+	icon: "alcoholic:industrial_casing"
+	default_quest_shape: "hexagon"
+	default_hide_dependency_lines: false
+	subtitle: [
+		"{translate:ftbquests.alcoholic.industrial.chapter.subtitle}"
+	]
+	images: [
+		{
+			x: -3.5d
+			y: 0.0d
+			width: 2.0d
+			height: 2.0d
+			rotation: 0.0d
+			image: "alcoholic:item/ftbquests/form_press"
+			hover: ["{translate:ftbquests.alcoholic.hover.form_press}"]
+			click: ""
+			order: 0
+		}
+		{
+			x: 0.0d
+			y: 0.0d
+			width: 2.0d
+			height: 2.0d
+			rotation: 0.0d
+			image: "alcoholic:item/ftbquests/form_vat"
+			hover: ["{translate:ftbquests.alcoholic.hover.form_vat}"]
+			click: ""
+			order: 0
+		}
+		{
+			x: 3.5d
+			y: 0.0d
+			width: 2.0d
+			height: 2.0d
+			rotation: 0.0d
+			image: "alcoholic:item/ftbquests/form_tank"
+			hover: ["{translate:ftbquests.alcoholic.hover.form_tank}"]
+			click: ""
+			order: 0
+		}
+		{
+			x: -5.0d
+			y: 4.0d
+			width: 2.0d
+			height: 2.0d
+			rotation: 0.0d
+			image: "alcoholic:item/ftbquests/form_malt_house"
+			hover: ["{translate:ftbquests.alcoholic.hover.form_malt_house}"]
+			click: ""
+			order: 0
+		}
+		{
+			x: -2.5d
+			y: 4.0d
+			width: 2.0d
+			height: 2.0d
+			rotation: 0.0d
+			image: "alcoholic:item/ftbquests/form_roller_mill"
+			hover: ["{translate:ftbquests.alcoholic.hover.form_roller_mill}"]
+			click: ""
+			order: 0
+		}
+		{
+			x: 0.0d
+			y: 4.0d
+			width: 2.0d
+			height: 2.0d
+			rotation: 0.0d
+			image: "alcoholic:item/ftbquests/form_mash_tun"
+			hover: ["{translate:ftbquests.alcoholic.hover.form_mash_tun}"]
+			click: ""
+			order: 0
+		}
+		{
+			x: 2.5d
+			y: 4.0d
+			width: 2.0d
+			height: 2.0d
+			rotation: 0.0d
+			image: "alcoholic:item/ftbquests/form_kettle"
+			hover: ["{translate:ftbquests.alcoholic.hover.form_kettle}"]
+			click: ""
+			order: 0
+		}
+		{
+			x: 5.0d
+			y: 4.0d
+			width: 2.0d
+			height: 2.0d
+			rotation: 0.0d
+			image: "alcoholic:item/ftbquests/form_conditioning"
+			hover: ["{translate:ftbquests.alcoholic.hover.form_conditioning}"]
+			click: ""
+			order: 0
+		}
+	]
+	quests: [
+		{
+			id: "A1C0A01C00000020"
+			x: 0.0d
+			y: -3.2d
+			title: "{translate:advancements.alcoholic.industrial_root.title}"
+			description: ["{translate:advancements.alcoholic.industrial_root.description}"]
+			icon: "alcoholic:industrial_casing"
+			tasks: [{
+				id: "A1C0A01C10000020"
+				type: "advancement"
+				advancement: "alcoholic:industrial_root"
+				criterion: ""
+			}]
+		}
+		{
+			id: "A1C0A01C00000021"
+			x: -3.5d
+			y: -1.2d
+			title: "{translate:advancements.alcoholic.form_industrial_press.title}"
+			description: ["{translate:advancements.alcoholic.form_industrial_press.description}"]
+			icon: "alcoholic:industrial_press_controller"
+			dependencies: ["A1C0A01C00000020"]
+			tasks: [{
+				id: "A1C0A01C10000021"
+				type: "advancement"
+				advancement: "alcoholic:form_industrial_press"
+				criterion: ""
+			}]
+		}
+		{
+			id: "A1C0A01C00000022"
+			x: 0.0d
+			y: -1.2d
+			title: "{translate:advancements.alcoholic.form_industrial_vat.title}"
+			description: ["{translate:advancements.alcoholic.form_industrial_vat.description}"]
+			icon: "alcoholic:industrial_vat_controller"
+			dependencies: ["A1C0A01C00000020"]
+			tasks: [{
+				id: "A1C0A01C10000022"
+				type: "advancement"
+				advancement: "alcoholic:form_industrial_vat"
+				criterion: ""
+			}]
+		}
+		{
+			id: "A1C0A01C00000023"
+			x: 3.5d
+			y: -1.2d
+			title: "{translate:advancements.alcoholic.form_industrial_tank.title}"
+			description: ["{translate:advancements.alcoholic.form_industrial_tank.description}"]
+			icon: "alcoholic:industrial_tank_controller"
+			dependencies: ["A1C0A01C00000020"]
+			tasks: [{
+				id: "A1C0A01C10000023"
+				type: "advancement"
+				advancement: "alcoholic:form_industrial_tank"
+				criterion: ""
+			}]
+		}
+		{
+			id: "A1C0A01C00000024"
+			x: -5.0d
+			y: 2.2d
+			title: "{translate:advancements.alcoholic.form_industrial_malt_house.title}"
+			description: ["{translate:advancements.alcoholic.form_industrial_malt_house.description}"]
+			icon: "alcoholic:industrial_malt_house_controller"
+			dependencies: ["A1C0A01C00000020"]
+			tasks: [{
+				id: "A1C0A01C10000024"
+				type: "advancement"
+				advancement: "alcoholic:form_industrial_malt_house"
+				criterion: ""
+			}]
+		}
+		{
+			id: "A1C0A01C00000025"
+			x: -2.5d
+			y: 2.2d
+			title: "{translate:advancements.alcoholic.form_industrial_roller_mill.title}"
+			description: ["{translate:advancements.alcoholic.form_industrial_roller_mill.description}"]
+			icon: "alcoholic:industrial_roller_mill_controller"
+			dependencies: ["A1C0A01C00000020"]
+			tasks: [{
+				id: "A1C0A01C10000025"
+				type: "advancement"
+				advancement: "alcoholic:form_industrial_roller_mill"
+				criterion: ""
+			}]
+		}
+		{
+			id: "A1C0A01C00000026"
+			x: 0.0d
+			y: 2.2d
+			title: "{translate:advancements.alcoholic.form_industrial_mash_tun.title}"
+			description: ["{translate:advancements.alcoholic.form_industrial_mash_tun.description}"]
+			icon: "alcoholic:industrial_mash_tun_controller"
+			dependencies: ["A1C0A01C00000020"]
+			tasks: [{
+				id: "A1C0A01C10000026"
+				type: "advancement"
+				advancement: "alcoholic:form_industrial_mash_tun"
+				criterion: ""
+			}]
+		}
+		{
+			id: "A1C0A01C00000027"
+			x: 2.5d
+			y: 2.2d
+			title: "{translate:advancements.alcoholic.form_industrial_kettle.title}"
+			description: ["{translate:advancements.alcoholic.form_industrial_kettle.description}"]
+			icon: "alcoholic:industrial_brewing_kettle_controller"
+			dependencies: ["A1C0A01C00000020"]
+			tasks: [{
+				id: "A1C0A01C10000027"
+				type: "advancement"
+				advancement: "alcoholic:form_industrial_kettle"
+				criterion: ""
+			}]
+		}
+		{
+			id: "A1C0A01C00000028"
+			x: 5.0d
+			y: 2.2d
+			title: "{translate:advancements.alcoholic.form_industrial_conditioning.title}"
+			description: ["{translate:advancements.alcoholic.form_industrial_conditioning.description}"]
+			icon: "alcoholic:industrial_conditioning_vessel_controller"
+			dependencies: ["A1C0A01C00000020"]
+			tasks: [{
+				id: "A1C0A01C10000028"
+				type: "advancement"
+				advancement: "alcoholic:form_industrial_conditioning"
+				criterion: ""
+			}]
+		}
+	]
+	quest_links: [
+	]
+}

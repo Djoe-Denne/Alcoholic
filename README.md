@@ -184,7 +184,8 @@ Architecture decisions for this phase: [ADR-007](docs/adr/ADR-007-production-dag
 [ADR-031](docs/adr/ADR-031-crossroads-and-electric-motor.md),
 [ADR-032](docs/adr/ADR-032-process-display-and-recipe-viewers.md),
 [ADR-033](docs/adr/ADR-033-advancements-as-progression-source.md),
-[ADR-034](docs/adr/ADR-034-ftb-quests-optional-chapter.md).
+[ADR-034](docs/adr/ADR-034-ftb-quests-optional-chapter.md),
+[ADR-035](docs/adr/ADR-035-industrial-progression-and-jei-formation.md).
 
 Addon authors should depend only on `alcoholic-api`. See
 [`docs/addons/public-api.md`](docs/addons/public-api.md) and

@@ -108,6 +108,98 @@ class FtbQuestTemplateContractTest {
         }
     }
 
+    @Test
+    void industrialChapterWatchesTheNineFormationAdvancements() throws IOException {
+        String snbt = Files.readString(industrialChapterSnbt(), StandardCharsets.UTF_8);
+        Matcher matcher = Pattern.compile("advancement:\\s*\"([^\"]+)\"").matcher(snbt);
+        Set<String> found = new LinkedHashSet<>();
+        while (matcher.find()) {
+            found.add(matcher.group(1));
+        }
+        assertEquals(Set.of(
+                "alcoholic:industrial_root",
+                "alcoholic:form_industrial_press",
+                "alcoholic:form_industrial_vat",
+                "alcoholic:form_industrial_tank",
+                "alcoholic:form_industrial_malt_house",
+                "alcoholic:form_industrial_roller_mill",
+                "alcoholic:form_industrial_mash_tun",
+                "alcoholic:form_industrial_kettle",
+                "alcoholic:form_industrial_conditioning"
+        ), found);
+        assertEquals(9, snbt.split("type: \"advancement\"").length - 1);
+        assertTrue(snbt.contains("id: \"A1C0A01C00000002\""));
+        for (String flipbook : new String[] {
+                "form_press",
+                "form_vat",
+                "form_tank",
+                "form_malt_house",
+                "form_roller_mill",
+                "form_mash_tun",
+                "form_kettle",
+                "form_conditioning"
+        }) {
+            assertTrue(snbt.contains("alcoholic:item/ftbquests/" + flipbook), "Missing " + flipbook);
+        }
+    }
+
+    @Test
+    void industrialFlipbooksAreAnimatedItemAtlasStrips() throws IOException {
+        ClassLoader loader = FtbQuestTemplateContractTest.class.getClassLoader();
+        for (String flipbook : new String[] {
+                "form_press",
+                "form_vat",
+                "form_tank",
+                "form_malt_house",
+                "form_roller_mill",
+                "form_mash_tun",
+                "form_kettle",
+                "form_conditioning"
+        }) {
+            String pngPath = "assets/alcoholic/textures/item/ftbquests/" + flipbook + ".png";
+            String metaPath = pngPath + ".mcmeta";
+            try (InputStream png = loader.getResourceAsStream(pngPath);
+                    InputStream meta = loader.getResourceAsStream(metaPath)) {
+                assertNotNull(png, "Missing " + pngPath);
+                assertNotNull(meta, "Missing " + metaPath);
+                BufferedImage image = ImageIO.read(png);
+                assertNotNull(image, "Unreadable " + pngPath);
+                assertEquals(128, image.getWidth(), flipbook + " width");
+                assertEquals(0, image.getHeight() % 128, flipbook + " height");
+                int frames = image.getHeight() / 128;
+                assertTrue(frames >= 4 && frames <= 8, flipbook + " frames=" + frames);
+                JsonObject animation = JsonParser.parseReader(
+                        new InputStreamReader(meta, StandardCharsets.UTF_8)
+                ).getAsJsonObject().getAsJsonObject("animation");
+                assertNotNull(animation, flipbook + " .mcmeta animation");
+                assertTrue(animation.getAsJsonArray("frames").size() >= 4);
+            }
+        }
+    }
+
+    @Test
+    void industrialHoverKeysExistInEnglishAndFrench() throws IOException {
+        String[] keys = {
+                "ftbquests.alcoholic.industrial.chapter.title",
+                "ftbquests.alcoholic.industrial.chapter.subtitle",
+                "ftbquests.alcoholic.hover.form_press",
+                "ftbquests.alcoholic.hover.form_vat",
+                "ftbquests.alcoholic.hover.form_tank",
+                "ftbquests.alcoholic.hover.form_malt_house",
+                "ftbquests.alcoholic.hover.form_roller_mill",
+                "ftbquests.alcoholic.hover.form_mash_tun",
+                "ftbquests.alcoholic.hover.form_kettle",
+                "ftbquests.alcoholic.hover.form_conditioning"
+        };
+        for (String language : new String[] {"en_us", "fr_fr"}) {
+            JsonObject translations = lang(language);
+            for (String key : keys) {
+                assertTrue(translations.has(key), "Missing " + language + " " + key);
+                assertFalse(translations.get(key).getAsString().isBlank(), key);
+            }
+        }
+    }
+
     private static Path chapterSnbt() {
         Path dir = Path.of(System.getProperty("user.dir")).toAbsolutePath();
         for (int i = 0; i < 6; i++) {
@@ -125,6 +217,10 @@ class FtbQuestTemplateContractTest {
                 "Cannot find modpack/ftbquests/quests/chapters/alcoholic.snbt from "
                         + System.getProperty("user.dir")
         );
+    }
+
+    private static Path industrialChapterSnbt() {
+        return chapterSnbt().resolveSibling("alcoholic_industrial.snbt");
     }
 
     private static JsonObject lang(String language) throws IOException {

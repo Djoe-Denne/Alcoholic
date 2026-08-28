@@ -107,6 +107,34 @@ not yet visible.
 > chapiteau, and add two or three small iron-gray trellis staples. No
 > perspective, post silhouette, vines, grapes, scenery, or transparent margin.
 
+## World fluids
+
+Painted still/flow tiles are fully opaque and fill the square edge to edge.
+Still masters live at 512 x 512; flow masters live at 1024 x 1024. Do not
+include a bucket, rim, handle, background, or inventory silhouette. Java
+applies a white tint, so the PNG carries the liquid color.
+
+| Texture | Subject prompt |
+| --- | --- |
+| `beer_still` | Top-down seamless amber beer with cream foam patches and a few bubbles. |
+| `beer_flow` | Same beer, stretched into downward diagonal current streaks. |
+| `hopped_wort_still` | Top-down seamless cloudy olive-gold hopped wort with resin flecks. |
+| `hopped_wort_flow` | Same hopped wort as downward diagonal current streaks. |
+| `red_grape_must_still` | Top-down seamless opaque burgundy must with pulp specks. |
+| `red_grape_must_flow` | Same red must as downward diagonal current streaks. |
+| `white_grape_must_still` | Top-down seamless cloudy pale yellow-gold must with tiny flecks. |
+| `white_grape_must_flow` | Same white must as downward diagonal current streaks. |
+| `young_red_wine_still` | Top-down seamless cloudy raspberry-purple young wine with three bubbles. |
+| `young_red_wine_flow` | Same young red wine as downward diagonal current streaks. |
+| `young_white_wine_still` | Top-down seamless cloudy lemon-gold young wine with three bubbles. |
+| `young_white_wine_flow` | Same young white wine as downward diagonal current streaks. |
+| `red_wine_still` | Top-down seamless clear deep ruby wine, glossy, no foam. |
+| `red_wine_flow` | Same red wine as downward diagonal glossy current streaks. |
+| `white_wine_still` | Top-down seamless clear straw-gold wine, glossy, no foam. |
+| `white_wine_flow` | Same white wine as downward diagonal glossy current streaks. |
+| `wort_still` | Top-down seamless cloudy copper-gold wort with malt haze. |
+| `wort_flow` | Same wort as downward diagonal current streaks. |
+
 ## Trellis wire
 
 > Create a fully opaque, edge-to-edge, flat orthographic Minecraft block UV

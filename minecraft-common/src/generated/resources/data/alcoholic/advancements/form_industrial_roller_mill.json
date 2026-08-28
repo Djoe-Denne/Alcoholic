@@ -1,0 +1,31 @@
+{
+  "parent": "alcoholic:industrial_root",
+  "criteria": {
+    "formed": {
+      "conditions": {
+        "machine": "alcoholic:industrial_roller_mill"
+      },
+      "trigger": "alcoholic:multiblock_formed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.alcoholic.form_industrial_roller_mill.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "alcoholic:industrial_roller_mill_controller"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alcoholic.form_industrial_roller_mill.title"
+    }
+  },
+  "requirements": [
+    [
+      "formed"
+    ]
+  ]
+}

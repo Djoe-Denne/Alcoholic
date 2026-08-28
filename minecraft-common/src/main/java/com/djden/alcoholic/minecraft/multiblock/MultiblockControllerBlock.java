@@ -2,6 +2,7 @@ package com.djden.alcoholic.minecraft.multiblock;
 
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.domain.multiblock.PartRole;
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
 import com.djden.alcoholic.minecraft.bottle.Bottling;
 import com.djden.alcoholic.minecraft.menu.MachineMenus;
 import net.minecraft.core.BlockPos;
@@ -94,6 +95,7 @@ public final class MultiblockControllerBlock extends BaseEntityBlock implements 
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         }
+        AdvancementHooks.touch(player, entity);
         ItemStack held = player.getItemInHand(hand);
         if (player.isShiftKeyDown() && held.isEmpty() && entity.cycleBoundDefinition()) {
             player.displayClientMessage(entity.status(), true);

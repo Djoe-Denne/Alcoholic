@@ -139,6 +139,11 @@ public final class ForgeFluidRegistrationPort implements FluidRegistrationPort {
                     }
 
                     @Override
+                    public ResourceLocation getOverlayTexture() {
+                        return location(definition.stillTexture());
+                    }
+
+                    @Override
                     public int getTintColor() {
                         return definition.tintArgb();
                     }

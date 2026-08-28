@@ -56,6 +56,15 @@ public final class AdvancementHooks {
         );
     }
 
+    public static void multiblockFormed(BlockEntity entity, ResourceId machine) {
+        if (!(entity instanceof AdvancementActor actor)
+                || entity.getLevel() == null
+                || entity.getLevel().isClientSide) {
+            return;
+        }
+        actor.advancementState().formed(entity.getLevel(), entity.getBlockPos(), location(machine));
+    }
+
     public static Optional<ResourceId> changedIdentity(LiquidBatch before, LiquidBatch after) {
         Optional<ResourceId> next = after.baseLiquid();
         if (next.isPresent() && !next.equals(before.baseLiquid())) {

@@ -1,0 +1,141 @@
+{
+  "criteria": {
+    "has_casing": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alcoholic:industrial_casing"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_conditioning": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alcoholic:industrial_conditioning_vessel_controller"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_kettle": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alcoholic:industrial_brewing_kettle_controller"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_malt_house": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alcoholic:industrial_malt_house_controller"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_mash_tun": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alcoholic:industrial_mash_tun_controller"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_press": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alcoholic:industrial_press_controller"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_roller_mill": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alcoholic:industrial_roller_mill_controller"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_tank": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alcoholic:industrial_tank_controller"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_vat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alcoholic:industrial_vat_controller"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "description": {
+      "translate": "advancements.alcoholic.industrial_root.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "alcoholic:industrial_casing"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alcoholic.industrial_root.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_casing",
+      "has_press",
+      "has_vat",
+      "has_tank",
+      "has_malt_house",
+      "has_roller_mill",
+      "has_mash_tun",
+      "has_kettle",
+      "has_conditioning"
+    ]
+  ]
+}

@@ -15,8 +15,9 @@ New quest book (empty `config/ftbquests/quests`):
 2. Keep Alcoholic on the client so the flipbook sprites resolve.
 3. Run `/ftbquests reload` (or restart the world).
 
-Existing quest book: copy only
-`quests/chapters/alcoholic.snbt` into
+Existing quest book: copy
+`quests/chapters/alcoholic.snbt` and
+`quests/chapters/alcoholic_industrial.snbt` into
 `config/ftbquests/quests/chapters/`. Leave the pack's `data.snbt`
 alone.
 
@@ -70,4 +71,49 @@ Advancements watched:
 - `alcoholic:blend`
 - `alcoholic:bottle`
 
-See [ADR-034](../../docs/adr/ADR-034-ftb-quests-optional-chapter.md).
+See [ADR-034](../../docs/adr/ADR-034-ftb-quests-optional-chapter.md) and
+[ADR-035](../../docs/adr/ADR-035-industrial-progression-and-jei-formation.md).
+
+## Industrial chapter
+
+Second template chapter. Same rules: `AdvancementTask` only, no rewards,
+no FTB geometry checks. Hex IDs stay in the `A1C0A01C` family.
+
+| Object | Hex id |
+|---|---|
+| Chapter | `A1C0A01C00000002` |
+| Quest `industrial_root` | `A1C0A01C00000020` |
+| Quest `form_industrial_press` | `A1C0A01C00000021` |
+| Quest `form_industrial_vat` | `A1C0A01C00000022` |
+| Quest `form_industrial_tank` | `A1C0A01C00000023` |
+| Quest `form_industrial_malt_house` | `A1C0A01C00000024` |
+| Quest `form_industrial_roller_mill` | `A1C0A01C00000025` |
+| Quest `form_industrial_mash_tun` | `A1C0A01C00000026` |
+| Quest `form_industrial_kettle` | `A1C0A01C00000027` |
+| Quest `form_industrial_conditioning` | `A1C0A01C00000028` |
+| Task `industrial_root` | `A1C0A01C10000020` |
+| Task `form_industrial_press` | `A1C0A01C10000021` |
+| Task `form_industrial_vat` | `A1C0A01C10000022` |
+| Task `form_industrial_tank` | `A1C0A01C10000023` |
+| Task `form_industrial_malt_house` | `A1C0A01C10000024` |
+| Task `form_industrial_roller_mill` | `A1C0A01C10000025` |
+| Task `form_industrial_mash_tun` | `A1C0A01C10000026` |
+| Task `form_industrial_kettle` | `A1C0A01C10000027` |
+| Task `form_industrial_conditioning` | `A1C0A01C10000028` |
+
+Advancements watched:
+
+- `alcoholic:industrial_root`
+- `alcoholic:form_industrial_press`
+- `alcoholic:form_industrial_vat`
+- `alcoholic:form_industrial_tank`
+- `alcoholic:form_industrial_malt_house`
+- `alcoholic:form_industrial_roller_mill`
+- `alcoholic:form_industrial_mash_tun`
+- `alcoholic:form_industrial_kettle`
+- `alcoholic:form_industrial_conditioning`
+
+Flipbooks: `alcoholic:item/ftbquests/form_press` (and `form_vat`,
+`form_tank`, `form_malt_house`, `form_roller_mill`, `form_mash_tun`,
+`form_kettle`, `form_conditioning`). Each strip is the min hull assembled
+layer by layer. Hover text points at JEI for the cell grid.

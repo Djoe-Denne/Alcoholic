@@ -16,6 +16,8 @@ import com.djden.alcoholic.minecraft.agriculture.VineBlockEntity;
 import com.djden.alcoholic.minecraft.agriculture.VineStage;
 import com.djden.alcoholic.minecraft.bottle.Bottling;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
+import com.djden.alcoholic.minecraft.multiblock.IndustrialHullPlacer;
+import com.djden.alcoholic.minecraft.multiblock.MultiblockControllerBlockEntity;
 import com.djden.alcoholic.minecraft.process.ArtisanalFermenterBlockEntity;
 import com.djden.alcoholic.minecraft.process.ArtisanalPressBlockEntity;
 import com.djden.alcoholic.minecraft.process.OakBarrelBlockEntity;
@@ -147,6 +149,37 @@ public final class AdvancementGameTests {
         use(helper, ORIGIN, player, ItemStack.EMPTY);
         require(helper, !fermenter.advancementState().hasPending(), "Pending criteria were not flushed");
         requireDone(helper, player, "ferment_beverage");
+        helper.succeed();
+    }
+
+    @GameTest(template = "industrial_pad", timeoutTicks = 40)
+    public static void formingIndustrialTankGrantsFormAdvancement(GameTestHelper helper) {
+        ServerPlayer player = mockPlayer(helper);
+        BlockPos origin = helper.absolutePos(ORIGIN);
+        BlockPos controller = IndustrialHullPlacer.place(
+                helper.getLevel(),
+                origin,
+                3,
+                4,
+                3,
+                block("industrial_tank_controller"),
+                block("industrial_casing"),
+                block("machine_window"),
+                block("access_hatch"),
+                block("item_port"),
+                block("fluid_port"),
+                block("kinetic_port"),
+                false
+        );
+        if (!(helper.getLevel().getBlockEntity(controller) instanceof MultiblockControllerBlockEntity tank)) {
+            helper.fail("Industrial tank controller was not created");
+            return;
+        }
+        AdvancementHooks.touch(player, tank);
+        tank.markStructureDirty();
+        MultiblockControllerBlockEntity.tick(tank.getLevel(), tank.getBlockPos(), tank.getBlockState(), tank);
+        require(helper, tank.formed(), "Min hull did not form: " + tank.debugDump());
+        requireDone(helper, player, "form_industrial_tank");
         helper.succeed();
     }
 

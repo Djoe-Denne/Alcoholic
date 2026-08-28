@@ -1,0 +1,31 @@
+{
+  "parent": "alcoholic:industrial_root",
+  "criteria": {
+    "formed": {
+      "conditions": {
+        "machine": "alcoholic:industrial_press"
+      },
+      "trigger": "alcoholic:multiblock_formed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.alcoholic.form_industrial_press.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "alcoholic:industrial_press_controller"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alcoholic.form_industrial_press.title"
+    }
+  },
+  "requirements": [
+    [
+      "formed"
+    ]
+  ]
+}

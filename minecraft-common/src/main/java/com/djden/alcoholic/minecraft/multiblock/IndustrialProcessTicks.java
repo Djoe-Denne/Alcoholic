@@ -22,6 +22,7 @@ import com.djden.alcoholic.domain.multiblock.MultiblockDefinition;
 import com.djden.alcoholic.domain.process.MaltExecutionStage;
 import com.djden.alcoholic.domain.process.ThermalStability;
 import com.djden.alcoholic.domain.vessel.EnvironmentProfile;
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
 import com.djden.alcoholic.minecraft.process.ItemLots;
 import com.djden.alcoholic.minecraft.process.MinecraftSelectorMatcher;
 import com.djden.alcoholic.minecraft.process.ProcessRuntime;
@@ -137,6 +138,7 @@ final class IndustrialProcessTicks {
         machine.tank().fill(produced, false);
         input.shrink(units * config.inputAmount());
         machine.completePressProcess();
+        AdvancementHooks.processCompleted(machine, BuiltinRegistrations.PRESS, produced.baseLiquid());
     }
 
     static void ferment(MultiblockControllerBlockEntity machine, MultiblockDefinition definition, long now) {
@@ -207,6 +209,12 @@ final class IndustrialProcessTicks {
                 batch.number(config.sugarProperty(), 0.0) - next.number(config.sugarProperty(), 0.0)
         );
         machine.ventCo2(consumedSugar * config.kinetics().co2PerSugar());
+        AdvancementHooks.changedIdentity(batch, next)
+                .ifPresent(liquid -> AdvancementHooks.processCompleted(
+                        machine,
+                        BuiltinRegistrations.FERMENT,
+                        Optional.of(liquid)
+                ));
         machine.tank().set(next);
         machine.onProcessTankChanged();
     }
@@ -297,6 +305,7 @@ final class IndustrialProcessTicks {
             return;
         }
         machine.completeProcess();
+        AdvancementHooks.processCompleted(machine, BuiltinRegistrations.MALT, Optional.empty());
         machine.markProcessDirty(true);
     }
 
@@ -353,6 +362,7 @@ final class IndustrialProcessTicks {
             return;
         }
         machine.completeProcess();
+        AdvancementHooks.processCompleted(machine, BuiltinRegistrations.MILL, Optional.empty());
         machine.markProcessDirty(true);
     }
 
@@ -442,6 +452,7 @@ final class IndustrialProcessTicks {
         machine.tank().fill(produced, false);
         input.shrink(units * config.inputAmount());
         machine.completeProcess();
+        AdvancementHooks.processCompleted(machine, BuiltinRegistrations.MASH, produced.baseLiquid());
         machine.onProcessTankChanged();
     }
 
@@ -516,8 +527,10 @@ final class IndustrialProcessTicks {
             machine.markProcessDirty(false);
             return;
         }
-        machine.tank().set((LiquidBatch) result.outputs().get(0));
+        LiquidBatch boiled = (LiquidBatch) result.outputs().get(0);
+        machine.tank().set(boiled);
         machine.completeProcess();
+        AdvancementHooks.processCompleted(machine, BuiltinRegistrations.BOIL, boiled.baseLiquid());
         machine.onProcessTankChanged();
     }
 
@@ -597,6 +610,12 @@ final class IndustrialProcessTicks {
             return;
         }
         LiquidBatch conditioned = (LiquidBatch) result.outputs().get(0);
+        AdvancementHooks.changedIdentity(batch, conditioned)
+                .ifPresent(liquid -> AdvancementHooks.processCompleted(
+                        machine,
+                        BuiltinRegistrations.CONDITION,
+                        Optional.of(liquid)
+                ));
         machine.tank().set(conditioned);
         machine.setProcessProgressFraction(
                 conditioned.number(config.maturityProperty(), 0.0) / Math.max(1e-9, completion)

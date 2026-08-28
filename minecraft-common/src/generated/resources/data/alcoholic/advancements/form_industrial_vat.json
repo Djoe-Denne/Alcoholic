@@ -1,0 +1,31 @@
+{
+  "parent": "alcoholic:industrial_root",
+  "criteria": {
+    "formed": {
+      "conditions": {
+        "machine": "alcoholic:industrial_fermentation_vat"
+      },
+      "trigger": "alcoholic:multiblock_formed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.alcoholic.form_industrial_vat.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "alcoholic:industrial_vat_controller"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alcoholic.form_industrial_vat.title"
+    }
+  },
+  "requirements": [
+    [
+      "formed"
+    ]
+  ]
+}

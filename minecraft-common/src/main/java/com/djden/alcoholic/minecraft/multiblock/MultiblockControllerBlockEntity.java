@@ -18,6 +18,9 @@ import com.djden.alcoholic.domain.multiblock.PressStrokeState;
 import com.djden.alcoholic.domain.multiblock.ValidationResult;
 import com.djden.alcoholic.domain.multiblock.ValidationStatus;
 import com.djden.alcoholic.domain.process.ElapsedProcessClock;
+import com.djden.alcoholic.minecraft.advancement.AdvancementActor;
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
+import com.djden.alcoholic.minecraft.advancement.ProcessAdvancementState;
 import com.djden.alcoholic.minecraft.fluid.LiquidBatchNbt;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
@@ -53,12 +56,13 @@ import java.util.List;
 import java.util.Optional;
 
 public final class MultiblockControllerBlockEntity extends BlockEntity
-        implements WorldlyContainer, LiquidVessel, MachineAccess {
+        implements WorldlyContainer, LiquidVessel, MachineAccess, AdvancementActor {
     public static final int INPUT_SLOT = 0;
     public static final int OUTPUT_SLOT = 1;
 
     private final ResourceId definitionId;
     private final LiquidTank tank;
+    private final ProcessAdvancementState advancements = new ProcessAdvancementState();
     private final NonNullList<ItemStack> items = NonNullList.withSize(2, ItemStack.EMPTY);
     private boolean formed;
     private IndustrialAccess access = IndustrialAccess.CLOSED;
@@ -99,6 +103,11 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
 
     public ResourceId definitionId() {
         return definitionId;
+    }
+
+    @Override
+    public ProcessAdvancementState advancementState() {
+        return advancements;
     }
 
     public boolean formed() {
@@ -348,6 +357,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
             unform(IndustrialAccess.DRAIN_ONLY, next);
             return;
         }
+        boolean becameFormed = !formed;
         formed = true;
         access = IndustrialAccess.OPEN;
         if (geometry != null && geometry != next) {
@@ -363,6 +373,9 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
                     getBlockState().setValue(MultiblockControllerBlock.FORMED, true),
                     Block.UPDATE_CLIENTS
             );
+        }
+        if (becameFormed) {
+            AdvancementHooks.multiblockFormed(this, definitionId);
         }
         setChanged();
         sync();
@@ -965,6 +978,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
             parts.add(NbtUtils.writeBlockPos(part));
         }
         tag.put("BoundParts", parts);
+        advancements.save(tag);
     }
 
     @Override
@@ -1047,6 +1061,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         List<BlockPos> parts = new ArrayList<>();
         tag.getList("BoundParts", 10).forEach(entry -> parts.add(NbtUtils.readBlockPos((CompoundTag) entry)));
         boundParts = List.copyOf(parts);
+        advancements.load(tag);
         structureDirty = true;
     }
 

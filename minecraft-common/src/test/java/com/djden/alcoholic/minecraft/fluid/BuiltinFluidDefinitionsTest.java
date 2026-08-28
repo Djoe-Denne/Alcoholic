@@ -69,8 +69,15 @@ class BuiltinFluidDefinitionsTest {
                 .findFirst()
                 .orElseThrow();
         assertEquals(expected, definition.flowProfile());
-        assertEquals(ResourceId.parse("minecraft:block/water_still"), definition.stillTexture());
-        assertEquals(ResourceId.parse("minecraft:block/water_flow"), definition.flowingTexture());
+        assertEquals(
+                new ResourceId(AlcoholicIds.MOD_ID, "block/" + id.path() + "_still"),
+                definition.stillTexture()
+        );
+        assertEquals(
+                new ResourceId(AlcoholicIds.MOD_ID, "block/" + id.path() + "_flow"),
+                definition.flowingTexture()
+        );
+        assertEquals(0xFFFFFFFF, definition.tintArgb());
     }
 
     private static FluidFlowProfile profile(

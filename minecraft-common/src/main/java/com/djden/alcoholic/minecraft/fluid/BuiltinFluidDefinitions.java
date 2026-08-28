@@ -25,18 +25,17 @@ public final class BuiltinFluidDefinitions {
             false
     );
 
-    private static final ResourceId WATER_STILL = ResourceId.parse("minecraft:block/water_still");
-    private static final ResourceId WATER_FLOW = ResourceId.parse("minecraft:block/water_flow");
+    private static final int PAINTED_TEXTURE_TINT = 0xFFFFFFFF;
     private static final List<FluidDefinition> ALL = List.of(
-            fluid(AlcoholicIds.RED_GRAPE_MUST, 0xFF7A1F3A, SUGAR_RICH),
-            fluid(AlcoholicIds.WHITE_GRAPE_MUST, 0xFFE6D56A, SUGAR_RICH),
-            fluid(AlcoholicIds.YOUNG_RED_WINE, 0xFF5A1226, FERMENTED),
-            fluid(AlcoholicIds.YOUNG_WHITE_WINE, 0xFFE8D36B, FERMENTED),
-            fluid(AlcoholicIds.RED_WINE, 0xFF4A0E1C, FERMENTED),
-            fluid(AlcoholicIds.WHITE_WINE, 0xFFE6C85A, FERMENTED),
-            fluid(AlcoholicIds.WORT, 0xFFC9A227, SUGAR_RICH),
-            fluid(AlcoholicIds.HOPPED_WORT, 0xFFB8860B, SUGAR_RICH),
-            fluid(AlcoholicIds.BEER, 0xFFD4A017, FERMENTED)
+            fluid(AlcoholicIds.RED_GRAPE_MUST, SUGAR_RICH),
+            fluid(AlcoholicIds.WHITE_GRAPE_MUST, SUGAR_RICH),
+            fluid(AlcoholicIds.YOUNG_RED_WINE, FERMENTED),
+            fluid(AlcoholicIds.YOUNG_WHITE_WINE, FERMENTED),
+            fluid(AlcoholicIds.RED_WINE, FERMENTED),
+            fluid(AlcoholicIds.WHITE_WINE, FERMENTED),
+            fluid(AlcoholicIds.WORT, SUGAR_RICH),
+            fluid(AlcoholicIds.HOPPED_WORT, SUGAR_RICH),
+            fluid(AlcoholicIds.BEER, FERMENTED)
     );
 
     private BuiltinFluidDefinitions() {
@@ -46,7 +45,13 @@ public final class BuiltinFluidDefinitions {
         return ALL;
     }
 
-    private static FluidDefinition fluid(ResourceId id, int tint, FluidFlowProfile profile) {
-        return new FluidDefinition(id, WATER_STILL, WATER_FLOW, tint, profile);
+    private static FluidDefinition fluid(ResourceId id, FluidFlowProfile profile) {
+        return new FluidDefinition(
+                id,
+                new ResourceId(AlcoholicIds.MOD_ID, "block/" + id.path() + "_still"),
+                new ResourceId(AlcoholicIds.MOD_ID, "block/" + id.path() + "_flow"),
+                PAINTED_TEXTURE_TINT,
+                profile
+        );
     }
 }

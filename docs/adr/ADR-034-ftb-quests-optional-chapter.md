@@ -50,6 +50,5 @@ quest file `version: 13`.
 - A player without FTB still has the Alcoholic advancement tab.
 - Adding or renaming an advancement ID requires a matching SNBT edit
   in the template; the core JAR does not load that SNBT.
-- Industrial machines, malt floor, mill, and kettle stay out of this
-  chapter. They can be added later as extra images without new
-  advancement IDs.
+- Industrial formation is a second template chapter; see
+  [ADR-035](ADR-035-industrial-progression-and-jei-formation.md).

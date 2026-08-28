@@ -1,7 +1,7 @@
 # Alcoholic texture packs
 
 Optional texture resolutions for painted machine atlases, item icons, crops,
-hop bines, and red/white grapevines.
+hop bines, red/white grapevines, and world fluid still/flow tiles.
 
 Each directory is a standalone Minecraft Java 1.19.2 resource pack. Copy the
 chosen directory into the instance's `resourcepacks` directory and enable it
@@ -15,12 +15,19 @@ above the base Alcoholic resources.
 - `Alcoholic-512x`: archived full-resolution artwork
 
 The mod uses 16 x 16 item and plant textures by default. Machine atlases may
-still use their model-specific built-in resolution. All optional item and plant
-textures are generated directly from the archived 512 x 512 masters, never
-from another reduced version.
+still use their model-specific built-in resolution. Fluid still tiles use the
+pack resolution; flowing tiles use twice that size, matching vanilla water.
+All optional item, plant, and fluid textures are generated directly from the
+archived 512 x 512 masters, never from another reduced version.
 
 Regenerate every item/plant resolution and install the 16 x 16 defaults with:
 
 ```powershell
 python tools/build_item_plant_texture_packs.py
+```
+
+Regenerate painted fluid still/flow tiles the same way:
+
+```powershell
+python tools/build_fluid_texture_packs.py
 ```

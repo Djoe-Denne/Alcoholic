@@ -4,9 +4,12 @@ import com.djden.alcoholic.api.AlcoholicApi;
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.api.process.ProcessType;
 import com.djden.alcoholic.application.beverage.BeverageCatalog;
+import com.djden.alcoholic.application.machine.MultiblockDisplayRecipe;
+import com.djden.alcoholic.application.machine.MultiblockDisplayRecipes;
 import com.djden.alcoholic.application.process.ProcessDisplayRecipe;
 import com.djden.alcoholic.application.process.ProcessDisplayRecipes;
 import com.djden.alcoholic.forge.client.AlcoholicMachineScreen;
+import com.djden.alcoholic.minecraft.multiblock.IndustrialRuntime;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -33,6 +36,7 @@ public final class AlcoholicJeiPlugin implements IModPlugin {
 
     private IJeiRuntime runtime;
     private final Map<RecipeType<ProcessDisplayRecipe>, List<ProcessDisplayRecipe>> published = new LinkedHashMap<>();
+    private List<MultiblockDisplayRecipe> formations = List.of();
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -45,6 +49,7 @@ public final class AlcoholicJeiPlugin implements IModPlugin {
         for (JeiProcessSpec spec : specs()) {
             registration.addRecipeCategories(new ProcessRecipeCategory(guiHelper, spec));
         }
+        registration.addRecipeCategories(new MultiblockFormationCategory(guiHelper));
     }
 
     @Override
@@ -57,6 +62,8 @@ public final class AlcoholicJeiPlugin implements IModPlugin {
             registration.addRecipes(type, entry.getValue());
             published.put(type, List.copyOf(entry.getValue()));
         }
+        formations = MultiblockDisplayRecipes.from(IndustrialRuntime.shared().machines());
+        registration.addRecipes(MultiblockFormationCategory.TYPE, formations);
     }
 
     @Override
@@ -64,6 +71,8 @@ public final class AlcoholicJeiPlugin implements IModPlugin {
         for (JeiProcessSpec spec : specs()) {
             spec.catalystStacks().forEach(stack -> registration.addRecipeCatalyst(stack, spec.recipeType()));
         }
+        MultiblockFormationCategory.catalysts().forEach(stack ->
+                registration.addRecipeCatalyst(stack, MultiblockFormationCategory.TYPE));
     }
 
     @Override
@@ -74,14 +83,16 @@ public final class AlcoholicJeiPlugin implements IModPlugin {
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         runtime = jeiRuntime;
-        AlcoholicApi.shared().addReloadListener(() -> {
+        Runnable rebind = () -> {
             Minecraft minecraft = Minecraft.getInstance();
             if (minecraft != null) {
                 minecraft.execute(this::syncRecipes);
             } else {
                 syncRecipes();
             }
-        });
+        };
+        AlcoholicApi.shared().addReloadListener(rebind::run);
+        IndustrialRuntime.shared().store().addListener(rebind);
     }
 
     private void syncRecipes() {
@@ -91,6 +102,10 @@ public final class AlcoholicJeiPlugin implements IModPlugin {
         IRecipeManager manager = runtime.getRecipeManager();
         published.forEach(manager::hideRecipes);
         published.clear();
+        if (!formations.isEmpty()) {
+            manager.hideRecipes(MultiblockFormationCategory.TYPE, formations);
+            formations = List.of();
+        }
         BeverageCatalog catalog = ClientProcessCatalog.load();
         Map<ResourceId, List<ProcessDisplayRecipe>> grouped =
                 ProcessDisplayRecipes.groupByType(catalog, AlcoholicApi.shared());
@@ -99,6 +114,8 @@ public final class AlcoholicJeiPlugin implements IModPlugin {
             manager.addRecipes(type, recipes);
             published.put(type, List.copyOf(recipes));
         });
+        formations = MultiblockDisplayRecipes.from(IndustrialRuntime.shared().machines());
+        manager.addRecipes(MultiblockFormationCategory.TYPE, formations);
     }
 
     private static List<JeiProcessSpec> specs() {

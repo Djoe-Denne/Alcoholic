@@ -1,5 +1,6 @@
 package com.djden.alcoholic.minecraft.advancement;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -8,6 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
@@ -17,8 +19,13 @@ import java.util.UUID;
 public final class ProcessAdvancementState {
     private static final String LAST_ACTOR = "LastActor";
     private static final String PENDING = "Pending";
+    private static final String KIND = "Kind";
     private static final String PROCESS = "Process";
+    private static final String MACHINE = "Machine";
     private static final String LIQUID = "Liquid";
+    private static final String KIND_PROCESS = "process";
+    private static final String KIND_FORMED = "formed";
+    private static final int NEARBY_RANGE = 16;
 
     @Nullable
     private UUID lastActor;
@@ -39,7 +46,27 @@ public final class ProcessAdvancementState {
             AlcoholicCriteria.PROCESS_COMPLETED.trigger(actor, process, liquid);
             return;
         }
-        pending.add(new PendingCriterion(process, liquid));
+        pending.add(PendingCriterion.process(process, liquid));
+    }
+
+    public void formed(Level level, BlockPos position, ResourceLocation machine) {
+        ServerPlayer actor = resolve(level);
+        if (actor != null) {
+            AlcoholicCriteria.MULTIBLOCK_FORMED.trigger(actor, machine);
+            return;
+        }
+        if (lastActor != null) {
+            pending.add(PendingCriterion.formed(machine));
+            return;
+        }
+        List<ServerPlayer> nearby = nearbyPlayers(level, position);
+        if (!nearby.isEmpty()) {
+            for (ServerPlayer player : nearby) {
+                AlcoholicCriteria.MULTIBLOCK_FORMED.trigger(player, machine);
+            }
+            return;
+        }
+        pending.add(PendingCriterion.formed(machine));
     }
 
     public boolean hasPending() {
@@ -56,7 +83,12 @@ public final class ProcessAdvancementState {
         ListTag list = new ListTag();
         for (PendingCriterion criterion : pending) {
             CompoundTag entry = new CompoundTag();
-            entry.putString(PROCESS, criterion.process().toString());
+            entry.putString(KIND, criterion.kind());
+            if (KIND_FORMED.equals(criterion.kind())) {
+                entry.putString(MACHINE, criterion.id().toString());
+            } else {
+                entry.putString(PROCESS, criterion.id().toString());
+            }
             if (criterion.liquid() != null) {
                 entry.putString(LIQUID, criterion.liquid().toString());
             }
@@ -74,6 +106,16 @@ public final class ProcessAdvancementState {
         ListTag list = tag.getList(PENDING, Tag.TAG_COMPOUND);
         for (int index = 0; index < list.size(); index++) {
             CompoundTag entry = list.getCompound(index);
+            String kind = entry.contains(KIND) ? entry.getString(KIND) : KIND_PROCESS;
+            if (KIND_FORMED.equals(kind) || entry.contains(MACHINE)) {
+                ResourceLocation machine = ResourceLocation.tryParse(
+                        entry.contains(MACHINE) ? entry.getString(MACHINE) : entry.getString(PROCESS)
+                );
+                if (machine != null) {
+                    pending.add(PendingCriterion.formed(machine));
+                }
+                continue;
+            }
             ResourceLocation process = ResourceLocation.tryParse(entry.getString(PROCESS));
             if (process == null) {
                 continue;
@@ -81,7 +123,7 @@ public final class ProcessAdvancementState {
             ResourceLocation liquid = entry.contains(LIQUID)
                     ? ResourceLocation.tryParse(entry.getString(LIQUID))
                     : null;
-            pending.add(new PendingCriterion(process, liquid));
+            pending.add(PendingCriterion.process(process, liquid));
         }
     }
 
@@ -90,7 +132,11 @@ public final class ProcessAdvancementState {
             return;
         }
         for (PendingCriterion criterion : List.copyOf(pending)) {
-            AlcoholicCriteria.PROCESS_COMPLETED.trigger(server, criterion.process(), criterion.liquid());
+            if (KIND_FORMED.equals(criterion.kind())) {
+                AlcoholicCriteria.MULTIBLOCK_FORMED.trigger(server, criterion.id());
+            } else {
+                AlcoholicCriteria.PROCESS_COMPLETED.trigger(server, criterion.id(), criterion.liquid());
+            }
         }
         pending.clear();
     }
@@ -103,6 +149,21 @@ public final class ProcessAdvancementState {
         return server.getServer().getPlayerList().getPlayer(lastActor);
     }
 
-    private record PendingCriterion(ResourceLocation process, @Nullable ResourceLocation liquid) {
+    private static List<ServerPlayer> nearbyPlayers(Level level, BlockPos position) {
+        if (!(level instanceof ServerLevel server)) {
+            return List.of();
+        }
+        AABB box = new AABB(position).inflate(NEARBY_RANGE);
+        return server.getEntitiesOfClass(ServerPlayer.class, box, player -> !player.isSpectator());
+    }
+
+    private record PendingCriterion(String kind, ResourceLocation id, @Nullable ResourceLocation liquid) {
+        static PendingCriterion process(ResourceLocation process, @Nullable ResourceLocation liquid) {
+            return new PendingCriterion(KIND_PROCESS, process, liquid);
+        }
+
+        static PendingCriterion formed(ResourceLocation machine) {
+            return new PendingCriterion(KIND_FORMED, machine, null);
+        }
     }
 }

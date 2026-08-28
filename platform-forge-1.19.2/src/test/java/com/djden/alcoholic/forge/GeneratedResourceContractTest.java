@@ -334,6 +334,20 @@ class GeneratedResourceContractTest {
             resource("assets/alcoholic/models/item/" + item + ".json");
             assertPng16("assets/alcoholic/textures/item/" + item + ".png");
         }
+        for (String fluid : new String[]{
+                "red_grape_must",
+                "white_grape_must",
+                "young_red_wine",
+                "young_white_wine",
+                "red_wine",
+                "white_wine",
+                "wort",
+                "hopped_wort",
+                "beer"
+        }) {
+            assertPng16("assets/alcoholic/textures/block/" + fluid + "_still.png");
+            assertPngSize("assets/alcoholic/textures/block/" + fluid + "_flow.png", 32, 32);
+        }
     }
 
     @Test
@@ -405,9 +419,15 @@ class GeneratedResourceContractTest {
                     "advancements.alcoholic.produce_must.description",
                     "advancements.alcoholic.ferment_beverage.title",
                     "advancements.alcoholic.bottle.description",
+                    "advancements.alcoholic.industrial_root.title",
+                    "advancements.alcoholic.form_industrial_press.title",
+                    "advancements.alcoholic.form_industrial_conditioning.description",
+                    "jei.alcoholic.category.multiblock_formation",
                     "ftbquests.alcoholic.chapter.title",
                     "ftbquests.alcoholic.hover.press",
-                    "ftbquests.alcoholic.hover.bottle"
+                    "ftbquests.alcoholic.hover.bottle",
+                    "ftbquests.alcoholic.industrial.chapter.title",
+                    "ftbquests.alcoholic.hover.form_press"
             }) {
                 assertTrue(
                         translations.has(key),
@@ -442,6 +462,34 @@ class GeneratedResourceContractTest {
         resource("data/alcoholic/advancements/harvest_hops.json");
         resource("data/alcoholic/advancements/age_wine.json");
         resource("data/alcoholic/advancements/blend.json");
+    }
+
+    @Test
+    void industrialProgressionAdvancementsAreGenerated() throws IOException {
+        JsonObject root = resource("data/alcoholic/advancements/industrial_root.json");
+        assertFalse(root.has("parent"));
+        assertEquals("minecraft:inventory_changed", criterionTrigger(root, "has_casing"));
+        assertEquals("minecraft:inventory_changed", criterionTrigger(root, "has_press"));
+
+        JsonObject press = resource("data/alcoholic/advancements/form_industrial_press.json");
+        assertEquals("alcoholic:industrial_root", press.get("parent").getAsString());
+        assertEquals("alcoholic:multiblock_formed", criterionTrigger(press, "formed"));
+        assertEquals(
+                "alcoholic:industrial_press",
+                press.getAsJsonObject("criteria")
+                        .getAsJsonObject("formed")
+                        .getAsJsonObject("conditions")
+                        .get("machine")
+                        .getAsString()
+        );
+
+        resource("data/alcoholic/advancements/form_industrial_vat.json");
+        resource("data/alcoholic/advancements/form_industrial_tank.json");
+        resource("data/alcoholic/advancements/form_industrial_malt_house.json");
+        resource("data/alcoholic/advancements/form_industrial_roller_mill.json");
+        resource("data/alcoholic/advancements/form_industrial_mash_tun.json");
+        resource("data/alcoholic/advancements/form_industrial_kettle.json");
+        resource("data/alcoholic/advancements/form_industrial_conditioning.json");
     }
 
     private static String criterionTrigger(JsonObject advancement, String criterion) {
@@ -776,13 +824,17 @@ class GeneratedResourceContractTest {
     }
 
     private static void assertPng16(String path) throws IOException {
+        assertPngSize(path, 16, 16);
+    }
+
+    private static void assertPngSize(String path, int width, int height) throws IOException {
         ClassLoader loader = GeneratedResourceContractTest.class.getClassLoader();
         try (InputStream stream = loader.getResourceAsStream(path)) {
             assertNotNull(stream, "Missing generated texture " + path);
             BufferedImage image = ImageIO.read(stream);
             assertNotNull(image, "Invalid PNG texture " + path);
-            assertEquals(16, image.getWidth(), "Unexpected texture width " + path);
-            assertEquals(16, image.getHeight(), "Unexpected texture height " + path);
+            assertEquals(width, image.getWidth(), "Unexpected texture width " + path);
+            assertEquals(height, image.getHeight(), "Unexpected texture height " + path);
         }
     }
 

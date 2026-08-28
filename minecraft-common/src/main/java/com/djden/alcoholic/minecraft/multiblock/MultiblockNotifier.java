@@ -1,6 +1,8 @@
 package com.djden.alcoholic.minecraft.multiblock;
 
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -29,6 +31,24 @@ public final class MultiblockNotifier {
             BlockEntity entity = level.getBlockEntity(position);
             if (entity instanceof MultiblockControllerBlockEntity controller) {
                 controller.markStructureDirty();
+            }
+        });
+    }
+
+    public static void touchNearby(Player player, Level level, BlockPos origin) {
+        if (player == null || level == null || level.isClientSide) {
+            return;
+        }
+        BlockPos.betweenClosed(
+                origin.offset(-MAX_WIDTH, -MAX_HEIGHT, -MAX_DEPTH),
+                origin.offset(MAX_WIDTH, MAX_HEIGHT, MAX_DEPTH)
+        ).forEach(position -> {
+            if (!level.hasChunkAt(position)) {
+                return;
+            }
+            BlockEntity entity = level.getBlockEntity(position);
+            if (entity instanceof MultiblockControllerBlockEntity) {
+                AdvancementHooks.touch(player, entity);
             }
         });
     }

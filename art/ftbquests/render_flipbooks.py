@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Paint six 128x128 x 6-frame FTB quest flipbooks and copy them into the JAR."""
+"""Paint artisanal and industrial FTB quest flipbooks and copy them into the JAR."""
 
 from __future__ import annotations
 
@@ -31,6 +31,15 @@ GLASS = (196, 220, 228)
 GLASS_DARK = (120, 148, 160)
 GRAIN = (188, 148, 72)
 SHADOW = (40, 28, 18)
+STEEL = (120, 128, 136)
+STEEL_DARK = (72, 80, 88)
+STEEL_LIGHT = (176, 184, 192)
+BRASS = (188, 148, 72)
+GLASS_PANE = (160, 196, 208)
+HATCH = (96, 72, 48)
+PORT_ITEM = (72, 120, 176)
+PORT_FLUID = (48, 96, 160)
+PORT_KINETIC = (196, 120, 48)
 
 HERE = Path(__file__).resolve().parent
 JAR = HERE.parents[1] / (
@@ -169,13 +178,14 @@ def write_png(path: Path, frames: list[Canvas]) -> None:
     )
 
 
-def write_mcmeta(path: Path) -> None:
+def write_mcmeta(path: Path, frames: list[int] | None = None) -> None:
+    sequence = frames if frames is not None else [0, 1, 2, 3, 4, 5, 4, 3, 2, 1]
     path.write_text(
         '{\n'
         '  "animation": {\n'
         '    "frametime": 6,\n'
         '    "interpolate": false,\n'
-        '    "frames": [0, 1, 2, 3, 4, 5, 4, 3, 2, 1]\n'
+        f'    "frames": {sequence}\n'
         '  }\n'
         '}\n',
         encoding="utf-8",
@@ -295,6 +305,72 @@ def bottle_frame(i: int) -> Canvas:
     return c
 
 
+def iso(x: int, y: int, z: int) -> tuple[int, int]:
+    return 20 + x * 18 + z * 10, 96 - y * 16 - z * 8 + x * 2
+
+
+def cell_color(role: str, kinetic: bool) -> tuple[int, int, int]:
+    if role == "controller":
+        return BRASS
+    if role == "window":
+        return GLASS_PANE
+    if role == "hatch":
+        return HATCH
+    if role == "item":
+        return PORT_ITEM
+    if role == "fluid":
+        return PORT_FLUID
+    if role == "kinetic":
+        return PORT_KINETIC
+    return STEEL_LIGHT if kinetic else STEEL
+
+
+def hull_roles(kinetic: bool) -> dict[tuple[int, int, int], str]:
+    roles: dict[tuple[int, int, int], str] = {}
+    for x in range(3):
+        for y in range(4):
+            for z in range(3):
+                if x in (0, 2) or y in (0, 3) or z in (0, 2):
+                    roles[(x, y, z)] = "casing"
+    roles[(1, 0, 0)] = "item"
+    roles[(1, 1, 0)] = "controller"
+    roles[(1, 2, 0)] = "hatch"
+    roles[(2, 2, 0)] = "fluid"
+    roles[(0, 3, 0)] = "window"
+    roles[(2, 3, 0)] = "window"
+    if kinetic:
+        roles[(2, 1, 1)] = "kinetic"
+    return roles
+
+
+def form_frame(visible_to: int, kinetic: bool, accent: tuple[int, int, int]) -> Canvas:
+    c = Canvas()
+    c.workshop_floor()
+    c.rect(8, 8, 36, 14, accent)
+    roles = hull_roles(kinetic)
+    for y in range(visible_to + 1):
+        for z in range(2, -1, -1):
+            for x in range(3):
+                role = roles.get((x, y, z))
+                if role is None:
+                    continue
+                sx, sy = iso(x, y, z)
+                color = cell_color(role, kinetic)
+                c.rect(sx, sy, sx + 16, sy + 12, color)
+                c.rect(sx, sy, sx + 16, sy + 2, mix(color, STEEL_LIGHT, 0.4))
+                c.rect(sx, sy + 10, sx + 16, sy + 12, mix(color, STEEL_DARK, 0.4))
+    return c
+
+
+def write_book(name: str, frames: list[Canvas], sequence: list[int]) -> None:
+    local_png = HERE / f"{name}.png"
+    write_png(local_png, frames)
+    write_mcmeta(HERE / f"{name}.png.mcmeta", sequence)
+    shutil.copy2(local_png, JAR / f"{name}.png")
+    shutil.copy2(HERE / f"{name}.png.mcmeta", JAR / f"{name}.png.mcmeta")
+    print(f"wrote {name}.png ({SIZE}x{SIZE * len(frames)})")
+
+
 def main() -> None:
     painters = {
         "press": press_frame,
@@ -306,13 +382,19 @@ def main() -> None:
     }
     JAR.mkdir(parents=True, exist_ok=True)
     for name, painter in painters.items():
-        frames = [painter(i) for i in range(FRAMES)]
-        local_png = HERE / f"{name}.png"
-        write_png(local_png, frames)
-        write_mcmeta(HERE / f"{name}.png.mcmeta")
-        shutil.copy2(local_png, JAR / f"{name}.png")
-        shutil.copy2(HERE / f"{name}.png.mcmeta", JAR / f"{name}.png.mcmeta")
-        print(f"wrote {name}.png ({SIZE}x{SIZE * FRAMES})")
+        write_book(name, [painter(i) for i in range(FRAMES)], [0, 1, 2, 3, 4, 5, 4, 3, 2, 1])
+    industrial = {
+        "form_press": (True, (148, 48, 80)),
+        "form_vat": (False, (88, 20, 40)),
+        "form_tank": (False, (120, 128, 136)),
+        "form_malt_house": (False, (188, 148, 72)),
+        "form_roller_mill": (True, (196, 120, 48)),
+        "form_mash_tun": (False, (196, 156, 64)),
+        "form_kettle": (False, (220, 80, 24)),
+        "form_conditioning": (False, (160, 196, 208)),
+    }
+    for name, (kinetic, accent) in industrial.items():
+        write_book(name, [form_frame(layer, kinetic, accent) for layer in range(4)], [0, 1, 2, 3, 2, 1])
 
 
 if __name__ == "__main__":

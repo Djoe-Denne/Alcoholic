@@ -3,6 +3,7 @@ package com.djden.alcoholic.forge.datagen;
 import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
 import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
 import com.djden.alcoholic.minecraft.advancement.CropHarvestedTrigger;
+import com.djden.alcoholic.minecraft.advancement.MultiblockFormedTrigger;
 import com.djden.alcoholic.minecraft.advancement.ProcessCompletedTrigger;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
 import net.minecraft.advancements.Advancement;
@@ -158,6 +159,117 @@ final class AlcoholicAdvancementProvider extends AdvancementProvider {
                         ProcessCompletedTrigger.completed(AdvancementHooks.location(BuiltinRegistrations.BOTTLE))
                 )
                 .save(saver, id("bottle"), files);
+
+        Advancement industrialRoot = Advancement.Builder.advancement()
+                .display(
+                        item("industrial_casing"),
+                        title("industrial_root"),
+                        description("industrial_root"),
+                        ResourceLocation.fromNamespaceAndPath(
+                                "minecraft",
+                                "textures/gui/advancements/backgrounds/stone.png"
+                        ),
+                        FrameType.TASK,
+                        true,
+                        false,
+                        false
+                )
+                .addCriterion("has_casing", InventoryChangeTrigger.TriggerInstance.hasItems(item("industrial_casing")))
+                .addCriterion(
+                        "has_press",
+                        InventoryChangeTrigger.TriggerInstance.hasItems(item("industrial_press_controller"))
+                )
+                .addCriterion(
+                        "has_vat",
+                        InventoryChangeTrigger.TriggerInstance.hasItems(item("industrial_vat_controller"))
+                )
+                .addCriterion(
+                        "has_tank",
+                        InventoryChangeTrigger.TriggerInstance.hasItems(item("industrial_tank_controller"))
+                )
+                .addCriterion(
+                        "has_malt_house",
+                        InventoryChangeTrigger.TriggerInstance.hasItems(item("industrial_malt_house_controller"))
+                )
+                .addCriterion(
+                        "has_roller_mill",
+                        InventoryChangeTrigger.TriggerInstance.hasItems(item("industrial_roller_mill_controller"))
+                )
+                .addCriterion(
+                        "has_mash_tun",
+                        InventoryChangeTrigger.TriggerInstance.hasItems(item("industrial_mash_tun_controller"))
+                )
+                .addCriterion(
+                        "has_kettle",
+                        InventoryChangeTrigger.TriggerInstance.hasItems(item("industrial_brewing_kettle_controller"))
+                )
+                .addCriterion(
+                        "has_conditioning",
+                        InventoryChangeTrigger.TriggerInstance.hasItems(
+                                item("industrial_conditioning_vessel_controller")
+                        )
+                )
+                .requirements(RequirementsStrategy.OR)
+                .save(saver, id("industrial_root"), files);
+
+        form(industrialRoot, saver, files, "form_industrial_press", "industrial_press_controller", "industrial_press");
+        form(industrialRoot, saver, files, "form_industrial_vat", "industrial_vat_controller", "industrial_fermentation_vat");
+        form(industrialRoot, saver, files, "form_industrial_tank", "industrial_tank_controller", "industrial_storage_tank");
+        form(
+                industrialRoot,
+                saver,
+                files,
+                "form_industrial_malt_house",
+                "industrial_malt_house_controller",
+                "industrial_malt_house"
+        );
+        form(
+                industrialRoot,
+                saver,
+                files,
+                "form_industrial_roller_mill",
+                "industrial_roller_mill_controller",
+                "industrial_roller_mill"
+        );
+        form(
+                industrialRoot,
+                saver,
+                files,
+                "form_industrial_mash_tun",
+                "industrial_mash_tun_controller",
+                "industrial_mash_tun"
+        );
+        form(
+                industrialRoot,
+                saver,
+                files,
+                "form_industrial_kettle",
+                "industrial_brewing_kettle_controller",
+                "industrial_brewing_kettle"
+        );
+        form(
+                industrialRoot,
+                saver,
+                files,
+                "form_industrial_conditioning",
+                "industrial_conditioning_vessel_controller",
+                "industrial_conditioning_vessel"
+        );
+    }
+
+    private static void form(
+            Advancement parent,
+            Consumer<Advancement> saver,
+            ExistingFileHelper files,
+            String path,
+            String icon,
+            String machine
+    ) {
+        Advancement.Builder.advancement()
+                .parent(parent)
+                .display(item(icon), title(path), description(path), null, FrameType.GOAL, true, true, false)
+                .addCriterion("formed", MultiblockFormedTrigger.formed(id(machine)))
+                .save(saver, id(path), files);
     }
 
     @Override
