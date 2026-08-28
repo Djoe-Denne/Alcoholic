@@ -4,7 +4,7 @@
       "model": "alcoholic:block/industrial_roller_mill_controller"
     },
     "formed=true": {
-      "model": "alcoholic:block/industrial_roller_mill_controller_formed"
+      "model": "alcoholic:block/industrial_roller_mill_controller"
     }
   }
 }

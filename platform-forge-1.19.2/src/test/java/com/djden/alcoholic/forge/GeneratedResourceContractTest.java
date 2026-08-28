@@ -1,6 +1,7 @@
 package com.djden.alcoholic.forge;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -93,11 +95,12 @@ class GeneratedResourceContractTest {
         assertEquals(2, loot.getAsJsonArray("pools").size());
         resource("assets/alcoholic/blockstates/wild_hops.json");
         JsonObject model = resource("assets/alcoholic/models/block/wild_hops.json");
-        assertEquals("minecraft:block/cross", model.get("parent").getAsString());
         assertEquals(
                 "alcoholic:block/wild_hops",
                 model.getAsJsonObject("textures").get("cross").getAsString()
         );
+        assertCrossFoliage(model);
+        assertWoodTrunk(model);
         JsonObject itemModel = resource("assets/alcoholic/models/item/wild_hops.json");
         assertEquals("minecraft:item/generated", itemModel.get("parent").getAsString());
         assertEquals(
@@ -144,21 +147,39 @@ class GeneratedResourceContractTest {
                             "assets/alcoholic/models/block/" + color
                                     + "_grapevine_" + stage + "_trained.json"
                     );
+                    assertWoodTrunk(resource(
+                            "assets/alcoholic/models/block/" + color
+                                    + "_grapevine_" + stage + "_trained.json"
+                    ));
                     resource(
                             "assets/alcoholic/models/block/" + color
                                     + "_grapevine_" + stage + "_base.json"
                     );
-                    resource(
+                    assertWoodTrunk(resource(
+                            "assets/alcoholic/models/block/" + color
+                                    + "_grapevine_" + stage + "_base.json"
+                    ));
+                    JsonObject trainedStem = resource(
                             "assets/alcoholic/models/block/" + color
                                     + "_grapevine_stem_" + stage + "_trained.json"
                     );
-                    resource(
+                    assertCrossFoliage(trainedStem);
+                    assertWoodTrunk(trainedStem);
+                    JsonObject untrainedStem = resource(
                             "assets/alcoholic/models/block/" + color
                                     + "_grapevine_stem_" + stage + "_untrained.json"
                     );
-                    resource(
+                    assertCrossFoliage(untrainedStem);
+                    assertWoodTrunk(untrainedStem);
+                    JsonObject canopy = resource(
                             "assets/alcoholic/models/block/" + color
                                     + "_grapevine_canopy_" + stage + ".json"
+                    );
+                    assertCrossFoliage(canopy);
+                    assertWoodTrunk(canopy);
+                    assertTrue(
+                            canopy.getAsJsonObject("textures").has("wire"),
+                            "Canopy must keep the trellis wire"
                     );
                 }
             }
@@ -176,6 +197,43 @@ class GeneratedResourceContractTest {
                     ),
                     "Legacy age must not duplicate every visual variant"
             );
+        }
+    }
+
+    @Test
+    void hopBinesProvideColumnSegmentAssets() throws IOException {
+        JsonObject variants = resource("assets/alcoholic/blockstates/hop_bine.json")
+                .getAsJsonObject("variants");
+        assertEquals(12, variants.size());
+
+        for (int age = 0; age <= 2; age++) {
+            JsonObject single = resource("assets/alcoholic/models/block/hop_bine_" + age + ".json");
+            JsonObject bottom = resource(
+                    "assets/alcoholic/models/block/hop_bine_" + age + "_bottom.json"
+            );
+            JsonObject middle = resource(
+                    "assets/alcoholic/models/block/hop_bine_" + age + "_middle.json"
+            );
+            JsonObject top = resource(
+                    "assets/alcoholic/models/block/hop_bine_" + age + "_top.json"
+            );
+            assertEquals("minecraft:block/cross", single.get("parent").getAsString());
+            assertCrossFoliage(bottom);
+            assertCrossFoliage(middle);
+            assertCrossFoliage(top);
+            assertWoodTrunk(bottom);
+            assertWoodTrunk(middle);
+            assertWoodTrunk(top);
+            assertNotEquals(bottom, top, "Bottom and top hop models must differ");
+            assertNotEquals(bottom, middle, "Bottom and middle hop models must differ");
+            for (String segment : new String[]{"single", "bottom", "middle", "top"}) {
+                String modelName = "hop_bine_" + age
+                        + ("single".equals(segment) ? "" : "_" + segment);
+                JsonObject variant = variants.getAsJsonObject(
+                        "age=" + age + ",segment=" + segment
+                );
+                assertEquals("alcoholic:block/" + modelName, variant.get("model").getAsString());
+            }
         }
     }
 
@@ -224,21 +282,21 @@ class GeneratedResourceContractTest {
                 "electric_motor",
                 "access_hatch",
                 "industrial_casing",
-                "machine_window"
+                "machine_window",
+                "fluid_port",
+                "item_port",
+                "kinetic_port",
+                "industrial_press_controller",
+                "industrial_roller_mill_controller"
         }) {
             resource("assets/alcoholic/blockstates/" + block + ".json");
             resource("assets/alcoholic/models/block/" + block + ".json");
             resource("assets/alcoholic/models/item/" + block + ".json");
         }
         for (String block : new String[]{
-                "fluid_port",
-                "item_port",
-                "kinetic_port",
-                "industrial_press_controller",
                 "industrial_vat_controller",
                 "industrial_tank_controller",
                 "industrial_malt_house_controller",
-                "industrial_roller_mill_controller",
                 "industrial_mash_tun_controller",
                 "industrial_brewing_kettle_controller",
                 "industrial_conditioning_vessel_controller"
@@ -548,6 +606,72 @@ class GeneratedResourceContractTest {
             assertEquals(16, image.getWidth(), "Unexpected texture width " + path);
             assertEquals(16, image.getHeight(), "Unexpected texture height " + path);
         }
+    }
+
+    private static void assertWoodTrunk(JsonObject model) {
+        JsonObject stem = findCentralStem(model);
+        assertNotNull(stem, "Missing central wood trunk");
+        JsonObject textures = model.getAsJsonObject("textures");
+        assertNotNull(textures, "Missing model textures");
+        assertEquals(
+                "alcoholic:block/vineyard_post",
+                textures.get("wood").getAsString(),
+                "Wood trunk must use the vineyard post texture"
+        );
+        JsonObject faces = stem.getAsJsonObject("faces");
+        assertNotNull(faces, "Missing wood trunk faces");
+        for (String face : new String[]{"down", "up", "north", "south", "west", "east"}) {
+            assertEquals(
+                    "#wood",
+                    faces.getAsJsonObject(face).get("texture").getAsString(),
+                    "Wood trunk face " + face + " must use #wood"
+            );
+        }
+    }
+
+    private static void assertCrossFoliage(JsonObject model) {
+        assertTrue(hasCrossFoliage(model), "Missing cross foliage planes");
+    }
+
+    private static boolean hasCrossFoliage(JsonObject model) {
+        JsonArray elements = model.getAsJsonArray("elements");
+        if (elements == null) {
+            return false;
+        }
+        for (JsonElement element : elements) {
+            JsonObject candidate = element.getAsJsonObject();
+            if (!candidate.has("from") || !candidate.has("to")) {
+                continue;
+            }
+            JsonArray from = candidate.getAsJsonArray("from");
+            if (from.get(0).getAsDouble() == 0.8) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static JsonObject findCentralStem(JsonObject model) {
+        JsonArray elements = model.getAsJsonArray("elements");
+        if (elements == null) {
+            return null;
+        }
+        for (JsonElement element : elements) {
+            JsonObject candidate = element.getAsJsonObject();
+            if (!candidate.has("from") || !candidate.has("to")) {
+                continue;
+            }
+            JsonArray from = candidate.getAsJsonArray("from");
+            JsonArray to = candidate.getAsJsonArray("to");
+            if (from.get(0).getAsDouble() == 7.25
+                    && from.get(1).getAsDouble() == 0.0
+                    && from.get(2).getAsDouble() == 7.25
+                    && to.get(0).getAsDouble() == 8.75
+                    && to.get(2).getAsDouble() == 8.75) {
+                return candidate;
+            }
+        }
+        return null;
     }
 
     private static JsonObject resource(String path) throws IOException {

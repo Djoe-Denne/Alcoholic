@@ -545,18 +545,26 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                     default -> 16;
                 }
                 : 16;
+        String elements = switch (kind) {
+            case UNTRAINED -> threeCrossPlanes(height);
+            case STEM_TRAINED, STEM_UNTRAINED, TRAINED_SHORT, TRAINED_BASE ->
+                    threeCrossPlanes(16) + ",\n" + centralStem(16);
+        };
+        String woodTexture = kind == VineModelKind.UNTRAINED
+                ? ""
+                : ",\n                    \"wood\": \"alcoholic:block/vineyard_post\"";
         return """
                 {
                   "ambientocclusion": false,
                   "textures": {
                     "particle": "alcoholic:block/%s",
-                    "cross": "alcoholic:block/%s"
+                    "cross": "alcoholic:block/%s"%s
                   },
                   "elements": [
                 %s
                   ]
                 }
-                """.formatted(texture, texture, threeCrossPlanes(height));
+                """.formatted(texture, texture, woodTexture, elements);
     }
 
     private static String threeCrossPlanes(int height) {
@@ -591,6 +599,75 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                     }""".formatted(height);
     }
 
+    private static String twoCrossPlanes(int height) {
+        return """
+                    {
+                      "from": [0.8, 0, 8],
+                      "to": [15.2, %1$d, 8],
+                      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": 45, "rescale": true },
+                      "shade": false,
+                      "faces": {
+                        "north": { "uv": [0, 0, 16, 16], "texture": "#cross" },
+                        "south": { "uv": [0, 0, 16, 16], "texture": "#cross" }
+                      }
+                    },
+                    {
+                      "from": [0.8, 0, 8],
+                      "to": [15.2, %1$d, 8],
+                      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": -45, "rescale": true },
+                      "shade": false,
+                      "faces": {
+                        "north": { "uv": [0, 0, 16, 16], "texture": "#cross" },
+                        "south": { "uv": [0, 0, 16, 16], "texture": "#cross" }
+                      }
+                    }""".formatted(height);
+    }
+
+    private static String centralStem(int height) {
+        return """
+                    {
+                      "from": [7.25, 0, 7.25],
+                      "to": [8.75, %1$d, 8.75],
+                      "shade": false,
+                      "faces": {
+                        "down": { "uv": [6, 6, 10, 10], "texture": "#wood" },
+                        "up": { "uv": [6, 6, 10, 10], "texture": "#wood" },
+                        "north": { "uv": [6, 0, 10, 16], "texture": "#wood" },
+                        "south": { "uv": [6, 0, 10, 16], "texture": "#wood" },
+                        "west": { "uv": [6, 0, 10, 16], "texture": "#wood" },
+                        "east": { "uv": [6, 0, 10, 16], "texture": "#wood" }
+                      }
+                    }""".formatted(height);
+    }
+
+    private static String hopBineModel(int age, String segment) {
+        String elements = switch (segment) {
+            case "bottom" -> twoCrossPlanes(bottomFoliageHeight(age)) + ",\n" + centralStem(16);
+            default -> twoCrossPlanes(16) + ",\n" + centralStem(16);
+        };
+        return """
+                {
+                  "ambientocclusion": false,
+                  "textures": {
+                    "particle": "alcoholic:block/hop_bine_%1$d",
+                    "cross": "alcoholic:block/hop_bine_%1$d",
+                    "wood": "alcoholic:block/vineyard_post"
+                  },
+                  "elements": [
+                %2$s
+                  ]
+                }
+                """.formatted(age, elements);
+    }
+
+    private static int bottomFoliageHeight(int age) {
+        return switch (age) {
+            case 0 -> 8;
+            case 1 -> 10;
+            default -> 12;
+        };
+    }
+
     private static String canopyModel(String texture) {
         return """
                 {
@@ -598,9 +675,11 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                   "textures": {
                     "particle": "alcoholic:block/%s",
                     "cross": "alcoholic:block/%s",
+                    "wood": "alcoholic:block/vineyard_post",
                     "wire": "alcoholic:block/trellis_wire"
                   },
                   "elements": [
+                %s,
                 %s,
                     {
                       "from": [0, 7, 7],
@@ -616,7 +695,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                     }
                   ]
                 }
-                """.formatted(texture, texture, threeCrossPlanes(16));
+                """.formatted(texture, texture, threeCrossPlanes(16), centralStem(16));
     }
 
     private enum VineModelKind {
@@ -699,10 +778,10 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
         AccessHatchAssetData.add(sink);
         IndustrialCasingAssetData.add(sink);
         MachineWindowAssetData.add(sink);
+        FluidPortAssetData.add(sink);
+        ItemPortAssetData.add(sink);
+        KineticPortAssetData.add(sink);
         for (String name : new String[]{
-                "fluid_port",
-                "item_port",
-                "kinetic_port",
                 "industrial_vat_controller",
                 "industrial_tank_controller",
                 "industrial_malt_house_controller",
@@ -713,74 +792,8 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
             addSimpleBlock(sink, name);
             addBlockItem(sink, name);
         }
-        sink.add(
-                "assets/alcoholic/blockstates/industrial_press_controller.json",
-                """
-                        {
-                          "variants": {
-                            "formed=false": { "model": "alcoholic:block/industrial_press_controller" },
-                            "formed=true": { "model": "alcoholic:block/industrial_press_controller_formed" }
-                          }
-                        }
-                        """
-        );
-        sink.add(
-                "assets/alcoholic/models/block/industrial_press_controller.json",
-                """
-                        {
-                          "parent": "minecraft:block/cube_all",
-                          "textures": {
-                            "all": "alcoholic:block/industrial_press_controller"
-                          }
-                        }
-                        """
-        );
-        sink.add(
-                "assets/alcoholic/models/block/industrial_press_controller_formed.json",
-                """
-                        {
-                          "parent": "minecraft:block/cube_all",
-                          "textures": {
-                            "all": "alcoholic:block/industrial_press_controller_formed"
-                          }
-                        }
-                        """
-        );
-        addBlockItem(sink, "industrial_press_controller");
-        sink.add(
-                "assets/alcoholic/blockstates/industrial_roller_mill_controller.json",
-                """
-                        {
-                          "variants": {
-                            "formed=false": { "model": "alcoholic:block/industrial_roller_mill_controller" },
-                            "formed=true": { "model": "alcoholic:block/industrial_roller_mill_controller_formed" }
-                          }
-                        }
-                        """
-        );
-        sink.add(
-                "assets/alcoholic/models/block/industrial_roller_mill_controller.json",
-                """
-                        {
-                          "parent": "minecraft:block/cube_all",
-                          "textures": {
-                            "all": "alcoholic:block/industrial_roller_mill_controller"
-                          }
-                        }
-                        """
-        );
-        sink.add(
-                "assets/alcoholic/models/block/industrial_roller_mill_controller_formed.json",
-                """
-                        {
-                          "parent": "minecraft:block/cube_all",
-                          "textures": {
-                            "all": "alcoholic:block/industrial_roller_mill_controller_formed"
-                          }
-                        }
-                        """
-        );
-        addBlockItem(sink, "industrial_roller_mill_controller");
+        IndustrialPressControllerAssetData.add(sink);
+        IndustrialRollerMillControllerAssetData.add(sink);
     }
 
     private static void addSimpleBlock(JsonSink sink, String name) {
@@ -914,15 +927,29 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
         sink.add("assets/alcoholic/blockstates/barley_crop.json", barleyVariants.toString());
 
         StringBuilder hopVariants = new StringBuilder("{\n  \"variants\": {\n");
+        boolean firstHopVariant = true;
         for (int age = 0; age <= 2; age++) {
-            if (age > 0) {
-                hopVariants.append(",\n");
+            for (String segment : new String[]{"single", "bottom", "middle", "top"}) {
+                if (!firstHopVariant) {
+                    hopVariants.append(",\n");
+                }
+                String modelName = "hop_bine_" + age
+                        + ("single".equals(segment) ? "" : "_" + segment);
+                hopVariants.append("    \"age=")
+                        .append(age)
+                        .append(",segment=")
+                        .append(segment)
+                        .append("\": { \"model\": \"alcoholic:block/")
+                        .append(modelName)
+                        .append("\" }");
+                firstHopVariant = false;
+                if (!"single".equals(segment)) {
+                    sink.add(
+                            "assets/alcoholic/models/block/" + modelName + ".json",
+                            hopBineModel(age, segment)
+                    );
+                }
             }
-            hopVariants.append("    \"age=")
-                    .append(age)
-                    .append("\": { \"model\": \"alcoholic:block/hop_bine_")
-                    .append(age)
-                    .append("\" }");
             sink.add(
                     "assets/alcoholic/models/block/hop_bine_" + age + ".json",
                     """
@@ -940,10 +967,18 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                 "assets/alcoholic/models/block/wild_hops.json",
                 """
                         {
-                          "parent": "minecraft:block/cross",
-                          "textures": { "cross": "alcoholic:block/wild_hops" }
+                          "ambientocclusion": false,
+                          "textures": {
+                            "particle": "alcoholic:block/wild_hops",
+                            "cross": "alcoholic:block/wild_hops",
+                            "wood": "alcoholic:block/vineyard_post"
+                          },
+                          "elements": [
+                        %s,
+                        %s
+                          ]
                         }
-                        """
+                        """.formatted(twoCrossPlanes(16), centralStem(16))
         );
         sink.add(
                 "assets/alcoholic/blockstates/wild_hops.json",

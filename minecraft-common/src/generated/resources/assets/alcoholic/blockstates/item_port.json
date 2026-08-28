@@ -1,7 +1,49 @@
 {
   "variants": {
-    "": {
+    "facing=east,mode=both": {
+      "model": "alcoholic:block/item_port",
+      "y": 90
+    },
+    "facing=east,mode=input": {
+      "model": "alcoholic:block/item_port",
+      "y": 90
+    },
+    "facing=east,mode=output": {
+      "model": "alcoholic:block/item_port",
+      "y": 90
+    },
+    "facing=north,mode=both": {
       "model": "alcoholic:block/item_port"
+    },
+    "facing=north,mode=input": {
+      "model": "alcoholic:block/item_port"
+    },
+    "facing=north,mode=output": {
+      "model": "alcoholic:block/item_port"
+    },
+    "facing=south,mode=both": {
+      "model": "alcoholic:block/item_port",
+      "y": 180
+    },
+    "facing=south,mode=input": {
+      "model": "alcoholic:block/item_port",
+      "y": 180
+    },
+    "facing=south,mode=output": {
+      "model": "alcoholic:block/item_port",
+      "y": 180
+    },
+    "facing=west,mode=both": {
+      "model": "alcoholic:block/item_port",
+      "y": 270
+    },
+    "facing=west,mode=input": {
+      "model": "alcoholic:block/item_port",
+      "y": 270
+    },
+    "facing=west,mode=output": {
+      "model": "alcoholic:block/item_port",
+      "y": 270
     }
   }
 }

@@ -16,3 +16,16 @@ build/
 out/
 logs/
 crash-reports/
+.grepai/
+
+# Local Cursor MCP (absolute Node / project paths). Shared skills stay tracked.
+.cursor/mcp.json
+
+# OS / JVM noise
+.DS_Store
+Thumbs.db
+Desktop.ini
+hs_err_pid*
+replay_pid*
+*.hprof
+.kotlin/

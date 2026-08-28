@@ -1,13 +1,40 @@
 {
   "variants": {
-    "age=0": {
+    "age=0,segment=bottom": {
+      "model": "alcoholic:block/hop_bine_0_bottom"
+    },
+    "age=0,segment=middle": {
+      "model": "alcoholic:block/hop_bine_0_middle"
+    },
+    "age=0,segment=single": {
       "model": "alcoholic:block/hop_bine_0"
     },
-    "age=1": {
+    "age=0,segment=top": {
+      "model": "alcoholic:block/hop_bine_0_top"
+    },
+    "age=1,segment=bottom": {
+      "model": "alcoholic:block/hop_bine_1_bottom"
+    },
+    "age=1,segment=middle": {
+      "model": "alcoholic:block/hop_bine_1_middle"
+    },
+    "age=1,segment=single": {
       "model": "alcoholic:block/hop_bine_1"
     },
-    "age=2": {
+    "age=1,segment=top": {
+      "model": "alcoholic:block/hop_bine_1_top"
+    },
+    "age=2,segment=bottom": {
+      "model": "alcoholic:block/hop_bine_2_bottom"
+    },
+    "age=2,segment=middle": {
+      "model": "alcoholic:block/hop_bine_2_middle"
+    },
+    "age=2,segment=single": {
       "model": "alcoholic:block/hop_bine_2"
+    },
+    "age=2,segment=top": {
+      "model": "alcoholic:block/hop_bine_2_top"
     }
   }
 }

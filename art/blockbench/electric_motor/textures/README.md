@@ -29,13 +29,13 @@ pack. The editable source remains in the adjacent Blockbench project.
 | Settings | `…/mechanical/ElectricMotorSettings.java` |
 | BE type | `AlcoholicIds.ELECTRIC_MOTOR_ENTITY` = `alcoholic:electric_motor` via `ProcessingContentRegistrar` |
 | Properties | `FACING`, `LIT` (`BlockStateProperties.LIT`) — lumière 7 si `LIT` |
-| Renderer / BER | aucune |
+| Renderer / BER | `ElectricMotorRenderer` — arbre split `electric_motor_shaft` si `LIT` |
 | Modèles | handmade `…/models/block/electric_motor.json` + `_on.json` |
 | Texture défaut | handmade 64×64 `…/textures/block/electric_motor.png` (+ `_on`) |
 | Blockstate | generated `facing=*` + `lit=*` : `…/generated/…/blockstates/electric_motor.json` |
 | Datagen | `ElectricMotorAssetData` (blockstate + item) — **pas** de `cube_all` generated |
 | Client | `AlcoholicClient` : `RenderType.cutout()` |
-| Handmade `main` | modèles off/on + atlas 64×64 (comme le moteur à combustion, sans split shaft) |
+| Handmade `main` | modèles off/on + split `_shaft` + atlas 64×64 (pattern moulin / moteur à combustion) |
 
 ## Animations / états → Java
 
@@ -43,7 +43,7 @@ Si le modèle 3D introduit une animation ou un état visuel, mettre à jour Bloc
 
 - **Déjà dans le code** : `FACING` + `LIT` ; la BE pose `LIT` selon l’alimentation (`ElectricMotorBlockEntity`).
 - **Art** : off / on **alignés** sur `LIT`. Pas d’écart d’état.
-- **Si pièces mobiles** (arbre / ventilateur) : split comme `primitive_combustion_engine` (`_shaft`, `_flywheel` dans `minecraft-common/src/main/resources/assets/alcoholic/models/block/`) + blockstate `lit` existant. Ne pas inventer une property `SPINNING`.
+- **Arbre** : split `electric_motor_shaft.json` + BER `ElectricMotorRenderer` tant que `LIT`. Pas de property `SPINNING`.
 
 ## Mini-prompt copiable
 

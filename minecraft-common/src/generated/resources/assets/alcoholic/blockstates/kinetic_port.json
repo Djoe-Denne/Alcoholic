@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "alcoholic:block/kinetic_port",
+      "y": 90
+    },
+    "facing=north": {
       "model": "alcoholic:block/kinetic_port"
+    },
+    "facing=south": {
+      "model": "alcoholic:block/kinetic_port",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "alcoholic:block/kinetic_port",
+      "y": 270
     }
   }
 }

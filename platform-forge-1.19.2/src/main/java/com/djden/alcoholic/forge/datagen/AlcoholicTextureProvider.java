@@ -26,9 +26,6 @@ final class AlcoholicTextureProvider implements DataProvider {
         textures.put("block/barley_crop_0", 0xFF7A9A3A);
         textures.put("block/barley_crop_1", 0xFFC4B24A);
         textures.put("block/barley_crop_2", 0xFFD9B44A);
-        textures.put("block/hop_bine_0", 0xFF3F7A32);
-        textures.put("block/hop_bine_1", 0xFF4C8F3C);
-        textures.put("block/hop_bine_2", 0xFF5EA24A);
         textures.put("item/barley", 0xFFC9A227);
         textures.put("item/barley_seeds", 0xFF8C6B2A);
         textures.put("item/malted_barley", 0xFFA36A2B);
@@ -40,8 +37,6 @@ final class AlcoholicTextureProvider implements DataProvider {
         textures.put("item/hopped_wort_bucket", 0xFFB8860B);
         textures.put("item/beer_bucket", 0xFFD4A017);
         textures.put("block/industrial_malt_house_controller", 0xFF8B6914);
-        textures.put("block/industrial_roller_mill_controller", 0xFF6A6A72);
-        textures.put("block/industrial_roller_mill_controller_formed", 0xFF8A8A94);
         textures.put("block/industrial_mash_tun_controller", 0xFF6B4F2A);
         textures.put("block/industrial_brewing_kettle_controller", 0xFF6E7A84);
         textures.put("block/industrial_conditioning_vessel_controller", 0xFF4A6A5A);

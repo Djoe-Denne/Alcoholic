@@ -1,16 +1,11 @@
-// 1.19.2	2026-08-27T21:49:46.3906015	Alcoholic generated textures
+// 1.19.2	2026-08-28T12:25:36.1311526	Alcoholic generated textures
 8e41c39e4652d93f7abbf9547649b6c50b01717a assets/alcoholic/textures/block/barley_crop_0.png
 789cc05ecfe288a38b35931c5e8e183a9e97a364 assets/alcoholic/textures/block/barley_crop_1.png
 8baed5b41a83f519f955ab022ef12c0aa0a1b130 assets/alcoholic/textures/block/barley_crop_2.png
-37be719f22a389b4ffb65033d136526fc46aae63 assets/alcoholic/textures/block/hop_bine_0.png
-9c6c78775b93d92d210d4cd805980c40dc186c1c assets/alcoholic/textures/block/hop_bine_1.png
-c5837a85317ded1e81e0aab80d75d015c8a1c89d assets/alcoholic/textures/block/hop_bine_2.png
 0b7903b7f6b6ea4108eb605b65b38b0cdc3a2f11 assets/alcoholic/textures/block/industrial_brewing_kettle_controller.png
 f7cd307c6d82ac1b4b93291e2951c8bdddf3c0a9 assets/alcoholic/textures/block/industrial_conditioning_vessel_controller.png
 c5095544950a72335de5dab894ebb0c6630b71c3 assets/alcoholic/textures/block/industrial_malt_house_controller.png
 8cfdd24acffa9922f97790fa0752cb9cb6ad9d27 assets/alcoholic/textures/block/industrial_mash_tun_controller.png
-810073de27fa580c668904adf5a19de230560c91 assets/alcoholic/textures/block/industrial_roller_mill_controller.png
-f5aa59bada3c9a84ce2235f80dd968492ac4349e assets/alcoholic/textures/block/industrial_roller_mill_controller_formed.png
 41ca0f3ea62d572c788c94f504b83bbe0247be65 assets/alcoholic/textures/gui/elements.png
 facd9977484b792c6f098085c0577099155afe06 assets/alcoholic/textures/gui/machine.png
 eea012cf45076a94b536c5a4d42f6f3e9c5125a5 assets/alcoholic/textures/item/barley.png
