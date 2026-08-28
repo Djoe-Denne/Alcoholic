@@ -1,0 +1,31 @@
+{
+  "parent": "alcoholic:ferment_beverage",
+  "criteria": {
+    "blend": {
+      "conditions": {
+        "process": "alcoholic:blend"
+      },
+      "trigger": "alcoholic:process_completed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.alcoholic.blend.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "alcoholic:artisanal_blending_crock"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alcoholic.blend.title"
+    }
+  },
+  "requirements": [
+    [
+      "blend"
+    ]
+  ]
+}

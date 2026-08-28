@@ -8,6 +8,9 @@ import com.djden.alcoholic.application.process.PressConfig;
 import com.djden.alcoholic.application.process.ProcessRecipeResolver;
 import com.djden.alcoholic.domain.ingredient.IngredientLot;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
+import com.djden.alcoholic.minecraft.advancement.AdvancementActor;
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
+import com.djden.alcoholic.minecraft.advancement.ProcessAdvancementState;
 import com.djden.alcoholic.minecraft.fluid.LiquidBatchNbt;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
@@ -32,13 +35,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 import java.util.Optional;
 
-public final class ArtisanalPressBlockEntity extends BlockEntity implements WorldlyContainer, LiquidVessel, MachineAccess {
+public final class ArtisanalPressBlockEntity extends BlockEntity
+        implements WorldlyContainer, LiquidVessel, MachineAccess, AdvancementActor {
     public static final int INPUT_SLOT = 0;
     public static final int BYPRODUCT_SLOT = 1;
     public static final int CAPACITY = 8_000;
 
     private final NonNullList<ItemStack> items = NonNullList.withSize(2, ItemStack.EMPTY);
     private final LiquidTank tank;
+    private final ProcessAdvancementState advancements = new ProcessAdvancementState();
     private int progress;
     private int duration = 200;
 
@@ -50,6 +55,11 @@ public final class ArtisanalPressBlockEntity extends BlockEntity implements Worl
     @Override
     public LiquidTank tank() {
         return tank;
+    }
+
+    @Override
+    public ProcessAdvancementState advancementState() {
+        return advancements;
     }
 
     public int progress() {
@@ -148,6 +158,7 @@ public final class ArtisanalPressBlockEntity extends BlockEntity implements Worl
         tank.fill(produced, false);
         input.shrink(config.inputAmount());
         progress = 0;
+        AdvancementHooks.processCompleted(this, BuiltinRegistrations.PRESS, produced.baseLiquid());
         setChanged();
         sync();
     }
@@ -207,6 +218,7 @@ public final class ArtisanalPressBlockEntity extends BlockEntity implements Worl
         tag.putInt("Progress", progress);
         tag.putInt("Duration", duration);
         tank.contents().ifPresent(batch -> LiquidBatchNbt.writeRoot(tag, batch));
+        advancements.save(tag);
     }
 
     @Override
@@ -217,6 +229,7 @@ public final class ArtisanalPressBlockEntity extends BlockEntity implements Worl
         duration = Math.max(1, tag.getInt("Duration"));
         tank.clear();
         LiquidBatchNbt.readRoot(tag).ifPresent(tank::set);
+        advancements.load(tag);
     }
 
     @Override

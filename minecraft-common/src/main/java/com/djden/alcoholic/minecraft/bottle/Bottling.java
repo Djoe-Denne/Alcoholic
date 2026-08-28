@@ -7,6 +7,7 @@ import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
 import com.djden.alcoholic.application.process.BottleConfig;
 import com.djden.alcoholic.application.process.ProcessRecipeResolver;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.process.MinecraftSelectorMatcher;
@@ -75,6 +76,7 @@ public final class Bottling {
         if (!player.getInventory().add(bottleStack)) {
             player.drop(bottleStack, false);
         }
+        extracted.baseLiquid().ifPresent(liquid -> AdvancementHooks.bottled(player, liquid));
         return true;
     }
 }

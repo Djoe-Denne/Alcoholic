@@ -1,0 +1,9 @@
+// 1.19.2	2026-08-28T20:46:29.8761634	Alcoholic Advancements
+255bfeb65e10a88d54812264fc562e90e85592ff data/alcoholic/advancements/age_wine.json
+e02b74ad3f495da3e15188402d1bef325baf34ef data/alcoholic/advancements/blend.json
+e2b6cc0ef7a09f995b35bbe97a4fd11b6aa379af data/alcoholic/advancements/bottle.json
+554f236faf7c2c6c971ad5612043ae6a17703060 data/alcoholic/advancements/ferment_beverage.json
+ef279f9b8a6e13ecc5a0f28cbe46d27be0d69c06 data/alcoholic/advancements/harvest_grapes.json
+77f4bf3075d2b45a2e62556fba7bd4082626be98 data/alcoholic/advancements/harvest_hops.json
+b97ef9f5c02ced57a4b47c4fb1f1883881286c08 data/alcoholic/advancements/produce_must.json
+5117252c5af053506bc891d5fe685893a2c0f150 data/alcoholic/advancements/root.json

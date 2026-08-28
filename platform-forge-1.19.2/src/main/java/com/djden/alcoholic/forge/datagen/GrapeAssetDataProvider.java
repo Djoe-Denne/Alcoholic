@@ -211,7 +211,23 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "jei.alcoholic.volume.unspecified": "Volume not specified",
                           "tooltip.alcoholic.gauge.empty": "Empty",
                           "tooltip.alcoholic.gauge.fluid": "%1$s · %2$s / %3$s mB",
-                          "tooltip.alcoholic.gauge.energy": "%1$s / %2$s FE"
+                          "tooltip.alcoholic.gauge.energy": "%1$s / %2$s FE",
+                          "advancements.alcoholic.root.title": "Alcoholic",
+                          "advancements.alcoholic.root.description": "Find a grapevine cutting or wild hops",
+                          "advancements.alcoholic.harvest_grapes.title": "First Vintage",
+                          "advancements.alcoholic.harvest_grapes.description": "Harvest ripe grapes from a trained vine",
+                          "advancements.alcoholic.harvest_hops.title": "Bitter Green",
+                          "advancements.alcoholic.harvest_hops.description": "Pick mature hops from a bine",
+                          "advancements.alcoholic.produce_must.title": "Must and Wort",
+                          "advancements.alcoholic.produce_must.description": "Press grape must or mash wort",
+                          "advancements.alcoholic.ferment_beverage.title": "Alive in the Vat",
+                          "advancements.alcoholic.ferment_beverage.description": "Finish a wine or beer fermentation",
+                          "advancements.alcoholic.age_wine.title": "Patience in Oak",
+                          "advancements.alcoholic.age_wine.description": "Age young wine until it is ready",
+                          "advancements.alcoholic.blend.title": "The Assemblage",
+                          "advancements.alcoholic.blend.description": "Blend two batches in a crock",
+                          "advancements.alcoholic.bottle.title": "In Glass",
+                          "advancements.alcoholic.bottle.description": "Fill a bottle from a finished batch"
                         }
                         """
         );
@@ -394,7 +410,23 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "jei.alcoholic.volume.unspecified": "Volume non spécifié",
                           "tooltip.alcoholic.gauge.empty": "Vide",
                           "tooltip.alcoholic.gauge.fluid": "%1$s · %2$s / %3$s mB",
-                          "tooltip.alcoholic.gauge.energy": "%1$s / %2$s FE"
+                          "tooltip.alcoholic.gauge.energy": "%1$s / %2$s FE",
+                          "advancements.alcoholic.root.title": "Alcoholic",
+                          "advancements.alcoholic.root.description": "Trouvez une bouture de vigne ou du houblon sauvage",
+                          "advancements.alcoholic.harvest_grapes.title": "Première vendange",
+                          "advancements.alcoholic.harvest_grapes.description": "Récoltez des raisins mûrs sur une vigne palissée",
+                          "advancements.alcoholic.harvest_hops.title": "Vert amer",
+                          "advancements.alcoholic.harvest_hops.description": "Cueillez du houblon mûr sur une bine",
+                          "advancements.alcoholic.produce_must.title": "Moût",
+                          "advancements.alcoholic.produce_must.description": "Produisez du moût de raisin ou de bière",
+                          "advancements.alcoholic.ferment_beverage.title": "Le vivant de la cuve",
+                          "advancements.alcoholic.ferment_beverage.description": "Terminez une fermentation de vin ou de bière",
+                          "advancements.alcoholic.age_wine.title": "Patience sous chêne",
+                          "advancements.alcoholic.age_wine.description": "Élevez un vin jeune jusqu'à maturité",
+                          "advancements.alcoholic.blend.title": "L'assemblage",
+                          "advancements.alcoholic.blend.description": "Assemblez deux lots dans une jarre",
+                          "advancements.alcoholic.bottle.title": "Sous verre",
+                          "advancements.alcoholic.bottle.description": "Remplissez une bouteille à partir d'un lot fini"
                         }
                         """
         );

@@ -30,6 +30,10 @@ public final class AlcoholicDataGenerators {
                     event.includeServer(),
                     new GrapeServerDataProvider(output)
             );
+            generator.addProvider(
+                    event.includeServer(),
+                    new AlcoholicAdvancementProvider(generator, event.getExistingFileHelper())
+            );
             String forgeOutput = System.getProperty(FORGE_OUTPUT_PROPERTY);
             if (forgeOutput == null || forgeOutput.isBlank()) {
                 throw new IllegalStateException(

@@ -12,6 +12,9 @@ import com.djden.alcoholic.domain.process.ElapsedProcessClock;
 import com.djden.alcoholic.domain.vessel.BarrelHistory;
 import com.djden.alcoholic.domain.vessel.EnvironmentProfile;
 import com.djden.alcoholic.domain.vessel.VesselProfile;
+import com.djden.alcoholic.minecraft.advancement.AdvancementActor;
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
+import com.djden.alcoholic.minecraft.advancement.ProcessAdvancementState;
 import com.djden.alcoholic.minecraft.bottle.Bottling;
 import com.djden.alcoholic.minecraft.environment.EnvironmentSampler;
 import com.djden.alcoholic.minecraft.fluid.LiquidBatchNbt;
@@ -34,10 +37,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 
-public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVessel, MachineAccess {
+public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVessel, MachineAccess, AdvancementActor {
     public static final int CAPACITY = 8_000;
 
     private final LiquidTank tank;
+    private final ProcessAdvancementState advancements = new ProcessAdvancementState();
     private BarrelHistory history = BarrelHistory.empty();
     private EnvironmentProfile environment = EnvironmentProfile.temperateCellar();
     private long lastProcessedGameTime;
@@ -55,6 +59,11 @@ public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVes
     @Override
     public LiquidTank tank() {
         return tank;
+    }
+
+    @Override
+    public ProcessAdvancementState advancementState() {
+        return advancements;
     }
 
     public BarrelHistory history() {
@@ -165,7 +174,14 @@ public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVes
         if (!result.success() || result.outputs().isEmpty()) {
             return;
         }
-        tank.set((LiquidBatch) result.outputs().get(0));
+        LiquidBatch next = (LiquidBatch) result.outputs().get(0);
+        tank.set(next);
+        AdvancementHooks.changedIdentity(batch, next)
+                .ifPresent(liquid -> AdvancementHooks.processCompleted(
+                        this,
+                        BuiltinRegistrations.AGE,
+                        Optional.of(liquid)
+                ));
         setChanged();
         if (now % 40 == 0) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
@@ -236,6 +252,7 @@ public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVes
         tag.putBoolean("EnvSheltered", environment.sheltered());
         lastDefinition.ifPresent(id -> tag.putString("LastDefinition", id.toString()));
         tag.putBoolean("Occupied", occupied);
+        advancements.save(tag);
     }
 
     @Override
@@ -255,6 +272,7 @@ public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVes
                 ? Optional.of(ResourceId.parse(tag.getString("LastDefinition")))
                 : tank.contents().flatMap(LiquidBatch::baseLiquid);
         occupied = tag.getBoolean("Occupied") || tank.contents().isPresent();
+        advancements.load(tag);
         skipUnloadGap = true;
         environmentInvalid = true;
     }

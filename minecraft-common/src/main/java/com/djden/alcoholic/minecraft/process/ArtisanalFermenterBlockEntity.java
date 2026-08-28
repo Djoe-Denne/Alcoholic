@@ -8,6 +8,9 @@ import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
 import com.djden.alcoholic.application.process.FermentConfig;
 import com.djden.alcoholic.application.process.ProcessRecipeResolver;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
+import com.djden.alcoholic.minecraft.advancement.AdvancementActor;
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
+import com.djden.alcoholic.minecraft.advancement.ProcessAdvancementState;
 import com.djden.alcoholic.minecraft.fluid.LiquidBatchNbt;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
@@ -36,12 +39,14 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 
-public final class ArtisanalFermenterBlockEntity extends BlockEntity implements WorldlyContainer, LiquidVessel, MachineAccess {
+public final class ArtisanalFermenterBlockEntity extends BlockEntity
+        implements WorldlyContainer, LiquidVessel, MachineAccess, AdvancementActor {
     public static final int YEAST_SLOT = 0;
     public static final int CAPACITY = 8_000;
 
     private final NonNullList<ItemStack> items = NonNullList.withSize(1, ItemStack.EMPTY);
     private final LiquidTank tank;
+    private final ProcessAdvancementState advancements = new ProcessAdvancementState();
     private boolean yeastPitched;
     private double ventedCo2;
     private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
@@ -75,6 +80,11 @@ public final class ArtisanalFermenterBlockEntity extends BlockEntity implements 
     @Override
     public LiquidTank tank() {
         return tank;
+    }
+
+    @Override
+    public ProcessAdvancementState advancementState() {
+        return advancements;
     }
 
     public boolean yeastPitched() {
@@ -176,6 +186,12 @@ public final class ArtisanalFermenterBlockEntity extends BlockEntity implements 
         );
         ventedCo2 += consumedSugar * config.kinetics().co2PerSugar();
         tank.set(next);
+        AdvancementHooks.changedIdentity(batch, next)
+                .ifPresent(liquid -> AdvancementHooks.processCompleted(
+                        this,
+                        BuiltinRegistrations.FERMENT,
+                        Optional.of(liquid)
+                ));
         setChanged();
         if (level != null && level.getGameTime() % 20 == 0) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
@@ -248,6 +264,7 @@ public final class ArtisanalFermenterBlockEntity extends BlockEntity implements 
         tag.putBoolean("YeastPitched", yeastPitched);
         tag.putDouble("VentedCo2", ventedCo2);
         tank.contents().ifPresent(batch -> LiquidBatchNbt.writeRoot(tag, batch));
+        advancements.save(tag);
     }
 
     @Override
@@ -258,6 +275,7 @@ public final class ArtisanalFermenterBlockEntity extends BlockEntity implements 
         ventedCo2 = tag.getDouble("VentedCo2");
         tank.clear();
         LiquidBatchNbt.readRoot(tag).ifPresent(tank::set);
+        advancements.load(tag);
     }
 
     @Override

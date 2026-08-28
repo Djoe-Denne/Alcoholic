@@ -18,6 +18,7 @@ import com.djden.alcoholic.forge.energy.ForgeEnergyCapabilities;
 import com.djden.alcoholic.integration.create.forge.ForgeCreateIntegration;
 import com.djden.alcoholic.integration.crossroads.forge.ForgeCrossroadsIntegration;
 import com.djden.alcoholic.integration.vinery.VineryGrapeProvider;
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
 import com.djden.alcoholic.minecraft.content.AlcoholicContent;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
 import com.djden.alcoholic.minecraft.content.ContentRegistrationPorts;
@@ -133,6 +134,7 @@ public final class AlcoholicForgeMod {
         blockEntities.attach(modEventBus);
         menuTypes.attach(modEventBus);
         fluids.attach(modEventBus);
+        AdvancementHooks.register();
         modEventBus.addListener(AlcoholicDataGenerators::gatherData);
         modEventBus.addListener(EventPriority.LOWEST, this::freezeBeverageApi);
         MinecraftForge.EVENT_BUS.register(

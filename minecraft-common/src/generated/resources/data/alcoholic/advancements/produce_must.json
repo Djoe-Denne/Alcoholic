@@ -1,0 +1,48 @@
+{
+  "parent": "alcoholic:root",
+  "criteria": {
+    "mash_wort": {
+      "conditions": {
+        "liquid": "alcoholic:wort",
+        "process": "alcoholic:mash"
+      },
+      "trigger": "alcoholic:process_completed"
+    },
+    "press_red_must": {
+      "conditions": {
+        "liquid": "alcoholic:red_grape_must",
+        "process": "alcoholic:press"
+      },
+      "trigger": "alcoholic:process_completed"
+    },
+    "press_white_must": {
+      "conditions": {
+        "liquid": "alcoholic:white_grape_must",
+        "process": "alcoholic:press"
+      },
+      "trigger": "alcoholic:process_completed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.alcoholic.produce_must.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "alcoholic:red_grape_must_bucket"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alcoholic.produce_must.title"
+    }
+  },
+  "requirements": [
+    [
+      "press_red_must",
+      "press_white_must",
+      "mash_wort"
+    ]
+  ]
+}

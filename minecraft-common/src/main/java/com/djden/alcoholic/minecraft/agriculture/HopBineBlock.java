@@ -1,5 +1,7 @@
 package com.djden.alcoholic.minecraft.agriculture;
 
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
+import com.djden.alcoholic.minecraft.content.AlcoholicIds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -239,6 +241,7 @@ public class HopBineBlock extends BushBlock implements BonemealableBlock {
         if (!player.getInventory().add(drop)) {
             player.drop(drop, false);
         }
+        AdvancementHooks.harvest(player, AdvancementHooks.location(AlcoholicIds.HOPS));
         level.setBlock(pos, state.setValue(AGE, 0), Block.UPDATE_CLIENTS);
         return true;
     }

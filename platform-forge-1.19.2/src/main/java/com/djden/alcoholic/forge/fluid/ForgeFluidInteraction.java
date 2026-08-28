@@ -1,5 +1,6 @@
 package com.djden.alcoholic.forge.fluid;
 
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
@@ -28,6 +29,7 @@ public final class ForgeFluidInteraction {
                 event.getPos(),
                 event.getFace()
         )) {
+            AdvancementHooks.touch(event.getEntity(), event.getLevel().getBlockEntity(event.getPos()));
             event.setCanceled(true);
             event.setCancellationResult(InteractionResult.SUCCESS);
         }

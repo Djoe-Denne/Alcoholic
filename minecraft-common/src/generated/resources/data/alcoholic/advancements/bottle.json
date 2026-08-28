@@ -1,0 +1,31 @@
+{
+  "parent": "alcoholic:ferment_beverage",
+  "criteria": {
+    "bottle": {
+      "conditions": {
+        "process": "alcoholic:bottle"
+      },
+      "trigger": "alcoholic:process_completed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.alcoholic.bottle.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "alcoholic:beverage_bottle"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alcoholic.bottle.title"
+    }
+  },
+  "requirements": [
+    [
+      "bottle"
+    ]
+  ]
+}

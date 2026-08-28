@@ -1,0 +1,40 @@
+{
+  "parent": "alcoholic:ferment_beverage",
+  "criteria": {
+    "age_red": {
+      "conditions": {
+        "liquid": "alcoholic:red_wine",
+        "process": "alcoholic:age"
+      },
+      "trigger": "alcoholic:process_completed"
+    },
+    "age_white": {
+      "conditions": {
+        "liquid": "alcoholic:white_wine",
+        "process": "alcoholic:age"
+      },
+      "trigger": "alcoholic:process_completed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.alcoholic.age_wine.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "alcoholic:oak_barrel"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alcoholic.age_wine.title"
+    }
+  },
+  "requirements": [
+    [
+      "age_red",
+      "age_white"
+    ]
+  ]
+}

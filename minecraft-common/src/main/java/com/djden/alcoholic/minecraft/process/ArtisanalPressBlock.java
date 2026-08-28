@@ -1,5 +1,6 @@
 package com.djden.alcoholic.minecraft.process;
 
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
 import com.djden.alcoholic.minecraft.menu.MachineMenus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -115,6 +116,7 @@ public final class ArtisanalPressBlock extends BaseEntityBlock {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         }
+        AdvancementHooks.touch(player, entity);
         if (player.isShiftKeyDown()) {
             ItemStack extracted = entity.extractByproduct();
             if (!extracted.isEmpty()) {

@@ -1,0 +1,63 @@
+{
+  "criteria": {
+    "has_hops": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alcoholic:hops"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_red_cutting": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alcoholic:red_grape_cutting"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_white_cutting": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alcoholic:white_grape_cutting"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "description": {
+      "translate": "advancements.alcoholic.root.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "alcoholic:red_grape_cutting"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alcoholic.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_red_cutting",
+      "has_white_cutting",
+      "has_hops"
+    ]
+  ]
+}

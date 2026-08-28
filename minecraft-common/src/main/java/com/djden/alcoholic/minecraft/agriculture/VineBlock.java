@@ -7,6 +7,9 @@ import com.djden.alcoholic.domain.viticulture.VineEnvironment;
 import com.djden.alcoholic.domain.viticulture.VineGrowthStage;
 import com.djden.alcoholic.domain.viticulture.VineHealth;
 import com.djden.alcoholic.domain.viticulture.VineVariety;
+import com.djden.alcoholic.domain.ingredient.GrapeColor;
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
+import com.djden.alcoholic.minecraft.content.AlcoholicIds;
 import com.djden.alcoholic.minecraft.viticulture.HarvestLotNbt;
 import com.djden.alcoholic.minecraft.viticulture.MinecraftClimateResolver;
 import com.djden.alcoholic.minecraft.viticulture.PruningShearsItem;
@@ -382,6 +385,14 @@ public class VineBlock extends BaseEntityBlock {
         entity.setVine(result.harvest().vine());
         refreshStructure(level, position, result.harvest().vine().growthStage(), false);
         popResource(level, position, grapes);
+        AdvancementHooks.harvest(
+                player,
+                AdvancementHooks.location(
+                        entity.vine().variety().grapeColor() == GrapeColor.RED
+                                ? AlcoholicIds.RED_GRAPES
+                                : AlcoholicIds.WHITE_GRAPES
+                )
+        );
         level.playSound(
                 null,
                 position,

@@ -399,7 +399,12 @@ class GeneratedResourceContractTest {
                     "jei.alcoholic.category.addon",
                     "jei.alcoholic.duration",
                     "jei.alcoholic.volume.unspecified",
-                    "tooltip.alcoholic.gauge.fluid"
+                    "tooltip.alcoholic.gauge.fluid",
+                    "advancements.alcoholic.root.title",
+                    "advancements.alcoholic.harvest_grapes.title",
+                    "advancements.alcoholic.produce_must.description",
+                    "advancements.alcoholic.ferment_beverage.title",
+                    "advancements.alcoholic.bottle.description"
             }) {
                 assertTrue(
                         translations.has(key),
@@ -407,6 +412,40 @@ class GeneratedResourceContractTest {
                 );
             }
         }
+    }
+
+    @Test
+    void alcoholicProgressionAdvancementsAreGenerated() throws IOException {
+        JsonObject root = resource("data/alcoholic/advancements/root.json");
+        assertEquals("minecraft:inventory_changed", criterionTrigger(root, "has_red_cutting"));
+        assertTrue(root.has("display"));
+
+        JsonObject harvest = resource("data/alcoholic/advancements/harvest_grapes.json");
+        assertEquals("alcoholic:root", harvest.get("parent").getAsString());
+        assertEquals("alcoholic:crop_harvested", criterionTrigger(harvest, "harvest_red"));
+
+        JsonObject must = resource("data/alcoholic/advancements/produce_must.json");
+        assertEquals("alcoholic:process_completed", criterionTrigger(must, "press_red_must"));
+        assertEquals("alcoholic:process_completed", criterionTrigger(must, "mash_wort"));
+
+        JsonObject ferment = resource("data/alcoholic/advancements/ferment_beverage.json");
+        assertEquals("alcoholic:produce_must", ferment.get("parent").getAsString());
+        assertEquals("alcoholic:process_completed", criterionTrigger(ferment, "ferment_red"));
+
+        JsonObject bottle = resource("data/alcoholic/advancements/bottle.json");
+        assertEquals("alcoholic:ferment_beverage", bottle.get("parent").getAsString());
+        assertEquals("alcoholic:process_completed", criterionTrigger(bottle, "bottle"));
+
+        resource("data/alcoholic/advancements/harvest_hops.json");
+        resource("data/alcoholic/advancements/age_wine.json");
+        resource("data/alcoholic/advancements/blend.json");
+    }
+
+    private static String criterionTrigger(JsonObject advancement, String criterion) {
+        return advancement.getAsJsonObject("criteria")
+                .getAsJsonObject(criterion)
+                .get("trigger")
+                .getAsString();
     }
 
     private static final String[] CRAFTABLE_MACHINES = {

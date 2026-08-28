@@ -1,0 +1,38 @@
+{
+  "parent": "alcoholic:root",
+  "criteria": {
+    "harvest_red": {
+      "conditions": {
+        "crop": "alcoholic:red_grapes"
+      },
+      "trigger": "alcoholic:crop_harvested"
+    },
+    "harvest_white": {
+      "conditions": {
+        "crop": "alcoholic:white_grapes"
+      },
+      "trigger": "alcoholic:crop_harvested"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.alcoholic.harvest_grapes.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "alcoholic:red_grapes"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alcoholic.harvest_grapes.title"
+    }
+  },
+  "requirements": [
+    [
+      "harvest_red",
+      "harvest_white"
+    ]
+  ]
+}

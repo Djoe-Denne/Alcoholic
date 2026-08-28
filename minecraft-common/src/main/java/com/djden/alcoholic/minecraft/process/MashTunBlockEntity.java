@@ -10,6 +10,9 @@ import com.djden.alcoholic.application.process.MashConfig;
 import com.djden.alcoholic.application.process.ProcessRecipeResolver;
 import com.djden.alcoholic.domain.ingredient.IngredientLot;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
+import com.djden.alcoholic.minecraft.advancement.AdvancementActor;
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
+import com.djden.alcoholic.minecraft.advancement.ProcessAdvancementState;
 import com.djden.alcoholic.minecraft.environment.HeatSources;
 import com.djden.alcoholic.minecraft.fluid.LiquidBatchNbt;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
@@ -42,7 +45,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-public final class MashTunBlockEntity extends BlockEntity implements WorldlyContainer, LiquidVessel, MachineAccess {
+public final class MashTunBlockEntity extends BlockEntity
+        implements WorldlyContainer, LiquidVessel, MachineAccess, AdvancementActor {
     public static final int INPUT_SLOT = 0;
     public static final int BYPRODUCT_SLOT = 1;
     public static final int CAPACITY = 8_000;
@@ -52,6 +56,7 @@ public final class MashTunBlockEntity extends BlockEntity implements WorldlyCont
     private final NonNullList<ItemStack> items = NonNullList.withSize(2, ItemStack.EMPTY);
     private final LiquidTank inputTank;
     private final LiquidTank outputTank;
+    private final ProcessAdvancementState advancements = new ProcessAdvancementState();
     private int progress;
     private int duration = 200;
     private String runningJob = "";
@@ -88,6 +93,11 @@ public final class MashTunBlockEntity extends BlockEntity implements WorldlyCont
     @Override
     public LiquidTank tank() {
         return outputTank;
+    }
+
+    @Override
+    public ProcessAdvancementState advancementState() {
+        return advancements;
     }
 
     @Override
@@ -229,6 +239,7 @@ public final class MashTunBlockEntity extends BlockEntity implements WorldlyCont
         outputTank.fill(produced, false);
         input.shrink(config.inputAmount());
         progress = 0;
+        AdvancementHooks.processCompleted(this, BuiltinRegistrations.MASH, produced.baseLiquid());
         setChanged();
         sync();
     }
@@ -292,6 +303,7 @@ public final class MashTunBlockEntity extends BlockEntity implements WorldlyCont
         tag.putInt("Duration", duration);
         inputTank.contents().ifPresent(batch -> tag.put("InputLiquid", LiquidBatchNbt.toTag(batch)));
         outputTank.contents().ifPresent(batch -> LiquidBatchNbt.writeRoot(tag, batch));
+        advancements.save(tag);
     }
 
     @Override
@@ -306,6 +318,7 @@ public final class MashTunBlockEntity extends BlockEntity implements WorldlyCont
             LiquidBatchNbt.fromTag(tag.getCompound("InputLiquid")).ifPresent(inputTank::set);
         }
         LiquidBatchNbt.readRoot(tag).ifPresent(outputTank::set);
+        advancements.load(tag);
     }
 
     @Override

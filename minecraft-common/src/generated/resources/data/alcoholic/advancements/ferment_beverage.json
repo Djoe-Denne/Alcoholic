@@ -1,0 +1,48 @@
+{
+  "parent": "alcoholic:produce_must",
+  "criteria": {
+    "ferment_beer": {
+      "conditions": {
+        "liquid": "alcoholic:beer",
+        "process": "alcoholic:ferment"
+      },
+      "trigger": "alcoholic:process_completed"
+    },
+    "ferment_red": {
+      "conditions": {
+        "liquid": "alcoholic:young_red_wine",
+        "process": "alcoholic:ferment"
+      },
+      "trigger": "alcoholic:process_completed"
+    },
+    "ferment_white": {
+      "conditions": {
+        "liquid": "alcoholic:young_white_wine",
+        "process": "alcoholic:ferment"
+      },
+      "trigger": "alcoholic:process_completed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.alcoholic.ferment_beverage.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "alcoholic:artisanal_fermenter"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alcoholic.ferment_beverage.title"
+    }
+  },
+  "requirements": [
+    [
+      "ferment_red",
+      "ferment_white",
+      "ferment_beer"
+    ]
+  ]
+}

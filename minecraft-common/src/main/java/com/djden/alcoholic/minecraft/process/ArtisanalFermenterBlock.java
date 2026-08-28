@@ -1,5 +1,6 @@
 package com.djden.alcoholic.minecraft.process;
 
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
 import com.djden.alcoholic.minecraft.menu.MachineMenus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -144,6 +145,7 @@ public final class ArtisanalFermenterBlock extends BaseEntityBlock {
             return InteractionResult.SUCCESS;
         }
         ItemStack held = player.getItemInHand(hand);
+        AdvancementHooks.touch(player, entity);
         if (com.djden.alcoholic.minecraft.bottle.Bottling.bottle(player, held, entity.tank())) {
             return InteractionResult.CONSUME;
         }

@@ -7,6 +7,9 @@ import com.djden.alcoholic.api.process.ProcessResult;
 import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
 import com.djden.alcoholic.application.process.ProcessRecipeResolver;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
+import com.djden.alcoholic.minecraft.advancement.AdvancementActor;
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
+import com.djden.alcoholic.minecraft.advancement.ProcessAdvancementState;
 import com.djden.alcoholic.minecraft.bottle.Bottling;
 import com.djden.alcoholic.minecraft.fluid.LiquidBatchNbt;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
@@ -37,12 +40,13 @@ import java.util.Map;
 import java.util.Optional;
 
 public final class ArtisanalBlendingCrockBlockEntity extends BlockEntity
-        implements Container, LiquidVessel, MachineAccess {
+        implements Container, LiquidVessel, MachineAccess, AdvancementActor {
     public static final int CAPACITY = 4_000;
 
     private final NonNullList<ItemStack> items = NonNullList.withSize(0, ItemStack.EMPTY);
     private final LiquidTank first;
     private final LiquidTank second;
+    private final ProcessAdvancementState advancements = new ProcessAdvancementState();
     private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
         @Override
         protected void onOpen(Level level, BlockPos pos, BlockState state) {
@@ -76,6 +80,11 @@ public final class ArtisanalBlendingCrockBlockEntity extends BlockEntity
     @Override
     public LiquidTank tank() {
         return first;
+    }
+
+    @Override
+    public ProcessAdvancementState advancementState() {
+        return advancements;
     }
 
     @Override
@@ -156,8 +165,10 @@ public final class ArtisanalBlendingCrockBlockEntity extends BlockEntity
         if (!result.success() || result.outputs().isEmpty()) {
             return Component.translatable("message.alcoholic.crock.rejected", result.message());
         }
-        first.set((LiquidBatch) result.outputs().get(0));
+        LiquidBatch blended = (LiquidBatch) result.outputs().get(0);
+        first.set(blended);
         second.clear();
+        AdvancementHooks.processCompleted(this, BuiltinRegistrations.BLEND, blended.baseLiquid());
         setChanged();
         return Component.translatable("message.alcoholic.crock.blended");
     }
@@ -179,6 +190,7 @@ public final class ArtisanalBlendingCrockBlockEntity extends BlockEntity
         super.saveAdditional(tag);
         first.contents().ifPresent(batch -> tag.put("First", LiquidBatchNbt.toTag(batch)));
         second.contents().ifPresent(batch -> tag.put("Second", LiquidBatchNbt.toTag(batch)));
+        advancements.save(tag);
     }
 
     @Override
@@ -186,6 +198,7 @@ public final class ArtisanalBlendingCrockBlockEntity extends BlockEntity
         super.load(tag);
         restoreTank(first, tag, "First");
         restoreTank(second, tag, "Second");
+        advancements.load(tag);
     }
 
     private static void restoreTank(LiquidTank tank, CompoundTag tag, String key) {

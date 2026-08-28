@@ -68,7 +68,8 @@ minecraft {
             args '--mod', mod_id,
                     '--all',
                     '--output', file('../minecraft-common/src/generated/resources'),
-                    '--existing', file('../minecraft-common/src/main/resources')
+                    '--existing', file('../minecraft-common/src/main/resources'),
+                    '--existing', file('../minecraft-common/src/generated/resources')
         }
     }
 }
