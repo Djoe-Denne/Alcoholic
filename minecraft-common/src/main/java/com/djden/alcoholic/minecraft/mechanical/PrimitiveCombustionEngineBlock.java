@@ -42,6 +42,25 @@ public final class PrimitiveCombustionEngineBlock extends BaseEntityBlock {
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
     }
 
+    /**
+     * Kinetic output is the model's right-hand shaft ({@code +X} when {@code FACING=NORTH}).
+     */
+    public static Direction driveFace(Direction facing) {
+        return PrimitiveCombustionEngineFaces.driveFace(facing);
+    }
+
+    public static Direction driveFace(BlockState state) {
+        return driveFace(state.getValue(FACING));
+    }
+
+    public static Direction facingForDriveToward(Direction driveToward) {
+        return PrimitiveCombustionEngineFaces.facingForDriveToward(driveToward);
+    }
+
+    public static BlockState withDriveToward(BlockState state, Direction driveToward) {
+        return state.setValue(FACING, facingForDriveToward(driveToward));
+    }
+
     @Override
     public BlockEntity newBlockEntity(BlockPos position, BlockState state) {
         return new PrimitiveCombustionEngineBlockEntity(blockEntityType.get(), position, state);

@@ -10,7 +10,8 @@ final class IndustrialCasingAssetData {
                 """
                         {
                           "variants": {
-                            "": { "model": "alcoholic:block/industrial_casing" }
+                            "formed=false": { "model": "alcoholic:block/industrial_casing" },
+                            "formed=true": { "model": "alcoholic:block/industrial_casing" }
                           }
                         }
                         """

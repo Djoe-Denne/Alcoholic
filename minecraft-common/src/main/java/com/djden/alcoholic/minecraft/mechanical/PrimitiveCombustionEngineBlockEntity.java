@@ -26,10 +26,10 @@ import java.util.Locale;
 
 /**
  * Standalone fuel-burning drive. Fixed low speed and limited capacity; it
- * connects by sitting next to a machine, not through a shaft network.
+ * transmits only through its right-hand shaft, not through a shaft network.
  */
 public final class PrimitiveCombustionEngineBlockEntity extends BlockEntity
-        implements WorldlyContainer, MechanicalDrivePort, MachineAccess {
+        implements WorldlyContainer, MechanicalDrivePort, FacedMechanicalDrive, MachineAccess {
     public static final int FUEL_SLOT = 0;
     public static final double OUTPUT_SPEED = 16.0;
     public static final double OUTPUT_CAPACITY = 4.0;
@@ -52,6 +52,11 @@ public final class PrimitiveCombustionEngineBlockEntity extends BlockEntity
     @Override
     public boolean isSource() {
         return true;
+    }
+
+    @Override
+    public boolean transmitsToward(Direction face) {
+        return face == PrimitiveCombustionEngineFaces.driveFace(getBlockState().getValue(PrimitiveCombustionEngineBlock.FACING));
     }
 
     public int burnTime() {

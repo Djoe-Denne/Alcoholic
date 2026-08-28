@@ -29,7 +29,7 @@ Reference image (concept only, not the atlas): `../reference.png`
 | BlockEntity | `…/multiblock/MultiblockControllerBlockEntity.java` |
 | BE type | `AlcoholicIds.INDUSTRIAL_PRESS_ENTITY` = `alcoholic:industrial_press_controller` |
 | Properties | `MultiblockControllerBlock.FORMED` — **pas** de `FACING` |
-| Renderer | `platform-forge-1.19.2/…/client/IndustrialPressRenderer.java` (platen fer + outline F3+B) enregistré dans `AlcoholicClient` sur **cette** BE |
+| Renderer | `FormedMultiblockRenderer` (hull 9-slice + mega-mesh art + platen fer) enregistré sur toutes les BE contrôleur |
 | Modèle / blockstate | handmade `…/models/block/industrial_press_controller.json` ; generated `formed=*` (même modèle) |
 | Texture défaut | handmade 64×64 `…/textures/block/industrial_press_controller.png` |
 | Datagen | `IndustrialPressControllerAssetData` (blockstate + item) — **pas** de `cube_all` generated |
@@ -37,7 +37,7 @@ Reference image (concept only, not the atlas): `../reference.png`
 | Formation | `MultiblockControllerBlockEntity.revalidate()` → `HollowCuboidValidator` + `WorldStructureSampler` ; pose debug `HollowCuboidPlacer` |
 | Client | `RenderType.cutout()` sur ce bloc |
 
-Le jeu **n’a pas** de bloc `industrial_press`. La formée = cubes hull + ce contrôleur. Le BER n’est **pas** un mega-mesh.
+Le jeu **n’a pas** de bloc `industrial_press`. La formée = casing invisible + hull 9-slice + fittings 1×1 + overlay mega-mesh à 3×4×3.
 
 ## Animations / états → Java
 

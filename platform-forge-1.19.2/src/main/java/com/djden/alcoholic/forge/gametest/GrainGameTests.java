@@ -7,6 +7,7 @@ import com.djden.alcoholic.minecraft.agriculture.CerealCropBlock;
 import com.djden.alcoholic.minecraft.agriculture.HopBineBlock;
 import com.djden.alcoholic.minecraft.agriculture.WildHopsBlock;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
+import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlock;
 import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlockEntity;
 import com.djden.alcoholic.minecraft.process.ArtisanalFermenterBlockEntity;
 import com.djden.alcoholic.minecraft.process.BrewingKettleBlockEntity;
@@ -202,10 +203,38 @@ public final class GrainGameTests {
         });
     }
 
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void maltMillIgnoresEngineFrontGrate(GameTestHelper helper) {
+        helper.setBlock(ORIGIN, block("malt_mill").defaultBlockState());
+        helper.setBlock(ORIGIN.south(), block("primitive_combustion_engine").defaultBlockState());
+        MaltMillBlockEntity mill = (MaltMillBlockEntity) helper.getBlockEntity(ORIGIN);
+        PrimitiveCombustionEngineBlockEntity engine =
+                (PrimitiveCombustionEngineBlockEntity) helper.getBlockEntity(ORIGIN.south());
+        engine.insertFuel(new ItemStack(net.minecraft.world.item.Items.COAL));
+        PrimitiveCombustionEngineBlockEntity.serverTick(
+                helper.getLevel(),
+                helper.absolutePos(ORIGIN.south()),
+                helper.getBlockState(ORIGIN.south()),
+                engine
+        );
+        mill.insert(new ItemStack(item("malted_barley"), 1));
+        helper.runAtTickTime(20, () -> {
+            require(helper, mill.getItem(MaltMillBlockEntity.OUTPUT_SLOT).isEmpty(), "Mill ran from the engine grate");
+            require(helper, mill.progress() == 0, "Mill progressed from the engine grate");
+            helper.succeed();
+        });
+    }
+
     @GameTest(template = "empty", timeoutTicks = 120)
     public static void maltMillMillsMaltedGrainWithProperties(GameTestHelper helper) {
         helper.setBlock(ORIGIN, block("malt_mill").defaultBlockState());
-        helper.setBlock(ORIGIN.east(), block("primitive_combustion_engine").defaultBlockState());
+        helper.setBlock(
+                ORIGIN.east(),
+                PrimitiveCombustionEngineBlock.withDriveToward(
+                        block("primitive_combustion_engine").defaultBlockState(),
+                        Direction.WEST
+                )
+        );
         MaltMillBlockEntity mill = (MaltMillBlockEntity) helper.getBlockEntity(ORIGIN);
         PrimitiveCombustionEngineBlockEntity engine =
                 (PrimitiveCombustionEngineBlockEntity) helper.getBlockEntity(ORIGIN.east());

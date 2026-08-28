@@ -6,13 +6,10 @@ import com.djden.alcoholic.minecraft.content.IndustrialContent;
 import com.djden.alcoholic.minecraft.content.ProcessingContent;
 import com.djden.alcoholic.minecraft.menu.MachineMenu;
 import com.djden.alcoholic.minecraft.menu.MachineMenuContent;
-import com.djden.alcoholic.minecraft.multiblock.MultiblockControllerBlockEntity;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -57,12 +54,8 @@ public final class AlcoholicClient {
         );
         MaltMillClient.register(modEventBus, processing);
         ElectricMotorClient.register(modEventBus, processing);
-        modEventBus.addListener((EntityRenderersEvent.RegisterRenderers event) -> {
-            @SuppressWarnings("unchecked")
-            BlockEntityType<MultiblockControllerBlockEntity> pressType =
-                    (BlockEntityType<MultiblockControllerBlockEntity>) industrial.pressControllerEntity().get();
-            event.registerBlockEntityRenderer(pressType, IndustrialPressRenderer::new);
-        });
+        PrimitiveCombustionEngineClient.register(modEventBus, processing);
+        FormedMultiblockClient.register(modEventBus, industrial);
     }
 
     @SuppressWarnings("unchecked")

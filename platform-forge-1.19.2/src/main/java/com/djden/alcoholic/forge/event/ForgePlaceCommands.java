@@ -1,6 +1,7 @@
 package com.djden.alcoholic.forge.event;
 
 import com.djden.alcoholic.minecraft.debug.BeerLinePlacer;
+import com.djden.alcoholic.minecraft.debug.PortAuditPlacer;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -34,7 +35,8 @@ public final class ForgePlaceCommands {
                 Commands.literal("alcoholic")
                         .then(Commands.literal("debug")
                                 .requires(source -> source.hasPermission(2))
-                                .then(placeCommand()))
+                                .then(placeCommand())
+                                .then(portsCommand()))
         );
     }
 
@@ -55,6 +57,69 @@ public final class ForgePlaceCommands {
                                         .then(Commands.argument("h", IntegerArgumentType.integer(3))
                                                 .then(Commands.argument("d", IntegerArgumentType.integer(3))
                                                         .executes(this::placeMachineSized))))));
+    }
+
+    private LiteralArgumentBuilder<CommandSourceStack> portsCommand() {
+        return Commands.literal("ports")
+                .then(Commands.literal("fluid")
+                        .executes(this::placeFluidAtPlayer)
+                        .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                                .executes(this::placeFluidAtPos)))
+                .then(Commands.literal("energy")
+                        .executes(this::placeEnergyAtPlayer)
+                        .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                                .executes(this::placeEnergyAtPos)));
+    }
+
+    private int placeFluidAtPlayer(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        return reportPorts(
+                context,
+                "fluid",
+                PortAuditPlacer.placeFluid(context.getSource().getLevel(), playerOrigin(context))
+        );
+    }
+
+    private int placeFluidAtPos(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        return reportPorts(
+                context,
+                "fluid",
+                PortAuditPlacer.placeFluid(
+                        context.getSource().getLevel(),
+                        BlockPosArgument.getLoadedBlockPos(context, "pos")
+                )
+        );
+    }
+
+    private int placeEnergyAtPlayer(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        return reportPorts(
+                context,
+                "energy",
+                PortAuditPlacer.placeEnergy(context.getSource().getLevel(), playerOrigin(context))
+        );
+    }
+
+    private int placeEnergyAtPos(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        return reportPorts(
+                context,
+                "energy",
+                PortAuditPlacer.placeEnergy(
+                        context.getSource().getLevel(),
+                        BlockPosArgument.getLoadedBlockPos(context, "pos")
+                )
+        );
+    }
+
+    private static BlockPos playerOrigin(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        return context.getSource().getPlayerOrException().blockPosition();
+    }
+
+    private static int reportPorts(CommandContext<CommandSourceStack> context, String kind, int count) {
+        CommandSourceStack source = context.getSource();
+        source.sendSuccess(
+                Component.translatable("command.alcoholic.debug.ports.placed", kind, count),
+                true
+        );
+        return Command.SINGLE_SUCCESS;
     }
 
     private int placeArtisanalLine(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {

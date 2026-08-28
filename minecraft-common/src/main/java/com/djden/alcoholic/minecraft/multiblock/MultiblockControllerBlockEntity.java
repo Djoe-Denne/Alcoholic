@@ -13,6 +13,7 @@ import com.djden.alcoholic.domain.multiblock.CrushOccupancy;
 import com.djden.alcoholic.domain.multiblock.HollowCuboidValidator;
 import com.djden.alcoholic.domain.multiblock.MultiblockDefinition;
 import com.djden.alcoholic.domain.multiblock.MultiblockGeometry;
+import com.djden.alcoholic.domain.multiblock.PartRole;
 import com.djden.alcoholic.domain.multiblock.PressStrokeState;
 import com.djden.alcoholic.domain.multiblock.ValidationResult;
 import com.djden.alcoholic.domain.multiblock.ValidationStatus;
@@ -349,8 +350,12 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         }
         formed = true;
         access = IndustrialAccess.OPEN;
+        if (geometry != null && geometry != next) {
+            paintCasingFormed(geometry, false);
+        }
         geometry = next;
         bindParts(next);
+        paintCasingFormed(next, true);
         if (getBlockState().hasProperty(MultiblockControllerBlock.FORMED)
                 && !getBlockState().getValue(MultiblockControllerBlock.FORMED)) {
             level.setBlock(
@@ -369,6 +374,9 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         access = nextAccess;
         if (retained != null) {
             geometry = retained;
+        }
+        if (geometry != null) {
+            paintCasingFormed(geometry, false);
         }
         pressWorking = false;
         stroke = PressStrokeState.IDLE;
@@ -411,6 +419,47 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
             }
         }
         boundParts = List.of();
+    }
+
+    private void paintCasingFormed(MultiblockGeometry target, boolean formed) {
+        if (level == null || level.isClientSide || target == null) {
+            return;
+        }
+        AxisBox box = target.bounds();
+        for (int x = box.minX(); x <= box.maxX(); x++) {
+            for (int y = box.minY(); y <= box.maxY(); y++) {
+                for (int z = box.minZ(); z <= box.maxZ(); z++) {
+                    BlockPos pos = new BlockPos(x, y, z);
+                    BlockState state = level.getBlockState(pos);
+                    if (state.getBlock() instanceof IndustrialPartBlock part
+                            && part.role() == PartRole.CASING
+                            && state.hasProperty(IndustrialPartBlock.FORMED)
+                            && state.getValue(IndustrialPartBlock.FORMED) != formed) {
+                        level.setBlock(
+                                pos,
+                                state.setValue(IndustrialPartBlock.FORMED, formed),
+                                Block.UPDATE_CLIENTS
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        if (formed && geometry != null) {
+            AxisBox box = geometry.bounds();
+            return new AABB(
+                    box.minX(),
+                    box.minY(),
+                    box.minZ(),
+                    box.maxX() + 1.0,
+                    box.maxY() + 1.0,
+                    box.maxZ() + 1.0
+            );
+        }
+        return super.getRenderBoundingBox();
     }
 
     private void applyCrush() {

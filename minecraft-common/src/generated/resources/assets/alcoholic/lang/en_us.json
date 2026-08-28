@@ -46,6 +46,7 @@
   "command.alcoholic.debug.place.line": "Placed %1$s beer line at %2$s (%3$s machines, %4$s formed)",
   "command.alcoholic.debug.place.machine": "Placed %1$s at %2$s · formed=%3$s · %4$s",
   "command.alcoholic.debug.place.unknown": "Unknown machine '%s'",
+  "command.alcoholic.debug.ports.placed": "Port audit %1$s: placed %2$s machines",
   "command.alcoholic.inspect.no_player": "Inspect requires a player",
   "command.alcoholic.inspect.nothing": "Look at a vessel or hold a bottled beverage",
   "container.alcoholic.energy": "Electric Motor",

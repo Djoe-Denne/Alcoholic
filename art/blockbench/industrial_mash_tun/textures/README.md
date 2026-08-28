@@ -3,14 +3,15 @@
 `master-512` is the approved formed-overview hull atlas (copy of
 `industrial_casing`). `SHA256SUMS.txt` sits next to it. This id has **no
 game block** and **no** resource-pack / 64×64 downsample.
-Do not invent a mega-mesh `models/block/industrial_mash_tun.json`.
+Mega-mesh = overlay BER `models/block/formed/industrial_mash_tun.json` at art size 5×5×5 only.
+It is not a fourth block. Any formed size uses the 9-slice hull; fittings stay 1×1.
 
 This formed multiblock is painted industrial steel plus a copper note copied
 from `industrial_mash_tun_controller`. It is not the oak `mash_tun`.
 
 ## Brief modelage (agent Blockbench)
 
-- **Id / type** : `industrial_mash_tun` — **vue d’ensemble formée**. Ce n’est **pas** le modèle jeu et **pas** `mash_tun` (chêne, `OPEN`). Le jeu assemble des cubes + `industrial_mash_tun_controller`. **Interdit** : mega-mesh unique.
+- **Id / type** : `industrial_mash_tun` — **vue d’ensemble formée**. Ce n’est **pas** un bloc posable et **pas** `mash_tun` (chêne, `OPEN`). Overlay BER à 5×5×5 ; sinon hull 9-slice + `industrial_mash_tun_controller`.
 - **Refs** : `art/blockbench/industrial_mash_tun/reference.png`.
 - **Kit hull** : cuboïde creux 5×5×5, gros bloc `industrial_casing` (`fermenter_casing`). Face −Z : `item_port` bas centre (grist) ; `industrial_mash_tun_controller` au-dessus ; `fluid_port` mi-hauteur à droite (eau / moût) ; `access_hatch` centre ; 2× `machine_window` (pale = tiles du contrôleur, pas un mesh plein). Dôme + bande cuivre = art only. **Pas** de `kinetic_port`. **Pas** de `OPEN`.
 - **Contraintes raid** : cuboïde creux. Typique art ~5×5×5 ; code min 3×4×3 max 9×12×9. Casing `fermenter_casing`. Pale / râteau = détail hublot, pas un mesh plein.
@@ -24,7 +25,7 @@ from `industrial_mash_tun_controller`. It is not the oak `mash_tun`.
 | Contrôleur | `MultiblockControllerBlock` / `MultiblockControllerBlockEntity` ; id `alcoholic:industrial_mash_tun_controller` |
 | Artisanal (autre id) | `MashTunBlock` / `MashTunBlockEntity` — **ne pas** les modifier pour cette vue |
 | Properties | `FORMED` sur le contrôleur (blockstate ignore) |
-| BER formé | **aucune** |
+| BER formé | `FormedMultiblockRenderer` — hull 9-slice si `formed` ; mega-mesh seulement à 5×5×5 |
 | Définition | `BuiltinMachines.INDUSTRIAL_MASH_TUN` ; JSON `…/machines/industrial_mash_tun.json` |
 | Former | `revalidate()` + `HollowCuboidValidator` + `WorldStructureSampler` |
 

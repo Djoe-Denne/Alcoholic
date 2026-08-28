@@ -6,6 +6,7 @@ import com.djden.alcoholic.domain.liquid.PropertyBag;
 import com.djden.alcoholic.domain.multiblock.Box3;
 import com.djden.alcoholic.domain.multiblock.PressStrokeState;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
+import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlock;
 import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlockEntity;
 import com.djden.alcoholic.minecraft.multiblock.HollowCuboidPlacer;
 import com.djden.alcoholic.minecraft.multiblock.MultiblockControllerBlockEntity;
@@ -171,7 +172,13 @@ public final class IndustrialGameTests {
     public static void industrialPressRunsFromPrimitiveEngine(GameTestHelper helper) {
         buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_press_controller", "industrial_casing", "kinetic_port");
         BlockPos enginePos = ORIGIN.offset(3, 0, 0);
-        helper.setBlock(enginePos, block("primitive_combustion_engine").defaultBlockState());
+        helper.setBlock(
+                enginePos,
+                PrimitiveCombustionEngineBlock.withDriveToward(
+                        block("primitive_combustion_engine").defaultBlockState(),
+                        Direction.WEST
+                )
+        );
         MultiblockControllerBlockEntity press = revalidate(helper, ORIGIN);
         require(helper, press.formed(), "Press did not form: " + press.debugDump());
         PrimitiveCombustionEngineBlockEntity engine =
@@ -406,7 +413,13 @@ public final class IndustrialGameTests {
     public static void industrialRollerMillRunsFromPrimitiveEngine(GameTestHelper helper) {
         buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_roller_mill_controller", "industrial_casing", "kinetic_port");
         BlockPos enginePos = ORIGIN.offset(3, 0, 0);
-        helper.setBlock(enginePos, block("primitive_combustion_engine").defaultBlockState());
+        helper.setBlock(
+                enginePos,
+                PrimitiveCombustionEngineBlock.withDriveToward(
+                        block("primitive_combustion_engine").defaultBlockState(),
+                        Direction.WEST
+                )
+        );
         MultiblockControllerBlockEntity mill = revalidate(helper, ORIGIN);
         PrimitiveCombustionEngineBlockEntity engine =
                 (PrimitiveCombustionEngineBlockEntity) helper.getBlockEntity(enginePos);

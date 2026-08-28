@@ -15,7 +15,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Samples rotary sources for a machine. Native engines implement
- * {@link MechanicalDrivePort}; optional adapters register a {@link Probe}
+ * {@link MechanicalDrivePort}; a {@link FacedMechanicalDrive} source only
+ * counts on the face it declares. Optional adapters register a {@link Probe}
  * (adjacent foreign blocks) or a {@link LocalAdapter} (capability attached
  * to the machine itself, e.g. a Crossroads axle handler).
  */
@@ -166,7 +167,12 @@ public final class MechanicalDrives {
     ) {
         Adjacent best = Adjacent.idle();
         for (Direction direction : Direction.values()) {
-            Adjacent candidate = adjacentSource(level, machine.relative(direction), requirement);
+            Adjacent candidate = adjacentSource(
+                    level,
+                    machine.relative(direction),
+                    requirement,
+                    direction.getOpposite()
+            );
             if (MechanicalDriveState.stronger(best.state(), candidate.state(), requirement) == candidate.state()) {
                 best = candidate;
             }
@@ -175,19 +181,25 @@ public final class MechanicalDrives {
     }
 
     private static Adjacent adjacentSource(Level level, BlockPos position) {
-        return adjacentSource(level, position, null);
+        return adjacentSource(level, position, null, null);
     }
 
     private static Adjacent adjacentSource(
             Level level,
             BlockPos position,
-            MechanicalRequirement requirement
+            MechanicalRequirement requirement,
+            Direction sourceOutputFace
     ) {
         if (level == null || position == null) {
             return Adjacent.idle();
         }
         BlockEntity entity = level.getBlockEntity(position);
         if (entity instanceof MechanicalDrivePort port && port.isSource()) {
+            if (sourceOutputFace != null
+                    && entity instanceof FacedMechanicalDrive faced
+                    && !faced.transmitsToward(sourceOutputFace)) {
+                return Adjacent.idle();
+            }
             return new Adjacent(port.driveState(), port);
         }
         BlockState state = level.getBlockState(position);

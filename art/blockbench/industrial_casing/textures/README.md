@@ -26,11 +26,11 @@ controllers) copy these steel tiles instead of inventing a new blue-grey.
 | Block | `IndustrialPartBlock` (`PartRole.CASING`) via `IndustrialContentRegistrar` / `AlcoholicIds.INDUSTRIAL_CASING` |
 | Fichier | `minecraft-common/src/main/java/com/djden/alcoholic/minecraft/multiblock/IndustrialPartBlock.java` |
 | BlockEntity | **aucune** |
-| Properties | **aucune** |
-| Renderer | aucune |
+| Properties | `formed` — `RenderShape.INVISIBLE` dès que le contrôleur lié est formé |
+| Renderer | aucune (le hull soudé est le BER 9-slice du contrôleur) |
 | Modèles | handmade `…/models/block/industrial_casing.json` |
 | Texture défaut | handmade 64×64 `…/textures/block/industrial_casing.png` |
-| Blockstate | generated variante `""` |
+| Blockstate | generated variantes `formed=false` / `formed=true` |
 | Datagen | `IndustrialCasingAssetData` (blockstate + item) — **pas** de `cube_all` generated |
 | Tags | `alcoholic:pressure_safe_casing`, `fermenter_casing`, `industrial_tank_casing` |
 

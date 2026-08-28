@@ -1,9 +1,11 @@
 package com.djden.alcoholic.forge.gametest;
 
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
+import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlock;
 import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlockEntity;
 import com.djden.alcoholic.minecraft.process.MaltMillBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.ResourceLocation;
@@ -108,7 +110,13 @@ public final class MaltMillVisualGameTests {
 
     private static MaltMillBlockEntity poweredMill(GameTestHelper helper) {
         MaltMillBlockEntity mill = placeMill(helper);
-        helper.setBlock(ENGINE, block("primitive_combustion_engine").defaultBlockState());
+        helper.setBlock(
+                ENGINE,
+                PrimitiveCombustionEngineBlock.withDriveToward(
+                        block("primitive_combustion_engine").defaultBlockState(),
+                        Direction.WEST
+                )
+        );
         PrimitiveCombustionEngineBlockEntity engine =
                 (PrimitiveCombustionEngineBlockEntity) helper.getBlockEntity(ENGINE);
         engine.insertFuel(new ItemStack(Items.COAL));

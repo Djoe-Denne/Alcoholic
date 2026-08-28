@@ -3,7 +3,8 @@
 `master-512` is the approved formed-overview hull atlas (copy of
 `industrial_casing`). `SHA256SUMS.txt` sits next to it. This id has **no
 game block** and **no** resource-pack / 64×64 downsample.
-Do not invent a mega-mesh `models/block/industrial_press.json`.
+Mega-mesh = overlay BER `models/block/formed/industrial_press.json` at art size 3×4×3 only.
+It is not a fourth block. Any formed size uses the 9-slice hull; fittings stay 1×1. The iron platen stays a BER overlay.
 
 Typical formed size: 3×4×3, pressure-safe casing, kinetic port required.
 A vertical iron platen is visible through the windows (art only; the game BER
@@ -11,7 +12,7 @@ still uses `Blocks.IRON_BLOCK`).
 
 ## Brief modelage (agent Blockbench)
 
-- **Id / type** : `industrial_press` — **vue d’ensemble formée**. Ce n’est **pas** le modèle jeu. Le jeu assemble des cubes 1×1 + le contrôleur. **Interdit** : exporter un mega-mesh unique comme bloc `industrial_press` (ce bloc n’existe pas).
+- **Id / type** : `industrial_press` — **vue d’ensemble formée**. Ce n’est **pas** un bloc posable. Overlay BER à 3×4×3 ; sinon hull 9-slice + contrôleur. Le platen fer reste un overlay.
 - **Refs** : `art/blockbench/industrial_press/reference.png` et `industrial_press_formed.png`.
 - **Kit hull** : cuboïde creux 3×4×3, gros bloc `industrial_casing` (`pressure_safe_casing`). Face −Z : `item_port` bas centre (raisin) ; `industrial_press_controller` au-dessus ; `fluid_port` mi-hauteur à droite (moût) ; `access_hatch` centre ; 2× `machine_window` (platen fer = tile IRON du casing, art only). **`kinetic_port` sur +X** (obligatoire). BER jeu inchangée.
 - **Contraintes raid** : cuboïde **creux** fermé, hublots ronds, 1 contrôleur acier, port cinétique obligatoire. Typique art 3×4×3 ; code min 3×4×3 max 7×8×7 (`BuiltinMachines.industrialPress()`).
@@ -26,8 +27,8 @@ still uses `Blocks.IRON_BLOCK`).
 | Contrôleur Block | `MultiblockControllerBlock` + `AlcoholicIds.INDUSTRIAL_PRESS_CONTROLLER` |
 | Contrôleur BE | `MultiblockControllerBlockEntity` ; type `alcoholic:industrial_press_controller` |
 | Properties | `FORMED` sur le contrôleur |
-| BER formé | **oui** — `platform-forge-1.19.2/…/client/IndustrialPressRenderer.java` : platen = `Blocks.IRON_BLOCK` animé via `strokeCycle()`, si `entity.formed()` |
-| Enregistrement BER | `AlcoholicClient` → `pressControllerEntity` |
+| BER formé | `FormedMultiblockRenderer` — hull 9-slice ; mega-mesh à 3×4×3 ; platen = `Blocks.IRON_BLOCK` via `strokeCycle()` |
+| Enregistrement BER | `FormedMultiblockClient` → toutes les BE contrôleur |
 | Définition | `application/…/BuiltinMachines.INDUSTRIAL_PRESS` ; JSON `data/alcoholic/alcoholic/machines/industrial_press.json` |
 | Former | `MultiblockControllerBlockEntity.revalidate()` + `domain/…/HollowCuboidValidator.java` + `WorldStructureSampler` |
 | Pose debug | `HollowCuboidPlacer` / `BeerLinePlacer` |

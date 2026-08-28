@@ -3,7 +3,8 @@
 `master-512` is the approved formed-overview hull atlas (copy of
 `industrial_casing`). `SHA256SUMS.txt` sits next to it. This id has **no
 game block** and **no** resource-pack / 64×64 downsample.
-Do not invent a mega-mesh `models/block/industrial_conditioning_vessel.json`.
+Mega-mesh = overlay BER `models/block/formed/industrial_conditioning_vessel.json` at art size 3×6×3 only.
+It is not a fourth block. Any formed size uses the 9-slice hull; fittings stay 1×1.
 
 Formed multiblock (~3×6×3 hollow cuboid). Industrial painted steel with
 a cooling jacket and cold-blue controller accent. No locked oak.
@@ -12,7 +13,7 @@ Reference image (concept only, not the atlas): `../reference.png`
 
 ## Brief modelage (agent Blockbench)
 
-- **Id / type** : `industrial_conditioning_vessel` — **vue d’ensemble formée**. Ce n’est **pas** le modèle jeu. Le jeu assemble des cubes + `industrial_conditioning_vessel_controller`. **Interdit** : mega-mesh unique.
+- **Id / type** : `industrial_conditioning_vessel` — **vue d’ensemble formée**. Ce n’est **pas** un bloc posable. Overlay BER à 3×6×3 ; sinon hull 9-slice + `industrial_conditioning_vessel_controller`.
 - **Refs** : `art/blockbench/industrial_conditioning_vessel/reference.png`.
 - **Kit hull** : cuboïde creux 3×6×3, gros bloc `industrial_casing` (`fermenter_casing`). Face −Z : `item_port` bas centre ; `industrial_conditioning_vessel_controller` au-dessus ; `fluid_port` mi-hauteur à droite (x 0–16) ; `access_hatch` centre ; 3× `machine_window` (1 centre + 2 haut). Chemise = 2 bandes bleues sur +X (peinture, pas un bloc). 3 dômes toit = art only. **Pas** de `kinetic_port` (`required_ports: []`).
 - **Contraintes raid** : cuboïde creux plus haut. Typique art ~3×6×3 ; code min 3×4×3 max 7×10×7. Casing `fermenter_casing`. Pas de bulles de ferment, pas de tank nu.
@@ -25,7 +26,7 @@ Reference image (concept only, not the atlas): `../reference.png`
 | Bloc formé | **aucun** |
 | Contrôleur | `MultiblockControllerBlock` / `MultiblockControllerBlockEntity` ; id `alcoholic:industrial_conditioning_vessel_controller` |
 | Properties | `FORMED` (blockstate ignore) |
-| BER formé | **aucune** |
+| BER formé | `FormedMultiblockRenderer` — hull 9-slice si `formed` ; mega-mesh seulement à 3×6×3 |
 | Définition | `BuiltinMachines.INDUSTRIAL_CONDITIONING_VESSEL` ; JSON `…/machines/industrial_conditioning_vessel.json` |
 | Former | `revalidate()` + `HollowCuboidValidator` + `WorldStructureSampler` |
 

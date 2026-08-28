@@ -28,7 +28,7 @@ public final class ElectricMotorRenderer implements BlockEntityRenderer<Electric
     static final ResourceLocation SHAFT_MODEL = new ResourceLocation("alcoholic", "block/electric_motor_shaft");
 
     private static final double PIVOT_X = 8.0 / 16.0;
-    private static final double PIVOT_Y = 6.8 / 16.0;
+    private static final double PIVOT_Y = 10.0 / 16.0;
     private static final double PIVOT_Z = 1.2 / 16.0;
 
     private final Map<ElectricMotorBlockEntity, SpinState> spinStates = new WeakHashMap<>();

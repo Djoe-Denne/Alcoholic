@@ -3,14 +3,15 @@
 `master-512` is the approved formed-overview hull atlas (copy of
 `industrial_casing`). `SHA256SUMS.txt` sits next to it. This id has **no
 game block** and **no** resource-pack / 64×64 downsample.
-Do not invent a mega-mesh `models/block/industrial_storage_tank.json`.
+Mega-mesh = overlay BER `models/block/formed/industrial_storage_tank.json` at art size 3×5×3 only.
+It is not a fourth block. Any formed size uses the 9-slice hull; fittings stay 1×1.
 
 This formed multiblock is painted blue-grey industrial steel.
 It does not use the locked oak tile. No process coils, steam, or press gear.
 
 ## Brief modelage (agent Blockbench)
 
-- **Id / type** : `industrial_storage_tank` — **vue d’ensemble formée**. Ce n’est **pas** le modèle jeu. Le jeu assemble des cubes + `industrial_tank_controller`. **Interdit** : mega-mesh unique.
+- **Id / type** : `industrial_storage_tank` — **vue d’ensemble formée**. Ce n’est **pas** un bloc posable. Overlay BER à 3×5×3 ; sinon hull 9-slice + `industrial_tank_controller`.
 - **Refs** : `art/blockbench/industrial_storage_tank/reference.png`.
 - **Kit hull** : cuboïde creux 3×5×3, gros bloc `industrial_casing` (`industrial_tank_casing`). Face −Z : `item_port` bas centre ; `industrial_tank_controller` au-dessus ; `fluid_port` mi-hauteur à droite (x 0–16) ; `access_hatch` centre ; 2× `machine_window` en haut. Toit plat + regard = art only. **Pas** de `kinetic_port` (`required_ports: []`). **Pas** de serpentin / vapeur / dôme.
 - **Contraintes raid** : cuboïde creux calme, toit plat. Typique art ~3×5×3 ; code min 3×4×3 max 9×16×9. Casing `industrial_tank_casing`. **Aucun** serpentin, vapeur, platen, cylindre.
@@ -23,7 +24,7 @@ It does not use the locked oak tile. No process coils, steam, or press gear.
 | Bloc formé | **aucun** |
 | Contrôleur | `MultiblockControllerBlock` / `MultiblockControllerBlockEntity` ; id `alcoholic:industrial_tank_controller` |
 | Properties | `FORMED` (blockstate ignore) |
-| BER formé | **aucune** |
+| BER formé | `FormedMultiblockRenderer` — hull 9-slice si `formed` ; mega-mesh seulement à 3×5×3 |
 | Définition | `BuiltinMachines.INDUSTRIAL_TANK` (`MachineKind.STORAGE`, pas de process) ; JSON `…/machines/industrial_storage_tank.json` |
 | Former | `revalidate()` + `HollowCuboidValidator` + `WorldStructureSampler` |
 

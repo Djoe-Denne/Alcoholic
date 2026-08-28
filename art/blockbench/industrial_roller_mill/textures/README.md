@@ -3,13 +3,14 @@
 `master-512` is the approved formed-overview hull atlas (copy of
 `industrial_casing`). `SHA256SUMS.txt` sits next to it. This id has **no
 game block** and **no** resource-pack / 64×64 downsample.
-Do not invent a mega-mesh `models/block/industrial_roller_mill.json`.
+Mega-mesh = overlay BER `models/block/formed/industrial_roller_mill.json` at art size 3×4×3 only.
+It is not a fourth block. Any formed size uses the 9-slice hull; fittings stay 1×1.
 
 This formed multiblock is painted industrial steel. Kinetic is required.
 
 ## Brief modelage (agent Blockbench)
 
-- **Id / type** : `industrial_roller_mill` — **vue d’ensemble formée**. Ce n’est **pas** le modèle jeu. Le jeu assemble des cubes 1×1 + `industrial_roller_mill_controller`. **Interdit** : mega-mesh unique comme bloc (id bloc inexistant).
+- **Id / type** : `industrial_roller_mill` — **vue d’ensemble formée**. Ce n’est **pas** un bloc posable. Overlay BER à 3×4×3 ; sinon hull 9-slice + `industrial_roller_mill_controller`.
 - **Refs** : `art/blockbench/industrial_roller_mill/reference.png`.
 - **Kit hull** : cuboïde creux 3×4×3, gros bloc `industrial_casing` (`pressure_safe_casing`). Face −Z : `item_port` bas centre ; `industrial_roller_mill_controller` au-dessus ; `fluid_port` mi-hauteur à droite ; `access_hatch` centre ; 2× `machine_window` (2 cylindres = tile FACE du contrôleur). **`kinetic_port` sur +X** (arbre vert, obligatoire). Pas de BER.
 - **Contraintes raid** : cuboïde creux fermé. Typique art 3×4×3 ; code min 3×4×3 max 5×6×5. Casing `pressure_safe`. À travers les hublots : deux cylindres (guide visuel seulement).
@@ -22,7 +23,7 @@ This formed multiblock is painted industrial steel. Kinetic is required.
 | Bloc formé | **aucun** |
 | Contrôleur | `MultiblockControllerBlock` / `MultiblockControllerBlockEntity` ; id `alcoholic:industrial_roller_mill_controller` |
 | Properties | `FORMED` + atlas `_formed` sur le contrôleur |
-| BER formé | **aucune** — pas d’équivalent à `IndustrialPressRenderer` |
+| BER formé | `FormedMultiblockRenderer` — hull 9-slice si `formed` ; mega-mesh seulement à 3×4×3 |
 | Définition | `BuiltinMachines.INDUSTRIAL_ROLLER_MILL` ; JSON `…/machines/industrial_roller_mill.json` |
 | Former | `revalidate()` + `HollowCuboidValidator` + `WorldStructureSampler` |
 | Ports | `PartRole.KINETIC_PORT` obligatoire |
@@ -33,7 +34,7 @@ Si le modèle 3D introduit une animation ou un état visuel, mettre à jour Bloc
 
 - **Déjà dans le code** : `FORMED` + texture contrôleur `_formed`.
 - **Art sans Java** : cylindres / meules dans les hublots — **pas** de BER.
-- **Si rollers animés** : BER sur `rollerMillControllerEntity` (copier `IndustrialPressRenderer` / `MaltMillRenderer`). Ne pas créer un bloc `industrial_roller_mill`.
+- **Si rollers animés** : pièces supplémentaires sur le même BER, pas un 4ᵉ bloc.
 
 ## Mini-prompt copiable
 

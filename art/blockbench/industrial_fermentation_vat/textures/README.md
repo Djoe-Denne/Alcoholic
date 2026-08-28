@@ -4,14 +4,15 @@
 `industrial_casing`). `SHA256SUMS.txt` sits next to it. This id has **no
 game block** and **no** resource-pack / 64×64 downsample.
 
-Do not invent a mega-mesh `models/block/industrial_fermentation_vat.json`.
+Mega-mesh = overlay BER `models/block/formed/industrial_fermentation_vat.json` at art size 3×5×3 only.
+It is not a fourth block. Any formed size uses the 9-slice hull; fittings stay 1×1.
 
 This formed multiblock is painted industrial steel (grey-blue casing, windows,
 hatch, ports). It does not use the locked oak tile.
 
 ## Brief modelage (agent Blockbench)
 
-- **Id / type** : `industrial_fermentation_vat` — **vue d’ensemble formée**. Ce n’est **pas** le modèle jeu. Le jeu assemble des cubes + `industrial_vat_controller`. **Interdit** : mega-mesh unique (pas de bloc `industrial_fermentation_vat`).
+- **Id / type** : `industrial_fermentation_vat` — **vue d’ensemble formée**. Ce n’est **pas** un bloc posable. Overlay BER à 3×5×3 ; sinon hull 9-slice + `industrial_vat_controller`.
 - **Refs** : `art/blockbench/industrial_fermentation_vat/reference.png` et `industrial_fermentation_vat_formed.png`.
 - **Kit hull** : cuboïde creux 3×5×3, gros bloc `industrial_casing` (`fermenter_casing`). Face −Z : `item_port` bas centre ; `industrial_vat_controller` au-dessus ; `fluid_port` mi-hauteur à droite ; `access_hatch` centre ; 2× `machine_window` en haut. **Pas** de `kinetic_port` (`required_ports: []`). Couvercle = art only.
 - **Contraintes raid** : cuboïde creux plus haut que large. Typique art ~3×5×3 ; code min 3×4×3 max 9×16×9. Casing `fermenter_casing`. Pas de chêne (l’artisanal c’est `artisanal_fermenter`).
@@ -24,7 +25,7 @@ hatch, ports). It does not use the locked oak tile.
 | Bloc formé | **aucun** |
 | Contrôleur | `MultiblockControllerBlock` / `MultiblockControllerBlockEntity` ; id `alcoholic:industrial_vat_controller` |
 | Properties | `FORMED` (blockstate contrôleur = `cube_all`, ignore `formed`) |
-| BER formé | **aucune** |
+| BER formé | `FormedMultiblockRenderer` — hull 9-slice si `formed` ; mega-mesh seulement à 3×5×3 |
 | Définition | `BuiltinMachines.INDUSTRIAL_VAT` ; JSON `…/machines/industrial_fermentation_vat.json` |
 | Former | `revalidate()` + `HollowCuboidValidator` + `WorldStructureSampler` |
 

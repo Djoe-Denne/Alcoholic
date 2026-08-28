@@ -43,10 +43,14 @@ class IndustrialCasingResourceContractTest {
     void blockstateKeepsTheUntintedCubeVariant() throws IOException {
         JsonObject variants = resource("assets/alcoholic/blockstates/industrial_casing.json")
                 .getAsJsonObject("variants");
-        assertEquals(1, variants.size());
+        assertEquals(2, variants.size());
         assertEquals(
                 "alcoholic:block/industrial_casing",
-                variants.getAsJsonObject("").get("model").getAsString()
+                variants.getAsJsonObject("formed=false").get("model").getAsString()
+        );
+        assertEquals(
+                "alcoholic:block/industrial_casing",
+                variants.getAsJsonObject("formed=true").get("model").getAsString()
         );
 
         JsonObject item = resource("assets/alcoholic/models/item/industrial_casing.json");

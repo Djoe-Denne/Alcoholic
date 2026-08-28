@@ -86,6 +86,10 @@ class ElectricMotorResourceContractTest {
         assertEquals(offNames, litParts);
         assertTrue(shaftFacesNegativeZ(off));
         assertTrue(shaftFacesNegativeZ(shaft));
+        assertEquals(10.0, shaftCenterY(off), 0.01);
+        assertEquals(10.0, shaftCenterY(shaft), 0.01);
+        assertEquals(0.0, footBottomY(off), 0.01);
+        assertEquals(0.0, footBottomY(on), 0.01);
     }
 
     @Test
@@ -158,6 +162,29 @@ class ElectricMotorResourceContractTest {
             names.add(value.getAsJsonObject().get("name").getAsString());
         }
         return names;
+    }
+
+    private static double shaftCenterY(JsonObject model) {
+        for (JsonElement value : model.getAsJsonArray("elements")) {
+            JsonObject element = value.getAsJsonObject();
+            if ("iron_shaft".equals(element.get("name").getAsString())) {
+                JsonArray from = element.getAsJsonArray("from");
+                JsonArray to = element.getAsJsonArray("to");
+                return (from.get(1).getAsDouble() + to.get(1).getAsDouble()) / 2.0;
+            }
+        }
+        throw new AssertionError("iron_shaft missing");
+    }
+
+    private static double footBottomY(JsonObject model) {
+        double bottom = Double.POSITIVE_INFINITY;
+        for (JsonElement value : model.getAsJsonArray("elements")) {
+            JsonObject element = value.getAsJsonObject();
+            if (element.get("name").getAsString().startsWith("foot_")) {
+                bottom = Math.min(bottom, element.getAsJsonArray("from").get(1).getAsDouble());
+            }
+        }
+        return bottom;
     }
 
     private static boolean shaftFacesNegativeZ(JsonObject model) {
