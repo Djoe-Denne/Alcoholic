@@ -19,19 +19,16 @@ still use their model-specific built-in resolution.
 
 Four world fluids are painted and animated like vanilla water (vertical frame
 strips): `beer`, `hopped_wort`, `red_grape_must`, and `white_grape_must`.
-16 / 32 / 64 packs use 32 frames (`frametime` 2). 128 / 256 / 512 packs use
-8 frames (`frametime` 8). Still width is the pack resolution; flow width is
+16 / 32 / 64 packs use 32 frames (`frametime` 2). The 128 pack uses 24 frames
+timed to the same 64-tick loop. 256 / 512 packs use 8 frames (`frametime` 8).
+Still width is the pack resolution; flow width is
 twice that. Young wines, aged wines, and wort use vanilla water tiles plus a
 Java tint instead of Alcoholic world PNGs.
 
-Shader packs (Complementary, BSL, etc.) only treat a block as water when
-it is listed in that pack's `shaders/block.properties`. Alcoholic cannot
-append to that file from the JAR or from these texture packs without
-replacing the pack's other mappings. The catalog is
-`#alcoholic:world_fluids` (blocks and fluids). On Iris 1.7+ a shader
-author can write `block.8 = %alcoholic:world_fluids`. On Oculus 1.6 /
-1.19.2, add the nine liquid block ids next to `minecraft:water` on the
-`block.8` line. Do not add them to `minecraft:water`.
+Shader packs only treat a block as water when it is listed in that pack's
+`shaders/block.properties`. Do not ship that file in these texture packs.
+Complementary Reimagined r5.x uses `block.32000`, not `block.8`. Player
+steps: `docs/guides/shaders.md`.
 
 All optional item, plant, and painted-fluid textures are generated directly
 from the archived 512 x 512 masters, never from another reduced version.

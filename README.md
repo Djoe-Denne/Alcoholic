@@ -155,6 +155,7 @@ Player guides:
 
 - Artisanal brewery (beer): [`docs/guides/brasserie-artisanale.md`](docs/guides/brasserie-artisanale.md)
 - Artisanal vineyard (wine): [`docs/guides/vigne-artisanale.md`](docs/guides/vigne-artisanale.md)
+- Shader packs (Complementary water IDs): [`docs/guides/shaders.md`](docs/guides/shaders.md)
 - Optional FTB Quests chapter (copy into `config/ftbquests/quests`): [`modpack/ftbquests/README.md`](modpack/ftbquests/README.md)
 
 Architecture decisions for this phase: [ADR-007](docs/adr/ADR-007-production-dag-execution-model.md),

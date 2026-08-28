@@ -1,8 +1,9 @@
 """Build animated still/flow fluid strips for Alcoholic resource packs.
 
 Painted fluids (beer, hopped wort, grape musts) become vanilla-style vertical
-frame strips. 16/32/64 use 32 frames (frametime 2). 128/256/512 use 8 frames
-(frametime 8). Each frame is resized on its own before restacking.
+frame strips. 16/32/64 use 32 frames (frametime 2). 128 uses 24 frames timed
+to the same 64-tick loop. 256/512 use 8 frames (frametime 8). Each frame is
+resized on its own before restacking.
 """
 
 from __future__ import annotations
@@ -83,12 +84,30 @@ TRAITS = {
 }
 
 
+LOOP_TICKS = 64
+
+
 def frame_count(resolution: int) -> int:
-    return 8 if resolution >= 128 else 32
+    if resolution == 128:
+        return 24
+    return 8 if resolution >= 256 else 32
 
 
-def frame_time(resolution: int) -> int:
-    return 8 if resolution >= 128 else 2
+def default_frame_time(resolution: int) -> int:
+    return 8 if resolution >= 256 else 2
+
+
+def animation_payload(resolution: int, frames: int) -> dict:
+    if resolution != 128:
+        return {"animation": {"frametime": default_frame_time(resolution)}}
+    # 16 frames × 3 ticks + 8 frames × 2 ticks = 64, same loop as 32×2 and 8×8.
+    frame_list = [
+        {"index": index, "time": 2 if index % 3 == 2 else 3}
+        for index in range(frames)
+    ]
+    if sum(item["time"] for item in frame_list) != LOOP_TICKS:
+        raise ValueError("128-pack animation must stay on a 64-tick loop")
+    return {"animation": {"frametime": 2, "frames": frame_list}}
 
 
 def save_png(image: Image.Image, path: Path) -> None:
@@ -106,11 +125,8 @@ def save_png(image: Image.Image, path: Path) -> None:
             time.sleep(0.1 * (attempt + 1))
 
 
-def save_mcmeta(path: Path, frametime: int) -> None:
-    path.write_text(
-        json.dumps({"animation": {"frametime": frametime}}, indent=2) + "\n",
-        encoding="utf-8",
-    )
+def save_mcmeta(path: Path, payload: dict) -> None:
+    path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
 def square_master(image: Image.Image) -> Image.Image:
@@ -197,12 +213,12 @@ def stack_frames(frames: list[Image.Image]) -> Image.Image:
     return strip
 
 
-def write_strip(strip: Image.Image, path: Path, frametime: int) -> None:
+def write_strip(strip: Image.Image, path: Path, payload: dict) -> None:
     save_png(strip, path)
-    save_mcmeta(path.with_name(path.name + ".mcmeta"), frametime)
+    save_mcmeta(path.with_name(path.name + ".mcmeta"), payload)
 
 
-def build_fluid(name: str) -> None:
+def build_fluid(name: str, resolutions: tuple[int, ...] = RESOLUTIONS) -> None:
     traits = TRAITS[name]
     still_path = MASTER_PACK / ASSET_ROOT / "block" / f"{name}_still.png"
     flow_path = MASTER_PACK / ASSET_ROOT / "block" / f"{name}_flow.png"
@@ -213,9 +229,9 @@ def build_fluid(name: str) -> None:
     flow_master = np.asarray(square_master(Image.open(flow_path)).convert("RGB"), dtype=np.uint8)
     seed = abs(hash(name)) % 10_000
 
-    for resolution in RESOLUTIONS:
+    for resolution in resolutions:
         frames = frame_count(resolution)
-        frametime = frame_time(resolution)
+        payload = animation_payload(resolution, frames)
         still_frames = [
             render_frame(still_master, resolution, index / frames, False, traits, seed)
             for index in range(frames)
@@ -227,11 +243,11 @@ def build_fluid(name: str) -> None:
         still_strip = stack_frames(still_frames)
         flow_strip = stack_frames(flow_frames)
         pack_root = PACKS / f"Alcoholic-{resolution}x" / ASSET_ROOT / "block"
-        write_strip(still_strip, pack_root / f"{name}_still.png", frametime)
-        write_strip(flow_strip, pack_root / f"{name}_flow.png", frametime)
+        write_strip(still_strip, pack_root / f"{name}_still.png", payload)
+        write_strip(flow_strip, pack_root / f"{name}_flow.png", payload)
         if resolution == 16:
-            write_strip(still_strip, BUILTIN_BLOCK / f"{name}_still.png", frametime)
-            write_strip(flow_strip, BUILTIN_BLOCK / f"{name}_flow.png", frametime)
+            write_strip(still_strip, BUILTIN_BLOCK / f"{name}_still.png", payload)
+            write_strip(flow_strip, BUILTIN_BLOCK / f"{name}_flow.png", payload)
 
 
 def clean_tinted_water() -> None:
@@ -254,6 +270,12 @@ def main() -> None:
         help="Build a single painted animated fluid",
     )
     parser.add_argument(
+        "--resolution",
+        type=int,
+        choices=RESOLUTIONS,
+        help="Build a single pack resolution",
+    )
+    parser.add_argument(
         "--clean-tinted",
         action="store_true",
         help="Remove world still/flow textures for tinted vanilla-water fluids",
@@ -264,9 +286,10 @@ def main() -> None:
         print(f"Removed world textures for {len(TINTED_WATER_FLUIDS)} tinted-water fluids.")
         return
     names = (args.fluid,) if args.fluid else ANIMATED_FLUIDS
+    resolutions = (args.resolution,) if args.resolution else RESOLUTIONS
     for name in names:
-        build_fluid(name)
-        print(f"Built animated still/flow strips for {name}.")
+        build_fluid(name, resolutions)
+        print(f"Built animated still/flow strips for {name} at {resolutions}.")
 
 
 if __name__ == "__main__":

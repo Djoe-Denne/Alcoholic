@@ -110,7 +110,7 @@ not yet visible.
 ## World fluids
 
 Only four liquids keep painted Alcoholic world tiles. They are vanilla-style
-vertical animation strips (32 frames at 16/32/64, 8 frames at 128/256/512)
+vertical animation strips (32 frames at 16/32/64, 24 frames at 128, 8 frames at 256/512)
 with foam, pulp, and rising bubbles. Still width equals the pack resolution;
 flow width is twice that. Do not include a bucket, rim, handle, background,
 or inventory silhouette. Java tint is white so the PNG carries the color.

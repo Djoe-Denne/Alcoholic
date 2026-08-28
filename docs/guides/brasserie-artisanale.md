@@ -3,6 +3,7 @@
 Guide joueur pour le DAG officiel `alcoholic:beer`. Create, Crossroads et les multiblocks industriels sont **optionnels**. La bière se termine après `FERMENT`. Il n’y a **pas** de définition `AGE` officielle pour la bière. `CONDITION` est industriel uniquement et hors DAG. Pas de fût, pas d’assemblage.
 
 Vin : voir [vigne artisanale](vigne-artisanale.md).
+Shaders (vagues Complementary) : [shaders et liquides](shaders.md).
 
 ```text
 orge → maltage → orge maltée → mouture → mouture (grist)

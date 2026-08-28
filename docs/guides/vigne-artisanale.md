@@ -3,6 +3,7 @@
 Guide joueur pour le DAG officiel du vin. Create, Crossroads et les multiblocks industriels sont **optionnels**. Le graphe livré est `PRESS` → `FERMENT` → `AGE`. `BLEND` est une capacité optionnelle de la terrine, **pas** un nœud du graphe. `BOTTLE` est une action de vaisseau, **pas** un nœud DAG.
 
 Bière : voir [brasserie artisanale](brasserie-artisanale.md).
+Shaders (vagues Complementary) : [shaders et liquides](shaders.md).
 
 ```text
 raisin → pressage → moût
