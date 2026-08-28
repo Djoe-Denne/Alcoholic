@@ -1,20 +1,36 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "key": {
-    "I": {
-      "item": "minecraft:iron_nugget"
-    },
-    "L": {
-      "tag": "minecraft:logs"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "I": {
+            "item": "minecraft:iron_nugget"
+          },
+          "L": {
+            "tag": "minecraft:logs"
+          }
+        },
+        "pattern": [
+          "I I",
+          " L ",
+          " L "
+        ],
+        "result": {
+          "count": 2,
+          "item": "alcoholic:end_post"
+        }
+      }
     }
-  },
-  "pattern": [
-    "I I",
-    " L ",
-    " L "
-  ],
-  "result": {
-    "count": 2,
-    "item": "alcoholic:end_post"
-  }
+  ]
 }

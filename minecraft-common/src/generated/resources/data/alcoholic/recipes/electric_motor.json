@@ -1,22 +1,38 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "key": {
-    "C": {
-      "item": "minecraft:copper_ingot"
-    },
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "R": {
-      "item": "minecraft:redstone"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "C": {
+            "item": "minecraft:copper_ingot"
+          },
+          "I": {
+            "item": "minecraft:iron_ingot"
+          },
+          "R": {
+            "item": "minecraft:redstone"
+          }
+        },
+        "pattern": [
+          "IRI",
+          "RCR",
+          "IRI"
+        ],
+        "result": {
+          "item": "alcoholic:electric_motor"
+        }
+      }
     }
-  },
-  "pattern": [
-    "IRI",
-    "RCR",
-    "IRI"
-  ],
-  "result": {
-    "item": "alcoholic:electric_motor"
-  }
+  ]
 }

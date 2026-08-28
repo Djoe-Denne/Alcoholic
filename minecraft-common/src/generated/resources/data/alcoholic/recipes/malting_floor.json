@@ -1,18 +1,34 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "key": {
-    "P": {
-      "tag": "minecraft:planks"
-    },
-    "S": {
-      "item": "minecraft:wheat_seeds"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "P": {
+            "tag": "minecraft:planks"
+          },
+          "S": {
+            "item": "minecraft:wheat_seeds"
+          }
+        },
+        "pattern": [
+          "SSS",
+          "PPP"
+        ],
+        "result": {
+          "item": "alcoholic:malting_floor"
+        }
+      }
     }
-  },
-  "pattern": [
-    "SSS",
-    "PPP"
-  ],
-  "result": {
-    "item": "alcoholic:malting_floor"
-  }
+  ]
 }

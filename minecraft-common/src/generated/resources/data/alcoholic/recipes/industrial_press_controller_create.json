@@ -1,0 +1,36 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "B": {
+            "item": "create:brass_ingot"
+          },
+          "C": {
+            "item": "alcoholic:industrial_casing"
+          },
+          "P": {
+            "item": "alcoholic:artisanal_press"
+          }
+        },
+        "pattern": [
+          "BPB",
+          "BCB",
+          "BBB"
+        ],
+        "result": {
+          "count": 1,
+          "item": "alcoholic:industrial_press_controller"
+        }
+      }
+    }
+  ]
+}

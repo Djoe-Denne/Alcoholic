@@ -1,19 +1,35 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "key": {
-    "B": {
-      "item": "minecraft:bucket"
-    },
-    "I": {
-      "item": "minecraft:iron_ingot"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "B": {
+            "item": "minecraft:bucket"
+          },
+          "I": {
+            "item": "minecraft:iron_ingot"
+          }
+        },
+        "pattern": [
+          "I I",
+          "IBI",
+          "III"
+        ],
+        "result": {
+          "item": "alcoholic:brewing_kettle"
+        }
+      }
     }
-  },
-  "pattern": [
-    "I I",
-    "IBI",
-    "III"
-  ],
-  "result": {
-    "item": "alcoholic:brewing_kettle"
-  }
+  ]
 }

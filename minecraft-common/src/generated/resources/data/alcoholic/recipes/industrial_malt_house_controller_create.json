@@ -1,0 +1,36 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "B": {
+            "item": "create:brass_ingot"
+          },
+          "C": {
+            "item": "alcoholic:industrial_casing"
+          },
+          "M": {
+            "item": "alcoholic:malting_floor"
+          }
+        },
+        "pattern": [
+          "BMB",
+          "BCB",
+          "BBB"
+        ],
+        "result": {
+          "count": 1,
+          "item": "alcoholic:industrial_malt_house_controller"
+        }
+      }
+    }
+  ]
+}

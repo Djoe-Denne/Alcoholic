@@ -1,0 +1,36 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "A": {
+            "item": "create:andesite_alloy"
+          },
+          "P": {
+            "tag": "minecraft:planks"
+          },
+          "S": {
+            "item": "minecraft:wheat_seeds"
+          }
+        },
+        "pattern": [
+          "SSS",
+          "PPP",
+          " A "
+        ],
+        "result": {
+          "count": 1,
+          "item": "alcoholic:malting_floor"
+        }
+      }
+    }
+  ]
+}

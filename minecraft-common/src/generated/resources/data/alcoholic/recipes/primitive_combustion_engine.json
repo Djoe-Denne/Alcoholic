@@ -1,19 +1,35 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "key": {
-    "F": {
-      "item": "minecraft:furnace"
-    },
-    "I": {
-      "item": "minecraft:iron_ingot"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "F": {
+            "item": "minecraft:furnace"
+          },
+          "I": {
+            "item": "minecraft:iron_ingot"
+          }
+        },
+        "pattern": [
+          "III",
+          "IFI",
+          "III"
+        ],
+        "result": {
+          "item": "alcoholic:primitive_combustion_engine"
+        }
+      }
     }
-  },
-  "pattern": [
-    "III",
-    "IFI",
-    "III"
-  ],
-  "result": {
-    "item": "alcoholic:primitive_combustion_engine"
-  }
+  ]
 }

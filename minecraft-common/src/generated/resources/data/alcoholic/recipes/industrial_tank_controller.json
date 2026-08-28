@@ -1,23 +1,39 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "key": {
-    "B": {
-      "item": "minecraft:bucket"
-    },
-    "C": {
-      "item": "alcoholic:industrial_casing"
-    },
-    "I": {
-      "item": "minecraft:iron_ingot"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "B": {
+            "item": "minecraft:bucket"
+          },
+          "C": {
+            "item": "alcoholic:industrial_casing"
+          },
+          "I": {
+            "item": "minecraft:iron_ingot"
+          }
+        },
+        "pattern": [
+          "IBI",
+          "ICI",
+          "III"
+        ],
+        "result": {
+          "count": 1,
+          "item": "alcoholic:industrial_tank_controller"
+        }
+      }
     }
-  },
-  "pattern": [
-    "IBI",
-    "ICI",
-    "III"
-  ],
-  "result": {
-    "count": 1,
-    "item": "alcoholic:industrial_tank_controller"
-  }
+  ]
 }

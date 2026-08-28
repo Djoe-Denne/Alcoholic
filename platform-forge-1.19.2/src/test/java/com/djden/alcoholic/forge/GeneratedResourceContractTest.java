@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -407,6 +409,139 @@ class GeneratedResourceContractTest {
         }
     }
 
+    private static final String[] CRAFTABLE_MACHINES = {
+            "vineyard_post",
+            "end_post",
+            "trellis_spool",
+            "artisanal_press",
+            "artisanal_fermenter",
+            "oak_barrel",
+            "artisanal_blending_crock",
+            "malting_floor",
+            "mash_tun",
+            "brewing_kettle",
+            "malt_mill",
+            "primitive_combustion_engine",
+            "electric_motor",
+            "industrial_casing",
+            "machine_window",
+            "access_hatch",
+            "fluid_port",
+            "item_port",
+            "kinetic_port",
+            "industrial_press_controller",
+            "industrial_vat_controller",
+            "industrial_tank_controller",
+            "industrial_malt_house_controller",
+            "industrial_roller_mill_controller",
+            "industrial_mash_tun_controller",
+            "industrial_brewing_kettle_controller",
+            "industrial_conditioning_vessel_controller"
+    };
+
+    private static final String[] ALWAYS_VANILLA_RECIPES = {
+            "yeast",
+            "empty_bottle",
+            "pruning_shears"
+    };
+
+    private static final String[] CREATE_PROCESS_RECIPES = {
+            "mill_malted_grain_millstone",
+            "mill_malted_grain_crushing",
+            "press_red_grapes_create",
+            "press_white_grapes_create"
+    };
+
+    private static final Set<String> VANILLA_INGREDIENT_NAMESPACES = Set.of(
+            "minecraft",
+            "alcoholic",
+            "forge"
+    );
+
+    @Test
+    void craftableMachinesAreVanillaXorCreate() throws IOException {
+        for (String id : CRAFTABLE_MACHINES) {
+            JsonObject vanilla = resource("data/alcoholic/recipes/" + id + ".json");
+            assertDisabledWhenCreate(vanilla);
+            JsonObject vanillaRecipe = innerRecipe(vanilla);
+            assertEquals("minecraft:crafting_shaped", vanillaRecipe.get("type").getAsString());
+            assertEquals("alcoholic:" + id, resultItem(vanillaRecipe));
+            for (String ingredient : recipeIngredients(vanillaRecipe)) {
+                assertTrue(
+                        VANILLA_INGREDIENT_NAMESPACES.contains(namespaceOf(ingredient)),
+                        id + " vanilla recipe uses " + ingredient
+                );
+            }
+
+            JsonObject create = resource("data/alcoholic/recipes/" + id + "_create.json");
+            assertEnabledWhenCreate(create);
+            JsonObject createRecipe = innerRecipe(create);
+            assertEquals("minecraft:crafting_shaped", createRecipe.get("type").getAsString());
+            assertEquals("alcoholic:" + id, resultItem(createRecipe));
+            Set<String> createIngredients = recipeIngredients(createRecipe);
+            assertTrue(
+                    createIngredients.stream().anyMatch(item -> "create".equals(namespaceOf(item))),
+                    id + " create recipe has no create ingredient: " + createIngredients
+            );
+        }
+    }
+
+    @Test
+    void consumableRecipesStayVanillaWithoutCreateGate() throws IOException {
+        for (String id : ALWAYS_VANILLA_RECIPES) {
+            JsonObject recipe = resource("data/alcoholic/recipes/" + id + ".json");
+            assertNotEquals("forge:conditional", recipe.get("type").getAsString());
+            assertFalse(recipe.has("conditions"));
+            for (String ingredient : recipeIngredients(recipe)) {
+                assertEquals("minecraft", namespaceOf(ingredient), id + " uses " + ingredient);
+            }
+        }
+    }
+
+    @Test
+    void electricMotorIeRecipeYieldsToCreate() throws IOException {
+        JsonObject wrapper = resource("data/alcoholic/recipes/electric_motor_ie.json");
+        assertDisabledWhenCreate(wrapper);
+        JsonArray conditions = recipeConditions(wrapper);
+        assertEquals(2, conditions.size());
+        JsonObject itemPresent = conditions.get(1).getAsJsonObject();
+        assertEquals("alcoholic:item_present", itemPresent.get("type").getAsString());
+        assertEquals("immersiveengineering:coil_lv", itemPresent.get("item").getAsString());
+        JsonObject recipe = innerRecipe(wrapper);
+        assertEquals("alcoholic:electric_motor", resultItem(recipe));
+    }
+
+    @Test
+    void createProcessRecipesStayModLoaded() throws IOException {
+        assertEquals(
+                "create:milling",
+                innerRecipe(resource("data/alcoholic/recipes/mill_malted_grain_millstone.json"))
+                        .get("type")
+                        .getAsString()
+        );
+        assertEquals(
+                "create:crushing",
+                innerRecipe(resource("data/alcoholic/recipes/mill_malted_grain_crushing.json"))
+                        .get("type")
+                        .getAsString()
+        );
+        assertEquals(
+                "create:compacting",
+                innerRecipe(resource("data/alcoholic/recipes/press_red_grapes_create.json"))
+                        .get("type")
+                        .getAsString()
+        );
+        assertEquals(
+                "create:compacting",
+                innerRecipe(resource("data/alcoholic/recipes/press_white_grapes_create.json"))
+                        .get("type")
+                        .getAsString()
+        );
+        for (String id : CREATE_PROCESS_RECIPES) {
+            assertEnabledWhenCreate(resource("data/alcoholic/recipes/" + id + ".json"));
+        }
+    }
+
     @Test
     void infrastructureRecipesLootAndCropTagsAreGenerated() throws IOException {
         resource("data/alcoholic/recipes/vineyard_post.json");
@@ -677,6 +812,84 @@ class GeneratedResourceContractTest {
             }
         }
         return null;
+    }
+
+    private static void assertDisabledWhenCreate(JsonObject wrapper) {
+        JsonObject first = recipeConditions(wrapper).get(0).getAsJsonObject();
+        assertEquals("forge:not", first.get("type").getAsString());
+        JsonObject nested = first.getAsJsonObject("value");
+        assertEquals("forge:mod_loaded", nested.get("type").getAsString());
+        assertEquals("create", nested.get("modid").getAsString());
+    }
+
+    private static void assertEnabledWhenCreate(JsonObject wrapper) {
+        JsonObject first = recipeConditions(wrapper).get(0).getAsJsonObject();
+        assertEquals("forge:mod_loaded", first.get("type").getAsString());
+        assertEquals("create", first.get("modid").getAsString());
+    }
+
+    private static JsonArray recipeConditions(JsonObject wrapper) {
+        assertEquals("forge:conditional", wrapper.get("type").getAsString());
+        return wrapper.getAsJsonArray("recipes")
+                .get(0)
+                .getAsJsonObject()
+                .getAsJsonArray("conditions");
+    }
+
+    private static JsonObject innerRecipe(JsonObject wrapper) {
+        assertEquals("forge:conditional", wrapper.get("type").getAsString());
+        return wrapper.getAsJsonArray("recipes")
+                .get(0)
+                .getAsJsonObject()
+                .getAsJsonObject("recipe");
+    }
+
+    private static String resultItem(JsonObject recipe) {
+        JsonElement result = recipe.get("result");
+        if (result.isJsonPrimitive()) {
+            return result.getAsString();
+        }
+        return result.getAsJsonObject().get("item").getAsString();
+    }
+
+    private static Set<String> recipeIngredients(JsonObject recipe) {
+        Set<String> ids = new HashSet<>();
+        collectRefs(recipe.get("key"), ids);
+        collectRefs(recipe.get("ingredients"), ids);
+        collectRefs(recipe.get("ingredient"), ids);
+        return ids;
+    }
+
+    private static void collectRefs(JsonElement node, Set<String> ids) {
+        if (node == null || node.isJsonNull()) {
+            return;
+        }
+        if (node.isJsonObject()) {
+            JsonObject object = node.getAsJsonObject();
+            if (object.has("item") && object.get("item").isJsonPrimitive()) {
+                ids.add(object.get("item").getAsString());
+            }
+            if (object.has("tag") && object.get("tag").isJsonPrimitive()) {
+                ids.add("#" + object.get("tag").getAsString());
+            }
+            for (var entry : object.entrySet()) {
+                if (!"item".equals(entry.getKey()) && !"tag".equals(entry.getKey())) {
+                    collectRefs(entry.getValue(), ids);
+                }
+            }
+            return;
+        }
+        if (node.isJsonArray()) {
+            for (JsonElement element : node.getAsJsonArray()) {
+                collectRefs(element, ids);
+            }
+        }
+    }
+
+    private static String namespaceOf(String id) {
+        String value = id.startsWith("#") ? id.substring(1) : id;
+        int colon = value.indexOf(':');
+        return colon < 0 ? "minecraft" : value.substring(0, colon);
     }
 
     private static JsonObject resource(String path) throws IOException {

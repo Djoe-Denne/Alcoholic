@@ -1,23 +1,39 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "key": {
-    "C": {
-      "item": "alcoholic:industrial_casing"
-    },
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "K": {
-      "item": "alcoholic:brewing_kettle"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "C": {
+            "item": "alcoholic:industrial_casing"
+          },
+          "I": {
+            "item": "minecraft:iron_ingot"
+          },
+          "K": {
+            "item": "alcoholic:brewing_kettle"
+          }
+        },
+        "pattern": [
+          "IKI",
+          "ICI",
+          "III"
+        ],
+        "result": {
+          "count": 1,
+          "item": "alcoholic:industrial_brewing_kettle_controller"
+        }
+      }
     }
-  },
-  "pattern": [
-    "IKI",
-    "ICI",
-    "III"
-  ],
-  "result": {
-    "count": 1,
-    "item": "alcoholic:industrial_brewing_kettle_controller"
-  }
+  ]
 }

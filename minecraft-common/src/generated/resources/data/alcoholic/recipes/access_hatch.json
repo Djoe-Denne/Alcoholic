@@ -1,20 +1,36 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "key": {
-    "H": {
-      "item": "minecraft:iron_trapdoor"
-    },
-    "I": {
-      "item": "minecraft:iron_ingot"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "H": {
+            "item": "minecraft:iron_trapdoor"
+          },
+          "I": {
+            "item": "minecraft:iron_ingot"
+          }
+        },
+        "pattern": [
+          " I ",
+          "IHI",
+          " I "
+        ],
+        "result": {
+          "count": 1,
+          "item": "alcoholic:access_hatch"
+        }
+      }
     }
-  },
-  "pattern": [
-    " I ",
-    "IHI",
-    " I "
-  ],
-  "result": {
-    "count": 1,
-    "item": "alcoholic:access_hatch"
-  }
+  ]
 }

@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "C": {
+            "item": "create:copper_casing"
+          },
+          "P": {
+            "item": "create:fluid_pipe"
+          }
+        },
+        "pattern": [
+          " C ",
+          " P ",
+          " C "
+        ],
+        "result": {
+          "count": 1,
+          "item": "alcoholic:fluid_port"
+        }
+      }
+    }
+  ]
+}

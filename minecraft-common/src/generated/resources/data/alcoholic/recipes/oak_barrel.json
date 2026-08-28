@@ -1,19 +1,35 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "key": {
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "P": {
-      "item": "minecraft:oak_planks"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "I": {
+            "item": "minecraft:iron_ingot"
+          },
+          "P": {
+            "item": "minecraft:oak_planks"
+          }
+        },
+        "pattern": [
+          "P P",
+          "PIP",
+          "PPP"
+        ],
+        "result": {
+          "item": "alcoholic:oak_barrel"
+        }
+      }
     }
-  },
-  "pattern": [
-    "P P",
-    "PIP",
-    "PPP"
-  ],
-  "result": {
-    "item": "alcoholic:oak_barrel"
-  }
+  ]
 }

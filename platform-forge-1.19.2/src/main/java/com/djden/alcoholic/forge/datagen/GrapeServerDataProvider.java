@@ -312,65 +312,71 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
     private static void addRecipes(JsonSink sink) {
         sink.add(
                 "data/alcoholic/recipes/vineyard_post.json",
-                """
-                        {
-                          "type": "minecraft:crafting_shaped",
-                          "pattern": [
-                            " S ",
-                            " P ",
-                            " P "
-                          ],
-                          "key": {
-                            "S": { "item": "minecraft:stick" },
-                            "P": { "tag": "minecraft:planks" }
-                          },
-                          "result": {
-                            "item": "alcoholic:vineyard_post",
-                            "count": 2
-                          }
-                        }
+                wrapUnlessCreate(
                         """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": [
+                                    " S ",
+                                    " P ",
+                                    " P "
+                                  ],
+                                  "key": {
+                                    "S": { "item": "minecraft:stick" },
+                                    "P": { "tag": "minecraft:planks" }
+                                  },
+                                  "result": {
+                                    "item": "alcoholic:vineyard_post",
+                                    "count": 2
+                                  }
+                                }
+                                """
+                )
         );
         sink.add(
                 "data/alcoholic/recipes/end_post.json",
-                """
-                        {
-                          "type": "minecraft:crafting_shaped",
-                          "pattern": [
-                            "I I",
-                            " L ",
-                            " L "
-                          ],
-                          "key": {
-                            "I": { "item": "minecraft:iron_nugget" },
-                            "L": { "tag": "minecraft:logs" }
-                          },
-                          "result": {
-                            "item": "alcoholic:end_post",
-                            "count": 2
-                          }
-                        }
+                wrapUnlessCreate(
                         """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": [
+                                    "I I",
+                                    " L ",
+                                    " L "
+                                  ],
+                                  "key": {
+                                    "I": { "item": "minecraft:iron_nugget" },
+                                    "L": { "tag": "minecraft:logs" }
+                                  },
+                                  "result": {
+                                    "item": "alcoholic:end_post",
+                                    "count": 2
+                                  }
+                                }
+                                """
+                )
         );
         sink.add(
                 "data/alcoholic/recipes/trellis_spool.json",
-                """
-                        {
-                          "type": "minecraft:crafting_shaped",
-                          "pattern": [
-                            "III",
-                            "SIS",
-                            "III"
-                          ],
-                          "key": {
-                            "I": { "item": "minecraft:iron_nugget" },
-                            "S": { "item": "minecraft:string" }
-                          },
-                          "result": {
-                            "item": "alcoholic:trellis_spool"
-                          }
-                        }
+                wrapUnlessCreate(
                         """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": [
+                                    "III",
+                                    "SIS",
+                                    "III"
+                                  ],
+                                  "key": {
+                                    "I": { "item": "minecraft:iron_nugget" },
+                                    "S": { "item": "minecraft:string" }
+                                  },
+                                  "result": {
+                                    "item": "alcoholic:trellis_spool"
+                                  }
+                                }
+                                """
+                )
         );
         sink.add(
                 "data/alcoholic/recipes/pruning_shears.json",
@@ -393,43 +399,47 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         );
         sink.add(
                 "data/alcoholic/recipes/artisanal_press.json",
-                """
-                        {
-                          "type": "minecraft:crafting_shaped",
-                          "pattern": [
-                            " I ",
-                            "PBP",
-                            "PPP"
-                          ],
-                          "key": {
-                            "I": { "item": "minecraft:iron_ingot" },
-                            "P": { "tag": "minecraft:planks" },
-                            "B": { "item": "minecraft:bowl" }
-                          },
-                          "result": {
-                            "item": "alcoholic:artisanal_press"
-                          }
-                        }
+                wrapUnlessCreate(
                         """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": [
+                                    " I ",
+                                    "PBP",
+                                    "PPP"
+                                  ],
+                                  "key": {
+                                    "I": { "item": "minecraft:iron_ingot" },
+                                    "P": { "tag": "minecraft:planks" },
+                                    "B": { "item": "minecraft:bowl" }
+                                  },
+                                  "result": {
+                                    "item": "alcoholic:artisanal_press"
+                                  }
+                                }
+                                """
+                )
         );
         sink.add(
                 "data/alcoholic/recipes/artisanal_fermenter.json",
-                """
-                        {
-                          "type": "minecraft:crafting_shaped",
-                          "pattern": [
-                            "P P",
-                            "P P",
-                            "PPP"
-                          ],
-                          "key": {
-                            "P": { "tag": "minecraft:planks" }
-                          },
-                          "result": {
-                            "item": "alcoholic:artisanal_fermenter"
-                          }
-                        }
+                wrapUnlessCreate(
                         """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": [
+                                    "P P",
+                                    "P P",
+                                    "PPP"
+                                  ],
+                                  "key": {
+                                    "P": { "tag": "minecraft:planks" }
+                                  },
+                                  "result": {
+                                    "item": "alcoholic:artisanal_fermenter"
+                                  }
+                                }
+                                """
+                )
         );
         sink.add(
                 "data/alcoholic/recipes/yeast.json",
@@ -449,102 +459,112 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         );
         sink.add(
                 "data/alcoholic/recipes/oak_barrel.json",
-                """
-                        {
-                          "type": "minecraft:crafting_shaped",
-                          "pattern": [
-                            "P P",
-                            "PIP",
-                            "PPP"
-                          ],
-                          "key": {
-                            "P": { "item": "minecraft:oak_planks" },
-                            "I": { "item": "minecraft:iron_ingot" }
-                          },
-                          "result": {
-                            "item": "alcoholic:oak_barrel"
-                          }
-                        }
+                wrapUnlessCreate(
                         """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": [
+                                    "P P",
+                                    "PIP",
+                                    "PPP"
+                                  ],
+                                  "key": {
+                                    "P": { "item": "minecraft:oak_planks" },
+                                    "I": { "item": "minecraft:iron_ingot" }
+                                  },
+                                  "result": {
+                                    "item": "alcoholic:oak_barrel"
+                                  }
+                                }
+                                """
+                )
         );
         sink.add(
                 "data/alcoholic/recipes/artisanal_blending_crock.json",
-                """
-                        {
-                          "type": "minecraft:crafting_shaped",
-                          "pattern": [
-                            "P P",
-                            "PBP",
-                            " P "
-                          ],
-                          "key": {
-                            "P": { "tag": "minecraft:planks" },
-                            "B": { "item": "minecraft:bowl" }
-                          },
-                          "result": {
-                            "item": "alcoholic:artisanal_blending_crock"
-                          }
-                        }
+                wrapUnlessCreate(
                         """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": [
+                                    "P P",
+                                    "PBP",
+                                    " P "
+                                  ],
+                                  "key": {
+                                    "P": { "tag": "minecraft:planks" },
+                                    "B": { "item": "minecraft:bowl" }
+                                  },
+                                  "result": {
+                                    "item": "alcoholic:artisanal_blending_crock"
+                                  }
+                                }
+                                """
+                )
         );
         sink.add(
                 "data/alcoholic/recipes/malting_floor.json",
-                """
-                        {
-                          "type": "minecraft:crafting_shaped",
-                          "pattern": [
-                            "SSS",
-                            "PPP"
-                          ],
-                          "key": {
-                            "S": { "item": "minecraft:wheat_seeds" },
-                            "P": { "tag": "minecraft:planks" }
-                          },
-                          "result": {
-                            "item": "alcoholic:malting_floor"
-                          }
-                        }
+                wrapUnlessCreate(
                         """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": [
+                                    "SSS",
+                                    "PPP"
+                                  ],
+                                  "key": {
+                                    "S": { "item": "minecraft:wheat_seeds" },
+                                    "P": { "tag": "minecraft:planks" }
+                                  },
+                                  "result": {
+                                    "item": "alcoholic:malting_floor"
+                                  }
+                                }
+                                """
+                )
         );
         sink.add(
                 "data/alcoholic/recipes/mash_tun.json",
-                """
-                        {
-                          "type": "minecraft:crafting_shaped",
-                          "pattern": [
-                            "P P",
-                            "PBP",
-                            "PPP"
-                          ],
-                          "key": {
-                            "P": { "tag": "minecraft:planks" },
-                            "B": { "item": "minecraft:bucket" }
-                          },
-                          "result": {
-                            "item": "alcoholic:mash_tun"
-                          }
-                        }
+                wrapUnlessCreate(
                         """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": [
+                                    "P P",
+                                    "PBP",
+                                    "PPP"
+                                  ],
+                                  "key": {
+                                    "P": { "tag": "minecraft:planks" },
+                                    "B": { "item": "minecraft:bucket" }
+                                  },
+                                  "result": {
+                                    "item": "alcoholic:mash_tun"
+                                  }
+                                }
+                                """
+                )
         );
         sink.add(
                 "data/alcoholic/recipes/brewing_kettle.json",
-                """
-                        {
-                          "type": "minecraft:crafting_shaped",
-                          "pattern": [
-                            "I I",
-                            "IBI",
-                            "III"
-                          ],
-                          "key": {
-                            "I": { "item": "minecraft:iron_ingot" },
-                            "B": { "item": "minecraft:bucket" }
-                          },
-                          "result": {
-                            "item": "alcoholic:brewing_kettle"
-                          }
-                        }
+                wrapUnlessCreate(
                         """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": [
+                                    "I I",
+                                    "IBI",
+                                    "III"
+                                  ],
+                                  "key": {
+                                    "I": { "item": "minecraft:iron_ingot" },
+                                    "B": { "item": "minecraft:bucket" }
+                                  },
+                                  "result": {
+                                    "item": "alcoholic:brewing_kettle"
+                                  }
+                                }
+                                """
+                )
         );
         sink.add(
                 "data/alcoholic/recipes/empty_bottle.json",
@@ -574,91 +594,96 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         addShaped(sink, "kinetic_port", " I ", "ISI", " I ", "I", "minecraft:iron_ingot", "S", "minecraft:iron_nugget", 1);
         sink.add(
                 "data/alcoholic/recipes/malt_mill.json",
-                """
-                        {
-                          "type": "minecraft:crafting_shaped",
-                          "pattern": [
-                            "S S",
-                            "PSP",
-                            "PPP"
-                          ],
-                          "key": {
-                            "S": { "item": "minecraft:smooth_stone_slab" },
-                            "P": { "tag": "minecraft:planks" }
-                          },
-                          "result": {
-                            "item": "alcoholic:malt_mill"
-                          }
-                        }
+                wrapUnlessCreate(
                         """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": [
+                                    "S S",
+                                    "PSP",
+                                    "PPP"
+                                  ],
+                                  "key": {
+                                    "S": { "item": "minecraft:smooth_stone_slab" },
+                                    "P": { "tag": "minecraft:planks" }
+                                  },
+                                  "result": {
+                                    "item": "alcoholic:malt_mill"
+                                  }
+                                }
+                                """
+                )
         );
         sink.add(
                 "data/alcoholic/recipes/primitive_combustion_engine.json",
-                """
-                        {
-                          "type": "minecraft:crafting_shaped",
-                          "pattern": [
-                            "III",
-                            "IFI",
-                            "III"
-                          ],
-                          "key": {
-                            "I": { "item": "minecraft:iron_ingot" },
-                            "F": { "item": "minecraft:furnace" }
-                          },
-                          "result": {
-                            "item": "alcoholic:primitive_combustion_engine"
-                          }
-                        }
+                wrapUnlessCreate(
                         """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": [
+                                    "III",
+                                    "IFI",
+                                    "III"
+                                  ],
+                                  "key": {
+                                    "I": { "item": "minecraft:iron_ingot" },
+                                    "F": { "item": "minecraft:furnace" }
+                                  },
+                                  "result": {
+                                    "item": "alcoholic:primitive_combustion_engine"
+                                  }
+                                }
+                                """
+                )
         );
         sink.add(
                 "data/alcoholic/recipes/electric_motor.json",
-                """
-                        {
-                          "type": "minecraft:crafting_shaped",
-                          "pattern": [
-                            "IRI",
-                            "RCR",
-                            "IRI"
-                          ],
-                          "key": {
-                            "I": { "item": "minecraft:iron_ingot" },
-                            "R": { "item": "minecraft:redstone" },
-                            "C": { "item": "minecraft:copper_ingot" }
-                          },
-                          "result": {
-                            "item": "alcoholic:electric_motor"
-                          }
-                        }
+                wrapUnlessCreate(
                         """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": [
+                                    "IRI",
+                                    "RCR",
+                                    "IRI"
+                                  ],
+                                  "key": {
+                                    "I": { "item": "minecraft:iron_ingot" },
+                                    "R": { "item": "minecraft:redstone" },
+                                    "C": { "item": "minecraft:copper_ingot" }
+                                  },
+                                  "result": {
+                                    "item": "alcoholic:electric_motor"
+                                  }
+                                }
+                                """
+                )
         );
         sink.add(
                 "data/alcoholic/recipes/electric_motor_ie.json",
-                """
-                        {
-                          "type": "minecraft:crafting_shaped",
-                          "pattern": [
-                            "CIC",
-                            "IMI",
-                            "CIC"
-                          ],
-                          "key": {
-                            "C": { "item": "immersiveengineering:component_iron" },
-                            "I": { "item": "minecraft:iron_ingot" },
-                            "M": { "item": "immersiveengineering:coil_lv" }
-                          },
-                          "result": {
-                            "item": "alcoholic:electric_motor"
-                          },
-                          "conditions": [
-                            {
-                              "type": "alcoholic:item_present",
-                              "item": "immersiveengineering:coil_lv"
-                            }
-                          ]
-                        }
+                wrapUnlessCreateAnd(
                         """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": [
+                                    "CIC",
+                                    "IMI",
+                                    "CIC"
+                                  ],
+                                  "key": {
+                                    "C": { "item": "immersiveengineering:component_iron" },
+                                    "I": { "item": "minecraft:iron_ingot" },
+                                    "M": { "item": "immersiveengineering:coil_lv" }
+                                  },
+                                  "result": {
+                                    "item": "alcoholic:electric_motor"
+                                  }
+                                }
+                                """,
+                        """
+                                { "type": "alcoholic:item_present", "item": "immersiveengineering:coil_lv" }
+                                """
+                )
         );
         addShaped(sink, "industrial_press_controller", "IPI", "ICI", "III", "I", "minecraft:iron_ingot", "P", "alcoholic:artisanal_press", "C", "alcoholic:industrial_casing", 1);
         addShaped(sink, "industrial_vat_controller", "IFI", "ICI", "III", "I", "minecraft:iron_ingot", "F", "alcoholic:artisanal_fermenter", "C", "alcoholic:industrial_casing", 1);
@@ -668,6 +693,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         addShaped(sink, "industrial_mash_tun_controller", "ITI", "ICI", "III", "I", "minecraft:iron_ingot", "T", "alcoholic:mash_tun", "C", "alcoholic:industrial_casing", 1);
         addShaped(sink, "industrial_brewing_kettle_controller", "IKI", "ICI", "III", "I", "minecraft:iron_ingot", "K", "alcoholic:brewing_kettle", "C", "alcoholic:industrial_casing", 1);
         addShaped(sink, "industrial_conditioning_vessel_controller", "IFI", "ICI", "III", "I", "minecraft:iron_ingot", "F", "alcoholic:oak_barrel", "C", "alcoholic:industrial_casing", 1);
+        addCreateMachineRecipes(sink);
     }
 
     private static void addShaped(
@@ -682,14 +708,16 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
     ) {
         sink.add(
                 "data/alcoholic/recipes/" + result + ".json",
-                """
-                        {
-                          "type": "minecraft:crafting_shaped",
-                          "pattern": ["%s", "%s", "%s"],
-                          "key": { "%s": { "item": "%s" } },
-                          "result": { "item": "alcoholic:%s", "count": %s }
-                        }
-                        """.formatted(row1, row2, row3, keyA, itemA, result, count)
+                wrapUnlessCreate(
+                        """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": ["%s", "%s", "%s"],
+                                  "key": { "%s": { "item": "%s" } },
+                                  "result": { "item": "alcoholic:%s", "count": %s }
+                                }
+                                """.formatted(row1, row2, row3, keyA, itemA, result, count)
+                )
         );
     }
 
@@ -707,17 +735,19 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
     ) {
         sink.add(
                 "data/alcoholic/recipes/" + result + ".json",
-                """
-                        {
-                          "type": "minecraft:crafting_shaped",
-                          "pattern": ["%s", "%s", "%s"],
-                          "key": {
-                            "%s": { "item": "%s" },
-                            "%s": { "item": "%s" }
-                          },
-                          "result": { "item": "alcoholic:%s", "count": %s }
-                        }
-                        """.formatted(row1, row2, row3, keyA, itemA, keyB, itemB, result, count)
+                wrapUnlessCreate(
+                        """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": ["%s", "%s", "%s"],
+                                  "key": {
+                                    "%s": { "item": "%s" },
+                                    "%s": { "item": "%s" }
+                                  },
+                                  "result": { "item": "alcoholic:%s", "count": %s }
+                                }
+                                """.formatted(row1, row2, row3, keyA, itemA, keyB, itemB, result, count)
+                )
         );
     }
 
@@ -737,18 +767,20 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
     ) {
         sink.add(
                 "data/alcoholic/recipes/" + result + ".json",
-                """
-                        {
-                          "type": "minecraft:crafting_shaped",
-                          "pattern": ["%s", "%s", "%s"],
-                          "key": {
-                            "%s": { "item": "%s" },
-                            "%s": { "item": "%s" },
-                            "%s": { "item": "%s" }
-                          },
-                          "result": { "item": "alcoholic:%s", "count": %s }
-                        }
-                        """.formatted(row1, row2, row3, keyA, itemA, keyB, itemB, keyC, itemC, result, count)
+                wrapUnlessCreate(
+                        """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": ["%s", "%s", "%s"],
+                                  "key": {
+                                    "%s": { "item": "%s" },
+                                    "%s": { "item": "%s" },
+                                    "%s": { "item": "%s" }
+                                  },
+                                  "result": { "item": "alcoholic:%s", "count": %s }
+                                }
+                                """.formatted(row1, row2, row3, keyA, itemA, keyB, itemB, keyC, itemC, result, count)
+                )
         );
     }
 
@@ -1710,6 +1742,156 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                     wrapCreate(CreateMillRecipeTranslator.toCrushingJson(spec))
             );
         });
+    }
+
+    private static void addCreateMachineRecipes(JsonSink sink) {
+        addCreateShaped(sink, "vineyard_post", " A ", " P ", " P ", 2,
+                "A", "create:andesite_alloy", "P", "#minecraft:planks");
+        addCreateShaped(sink, "end_post", "A A", " L ", " L ", 2,
+                "A", "create:andesite_alloy", "L", "#minecraft:logs");
+        addCreateShaped(sink, "trellis_spool", " A ", "ASA", " A ", 1,
+                "A", "create:andesite_alloy", "S", "minecraft:string");
+        addCreateShaped(sink, "artisanal_press", " A ", "PBP", "PPP", 1,
+                "A", "create:andesite_alloy", "P", "#minecraft:planks", "B", "minecraft:bowl");
+        addCreateShaped(sink, "artisanal_fermenter", "P P", "P P", "PAP", 1,
+                "P", "#minecraft:planks", "A", "create:andesite_alloy");
+        addCreateShaped(sink, "oak_barrel", "P P", "PAP", "PPP", 1,
+                "P", "minecraft:oak_planks", "A", "create:andesite_alloy");
+        addCreateShaped(sink, "artisanal_blending_crock", "P P", "PBP", " A ", 1,
+                "P", "#minecraft:planks", "B", "minecraft:bowl", "A", "create:andesite_alloy");
+        addCreateShaped(sink, "malting_floor", "SSS", "PPP", " A ", 1,
+                "S", "minecraft:wheat_seeds", "P", "#minecraft:planks", "A", "create:andesite_alloy");
+        addCreateShaped(sink, "mash_tun", "P P", "PBP", "PAP", 1,
+                "P", "#minecraft:planks", "B", "minecraft:bucket", "A", "create:andesite_alloy");
+        addCreateShaped(sink, "brewing_kettle", "A A", "ACA", "AAA", 1,
+                "A", "create:andesite_alloy", "C", "create:copper_casing");
+        addCreateShaped(sink, "industrial_casing", "AAA", "A A", "AAA", 4,
+                "A", "create:andesite_alloy");
+        addCreateShaped(sink, "machine_window", "AGA", "G G", "AGA", 4,
+                "A", "create:andesite_alloy", "G", "minecraft:glass");
+        addCreateShaped(sink, "access_hatch", " A ", "AHA", " A ", 1,
+                "A", "create:andesite_alloy", "H", "minecraft:iron_trapdoor");
+        addCreateShaped(sink, "fluid_port", " C ", " P ", " C ", 1,
+                "C", "create:copper_casing", "P", "create:fluid_pipe");
+        addCreateShaped(sink, "item_port", " C ", " H ", " C ", 1,
+                "C", "create:andesite_casing", "H", "create:chute");
+        addCreateShaped(sink, "kinetic_port", " C ", " S ", " C ", 1,
+                "C", "create:andesite_casing", "S", "create:shaft");
+        addCreateShaped(sink, "malt_mill", "S S", "ACA", "PPP", 1,
+                "S", "minecraft:smooth_stone_slab",
+                "A", "create:andesite_alloy",
+                "C", "create:cogwheel",
+                "P", "#minecraft:planks");
+        addCreateShaped(sink, "primitive_combustion_engine", "AAA", "AFA", "AAA", 1,
+                "A", "create:andesite_alloy", "F", "minecraft:furnace");
+        addCreateShaped(sink, "electric_motor", "ARA", "RTR", "ARA", 1,
+                "A", "create:andesite_alloy",
+                "R", "minecraft:redstone",
+                "T", "create:electron_tube");
+        addCreateShaped(sink, "industrial_press_controller", "BPB", "BCB", "BBB", 1,
+                "B", "create:brass_ingot",
+                "P", "alcoholic:artisanal_press",
+                "C", "alcoholic:industrial_casing");
+        addCreateShaped(sink, "industrial_vat_controller", "BFB", "BCB", "BBB", 1,
+                "B", "create:brass_ingot",
+                "F", "alcoholic:artisanal_fermenter",
+                "C", "alcoholic:industrial_casing");
+        addCreateShaped(sink, "industrial_tank_controller", "BUB", "BCB", "BBB", 1,
+                "B", "create:brass_ingot",
+                "U", "minecraft:bucket",
+                "C", "alcoholic:industrial_casing");
+        addCreateShaped(sink, "industrial_malt_house_controller", "BMB", "BCB", "BBB", 1,
+                "B", "create:brass_ingot",
+                "M", "alcoholic:malting_floor",
+                "C", "alcoholic:industrial_casing");
+        addCreateShaped(sink, "industrial_roller_mill_controller", "BRB", "BCB", "BBB", 1,
+                "B", "create:brass_ingot",
+                "R", "alcoholic:malt_mill",
+                "C", "alcoholic:industrial_casing");
+        addCreateShaped(sink, "industrial_mash_tun_controller", "BTB", "BCB", "BBB", 1,
+                "B", "create:brass_ingot",
+                "T", "alcoholic:mash_tun",
+                "C", "alcoholic:industrial_casing");
+        addCreateShaped(sink, "industrial_brewing_kettle_controller", "BKB", "BCB", "BBB", 1,
+                "B", "create:brass_ingot",
+                "K", "alcoholic:brewing_kettle",
+                "C", "alcoholic:industrial_casing");
+        addCreateShaped(sink, "industrial_conditioning_vessel_controller", "BFB", "BCB", "BBB", 1,
+                "B", "create:brass_ingot",
+                "F", "alcoholic:oak_barrel",
+                "C", "alcoholic:industrial_casing");
+    }
+
+    private static void addCreateShaped(
+            JsonSink sink,
+            String result,
+            String row1,
+            String row2,
+            String row3,
+            int count,
+            String... keysAndIds
+    ) {
+        if (keysAndIds.length == 0 || keysAndIds.length % 2 != 0) {
+            throw new IllegalArgumentException("Create recipe keys must be key/id pairs");
+        }
+        StringBuilder keyJson = new StringBuilder();
+        for (int i = 0; i < keysAndIds.length; i += 2) {
+            if (i > 0) {
+                keyJson.append(",\n                            ");
+            }
+            keyJson.append('"')
+                    .append(keysAndIds[i])
+                    .append("\": ")
+                    .append(ingredientRef(keysAndIds[i + 1]));
+        }
+        sink.add(
+                "data/alcoholic/recipes/" + result + "_create.json",
+                wrapCreate(
+                        """
+                                {
+                                  "type": "minecraft:crafting_shaped",
+                                  "pattern": ["%s", "%s", "%s"],
+                                  "key": {
+                                    %s
+                                  },
+                                  "result": { "item": "alcoholic:%s", "count": %s }
+                                }
+                                """.formatted(row1, row2, row3, keyJson, result, count)
+                )
+        );
+    }
+
+    private static String ingredientRef(String id) {
+        if (id.startsWith("#")) {
+            return "{ \"tag\": \"" + id.substring(1) + "\" }";
+        }
+        return "{ \"item\": \"" + id + "\" }";
+    }
+
+    private static String wrapUnlessCreate(String recipeJson) {
+        return wrapUnlessCreateAnd(recipeJson, null);
+    }
+
+    private static String wrapUnlessCreateAnd(String recipeJson, String extraConditionJson) {
+        String extra = extraConditionJson == null || extraConditionJson.isBlank()
+                ? ""
+                : ",\n                    " + extraConditionJson.trim();
+        return """
+                {
+                  "type": "forge:conditional",
+                  "recipes": [
+                    {
+                      "conditions": [
+                        {
+                          "type": "forge:not",
+                          "value": { "type": "forge:mod_loaded", "modid": "create" }
+                        }%s
+                      ],
+                      "recipe": %s
+                    }
+                  ]
+                }
+                """.formatted(extra, recipeJson.trim());
     }
 
     private static String wrapCreate(String recipeJson) {

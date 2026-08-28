@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "A": {
+            "item": "create:andesite_alloy"
+          },
+          "F": {
+            "item": "minecraft:furnace"
+          }
+        },
+        "pattern": [
+          "AAA",
+          "AFA",
+          "AAA"
+        ],
+        "result": {
+          "count": 1,
+          "item": "alcoholic:primitive_combustion_engine"
+        }
+      }
+    }
+  ]
+}

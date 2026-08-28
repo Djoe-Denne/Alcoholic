@@ -1,28 +1,42 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "conditions": [
+  "type": "forge:conditional",
+  "recipes": [
     {
-      "type": "alcoholic:item_present",
-      "item": "immersiveengineering:coil_lv"
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+          }
+        },
+        {
+          "type": "alcoholic:item_present",
+          "item": "immersiveengineering:coil_lv"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "C": {
+            "item": "immersiveengineering:component_iron"
+          },
+          "I": {
+            "item": "minecraft:iron_ingot"
+          },
+          "M": {
+            "item": "immersiveengineering:coil_lv"
+          }
+        },
+        "pattern": [
+          "CIC",
+          "IMI",
+          "CIC"
+        ],
+        "result": {
+          "item": "alcoholic:electric_motor"
+        }
+      }
     }
-  ],
-  "key": {
-    "C": {
-      "item": "immersiveengineering:component_iron"
-    },
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "M": {
-      "item": "immersiveengineering:coil_lv"
-    }
-  },
-  "pattern": [
-    "CIC",
-    "IMI",
-    "CIC"
-  ],
-  "result": {
-    "item": "alcoholic:electric_motor"
-  }
+  ]
 }

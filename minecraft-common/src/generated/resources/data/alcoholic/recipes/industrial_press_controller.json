@@ -1,23 +1,39 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "key": {
-    "C": {
-      "item": "alcoholic:industrial_casing"
-    },
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "P": {
-      "item": "alcoholic:artisanal_press"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "C": {
+            "item": "alcoholic:industrial_casing"
+          },
+          "I": {
+            "item": "minecraft:iron_ingot"
+          },
+          "P": {
+            "item": "alcoholic:artisanal_press"
+          }
+        },
+        "pattern": [
+          "IPI",
+          "ICI",
+          "III"
+        ],
+        "result": {
+          "count": 1,
+          "item": "alcoholic:industrial_press_controller"
+        }
+      }
     }
-  },
-  "pattern": [
-    "IPI",
-    "ICI",
-    "III"
-  ],
-  "result": {
-    "count": 1,
-    "item": "alcoholic:industrial_press_controller"
-  }
+  ]
 }

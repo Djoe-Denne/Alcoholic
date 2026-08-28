@@ -1,0 +1,36 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "A": {
+            "item": "create:andesite_alloy"
+          },
+          "B": {
+            "item": "minecraft:bucket"
+          },
+          "P": {
+            "tag": "minecraft:planks"
+          }
+        },
+        "pattern": [
+          "P P",
+          "PBP",
+          "PAP"
+        ],
+        "result": {
+          "count": 1,
+          "item": "alcoholic:mash_tun"
+        }
+      }
+    }
+  ]
+}

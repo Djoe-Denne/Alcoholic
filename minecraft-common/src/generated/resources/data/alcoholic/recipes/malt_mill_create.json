@@ -1,0 +1,39 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "A": {
+            "item": "create:andesite_alloy"
+          },
+          "C": {
+            "item": "create:cogwheel"
+          },
+          "P": {
+            "tag": "minecraft:planks"
+          },
+          "S": {
+            "item": "minecraft:smooth_stone_slab"
+          }
+        },
+        "pattern": [
+          "S S",
+          "ACA",
+          "PPP"
+        ],
+        "result": {
+          "count": 1,
+          "item": "alcoholic:malt_mill"
+        }
+      }
+    }
+  ]
+}

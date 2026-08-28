@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "A": {
+            "item": "create:andesite_alloy"
+          },
+          "H": {
+            "item": "minecraft:iron_trapdoor"
+          }
+        },
+        "pattern": [
+          " A ",
+          "AHA",
+          " A "
+        ],
+        "result": {
+          "count": 1,
+          "item": "alcoholic:access_hatch"
+        }
+      }
+    }
+  ]
+}

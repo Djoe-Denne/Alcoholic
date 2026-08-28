@@ -1,23 +1,39 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "key": {
-    "C": {
-      "item": "alcoholic:industrial_casing"
-    },
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "R": {
-      "item": "alcoholic:malt_mill"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "C": {
+            "item": "alcoholic:industrial_casing"
+          },
+          "I": {
+            "item": "minecraft:iron_ingot"
+          },
+          "R": {
+            "item": "alcoholic:malt_mill"
+          }
+        },
+        "pattern": [
+          "IRI",
+          "ICI",
+          "III"
+        ],
+        "result": {
+          "count": 1,
+          "item": "alcoholic:industrial_roller_mill_controller"
+        }
+      }
     }
-  },
-  "pattern": [
-    "IRI",
-    "ICI",
-    "III"
-  ],
-  "result": {
-    "count": 1,
-    "item": "alcoholic:industrial_roller_mill_controller"
-  }
+  ]
 }

@@ -67,6 +67,8 @@ PLANT_TEXTURES = (
     "red_grapevine_planted",
     "red_grapevine_ripening",
     "red_grapevine_vegetative",
+    "end_post",
+    "trellis_wire",
     "vineyard_post",
     "white_grapevine_dormant",
     "white_grapevine_establishing",

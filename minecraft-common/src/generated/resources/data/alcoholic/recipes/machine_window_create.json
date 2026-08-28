@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "A": {
+            "item": "create:andesite_alloy"
+          },
+          "G": {
+            "item": "minecraft:glass"
+          }
+        },
+        "pattern": [
+          "AGA",
+          "G G",
+          "AGA"
+        ],
+        "result": {
+          "count": 4,
+          "item": "alcoholic:machine_window"
+        }
+      }
+    }
+  ]
+}

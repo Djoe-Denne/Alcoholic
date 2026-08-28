@@ -1,16 +1,32 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "key": {
-    "P": {
-      "tag": "minecraft:planks"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "P": {
+            "tag": "minecraft:planks"
+          }
+        },
+        "pattern": [
+          "P P",
+          "P P",
+          "PPP"
+        ],
+        "result": {
+          "item": "alcoholic:artisanal_fermenter"
+        }
+      }
     }
-  },
-  "pattern": [
-    "P P",
-    "P P",
-    "PPP"
-  ],
-  "result": {
-    "item": "alcoholic:artisanal_fermenter"
-  }
+  ]
 }

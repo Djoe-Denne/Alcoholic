@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "A": {
+            "item": "create:andesite_alloy"
+          },
+          "P": {
+            "tag": "minecraft:planks"
+          }
+        },
+        "pattern": [
+          " A ",
+          " P ",
+          " P "
+        ],
+        "result": {
+          "count": 2,
+          "item": "alcoholic:vineyard_post"
+        }
+      }
+    }
+  ]
+}

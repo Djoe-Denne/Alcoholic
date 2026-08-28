@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "A": {
+            "item": "create:andesite_alloy"
+          }
+        },
+        "pattern": [
+          "AAA",
+          "A A",
+          "AAA"
+        ],
+        "result": {
+          "count": 4,
+          "item": "alcoholic:industrial_casing"
+        }
+      }
+    }
+  ]
+}
