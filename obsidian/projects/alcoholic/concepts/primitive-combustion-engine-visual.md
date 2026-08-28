@@ -11,7 +11,7 @@ provenance:
   inferred: 0.1
   ambiguous: 0.02
 created: 2026-08-27T13:30:00+02:00
-updated: 2026-08-27T13:30:00+02:00
+updated: 2026-08-28T19:15:00+02:00
 ---
 
 # Primitive Combustion Engine Visual
@@ -20,7 +20,9 @@ Codex fork **Ajouter modèles 3D Minecraft (3)** (`01a03f6d`, from parent `01a03
 
 ## Role
 
-This block is a [[mechanical-drive-port]] supply. The parent visual plan: moving parts (shaft / flywheel) spin while the engine is on. Off and lit texture states stay paired.
+This block is a [[mechanical-drive-port]] supply. Moving parts (shaft / flywheel) spin while the engine is on. Off and lit texture states stay paired.
+
+Only the **right-hand shaft face** emits torque. The front grille (fire) does not. A north-facing engine drives **east**. Java checks that face. See [[cursor-machine-port-audit-session]].
 
 ## Texture history in the fork
 
@@ -36,5 +38,6 @@ Masters live in the `.bbmodel` and in `art/blockbench/primitive_combustion_engin
 - [[artisanal-machine-voxel-models]]
 - [[resource-pack-resolution-chain]]
 - [[mechanical-drive-port]]
+- [[cursor-machine-port-audit-session]]
 - [[codex-ajouter-modeles-3d-minecraft]]
 - [[blockbench-java-block-workflow]]

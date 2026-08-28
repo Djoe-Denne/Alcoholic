@@ -14,7 +14,7 @@ provenance:
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-27T13:30:00+02:00
-updated: 2026-08-27T16:20:00+02:00
+updated: 2026-08-28T19:15:00+02:00
 ---
 
 # Blockbench Java Block Workflow
@@ -32,7 +32,7 @@ You do not need to quit Blockbench to use the bridge. Restart the AI client afte
 
 ## Passes
 
-1. Name the single target (`malting_floor`, `primitive_combustion_engine`, or `malt_mill`).
+1. Name the single target. Two agents must not share one Blockbench MCP: `new_project` / `save_project` hit the same open document. Parallel work is for READMEs and refs only.
 2. Identify the matching region of the reference board.
 3. Build a grey silhouette in a **new** Java Block/Item project. Do not edit the other machines' files.
 4. Fix proportions, facing (`-Z` unless specified), and coplanar faces.
@@ -41,7 +41,7 @@ You do not need to quit Blockbench to use the bridge. Restart the AI client afte
 7. Screenshot several angles. Stop and wait for approval.
 8. Only then downsample from the master and export into `assets/alcoholic/` plus `resourcepacks/`.
 
-Canonical finished examples are the engine, malting floor, and mash tun. The mill is painted but not a finished export example until it follows the same pack + 64 default chain. See the repo skill `alcoholic-java-machine-model`.
+Canonical finished examples are the engine, malting floor, and mash tun. The mill is painted but not a finished export example until it follows the same pack + 64 default chain. Mash tun skipped the mid-res grey pass after silhouette approval. See the repo skill `alcoholic-java-machine-model` and each `art/blockbench/<id>/textures/README.md` for Java classes and animation hooks.
 
 Do not ship GeckoLib or Bedrock JSON as the game deliverable.
 
@@ -51,4 +51,8 @@ Do not ship GeckoLib or Bedrock JSON as the game deliverable.
 - [[malting-floor-visual]]
 - [[primitive-combustion-engine-visual]]
 - [[malt-mill-visual]]
+- [[mash-tun-visual]]
+- [[brewing-kettle-visual]]
+- [[formed-multiblock-visual]]
+- [[cursor-voxel-campaign-session]]
 - [[artisanal-processing]]

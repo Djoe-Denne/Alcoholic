@@ -13,7 +13,7 @@ provenance:
   inferred: 0.1
   ambiguous: 0.02
 created: 2026-08-27T16:20:00+02:00
-updated: 2026-08-27T16:20:00+02:00
+updated: 2026-08-28T19:15:00+02:00
 ---
 
 # Cursor Artisanal Brewery Guide Session
@@ -34,7 +34,7 @@ Creative kits already existed: `/alcoholic debug kit beer_agriculture` and `beer
 - `/alcoholic debug place beer industrial <pos>`
 - `/alcoholic debug place <alias> <pos> [w h d]`
 
-Artisanal aliases pad the mill with an engine and the thermal machines with the matching heat block. Industrial aliases go through `HollowCuboidPlacer` and `INDUSTRIAL_STRIDE`. The session also deployed a build into a local CurseForge instance for in-world checks. ^[inferred]
+Artisanal aliases pad the mill with an engine and the thermal machines with the matching heat block. Industrial aliases go through `HollowCuboidPlacer` and `INDUSTRIAL_STRIDE`. Loose cubes on `beer industrial` were a client formed-look gap; see [[formed-multiblock-visual]] and [[cursor-formed-hull-session]]. Full command list: [[alcoholic-debug-commands]]. The session also deployed a build into a local CurseForge instance for in-world checks. ^[inferred]
 
 ## Related
 
@@ -42,6 +42,9 @@ Artisanal aliases pad the mill with an engine and the thermal machines with the 
 - [[artisanal-processing]]
 - [[industrial-multiblock]]
 - [[industrial-processing]]
+- [[formed-multiblock-visual]]
+- [[alcoholic-debug-commands]]
+- [[cursor-formed-hull-session]]
 - [[fermentation-physics]]
 - [[bottled-beverage-snapshot]]
 - [[alcoholic]]

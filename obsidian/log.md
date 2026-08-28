@@ -53,3 +53,6 @@ title: Wiki Log
 - [2026-08-27T16:20:00+02:00] CODEX_HISTORY_INGEST sessions=20 pages_updated=3 pages_created=0 mode=append topic="01a03d10 red-team swarm + 01a03f62 brewery guide (Alcoholic cwd only)"
 - [2026-08-27T16:25:00+02:00] QMD_REFRESH collection="alcoholic-wiki" action=update+embed indexed="5 new, 14 updated" embedded="84 chunks / 29 documents"
 - [2026-08-27T20:45:00+02:00] QUERY query="comment on récupère du houblon, orge, malt" result_pages=4 mode=normal escalated=true vault="C:/Users/djden/source/repos/Alcoholic/obsidian" collection="alcoholic-wiki"
+- [2026-08-28T19:15:00+02:00] CURSOR_HISTORY_INGEST conversations=17 pages_updated=16 pages_created=13 mode=append skipped_subagents=true topic="voxels + wild hops + formed hull + ports + XOR crafts + deploy"
+- [2026-08-28T19:15:00+02:00] CODEX_HISTORY_INGEST sessions=16 pages_updated=16 pages_created=13 mode=append topic="Alcoholic cwd Aug 27-28 (taps, plants, mash tun, GrepAI, 512 items meta)"
+- [2026-08-28T19:16:00+02:00] QMD_REFRESH collection="alcoholic-wiki" action=update+embed indexed="46 new, 27 updated" embedded="217 chunks / 84 documents"

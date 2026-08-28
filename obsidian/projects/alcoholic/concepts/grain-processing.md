@@ -16,7 +16,7 @@ provenance:
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T18:55:00+02:00
-updated: 2026-08-27T16:20:00+02:00
+updated: 2026-08-28T19:15:00+02:00
 ---
 
 # Grain Processing
@@ -51,7 +51,7 @@ Mixed solid/liquid ports reuse `ProcessInputs` (ADR-025). There is no brewing-wa
 
 ## Agriculture
 
-Barley is an annual cereal (`CerealCropBlock`). Hops grow as a vertical bine on generic `CropSupportPost` plus trellis wire, not as a grapevine subclass. Survival bootstrap is `alcoholic:wild_hops`, a ground bush (no trellis) that drops a rhizome and hops; worldgen is gated when Brewery is present. Ingredient identity is tags: `#alcoholic:barley`, `#alcoholic:malted_barley`, `#alcoholic:malted_grain`, `#alcoholic:grist`, `#alcoholic:hops`, `#alcoholic:spent_grain`. Brewery is a preferred crop provider when present; Alcoholic ids stay registered. See [[semantic-crop-compatibility]].
+Barley is an annual cereal (`CerealCropBlock`). Hops grow as a vertical bine on generic `CropSupportPost` plus trellis wire, not as a grapevine subclass. Survival bootstrap is [[wild-hops]]. Cultivated columns use hop `segment` plus [[climbing-plant-visual]]. Ingredient identity is tags: `#alcoholic:barley`, `#alcoholic:malted_barley`, `#alcoholic:malted_grain`, `#alcoholic:grist`, `#alcoholic:hops`, `#alcoholic:spent_grain`. Brewery is a preferred crop provider when present; Alcoholic ids stay registered. See [[semantic-crop-compatibility]].
 
 ## Native machines
 
@@ -59,7 +59,7 @@ The malting floor executes `MALT` only. An earlier Phase 7A cut also ran `MILL` 
 
 The mash tun and brewing kettle are artisanal mixed-input executors. Phase 7B adds industrial executors for the same process types: malt house, roller mill, mash tun, brewing kettle, plus an optional conditioning vessel. See [[industrial-processing]].
 
-Floor and mill cube placeholders are being replaced by [[malting-floor-visual]] and [[malt-mill-visual]]. Process types stay generic.
+Floor, mill, mash tun, and kettle have Java voxels: [[malting-floor-visual]], [[malt-mill-visual]], [[mash-tun-visual]], [[brewing-kettle-visual]]. Process types stay generic.
 
 Player walkthrough: `docs/guides/brasserie-artisanale.md` from [[cursor-artisanal-brewery-guide-session]]. Recipe viewers show the same generic types via [[process-display-and-recipe-viewers]].
 
@@ -78,6 +78,11 @@ Player walkthrough: `docs/guides/brasserie-artisanale.md` from [[cursor-artisana
 - [[semantic-crop-compatibility]]
 - [[fermentation-physics]]
 - [[process-display-and-recipe-viewers]]
+- [[wild-hops]]
+- [[climbing-plant-visual]]
+- [[mash-tun-visual]]
+- [[brewing-kettle-visual]]
+- [[cursor-survival-plants-session]]
 - [[cursor-artisanal-brewery-guide-session]]
 - [[cursor-phase-7a-grain-session]]
 - [[cursor-create-independence-session]]

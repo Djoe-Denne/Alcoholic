@@ -8,13 +8,15 @@ sources:
   - "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-48-08-01a03f66-acf1-7931-95db-a9b0b9d8961f.jsonl"
   - "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T21-27-11-01a03f89-8bc5-7140-aa48-215bf4ba51ed_01a03f8a-6d29-7862-943b-e0e09c706834.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/fa499a53-567a-462e-aa1e-cc2c5df0a700/fa499a53-567a-462e-aa1e-cc2c5df0a700.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/48cf13a3-9ec8-4348-b31e-37330cedae92/48cf13a3-9ec8-4348-b31e-37330cedae92.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/a7306cd0-8e92-41f3-8d5b-caf85717ddcb/a7306cd0-8e92-41f3-8d5b-caf85717ddcb.jsonl"
 summary: Paint a 512×512 BDcraft-like master, copy locked engine oak, downsample each size from that master, ship mid-res in the mod.
 provenance:
   extracted: 0.84
   inferred: 0.1
   ambiguous: 0.06
 created: 2026-08-27T13:30:00+02:00
-updated: 2026-08-27T16:20:00+02:00
+updated: 2026-08-28T19:15:00+02:00
 ---
 
 # Resource Pack Resolution Chain
@@ -53,6 +55,14 @@ For a 4-column material atlas, atlas size maps to per-material pixels:
 
 **64×64** is the size that gives each material a vanilla 16×16 worth of pixels. The engine and malting-floor forks settled on 64 as the mod default after briefly shipping 16. The mill fork later asked for **32×32** as its default. Treat 64 as the documented engine/floor default and 32 as the mill fork's last instruction until the repo is unified. ^[ambiguous]
 
+The mash-tun campaign **skipped the mid-res grey pass**: approved silhouette, then 512 paint, then downsample. See [[mash-tun-visual]].
+
+`end_post` and `trellis_wire` now have 512 masters and ride `PLANT_TEXTURES` down to 16. Item/plant 512 boards started under `art/prompts/items-plants-vineyard-512.md`.
+
+## Deployed zip packs
+
+A 1.19.2 zip is ignored or magenta if `pack.mcmeta` is not at the zip root, or if entries use Windows `\`. Gameplay textures named by a model (for example `wild_hops`) must also exist as 16× in the **mod jar**. See [[curseforge-create2-deploy]].
+
 ## Related
 
 - [[artisanal-machine-voxel-models]]
@@ -61,3 +71,6 @@ For a 4-column material atlas, atlas size maps to per-material pixels:
 - [[malt-mill-visual]]
 - [[blockbench-java-block-workflow]]
 - [[codex-ajouter-modeles-3d-minecraft]]
+- [[mash-tun-visual]]
+- [[curseforge-create2-deploy]]
+- [[wild-hops]]

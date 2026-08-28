@@ -11,7 +11,7 @@ provenance:
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T12:50:00+02:00
-updated: 2026-08-25T12:50:00+02:00
+updated: 2026-08-28T19:15:00+02:00
 ---
 
 # Perennial Viticulture
@@ -50,6 +50,7 @@ Legacy Phase 1 `age` 0–4 vines migrate into the nearest Phase 2 stage. Authori
 
 - [[alcoholic]]
 - [[trellis-training]]
+- [[climbing-plant-visual]]
 - [[harvest-lot-metadata]]
 - [[cursor-phase-2-viticulture-session]]
 - [[semantic-crop-compatibility]]

@@ -11,7 +11,7 @@ provenance:
   inferred: 0.1
   ambiguous: 0.0
 created: 2026-08-25T12:50:00+02:00
-updated: 2026-08-25T12:50:00+02:00
+updated: 2026-08-28T19:15:00+02:00
 ---
 
 # Trellis Training
@@ -34,9 +34,12 @@ When Vinery is present, its seed items may plant Alcoholic vines only in a valid
 
 A trained row is agricultural context for a future press, not a wine-specific machine. [[perennial-viticulture]] consumes training multipliers at harvest time and writes them into [[harvest-lot-metadata]].
 
+The wood column drawn on a tall vine is the plant trunk, not this post. See [[climbing-plant-visual]].
+
 ## Related
 
 - [[perennial-viticulture]]
+- [[climbing-plant-visual]]
 - [[alcoholic]]
 - [[cursor-phase-2-viticulture-session]]
 - [[loader-independent-minecraft-architecture]]

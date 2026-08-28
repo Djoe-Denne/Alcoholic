@@ -11,7 +11,7 @@ provenance:
   inferred: 0.1
   ambiguous: 0.0
 created: 2026-08-25T15:30:00+02:00
-updated: 2026-08-25T16:01:00+02:00
+updated: 2026-08-28T19:15:00+02:00
 ---
 
 # Industrial Multiblock
@@ -34,10 +34,14 @@ One controller owns the [[liquid-batch]], inventory, process clocks, and geometr
 
 Semantic casing tags allow compatible materials without framework changes. Future beer machinery adds definitions and executors; the validator never learns beverage-specific rules.
 
+Formed look is client-only: [[formed-multiblock-visual]] (9-slice hull at any size, mega-mesh at art size). Capacity and validation stay on this page.
+
 ## Related
 
 - [[industrial-processing]]
 - [[industrial-ports]]
+- [[formed-multiblock-visual]]
+- [[cursor-formed-hull-session]]
 - [[process-capability-graph]]
 - [[liquid-batch]]
 - [[public-extension-api]]

@@ -16,13 +16,16 @@ sources:
   - "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-15-09-01a03f48-7af6-7513-a3c9-b297e81b7a96.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/d57caa3c-9de3-4ca9-8f7b-d53f8411e614/d57caa3c-9de3-4ca9-8f7b-d53f8411e614.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/d120a5cc-91ff-47b3-99d0-392583b27834/d120a5cc-91ff-47b3-99d0-392583b27834.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/76150f12-2be0-4b0e-b613-5c8b2a34469d/76150f12-2be0-4b0e-b613-5c8b2a34469d.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/a30f841a-d551-4974-a9fe-d7eb5c6d8440/a30f841a-d551-4974-a9fe-d7eb5c6d8440.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/7709dbb4-6adc-48f3-ad6f-7de969fd9878/7709dbb4-6adc-48f3-ad6f-7de969fd9878.jsonl"
 summary: Loader-independent brewing mod. Grain beer on generic processes; rotary power from native engines, Create, or Crossroads.
 provenance:
   extracted: 0.82
   inferred: 0.16
   ambiguous: 0.02
 created: 2026-08-25T09:20:00+02:00
-updated: 2026-08-27T16:20:00+02:00
+updated: 2026-08-28T19:15:00+02:00
 ---
 
 # Alcoholic
@@ -51,6 +54,10 @@ Alcoholic is a Minecraft mod for realistic brewing, winemaking, and distillation
 
 **Recipe viewers (ADR-032)** — JEI is a Forge adapter over [[process-display-and-recipe-viewers]]. Addon processes appear without a core switch.
 
+**Survival hops** — [[wild-hops]] worldgens a bush with no BlockItem. Cultivated bines still need a trellis. Columns use [[climbing-plant-visual]] (crossed leaves; wood trunk only when taller than one block).
+
+**More artisanal voxels** — mash tun, kettle, fermenter, oak barrel, crock, press, electric motor, hatch, casing, and window joined the Blockbench chain. Formed industrials use [[formed-multiblock-visual]]. Machine crafts are [[vanilla-xor-create-crafts]].
+
 The Forge artifact still embeds the inward-pointing modules. Fabric remains a future adapter.
 
 ## Key concepts
@@ -77,6 +84,12 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[artisanal-machine-voxel-models]]
 - [[resource-pack-resolution-chain]]
 - [[process-display-and-recipe-viewers]]
+- [[climbing-plant-visual]]
+- [[wild-hops]]
+- [[formed-multiblock-visual]]
+- [[vanilla-xor-create-crafts]]
+- [[mash-tun-visual]]
+- [[brewing-kettle-visual]]
 
 ## Verification
 
@@ -102,3 +115,7 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[codex-ajouter-modeles-3d-minecraft]]
 - [[cursor-jei-display-session]]
 - [[cursor-artisanal-brewery-guide-session]]
+- [[cursor-voxel-campaign-session]]
+- [[cursor-survival-plants-session]]
+- [[cursor-formed-hull-session]]
+- [[cursor-machine-port-audit-session]]

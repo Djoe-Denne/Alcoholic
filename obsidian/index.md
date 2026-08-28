@@ -4,7 +4,7 @@ title: Wiki Index
 
 # Wiki Index
 
-*This index is automatically maintained. Last updated: 2026-08-27T16:20:00+02:00*
+*This index is automatically maintained. Last updated: 2026-08-28T19:15:00+02:00*
 
 ## Concepts
 
@@ -39,6 +39,12 @@ title: Wiki Index
 - [[projects/alcoholic/concepts/malting-floor-visual|Malting Floor Visual]] — Fork 2 oak tray, mat, and barley; 64 default after 512 master. ( #minecraft)
 - [[projects/alcoholic/concepts/primitive-combustion-engine-visual|Primitive Combustion Engine Visual]] — Fork 3 off/lit BDcraft atlases and archived 512 master. ( #minecraft)
 - [[projects/alcoholic/concepts/malt-mill-visual|Malt Mill Visual]] — Fork 4 hopper and rollers; no crank; 32 default. ( #minecraft)
+- [[projects/alcoholic/concepts/climbing-plant-visual|Climbing Plant Visual]] — Crossed foliage; wood trunk only when the column is taller than one block. ( #minecraft)
+- [[projects/alcoholic/concepts/wild-hops|Wild Hops]] — Worldgen bush, no BlockItem; break for rhizome plus hop cone. ( #minecraft)
+- [[projects/alcoholic/concepts/formed-multiblock-visual|Formed Multiblock Visual]] — 9-slice hull at any size; mega-mesh only at art size. ( #minecraft #software-architecture)
+- [[projects/alcoholic/concepts/vanilla-xor-create-crafts|Vanilla XOR Create Crafts]] — 27 machine crafts switch to Create parts when Create is loaded. ( #minecraft #compatibility)
+- [[projects/alcoholic/concepts/mash-tun-visual|Mash Tun Visual]] — Locked oak; skip mid-res; open lid is a second model. ( #minecraft)
+- [[projects/alcoholic/concepts/brewing-kettle-visual|Brewing Kettle Visual]] — Copper kettle with front gauges after the first paint. ( #minecraft)
 
 ## Entities
 
@@ -55,6 +61,9 @@ title: Wiki Index
 - [[projects/alcoholic/skills/forge-1.19.2-crossroads-fe-verification|Forge 1.19.2 Crossroads and FE Verification]] — Architecture, mapping tests, FE GameTests, optional Crossroads and IE client paths. ( #minecraft #testing)
 - [[projects/alcoholic/skills/blockbench-java-block-workflow|Blockbench Java Block Workflow]] — One machine, grey silhouette, locked oak, 512 paint, user stop, then downsample. ( #minecraft)
 - [[projects/alcoholic/skills/context-mode-project-mcp|Context-Mode Project MCP]] — One context-mode server per repo via .cursor/mcp.json, never the user mcp.json. ( #software-architecture)
+- [[projects/alcoholic/skills/curseforge-create2-deploy|CurseForge Create 2 Mekanism Deploy]] — Remapped jar plus 128 pack; zip needs slash paths and pack.mcmeta at root. ( #minecraft)
+- [[projects/alcoholic/skills/alcoholic-debug-commands|Alcoholic Debug Commands]] — OP-2 place, ports, kits, and inspect on one pad. ( #minecraft)
+- [[projects/alcoholic/skills/grepai-serena-project-index|GrepAI and Serena Project Index]] — GrepAI can index many repos; Cursor MCP path pins one; switch Serena. ( #software-architecture)
 
 ## References
 
@@ -70,6 +79,10 @@ title: Wiki Index
 - [[projects/alcoholic/references/codex-ajouter-modeles-3d-minecraft|Codex Ajouter Modèles 3D Minecraft]] — Parent plan plus three machine forks and the Blockbench MCP install. ( #minecraft #software-architecture)
 - [[projects/alcoholic/references/cursor-jei-display-session|Cursor JEI Display Session]] — JEI recipes via ProcessDisplaySpec after a red-team of the first closed switch. ( #minecraft #software-architecture)
 - [[projects/alcoholic/references/cursor-artisanal-brewery-guide-session|Cursor Artisanal Brewery Guide Session]] — QMD beer guide plus /alcoholic debug place layouts. ( #minecraft #software-architecture)
+- [[projects/alcoholic/references/cursor-voxel-campaign-session|Cursor Voxel Campaign Session]] — Remaining cubes to Java voxels; one Blockbench MCP at a time. ( #minecraft #software-architecture)
+- [[projects/alcoholic/references/cursor-survival-plants-session|Cursor Survival Plants Session]] — Wild hops plus height-gated vine/hop trunk. ( #minecraft)
+- [[projects/alcoholic/references/cursor-formed-hull-session|Cursor Formed Hull Session]] — Beer industrial place showed loose cubes; 9-slice plus mega-mesh. ( #minecraft #software-architecture)
+- [[projects/alcoholic/references/cursor-machine-port-audit-session|Cursor Machine Port Audit Session]] — Decorative taps; kinetic only on the engine shaft face. ( #minecraft #software-architecture)
 
 ## Synthesis
 

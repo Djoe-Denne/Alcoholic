@@ -12,7 +12,7 @@ provenance:
   inferred: 0.10
   ambiguous: 0.02
 created: 2026-08-25T20:05:00+02:00
-updated: 2026-08-25T20:05:00+02:00
+updated: 2026-08-28T19:15:00+02:00
 ---
 
 # Electric Motor
@@ -57,7 +57,11 @@ IE 1.19.2 already converts its wire network to FE at an Energy Connector. Suppor
 IE Generator / Capacitor → IE wire → Energy Connector → Electric Motor → machine
 ```
 
-Alcoholic does not implement `IImmersiveConnectable` or `EnergyTransferHandler`. Prefer one connector block over a second motor class. A vanilla iron/redstone/copper recipe always exists. `electric_motor_ie` unlocks when `immersiveengineering:coil_lv` is present. There is one motor.
+Alcoholic does not implement `IImmersiveConnectable` or `EnergyTransferHandler`. Prefer one connector block over a second motor class. A vanilla iron/redstone/copper recipe always exists. `electric_motor_ie` unlocks when `immersiveengineering:coil_lv` is present. There is one motor. When Create is loaded, machine crafts follow [[vanilla-xor-create-crafts]] instead.
+
+## Visual
+
+The voxel shaft sits at **Y = 10**, matching [[primitive-combustion-engine-visual]]. The whole motor was raised 3.2 px and the four feet stretched to Y = 0. The shaft spins while the motor is on. See [[cursor-machine-port-audit-session]] and [[cursor-voxel-campaign-session]].
 
 ## Related
 
@@ -67,5 +71,7 @@ Alcoholic does not implement `IImmersiveConnectable` or `EnergyTransferHandler`.
 - [[loader-independent-minecraft-architecture]]
 - [[grain-processing]]
 - [[industrial-processing]]
+- [[vanilla-xor-create-crafts]]
+- [[cursor-machine-port-audit-session]]
 - [[cursor-crossroads-electric-motor-session]]
 - [[forge-1.19.2-crossroads-fe-verification]]

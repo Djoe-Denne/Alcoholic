@@ -15,7 +15,7 @@ provenance:
   inferred: 0.1
   ambiguous: 0.02
 created: 2026-08-25T14:10:00+02:00
-updated: 2026-08-25T20:05:00+02:00
+updated: 2026-08-28T19:15:00+02:00
 ---
 
 # Create Press Adapter
@@ -42,6 +42,8 @@ Phase 6 adds a separate Create surface: [[industrial-ports|kinetic ports]] drive
 
 Definitions marked `create_compatible` also generate `create:milling` and `create:crushing` via `CreateMillRecipeTranslator`. A runtime bridge copies malt NBT onto Create mill output so kiln properties survive. Official [[grain-processing]] uses the Malt Mill; these recipes are extras.
 
+Machine **item** crafts are a separate XOR: vanilla shaped recipes hide when Create is loaded, and `<id>_create.json` crafts take over. That is not a process translator. See [[vanilla-xor-create-crafts]].
+
 ## Related
 
 - [[artisanal-processing]]
@@ -59,6 +61,7 @@ Definitions marked `create_compatible` also generate `create:milling` and `creat
 - [[cursor-phase-4-processing-session]]
 - [[cursor-phase-6-industrial-session]]
 - [[cursor-phase-7a-grain-session]]
+- [[vanilla-xor-create-crafts]]
 - [[cursor-create-independence-session]]
 - [[forge-1.19.2-phase-4-verification]]
 - [[forge-1.19.2-phase-6-verification]]
