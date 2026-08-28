@@ -36,10 +36,6 @@ final class AlcoholicTextureProvider implements DataProvider {
         textures.put("item/wort_bucket", 0xFFC9A227);
         textures.put("item/hopped_wort_bucket", 0xFFB8860B);
         textures.put("item/beer_bucket", 0xFFD4A017);
-        textures.put("block/industrial_malt_house_controller", 0xFF8B6914);
-        textures.put("block/industrial_mash_tun_controller", 0xFF6B4F2A);
-        textures.put("block/industrial_brewing_kettle_controller", 0xFF6E7A84);
-        textures.put("block/industrial_conditioning_vessel_controller", 0xFF4A6A5A);
         for (Map.Entry<String, Integer> entry : textures.entrySet()) {
             writePng(cache, "assets/alcoholic/textures/" + entry.getKey() + ".png", entry.getValue());
         }

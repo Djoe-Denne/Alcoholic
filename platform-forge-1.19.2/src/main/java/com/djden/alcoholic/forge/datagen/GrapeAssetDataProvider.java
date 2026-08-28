@@ -461,24 +461,29 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
         StringBuilder canopyVariants = new StringBuilder("{\n  \"variants\": {\n");
         first = true;
         for (String stage : STAGES) {
-            for (String axis : new String[]{"x", "z"}) {
-                if (!first) {
-                    canopyVariants.append(",\n");
+            for (boolean trunk : new boolean[]{false, true}) {
+                for (String axis : new String[]{"x", "z"}) {
+                    if (!first) {
+                        canopyVariants.append(",\n");
+                    }
+                    canopyVariants.append("    \"axis=")
+                            .append(axis)
+                            .append(",stage=")
+                            .append(stage)
+                            .append(",trunk=")
+                            .append(trunk)
+                            .append("\": { \"model\": \"alcoholic:block/")
+                            .append(canopyName)
+                            .append("_")
+                            .append(stage)
+                            .append(trunk ? "_trunk" : "")
+                            .append("\"");
+                    if ("z".equals(axis)) {
+                        canopyVariants.append(", \"y\": 90");
+                    }
+                    canopyVariants.append(" }");
+                    first = false;
                 }
-                canopyVariants.append("    \"axis=")
-                        .append(axis)
-                        .append(",stage=")
-                        .append(stage)
-                        .append("\": { \"model\": \"alcoholic:block/")
-                        .append(canopyName)
-                        .append("_")
-                        .append(stage)
-                        .append("\"");
-                if ("z".equals(axis)) {
-                    canopyVariants.append(", \"y\": 90");
-                }
-                canopyVariants.append(" }");
-                first = false;
             }
         }
         canopyVariants.append("\n  }\n}\n");
@@ -517,7 +522,12 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
             sink.add(
                     "assets/alcoholic/models/block/" + canopyName + "_"
                             + stage + ".json",
-                    canopyModel(texture)
+                    canopyModel(texture, false)
+            );
+            sink.add(
+                    "assets/alcoholic/models/block/" + canopyName + "_"
+                            + stage + "_trunk.json",
+                    canopyModel(texture, true)
             );
         }
     }
@@ -547,12 +557,15 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                 : 16;
         String elements = switch (kind) {
             case UNTRAINED -> threeCrossPlanes(height);
-            case STEM_TRAINED, STEM_UNTRAINED, TRAINED_SHORT, TRAINED_BASE ->
+            case TRAINED_SHORT -> threeCrossPlanes(16);
+            case STEM_TRAINED, STEM_UNTRAINED, TRAINED_BASE ->
                     threeCrossPlanes(16) + ",\n" + centralStem(16);
         };
-        String woodTexture = kind == VineModelKind.UNTRAINED
-                ? ""
-                : ",\n                    \"wood\": \"alcoholic:block/vineyard_post\"";
+        String woodTexture = switch (kind) {
+            case UNTRAINED, TRAINED_SHORT -> "";
+            case STEM_TRAINED, STEM_UNTRAINED, TRAINED_BASE ->
+                    ",\n                    \"wood\": \"alcoholic:block/vineyard_post\"";
+        };
         return """
                 {
                   "ambientocclusion": false,
@@ -668,19 +681,21 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
         };
     }
 
-    private static String canopyModel(String texture) {
+    private static String canopyModel(String texture, boolean trunk) {
+        String woodTexture = trunk
+                ? ",\n                    \"wood\": \"alcoholic:block/vineyard_post\""
+                : "";
+        String trunkElement = trunk ? ",\n" + centralStem(16) : "";
         return """
                 {
                   "ambientocclusion": false,
                   "textures": {
                     "particle": "alcoholic:block/%s",
-                    "cross": "alcoholic:block/%s",
-                    "wood": "alcoholic:block/vineyard_post",
+                    "cross": "alcoholic:block/%s"%s,
                     "wire": "alcoholic:block/trellis_wire"
                   },
                   "elements": [
-                %s,
-                %s,
+                %s%s,
                     {
                       "from": [0, 7, 7],
                       "to": [16, 9, 9],
@@ -695,7 +710,13 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                     }
                   ]
                 }
-                """.formatted(texture, texture, threeCrossPlanes(16), centralStem(16));
+                """.formatted(
+                texture,
+                texture,
+                woodTexture,
+                threeCrossPlanes(16),
+                trunkElement
+        );
     }
 
     private enum VineModelKind {
@@ -789,14 +810,13 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                 "industrial_brewing_kettle_controller",
                 "industrial_conditioning_vessel_controller"
         }) {
-            addSimpleBlock(sink, name);
-            addBlockItem(sink, name);
+            addHandmadeSimpleBlock(sink, name);
         }
         IndustrialPressControllerAssetData.add(sink);
         IndustrialRollerMillControllerAssetData.add(sink);
     }
 
-    private static void addSimpleBlock(JsonSink sink, String name) {
+    private static void addHandmadeSimpleBlock(JsonSink sink, String name) {
         sink.add(
                 "assets/alcoholic/blockstates/" + name + ".json",
                 """
@@ -807,18 +827,9 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                         }
                         """.formatted(name)
         );
-        sink.add(
-                "assets/alcoholic/models/block/" + name + ".json",
-                """
-                        {
-                          "parent": "minecraft:block/cube_all",
-                          "textures": {
-                            "all": "alcoholic:block/%s"
-                          }
-                        }
-                        """.formatted(name)
-        );
+        addBlockItem(sink, name);
     }
+
 
     private static void addPostBlock(JsonSink sink, String name, boolean endPost) {
         sink.add(
@@ -970,15 +981,13 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "ambientocclusion": false,
                           "textures": {
                             "particle": "alcoholic:block/wild_hops",
-                            "cross": "alcoholic:block/wild_hops",
-                            "wood": "alcoholic:block/vineyard_post"
+                            "cross": "alcoholic:block/wild_hops"
                           },
                           "elements": [
-                        %s,
                         %s
                           ]
                         }
-                        """.formatted(twoCrossPlanes(16), centralStem(16))
+                        """.formatted(twoCrossPlanes(16))
         );
         sink.add(
                 "assets/alcoholic/blockstates/wild_hops.json",

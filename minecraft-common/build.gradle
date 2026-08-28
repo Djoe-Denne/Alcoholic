@@ -56,6 +56,10 @@ sourceSets.main.resources {
     srcDir 'src/generated/resources'
 }
 
+tasks.named('processResources').configure {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 tasks.named('compileJava', JavaCompile).configure {
     dependsOn generateAlcoholicDebug
 }

@@ -115,7 +115,7 @@ public final class VineColumn {
         boolean wantCanopy = trained && shouldOccupyWire(wireHeight, stage)
                 && (wireHeight == 1 || hasStem);
         if (wantCanopy) {
-            occupyWire(level, rootPos.above(wireHeight), rootBlock, stage, allowGrowth);
+            occupyWire(level, rootPos.above(wireHeight), rootBlock, stage, allowGrowth, hasStem);
         } else {
             restoreCanopy(level, rootPos.above(), rootBlock);
             restoreCanopy(level, rootPos.above(MAX_WIRE_OFFSET), rootBlock);
@@ -135,11 +135,14 @@ public final class VineColumn {
             BlockPos wirePos,
             VineBlock rootBlock,
             VineGrowthStage stage,
-            boolean allowGrowth
+            boolean allowGrowth,
+            boolean trunk
     ) {
         BlockState current = level.getBlockState(wirePos);
         if (isMatchingCanopy(current, rootBlock)) {
-            BlockState next = current.setValue(VineCanopyBlock.STAGE, VineStage.fromDomain(stage));
+            BlockState next = current
+                    .setValue(VineCanopyBlock.STAGE, VineStage.fromDomain(stage))
+                    .setValue(VineCanopyBlock.TRUNK, trunk);
             if (!next.equals(current)) {
                 level.setBlock(wirePos, next, Block.UPDATE_CLIENTS);
             }
@@ -156,7 +159,8 @@ public final class VineColumn {
                 wirePos,
                 canopy.defaultBlockState()
                         .setValue(VineCanopyBlock.STAGE, VineStage.fromDomain(stage))
-                        .setValue(VineCanopyBlock.AXIS, current.getValue(TrellisWireBlock.AXIS)),
+                        .setValue(VineCanopyBlock.AXIS, current.getValue(TrellisWireBlock.AXIS))
+                        .setValue(VineCanopyBlock.TRUNK, trunk),
                 Block.UPDATE_CLIENTS
         );
     }

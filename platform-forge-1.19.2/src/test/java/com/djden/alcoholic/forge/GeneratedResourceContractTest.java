@@ -100,7 +100,7 @@ class GeneratedResourceContractTest {
                 model.getAsJsonObject("textures").get("cross").getAsString()
         );
         assertCrossFoliage(model);
-        assertWoodTrunk(model);
+        assertNoWoodTrunk(model);
         JsonObject itemModel = resource("assets/alcoholic/models/item/wild_hops.json");
         assertEquals("minecraft:item/generated", itemModel.get("parent").getAsString());
         assertEquals(
@@ -143,14 +143,12 @@ class GeneratedResourceContractTest {
                             "assets/alcoholic/models/block/" + color
                                     + "_grapevine_" + stage + "_untrained.json"
                     );
-                    resource(
+                    JsonObject trainedModel = resource(
                             "assets/alcoholic/models/block/" + color
                                     + "_grapevine_" + stage + "_trained.json"
                     );
-                    assertWoodTrunk(resource(
-                            "assets/alcoholic/models/block/" + color
-                                    + "_grapevine_" + stage + "_trained.json"
-                    ));
+                    assertCrossFoliage(trainedModel);
+                    assertNoWoodTrunk(trainedModel);
                     resource(
                             "assets/alcoholic/models/block/" + color
                                     + "_grapevine_" + stage + "_base.json"
@@ -176,10 +174,20 @@ class GeneratedResourceContractTest {
                                     + "_grapevine_canopy_" + stage + ".json"
                     );
                     assertCrossFoliage(canopy);
-                    assertWoodTrunk(canopy);
+                    assertNoWoodTrunk(canopy);
                     assertTrue(
                             canopy.getAsJsonObject("textures").has("wire"),
                             "Canopy must keep the trellis wire"
+                    );
+                    JsonObject canopyTrunk = resource(
+                            "assets/alcoholic/models/block/" + color
+                                    + "_grapevine_canopy_" + stage + "_trunk.json"
+                    );
+                    assertCrossFoliage(canopyTrunk);
+                    assertWoodTrunk(canopyTrunk);
+                    assertTrue(
+                            canopyTrunk.getAsJsonObject("textures").has("wire"),
+                            "Tall canopy must keep the trellis wire"
                     );
                 }
             }
@@ -190,7 +198,7 @@ class GeneratedResourceContractTest {
             JsonObject canopyVariants = resource(
                     "assets/alcoholic/blockstates/" + color + "_grapevine_canopy.json"
             ).getAsJsonObject("variants");
-            assertEquals(16, canopyVariants.size());
+            assertEquals(32, canopyVariants.size());
             assertTrue(
                     variants.keySet().stream().noneMatch(
                             key -> key.startsWith("age=") || key.contains(",age=")
@@ -287,13 +295,7 @@ class GeneratedResourceContractTest {
                 "item_port",
                 "kinetic_port",
                 "industrial_press_controller",
-                "industrial_roller_mill_controller"
-        }) {
-            resource("assets/alcoholic/blockstates/" + block + ".json");
-            resource("assets/alcoholic/models/block/" + block + ".json");
-            resource("assets/alcoholic/models/item/" + block + ".json");
-        }
-        for (String block : new String[]{
+                "industrial_roller_mill_controller",
                 "industrial_vat_controller",
                 "industrial_tank_controller",
                 "industrial_malt_house_controller",
@@ -304,7 +306,6 @@ class GeneratedResourceContractTest {
             resource("assets/alcoholic/blockstates/" + block + ".json");
             resource("assets/alcoholic/models/block/" + block + ".json");
             resource("assets/alcoholic/models/item/" + block + ".json");
-            assertPng16("assets/alcoholic/textures/block/" + block + ".png");
         }
         for (String item : new String[]{
                 "yeast",
@@ -606,6 +607,10 @@ class GeneratedResourceContractTest {
             assertEquals(16, image.getWidth(), "Unexpected texture width " + path);
             assertEquals(16, image.getHeight(), "Unexpected texture height " + path);
         }
+    }
+
+    private static void assertNoWoodTrunk(JsonObject model) {
+        assertTrue(findCentralStem(model) == null, "Wood trunk must not appear on a one-block plant");
     }
 
     private static void assertWoodTrunk(JsonObject model) {

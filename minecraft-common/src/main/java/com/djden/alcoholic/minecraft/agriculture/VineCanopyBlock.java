@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -34,6 +35,7 @@ public final class VineCanopyBlock extends Block {
     public static final EnumProperty<VineStage> STAGE = VineBlock.STAGE;
     public static final EnumProperty<Direction.Axis> AXIS =
             BlockStateProperties.HORIZONTAL_AXIS;
+    public static final BooleanProperty TRUNK = BooleanProperty.create("trunk");
 
     private static final VoxelShape SHAPE =
             Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
@@ -53,6 +55,7 @@ public final class VineCanopyBlock extends Block {
                 stateDefinition.any()
                         .setValue(STAGE, VineStage.VEGETATIVE)
                         .setValue(AXIS, Direction.Axis.X)
+                        .setValue(TRUNK, false)
         );
     }
 
@@ -190,7 +193,7 @@ public final class VineCanopyBlock extends Block {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(STAGE, AXIS);
+        builder.add(STAGE, AXIS, TRUNK);
     }
 
     @Nullable
