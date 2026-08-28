@@ -126,9 +126,9 @@ system.
 
 The production DAG remains authoritative: no process is injected. Data-only
 cider, wheat-beer, grain-mash, whisky, rum, and fruit-liqueur fixtures
-validate on the same engine. Shipped grain beer ends after FERMENT; AGE is
-optional. Wine content remains datapack plus Minecraft fluids, not Java
-branching.
+validate on the same engine. Shipped grain beer ends after FERMENT. There is
+no official beer AGE definition. CONDITION is industrial-only and off-DAG.
+Wine content remains datapack plus Minecraft fluids, not Java branching.
 
 Phase 2 viticulture remains unchanged: persistent red and white perennial
 vines, eight growth stages, trained trellis rows, climate/pruning data packs,
@@ -140,13 +140,22 @@ generic trellis posts/wire.
 
 Current limits:
 
-- no whisky / rum / distillation gameplay beyond data fixtures;
-- no industrial malt house, mash tun, or brewing kettle;
+- no whisky / rum / distillation gameplay beyond data fixtures; `DISTILL` and `INFUSE` remain registered stubs;
+- cider, whisky, rum, and fruit-liqueur graphs are validation fixtures only;
+- industrial grain machines are extra executors of the same Phase 7A processes; `CONDITION` is industrial-only and off-DAG;
+- shipped grain beer has no official `AGE` definition;
+- bottles fill only from a fermenter, oak barrel, blending crock, or industrial controller — not from a press, mash tun, or brewing kettle; unfinished must and wort cannot be bottled;
 - no Alcoholic shaft, gearbox, or pipe network (Create remains optional logistics);
 - no industrial aging warehouses, stills, or custom pipes/pumps/belts;
 - no gas network (CO2 is modelled and vented);
 - no drinking, intoxication, taverns, or villagers;
 - Forge 1.19.2 is the only runnable platform; Fabric remains a future adapter.
+
+Player guides:
+
+- Artisanal brewery (beer): [`docs/guides/brasserie-artisanale.md`](docs/guides/brasserie-artisanale.md)
+- Artisanal vineyard (wine): [`docs/guides/vigne-artisanale.md`](docs/guides/vigne-artisanale.md)
+- Optional FTB Quests chapter (copy into `config/ftbquests/quests`): [`modpack/ftbquests/README.md`](modpack/ftbquests/README.md)
 
 Architecture decisions for this phase: [ADR-007](docs/adr/ADR-007-production-dag-execution-model.md),
 [ADR-008](docs/adr/ADR-008-process-executor-capability-model.md),
@@ -173,7 +182,9 @@ Architecture decisions for this phase: [ADR-007](docs/adr/ADR-007-production-dag
 [ADR-029](docs/adr/ADR-029-reusable-crop-provider-barley-hops.md),
 [ADR-030](docs/adr/ADR-030-native-mechanical-executors.md),
 [ADR-031](docs/adr/ADR-031-crossroads-and-electric-motor.md),
-[ADR-032](docs/adr/ADR-032-process-display-and-recipe-viewers.md).
+[ADR-032](docs/adr/ADR-032-process-display-and-recipe-viewers.md),
+[ADR-033](docs/adr/ADR-033-advancements-as-progression-source.md),
+[ADR-034](docs/adr/ADR-034-ftb-quests-optional-chapter.md).
 
 Addon authors should depend only on `alcoholic-api`. See
 [`docs/addons/public-api.md`](docs/addons/public-api.md) and

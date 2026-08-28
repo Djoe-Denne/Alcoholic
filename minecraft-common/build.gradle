@@ -64,6 +64,10 @@ tasks.named('compileJava', JavaCompile).configure {
     dependsOn generateAlcoholicDebug
 }
 
+tasks.named('sourcesJar').configure {
+    dependsOn generateAlcoholicDebug
+}
+
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 

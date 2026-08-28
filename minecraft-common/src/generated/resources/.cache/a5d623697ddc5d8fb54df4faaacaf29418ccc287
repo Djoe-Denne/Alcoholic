@@ -1,5 +1,5 @@
-// 1.19.2	2026-08-28T17:28:01.5283104	Alcoholic grape server data
-d8aafbaa0a3362dfa9726af368b2620c0d121d59 data/alcoholic/alcoholic/beverages/beer.json
+// 1.19.2	2026-08-28T21:02:06.4986966	Alcoholic grape server data
+bbdab47d2ba360e54aaa2ac4593e2343861807b1 data/alcoholic/alcoholic/beverages/beer.json
 01a7f10047397133d2d7633625d96476cf4f72f0 data/alcoholic/alcoholic/beverages/red_wine.json
 b07fa9fb623a6ad7d917df34135b761220f93418 data/alcoholic/alcoholic/beverages/white_wine.json
 3d053aad23f54d90e0b6d450ba7a2b6866e2e390 data/alcoholic/alcoholic/beverages/young_red_wine.json
@@ -33,7 +33,7 @@ ff495f36ef20ff75f8cc46aa97bf26cb3a3ccb25 data/alcoholic/alcoholic/processes/ferm
 6c8535d123ec91e76d21134406475f24e93eb9af data/alcoholic/alcoholic/processes/malt_amber.json
 8ea3d0627fad2d88b6878771b9c7af3be18c341b data/alcoholic/alcoholic/processes/malt_dark.json
 f0cd35010f41f5a4b41b1dfd72393d6c4d7cb3e3 data/alcoholic/alcoholic/processes/malt_pale.json
-56ca3373809cfb1264ef8fbbf40e63891cb81339 data/alcoholic/alcoholic/processes/mash_wort.json
+6e871ff2fa242e0842fb239d5a758d8a914b6f39 data/alcoholic/alcoholic/processes/mash_wort.json
 29ba8757861aaad876ed89fba330b78b40167dbd data/alcoholic/alcoholic/processes/mill_malted_grain.json
 97282b4766dabc001c129ec551a4c581632e95de data/alcoholic/alcoholic/processes/press_red_grapes.json
 d36aaef04d0613090b3b1e5c64b80330bb723107 data/alcoholic/alcoholic/processes/press_white_grapes.json
@@ -140,6 +140,7 @@ abd33d745c45242dd34ec98afd93633f9d1a7169 data/alcoholic/tags/blocks/fermenter_ca
 abd33d745c45242dd34ec98afd93633f9d1a7169 data/alcoholic/tags/blocks/industrial_tank_casing.json
 abd33d745c45242dd34ec98afd93633f9d1a7169 data/alcoholic/tags/blocks/pressure_safe_casing.json
 815c64be0aab03c5cdef77dd2b2f2e624637065e data/alcoholic/tags/blocks/valid_machine_windows.json
+6b2305f42daefd24bdc2208154aaf3edbe48a259 data/alcoholic/tags/fluids/bottled_liquids.json
 a721bb59097693497d45ab5b10b4e3608e86ccf2 data/alcoholic/tags/items/barley.json
 0bee6caef0bac1d7ea65a9cd1699ed539212afb5 data/alcoholic/tags/items/barley/seeds.json
 4ecf0ecfb1312d93c6a6636e6e39f015ed0e2606 data/alcoholic/tags/items/grapes.json

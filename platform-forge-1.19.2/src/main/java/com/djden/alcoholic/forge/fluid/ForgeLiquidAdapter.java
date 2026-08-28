@@ -3,6 +3,7 @@ package com.djden.alcoholic.forge.fluid;
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
+import com.djden.alcoholic.minecraft.fluid.FluidContent;
 import com.djden.alcoholic.minecraft.fluid.LiquidBatchNbt;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +17,7 @@ public final class ForgeLiquidAdapter {
     private ForgeLiquidAdapter() {
     }
 
-    public static FluidStack toStack(LiquidBatch batch, ForgeFluidContent fluids) {
+    public static FluidStack toStack(LiquidBatch batch, FluidContent fluids) {
         if (batch.volumeMillibuckets() <= 0 || batch.baseLiquid().isEmpty()) {
             return FluidStack.EMPTY;
         }

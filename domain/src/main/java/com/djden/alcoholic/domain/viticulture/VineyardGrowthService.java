@@ -45,6 +45,15 @@ public final class VineyardGrowthService {
         return advance(vine, new VineGrowthParameters(environment, roll));
     }
 
+    public <I> Vine<I> fertilize(Vine<I> vine) {
+        Objects.requireNonNull(vine, "vine");
+        if (vine.growthStage() == VineGrowthStage.HARVEST_READY) {
+            return vine;
+        }
+        VineGrowthStage nextStage = nextStage(vine);
+        return nextStage == vine.growthStage() ? vine : vine.transitionTo(nextStage);
+    }
+
     public <I> double growthChance(Vine<I> vine, VineGrowthParameters parameters) {
         Objects.requireNonNull(vine, "vine");
         Objects.requireNonNull(parameters, "parameters");

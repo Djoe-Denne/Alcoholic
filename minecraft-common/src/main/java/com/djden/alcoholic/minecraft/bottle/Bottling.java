@@ -1,5 +1,6 @@
 package com.djden.alcoholic.minecraft.bottle;
 
+import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.api.process.ProcessInputs;
 import com.djden.alcoholic.api.process.ProcessInvocation;
 import com.djden.alcoholic.api.process.ProcessResult;
@@ -19,8 +20,17 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Optional;
+import java.util.Set;
 
 public final class Bottling {
+    private static final Set<ResourceId> BOTTLED_LIQUIDS = Set.of(
+            AlcoholicIds.YOUNG_RED_WINE,
+            AlcoholicIds.YOUNG_WHITE_WINE,
+            AlcoholicIds.RED_WINE,
+            AlcoholicIds.WHITE_WINE,
+            AlcoholicIds.BEER
+    );
+
     private Bottling() {
     }
 
@@ -36,6 +46,9 @@ public final class Bottling {
             return false;
         }
         LiquidBatch batch = tank.contents().orElseThrow();
+        if (batch.baseLiquid().filter(BOTTLED_LIQUIDS::contains).isEmpty()) {
+            return false;
+        }
         ProcessRuntime runtime = ProcessRuntime.shared();
         Optional<ProcessInvocation> invocation = ProcessRecipeResolver.find(
                 runtime.beverages().catalog(),

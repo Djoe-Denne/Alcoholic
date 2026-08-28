@@ -1,5 +1,6 @@
 package com.djden.alcoholic.forge;
 
+import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.application.agriculture.CropKind;
 import com.djden.alcoholic.application.agriculture.CropProviderSelectionPolicy;
 import com.djden.alcoholic.application.agriculture.GameplaySource;
@@ -39,14 +40,17 @@ import com.djden.alcoholic.minecraft.viticulture.InternalGrapeProvider;
 import com.djden.alcoholic.minecraft.viticulture.ViticultureRuntime;
 import com.djden.alcoholic.forge.condition.ItemPresentCondition;
 import com.djden.alcoholic.forge.fluid.ForgeFluidCapabilities;
-import com.djden.alcoholic.forge.fluid.ForgeFluidContent;
 import com.djden.alcoholic.forge.fluid.ForgeFluidInteraction;
+import com.djden.alcoholic.forge.fluid.ForgeFluidRegistrationPort;
+import com.djden.alcoholic.minecraft.fluid.FluidContent;
+import com.djden.alcoholic.minecraft.fluid.FluidContentRegistrar;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -70,7 +74,7 @@ public final class AlcoholicForgeMod {
     private final GrainContent grain;
     private final IndustrialContent industrial;
     private final MachineMenuContent menus;
-    private final ForgeFluidContent fluids;
+    private final FluidContent fluids;
 
     public AlcoholicForgeMod(FMLJavaModLoadingContext loadingContext) {
         IEventBus modEventBus = loadingContext.getModEventBus();
@@ -97,6 +101,7 @@ public final class AlcoholicForgeMod {
         ForgeRegistryPort<MenuType<?>> menuTypes =
                 new ForgeRegistryPort<>(ForgeRegistries.MENU_TYPES, AlcoholicIds.MOD_ID);
         ContentRegistrationPorts ports = new ContentRegistrationPorts(blocks, items, blockEntities, menuTypes);
+        ForgeFluidRegistrationPort fluidRegistration = new ForgeFluidRegistrationPort(blocks, items);
         BeverageRuntime beverageRuntime = BeverageRuntime.shared();
         BeverageFrameworkBootstrap.install(beverageRuntime);
         ViticultureRuntime runtime = ViticultureRuntime.shared();
@@ -127,13 +132,13 @@ public final class AlcoholicForgeMod {
         );
         industrial = registerIndustrial(ports);
         menus = MachineMenuRegistrar.register(ports);
-        fluids = new ForgeFluidContent();
+        fluids = FluidContentRegistrar.register(fluidRegistration);
 
         blocks.attach(modEventBus);
         items.attach(modEventBus);
         blockEntities.attach(modEventBus);
         menuTypes.attach(modEventBus);
-        fluids.attach(modEventBus);
+        fluidRegistration.attach(modEventBus);
         AdvancementHooks.register();
         modEventBus.addListener(AlcoholicDataGenerators::gatherData);
         modEventBus.addListener(EventPriority.LOWEST, this::freezeBeverageApi);
@@ -189,13 +194,28 @@ public final class AlcoholicForgeMod {
         return menus;
     }
 
-    public ForgeFluidContent fluids() {
+    public FluidContent fluids() {
         return fluids;
     }
 
     private void freezeBeverageApi(FMLCommonSetupEvent event) {
         BeverageRuntime.shared().freeze();
         IndustrialDamageSources.install();
+        event.enqueueWork(AlcoholicForgeMod::registerCompostables);
+    }
+
+    private static void registerCompostables() {
+        putCompostable(AlcoholicIds.GRAPE_POMACE, 0.3f);
+        putCompostable(AlcoholicIds.SPENT_GRAIN, 0.3f);
+    }
+
+    private static void putCompostable(ResourceId id, float chance) {
+        Item item = ForgeRegistries.ITEMS.getValue(
+                ResourceLocation.fromNamespaceAndPath(id.namespace(), id.path())
+        );
+        if (item != null && item != Items.AIR) {
+            ComposterBlock.COMPOSTABLES.put(item, chance);
+        }
     }
 
     private static boolean itemPresent(String id) {

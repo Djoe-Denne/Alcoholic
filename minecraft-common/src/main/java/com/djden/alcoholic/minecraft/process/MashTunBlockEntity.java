@@ -193,7 +193,10 @@ public final class MashTunBlockEntity extends BlockEntity
             runningJob = job;
             progress = 0;
         }
-        double rate = Math.max(0.10, config.temperature().rateFactor(temperatureCelsius()));
+        double rate = config.temperature().rateFactor(temperatureCelsius());
+        if (rate <= 0.0) {
+            return;
+        }
         duration = Math.max(1, (int) Math.round(config.processingTicks() / rate));
         progress++;
         if (progress < duration) {

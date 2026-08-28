@@ -404,7 +404,10 @@ class GeneratedResourceContractTest {
                     "advancements.alcoholic.harvest_grapes.title",
                     "advancements.alcoholic.produce_must.description",
                     "advancements.alcoholic.ferment_beverage.title",
-                    "advancements.alcoholic.bottle.description"
+                    "advancements.alcoholic.bottle.description",
+                    "ftbquests.alcoholic.chapter.title",
+                    "ftbquests.alcoholic.hover.press",
+                    "ftbquests.alcoholic.hover.bottle"
             }) {
                 assertTrue(
                         translations.has(key),

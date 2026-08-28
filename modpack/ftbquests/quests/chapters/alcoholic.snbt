@@ -1,0 +1,204 @@
+{
+	id: "A1C0A01C00000001"
+	group: ""
+	order_index: 0
+	filename: "alcoholic"
+	title: "{translate:ftbquests.alcoholic.chapter.title}"
+	icon: "alcoholic:beverage_bottle"
+	default_quest_shape: "circle"
+	default_hide_dependency_lines: false
+	subtitle: [
+		"{translate:ftbquests.alcoholic.chapter.subtitle}"
+	]
+	images: [
+		{
+			x: -2.5d
+			y: 0.0d
+			width: 2.0d
+			height: 2.0d
+			rotation: 0.0d
+			image: "alcoholic:item/ftbquests/press"
+			hover: ["{translate:ftbquests.alcoholic.hover.press}"]
+			click: ""
+			order: 0
+		}
+		{
+			x: 2.5d
+			y: 0.0d
+			width: 2.0d
+			height: 2.0d
+			rotation: 0.0d
+			image: "alcoholic:item/ftbquests/mash_tun"
+			hover: ["{translate:ftbquests.alcoholic.hover.mash_tun}"]
+			click: ""
+			order: 0
+		}
+		{
+			x: 0.0d
+			y: 4.6d
+			width: 2.0d
+			height: 2.0d
+			rotation: 0.0d
+			image: "alcoholic:item/ftbquests/fermenter"
+			hover: ["{translate:ftbquests.alcoholic.hover.fermenter}"]
+			click: ""
+			order: 0
+		}
+		{
+			x: -3.2d
+			y: 8.0d
+			width: 2.0d
+			height: 2.0d
+			rotation: 0.0d
+			image: "alcoholic:item/ftbquests/barrel"
+			hover: ["{translate:ftbquests.alcoholic.hover.barrel}"]
+			click: ""
+			order: 0
+		}
+		{
+			x: 0.0d
+			y: 8.0d
+			width: 2.0d
+			height: 2.0d
+			rotation: 0.0d
+			image: "alcoholic:item/ftbquests/crock"
+			hover: ["{translate:ftbquests.alcoholic.hover.crock}"]
+			click: ""
+			order: 0
+		}
+		{
+			x: 3.2d
+			y: 8.0d
+			width: 2.0d
+			height: 2.0d
+			rotation: 0.0d
+			image: "alcoholic:item/ftbquests/bottle"
+			hover: ["{translate:ftbquests.alcoholic.hover.bottle}"]
+			click: ""
+			order: 0
+		}
+	]
+	quests: [
+		{
+			id: "A1C0A01C00000010"
+			x: 0.0d
+			y: -3.5d
+			title: "{translate:advancements.alcoholic.root.title}"
+			description: ["{translate:advancements.alcoholic.root.description}"]
+			icon: "alcoholic:red_grape_cutting"
+			tasks: [{
+				id: "A1C0A01C10000010"
+				type: "advancement"
+				advancement: "alcoholic:root"
+				criterion: ""
+			}]
+		}
+		{
+			id: "A1C0A01C00000011"
+			x: -2.5d
+			y: -2.0d
+			title: "{translate:advancements.alcoholic.harvest_grapes.title}"
+			description: ["{translate:advancements.alcoholic.harvest_grapes.description}"]
+			icon: "alcoholic:red_grapes"
+			dependencies: ["A1C0A01C00000010"]
+			tasks: [{
+				id: "A1C0A01C10000011"
+				type: "advancement"
+				advancement: "alcoholic:harvest_grapes"
+				criterion: ""
+			}]
+		}
+		{
+			id: "A1C0A01C00000012"
+			x: 2.5d
+			y: -2.0d
+			title: "{translate:advancements.alcoholic.harvest_hops.title}"
+			description: ["{translate:advancements.alcoholic.harvest_hops.description}"]
+			icon: "alcoholic:hops"
+			dependencies: ["A1C0A01C00000010"]
+			tasks: [{
+				id: "A1C0A01C10000012"
+				type: "advancement"
+				advancement: "alcoholic:harvest_hops"
+				criterion: ""
+			}]
+		}
+		{
+			id: "A1C0A01C00000013"
+			x: 0.0d
+			y: 0.0d
+			title: "{translate:advancements.alcoholic.produce_must.title}"
+			description: ["{translate:advancements.alcoholic.produce_must.description}"]
+			icon: "alcoholic:red_grape_must_bucket"
+			dependencies: ["A1C0A01C00000010"]
+			tasks: [{
+				id: "A1C0A01C10000013"
+				type: "advancement"
+				advancement: "alcoholic:produce_must"
+				criterion: ""
+			}]
+		}
+		{
+			id: "A1C0A01C00000014"
+			x: 0.0d
+			y: 2.8d
+			title: "{translate:advancements.alcoholic.ferment_beverage.title}"
+			description: ["{translate:advancements.alcoholic.ferment_beverage.description}"]
+			icon: "alcoholic:artisanal_fermenter"
+			dependencies: ["A1C0A01C00000013"]
+			tasks: [{
+				id: "A1C0A01C10000014"
+				type: "advancement"
+				advancement: "alcoholic:ferment_beverage"
+				criterion: ""
+			}]
+		}
+		{
+			id: "A1C0A01C00000015"
+			x: -3.2d
+			y: 6.2d
+			title: "{translate:advancements.alcoholic.age_wine.title}"
+			description: ["{translate:advancements.alcoholic.age_wine.description}"]
+			icon: "alcoholic:oak_barrel"
+			dependencies: ["A1C0A01C00000014"]
+			tasks: [{
+				id: "A1C0A01C10000015"
+				type: "advancement"
+				advancement: "alcoholic:age_wine"
+				criterion: ""
+			}]
+		}
+		{
+			id: "A1C0A01C00000016"
+			x: 0.0d
+			y: 6.2d
+			title: "{translate:advancements.alcoholic.blend.title}"
+			description: ["{translate:advancements.alcoholic.blend.description}"]
+			icon: "alcoholic:artisanal_blending_crock"
+			dependencies: ["A1C0A01C00000014"]
+			tasks: [{
+				id: "A1C0A01C10000016"
+				type: "advancement"
+				advancement: "alcoholic:blend"
+				criterion: ""
+			}]
+		}
+		{
+			id: "A1C0A01C00000017"
+			x: 3.2d
+			y: 6.2d
+			title: "{translate:advancements.alcoholic.bottle.title}"
+			description: ["{translate:advancements.alcoholic.bottle.description}"]
+			icon: "alcoholic:beverage_bottle"
+			dependencies: ["A1C0A01C00000014"]
+			tasks: [{
+				id: "A1C0A01C10000017"
+				type: "advancement"
+				advancement: "alcoholic:bottle"
+				criterion: ""
+			}]
+		}
+	]
+	quest_links: [
+	]
+}

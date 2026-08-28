@@ -1,6 +1,8 @@
 # Guide : brasserie artisanale (bière)
 
-Guide joueur pour le DAG officiel `alcoholic:beer`. Create, Crossroads et les multiblocks industriels sont **optionnels**. La bière se termine après `FERMENT` : pas de fût, pas d’assemblage.
+Guide joueur pour le DAG officiel `alcoholic:beer`. Create, Crossroads et les multiblocks industriels sont **optionnels**. La bière se termine après `FERMENT`. Il n’y a **pas** de définition `AGE` officielle pour la bière. `CONDITION` est industriel uniquement et hors DAG. Pas de fût, pas d’assemblage.
+
+Vin : voir [vigne artisanale](vigne-artisanale.md).
 
 ```text
 orge → maltage → orge maltée → mouture → mouture (grist)
@@ -224,7 +226,9 @@ La cuve n’est pas « une machine à bière » : elle exécute `alcoholic:ferme
 
 ### Étape F — Mise en bouteille
 
-Clic droit sur le fermenteur avec une **bouteille vide**. Volume par défaut : **250 mB**. La bouteille est un *snapshot* (définition, éthanol, sucre, acidité, maturité, origine, qualité) — pas une mini-cuve. On ne peut pas relancer l’horloge de process en reverser.
+Clic droit sur le **fermenteur** (ou un contrôleur industriel de fermentation) avec une **bouteille vide**. Volume par défaut : **250 mB**. La bouteille est un *snapshot* (définition, éthanol, sucre, acidité, maturité, origine, qualité) — pas une mini-cuve. On ne peut pas relancer l’horloge de process en reverser.
+
+On ne met en bouteille **que** depuis un fermenteur, un fût, une terrine ou un contrôleur industriel — pas depuis le pressoir, la cuve d’empâtage ni le chaudron. Le moût (grain ou raisin) et le moût houblonné **non fermentés** ne se mettent pas en bouteille.
 
 `/alcoholic inspect` : vise la cuve ou tiens la bouteille.
 
@@ -250,11 +254,12 @@ Un brûleur Create peut s’enregistrer comme sonde de chaleur ; ce n’est pas 
 ## 6. Ce qu’il ne faut pas faire
 
 - **Pas de pressoir** : la bière ne passe pas par `PRESS`.
-- **Pas de fût ni de terrine** : `AGE` et `BLEND` ne sont pas dans `alcoholic:beer`.
-- **Pas de multiblock industriel** pour cette chaîne : les contrôleurs 7B (malterie, broyeur à cylindres, etc.) sont d’autres exécuteurs, pas d’autres recettes. Ils ne sont pas nécessaires.
+- **Pas de fût ni de terrine** : il n’y a pas de définition `AGE` officielle sur `alcoholic:beer`. `BLEND` n’est pas dans ce DAG. `CONDITION` est industriel uniquement et hors graphe.
+- **Pas de multiblock industriel** pour cette chaîne : les contrôleurs 7B (malterie, broyeur à cylindres, cuve, chaudron, conditionnement) sont d’**autres exécuteurs** des mêmes process 7A, pas d’autres recettes. Ils ne sont pas nécessaires.
 - **Ne pas coller le broyeur sans moteur** : il cale.
 - **Ne pas mettre magma sous le chaudron** : 65 °C est trop bas pour l’ébullition.
 - **Ne pas mettre un feu de camp sous la mash tun** : 100 °C sort de la bande 52–78 °C.
+- **Ne pas bouteiller le moût** : seul un liquide déjà fermenté (ici `alcoholic:beer`) se met en bouteille, et seulement depuis fermenteur / fût / terrine / contrôleur industriel.
 
 ---
 
@@ -263,6 +268,14 @@ Un brûleur Create peut s’enregistrer comme sonde de chaleur ; ce n’est pas 
 La bière officielle porte : sucre, éthanol, amertume, couleur, arôme. Elles survivent au maltage → mouture → empâtage → ébullition → fermentation. Deux lots distincts ne fusionnent pas tout seuls dans un tank.
 
 Il n’y a pas encore de gameplay boisson / ivresse / villageois.
+
+## Hors scope
+
+- Pas de boisson, d’ivresse, de tavernes ni de villageois.
+- `DISTILL` et `INFUSE` sont des types enregistrés **sans** machine de jeu.
+- Cidre, whisky, rhum et liqueur de fruit restent des **fixtures** de validation, pas du gameplay.
+- La bière officielle n’a **pas** de nœud `AGE`. Le vin, lui, fourche vin jeune / vin élevé : [vigne artisanale](vigne-artisanale.md).
+- Le DAG officiel `alcoholic:beer` utilise **`alcoholic:malt_pale`**. Les profils ambré et foncé restent jouables sur l’aire de maltage.
 
 ---
 

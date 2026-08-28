@@ -30,6 +30,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FarmBlock;
@@ -104,6 +105,130 @@ public final class GrapevineGameTests {
                 helper,
                 harvested.lastHarvest() != Vine.NO_HARVEST,
                 "Harvest did not persist lastHarvest"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void harvestReadyWithPruningShearsDropsGrapes(GameTestHelper helper) {
+        VineBlock vineBlock = vine("red_grapevine");
+        VineBlockEntity entity = placeVine(
+                helper,
+                vineBlock,
+                vineAt(VineGrowthStage.HARVEST_READY, 0, true, 0.0, Vine.NO_HARVEST)
+        );
+        Player player = helper.makeMockPlayer();
+        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(item("pruning_shears")));
+        helper.getBlockState(VINE_POSITION).use(
+                helper.getLevel(),
+                player,
+                InteractionHand.MAIN_HAND,
+                new BlockHitResult(
+                        Vec3.atCenterOf(helper.absolutePos(VINE_POSITION)),
+                        Direction.UP,
+                        helper.absolutePos(VINE_POSITION),
+                        false
+                )
+        );
+
+        ResourceId grapeId = ModList.get().isLoaded(VineryIntegration.MOD_ID)
+                ? VineryIntegration.RED_GRAPE
+                : AlcoholicIds.RED_GRAPES;
+        Item grapes = ForgeRegistries.ITEMS.getValue(
+                ResourceLocation.fromNamespaceAndPath(grapeId.namespace(), grapeId.path())
+        );
+        require(
+                helper,
+                helper.getBlockState(VINE_POSITION).getBlock() == vineBlock,
+                "Harvest with pruning shears removed the perennial vine block"
+        );
+        require(
+                helper,
+                entity.vine().growthStage() == VineGrowthStage.DORMANT,
+                "Harvest with pruning shears did not enter DORMANT"
+        );
+        require(
+                helper,
+                grapes != null && itemCountNear(helper, VINE_POSITION, grapes) > 0,
+                "Harvest with pruning shears did not drop grapes"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void harvestReadyWithStickEntersDormant(GameTestHelper helper) {
+        VineBlock vineBlock = vine("red_grapevine");
+        VineBlockEntity entity = placeVine(
+                helper,
+                vineBlock,
+                vineAt(VineGrowthStage.HARVEST_READY, 0, true, 0.0, Vine.NO_HARVEST)
+        );
+        Player player = helper.makeMockPlayer();
+        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.STICK));
+        helper.getBlockState(VINE_POSITION).use(
+                helper.getLevel(),
+                player,
+                InteractionHand.MAIN_HAND,
+                new BlockHitResult(
+                        Vec3.atCenterOf(helper.absolutePos(VINE_POSITION)),
+                        Direction.UP,
+                        helper.absolutePos(VINE_POSITION),
+                        false
+                )
+        );
+
+        require(
+                helper,
+                helper.getBlockState(VINE_POSITION).getBlock() == vineBlock,
+                "Harvest with a stick removed the perennial vine block"
+        );
+        require(
+                helper,
+                entity.vine().growthStage() == VineGrowthStage.DORMANT,
+                "Harvest with a stick did not enter DORMANT"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void sneakEmptyHandInspectsWithoutHarvest(GameTestHelper helper) {
+        VineBlock vineBlock = vine("red_grapevine");
+        Vine<ResourceId> mature = vineAt(
+                VineGrowthStage.HARVEST_READY,
+                0,
+                true,
+                0.0,
+                Vine.NO_HARVEST
+        );
+        VineBlockEntity entity = placeVine(helper, vineBlock, mature);
+        Player player = helper.makeMockPlayer();
+        player.setShiftKeyDown(true);
+        helper.getBlockState(VINE_POSITION).use(
+                helper.getLevel(),
+                player,
+                InteractionHand.MAIN_HAND,
+                new BlockHitResult(
+                        Vec3.atCenterOf(helper.absolutePos(VINE_POSITION)),
+                        Direction.UP,
+                        helper.absolutePos(VINE_POSITION),
+                        false
+                )
+        );
+
+        require(
+                helper,
+                helper.getBlockState(VINE_POSITION).getBlock() == vineBlock,
+                "Sneak inspect removed the perennial vine block"
+        );
+        require(
+                helper,
+                entity.vine().growthStage() == VineGrowthStage.HARVEST_READY,
+                "Sneak inspect harvested the vine"
+        );
+        require(
+                helper,
+                entity.vine().lastHarvest() == Vine.NO_HARVEST,
+                "Sneak inspect persisted a harvest"
         );
         helper.succeed();
     }
@@ -659,6 +784,118 @@ public final class GrapevineGameTests {
                 helper.getLevel().random
         );
         require(helper, entity.vine().equals(before), "Stem tick advanced the domain vine");
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void boneMealAdvancesOneGrowthStage(GameTestHelper helper) {
+        VineBlock vineBlock = vine("red_grapevine");
+        VineBlockEntity entity = placeVine(
+                helper,
+                vineBlock,
+                vineAt(VineGrowthStage.PLANTED, 0, false, 0.0, Vine.NO_HARVEST)
+        );
+        require(
+                helper,
+                vineBlock.isValidBonemealTarget(
+                        helper.getLevel(),
+                        helper.absolutePos(VINE_POSITION),
+                        helper.getBlockState(VINE_POSITION),
+                        false
+                ),
+                "Planted vine was not a bonemeal target"
+        );
+        vineBlock.performBonemeal(
+                helper.getLevel(),
+                helper.getLevel().random,
+                helper.absolutePos(VINE_POSITION),
+                helper.getBlockState(VINE_POSITION)
+        );
+        require(
+                helper,
+                entity.vine().growthStage() == VineGrowthStage.ESTABLISHING,
+                "Bonemeal did not advance PLANTED to ESTABLISHING"
+        );
+        require(
+                helper,
+                helper.getBlockState(VINE_POSITION).getValue(VineBlock.STAGE)
+                        == VineStage.ESTABLISHING,
+                "Bonemeal did not refresh the vine block stage"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void boneMealOnStemAdvancesRoot(GameTestHelper helper) {
+        VineBlock vineBlock = vine("red_grapevine");
+        VineBlockEntity entity = placeVine(
+                helper,
+                vineBlock,
+                vineAt(VineGrowthStage.VEGETATIVE, 0, false, 0.0, Vine.NO_HARVEST)
+        );
+        placeTrellis(helper, 3);
+        attachStem(helper, vineBlock);
+        BlockPos stemPos = VINE_POSITION.above();
+        BlockState stem = helper.getBlockState(stemPos);
+        require(
+                helper,
+                stem.getBlock() instanceof VineStemBlock,
+                "Expected a stem before applying bonemeal"
+        );
+        VineStemBlock stemBlock = (VineStemBlock) stem.getBlock();
+        require(
+                helper,
+                stemBlock.isValidBonemealTarget(
+                        helper.getLevel(),
+                        helper.absolutePos(stemPos),
+                        stem,
+                        false
+                ),
+                "Stem was not a bonemeal target"
+        );
+        stemBlock.performBonemeal(
+                helper.getLevel(),
+                helper.getLevel().random,
+                helper.absolutePos(stemPos),
+                helper.getBlockState(stemPos)
+        );
+        require(
+                helper,
+                entity.vine().growthStage() == VineGrowthStage.FLOWERING,
+                "Bonemeal on the stem did not advance the root"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void harvestReadyRejectsBonemeal(GameTestHelper helper) {
+        VineBlock vineBlock = vine("red_grapevine");
+        VineBlockEntity entity = placeVine(
+                helper,
+                vineBlock,
+                vineAt(VineGrowthStage.HARVEST_READY, 0, true, 0.0, Vine.NO_HARVEST)
+        );
+        require(
+                helper,
+                !vineBlock.isValidBonemealTarget(
+                        helper.getLevel(),
+                        helper.absolutePos(VINE_POSITION),
+                        helper.getBlockState(VINE_POSITION),
+                        false
+                ),
+                "Harvest-ready vine accepted bonemeal"
+        );
+        vineBlock.performBonemeal(
+                helper.getLevel(),
+                helper.getLevel().random,
+                helper.absolutePos(VINE_POSITION),
+                helper.getBlockState(VINE_POSITION)
+        );
+        require(
+                helper,
+                entity.vine().growthStage() == VineGrowthStage.HARVEST_READY,
+                "Bonemeal advanced a harvest-ready vine"
+        );
         helper.succeed();
     }
 

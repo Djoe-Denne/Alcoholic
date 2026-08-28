@@ -227,7 +227,15 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "advancements.alcoholic.blend.title": "The Assemblage",
                           "advancements.alcoholic.blend.description": "Blend two batches in a crock",
                           "advancements.alcoholic.bottle.title": "In Glass",
-                          "advancements.alcoholic.bottle.description": "Fill a bottle from a finished batch"
+                          "advancements.alcoholic.bottle.description": "Fill a bottle from a finished batch",
+                          "ftbquests.alcoholic.chapter.title": "Alcoholic",
+                          "ftbquests.alcoholic.chapter.subtitle": "From vine and bine to bottle",
+                          "ftbquests.alcoholic.hover.press": "Load grapes and wait for the screw. An empty bucket takes the must; sneak with an empty hand takes the pomace.",
+                          "ftbquests.alcoholic.hover.mash_tun": "Place the tun on magma (about 65 °C). Add grist and a water bucket. Sneak with an empty hand takes the spent grain.",
+                          "ftbquests.alcoholic.hover.fermenter": "Pour must or hopped wort, then add yeast. Room temperature (18–24 °C) is enough. Bottle or bucket when it is done.",
+                          "ftbquests.alcoholic.hover.barrel": "Pour young wine and wait until maturity reaches 1.0. A used barrel seasons the next lot.",
+                          "ftbquests.alcoholic.hover.crock": "Fill both tanks, then sneak with an empty hand to blend. Distinct liquids never merge on their own.",
+                          "ftbquests.alcoholic.hover.bottle": "Right-click a fermenter, barrel, or crock with an empty bottle (250 mB). Do not bottle unfermented must."
                         }
                         """
         );
@@ -426,7 +434,15 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "advancements.alcoholic.blend.title": "L'assemblage",
                           "advancements.alcoholic.blend.description": "Assemblez deux lots dans une jarre",
                           "advancements.alcoholic.bottle.title": "Sous verre",
-                          "advancements.alcoholic.bottle.description": "Remplissez une bouteille à partir d'un lot fini"
+                          "advancements.alcoholic.bottle.description": "Remplissez une bouteille à partir d'un lot fini",
+                          "ftbquests.alcoholic.chapter.title": "Alcoholic",
+                          "ftbquests.alcoholic.chapter.subtitle": "De la vigne et de la bine à la bouteille",
+                          "ftbquests.alcoholic.hover.press": "Chargez des raisins et attendez la vis. Un seau vide prend le moût ; sneak + main vide prend le marc.",
+                          "ftbquests.alcoholic.hover.mash_tun": "Posez la cuve sur du magma (environ 65 °C). Ajoutez la mouture et un seau d'eau. Sneak + main vide prend la drêche.",
+                          "ftbquests.alcoholic.hover.fermenter": "Versez le moût ou le moût houblonné, puis la levure. L'ambiance (18–24 °C) suffit. Bouteille ou seau à la fin.",
+                          "ftbquests.alcoholic.hover.barrel": "Versez le vin jeune et attendez une maturité de 1,0. Un fût déjà utilisé assaisonne le lot suivant.",
+                          "ftbquests.alcoholic.hover.crock": "Remplissez les deux tanks, puis sneak + main vide pour assembler. Deux liquides distincts ne fusionnent jamais seuls.",
+                          "ftbquests.alcoholic.hover.bottle": "Clic droit sur un fermenteur, un fût ou une terrine avec une bouteille vide (250 mB). Ne bouteillez pas le moût non fermenté."
                         }
                         """
         );

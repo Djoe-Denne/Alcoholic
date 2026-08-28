@@ -133,7 +133,8 @@ public final class BrewingKettleBlockEntity extends BlockEntity implements World
             cancelProcess();
             return;
         }
-        if (config.temperature().stalled(temperatureCelsius())) {
+        double rate = config.temperature().rateFactor(temperatureCelsius());
+        if (rate <= 0.0) {
             return;
         }
         String job = invocation.get().nodeId() + "|" + liquid.baseLiquid().map(ResourceId::toString).orElse("");
@@ -143,7 +144,6 @@ public final class BrewingKettleBlockEntity extends BlockEntity implements World
             runningDefinition = invocation.get().nodeId();
             progress = 0;
         }
-        double rate = Math.max(0.10, config.temperature().rateFactor(temperatureCelsius()));
         duration = Math.max(1, (int) Math.round(config.processingTicks() / rate));
         double fraction = duration <= 1 ? 1.0 : Math.min(1.0, (double) progress / duration);
         if (!commitDueAdditions(config, fraction)) {

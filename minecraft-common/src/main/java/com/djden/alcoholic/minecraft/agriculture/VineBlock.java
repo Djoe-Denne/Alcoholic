@@ -38,6 +38,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -57,7 +58,7 @@ import java.util.function.Supplier;
 /**
  * Persistent perennial vine backed by the domain {@link Vine} model.
  */
-public class VineBlock extends BaseEntityBlock {
+public class VineBlock extends BaseEntityBlock implements BonemealableBlock {
     public static final int MAX_LEGACY_AGE = 4;
     public static final IntegerProperty AGE =
             IntegerProperty.create("age", 0, MAX_LEGACY_AGE);
@@ -173,6 +174,70 @@ public class VineBlock extends BaseEntityBlock {
                 trained,
                 random.nextDouble()
         );
+        applyGrownVine(level, position, state, entity, current, grown);
+    }
+
+    @Override
+    public boolean isValidBonemealTarget(
+            BlockGetter level,
+            BlockPos position,
+            BlockState state,
+            boolean client
+    ) {
+        return canFertilize(level, position, state);
+    }
+
+    @Override
+    public boolean isBonemealSuccess(
+            Level level,
+            RandomSource random,
+            BlockPos position,
+            BlockState state
+    ) {
+        return true;
+    }
+
+    @Override
+    public void performBonemeal(
+            ServerLevel level,
+            RandomSource random,
+            BlockPos position,
+            BlockState state
+    ) {
+        applyFertilizer(level, position, state);
+    }
+
+    boolean canFertilize(BlockGetter level, BlockPos position, BlockState state) {
+        if (level.getBlockEntity(position) instanceof VineBlockEntity entity) {
+            return entity.vine().growthStage() != VineGrowthStage.HARVEST_READY;
+        }
+        return !isHarvestReadyState(state);
+    }
+
+    void applyFertilizer(ServerLevel level, BlockPos position, BlockState state) {
+        VineBlockEntity entity = getOrCreateEntity(level, position, state);
+        if (entity == null) {
+            return;
+        }
+        Vine<ResourceId> current = entity.vine();
+        applyGrownVine(
+                level,
+                position,
+                state,
+                entity,
+                current,
+                runtime.fertilize(current)
+        );
+    }
+
+    private void applyGrownVine(
+            ServerLevel level,
+            BlockPos position,
+            BlockState state,
+            VineBlockEntity entity,
+            Vine<ResourceId> current,
+            Vine<ResourceId> grown
+    ) {
         if (!grown.equals(current)) {
             entity.setVine(grown);
         } else {
@@ -229,7 +294,7 @@ public class VineBlock extends BaseEntityBlock {
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
-        if (held.isEmpty() && isHarvestReadyState(state)) {
+        if (isHarvestReadyState(state)) {
             if (!level.isClientSide) {
                 harvest(level, position, state, player);
             }

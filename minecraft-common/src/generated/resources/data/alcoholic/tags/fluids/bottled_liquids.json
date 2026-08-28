@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "alcoholic:young_red_wine",
+    "alcoholic:young_white_wine",
+    "alcoholic:red_wine",
+    "alcoholic:white_wine",
+    "alcoholic:beer"
+  ]
+}

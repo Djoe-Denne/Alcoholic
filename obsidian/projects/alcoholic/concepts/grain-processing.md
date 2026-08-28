@@ -16,7 +16,7 @@ provenance:
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T18:55:00+02:00
-updated: 2026-08-28T19:15:00+02:00
+updated: 2026-08-28T20:54:00+02:00
 ---
 
 # Grain Processing
@@ -30,10 +30,9 @@ BARLEY → MALT → MALTED BARLEY → MILL → GRIST
 GRIST + WATER → MASH → WORT
 WORT + HOPS → BOIL → HOPPED WORT
 HOPPED WORT + YEAST → FERMENT → BEER
-YOUNG BEER → optional CONDITION → BEER
 ```
 
-The shipped graph is `alcoholic:beer`. It ends after generic `FERMENT`. AGE is not injected. `CONDITION` exists as a generic optional process and is not a node on `alcoholic:beer`. Whisky remains a structural fixture (`DISTILL` is still a stub). Wheat-beer and non-beer mash graphs stay validation fixtures.
+The shipped graph is `alcoholic:beer`. It ends after generic `FERMENT`. There is no official beer AGE definition. `CONDITION` is optional, industrial-only, and not a node on `alcoholic:beer`. Artisanal play bottles after FERMENT. Whisky remains a structural fixture (`DISTILL` is still a stub). Wheat-beer and non-beer mash graphs stay validation fixtures.
 
 ## Process types
 
@@ -45,7 +44,7 @@ The shipped graph is `alcoholic:beer`. It ends after generic `FERMENT`. AGE is n
 
 `alcoholic:boil` heats a liquid and consumes hop additions (ADR-027). Extracted `alcoholic:bitterness` and `alcoholic:aroma` are typed properties. Additions may carry `at_progress` and a lightweight `role` (`bittering`, `aroma`, `dual`). The brewing kettle and industrial kettle execute `BOIL`. Existing fermenters then run generic `FERMENT`.
 
-`alcoholic:condition` is optional post-fermentation maturation that is not wood `AGE`. It may raise `alcoholic:maturity` and, with yeast plus residual sugar, `alcoholic:carbonation`.
+`alcoholic:condition` is optional post-fermentation maturation that is not wood `AGE`. It is industrial-only and off-graph: it may raise `alcoholic:maturity` and, with yeast plus residual sugar, `alcoholic:carbonation`. It is not a node on `alcoholic:beer`. Artisanal bottles after FERMENT.
 
 Mixed solid/liquid ports reuse `ProcessInputs` (ADR-025). There is no brewing-water fluid.
 

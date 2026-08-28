@@ -1,6 +1,7 @@
 package com.djden.alcoholic.forge.fluid;
 
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
+import com.djden.alcoholic.minecraft.fluid.FluidContent;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -22,9 +23,9 @@ import javax.annotation.Nullable;
 public final class ForgeFluidCapabilities {
     private static final ResourceLocation KEY =
             ResourceLocation.fromNamespaceAndPath(AlcoholicIds.MOD_ID, "liquid_tank");
-    private final ForgeFluidContent fluids;
+    private final FluidContent fluids;
 
-    public ForgeFluidCapabilities(ForgeFluidContent fluids) {
+    public ForgeFluidCapabilities(FluidContent fluids) {
         this.fluids = fluids;
     }
 

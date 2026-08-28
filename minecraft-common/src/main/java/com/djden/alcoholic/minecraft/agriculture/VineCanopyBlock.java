@@ -2,6 +2,8 @@ package com.djden.alcoholic.minecraft.agriculture;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -11,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,7 +34,7 @@ import java.util.function.Supplier;
  * Top grapevine segment that occupies the trellis wire coordinate. The wire
  * block is replaced; the model keeps a wire so the row still reads as trained.
  */
-public final class VineCanopyBlock extends Block {
+public final class VineCanopyBlock extends Block implements BonemealableBlock {
     public static final EnumProperty<VineStage> STAGE = VineBlock.STAGE;
     public static final EnumProperty<Direction.Axis> AXIS =
             BlockStateProperties.HORIZONTAL_AXIS;
@@ -164,6 +167,50 @@ public final class VineCanopyBlock extends Block {
     }
 
     @Override
+    public boolean isValidBonemealTarget(
+            BlockGetter level,
+            BlockPos position,
+            BlockState state,
+            boolean client
+    ) {
+        BlockPos rootPos = findRootPos(level, position);
+        if (rootPos == null) {
+            return false;
+        }
+        BlockState rootState = level.getBlockState(rootPos);
+        return rootState.getBlock() instanceof VineBlock root
+                && belongsTo(root)
+                && root.isValidBonemealTarget(level, rootPos, rootState, client);
+    }
+
+    @Override
+    public boolean isBonemealSuccess(
+            Level level,
+            RandomSource random,
+            BlockPos position,
+            BlockState state
+    ) {
+        return true;
+    }
+
+    @Override
+    public void performBonemeal(
+            ServerLevel level,
+            RandomSource random,
+            BlockPos position,
+            BlockState state
+    ) {
+        BlockPos rootPos = findRootPos(level, position);
+        if (rootPos == null) {
+            return;
+        }
+        BlockState rootState = level.getBlockState(rootPos);
+        if (rootState.getBlock() instanceof VineBlock root && belongsTo(root)) {
+            root.performBonemeal(level, random, rootPos, rootState);
+        }
+    }
+
+    @Override
     public ItemStack getCloneItemStack(BlockGetter level, BlockPos position, BlockState state) {
         return ItemStack.EMPTY;
     }
@@ -197,7 +244,7 @@ public final class VineCanopyBlock extends Block {
     }
 
     @Nullable
-    private BlockPos findRootPos(LevelReader level, BlockPos position) {
+    private BlockPos findRootPos(BlockGetter level, BlockPos position) {
         BlockState below = level.getBlockState(position.below());
         if (below.getBlock() instanceof VineBlock root && belongsTo(root)) {
             return position.below();

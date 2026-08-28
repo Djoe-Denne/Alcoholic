@@ -159,6 +159,21 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                         }
                         """
         );
+        sink.add(
+                "data/alcoholic/tags/fluids/bottled_liquids.json",
+                """
+                        {
+                          "replace": false,
+                          "values": [
+                            "alcoholic:young_red_wine",
+                            "alcoholic:young_white_wine",
+                            "alcoholic:red_wine",
+                            "alcoholic:white_wine",
+                            "alcoholic:beer"
+                          ]
+                        }
+                        """
+        );
     }
 
     private static void addEmptyTag(JsonSink sink, String name) {
@@ -1545,7 +1560,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           },
                           "inputs": {
                             "grist": { "tag": "alcoholic:grist" },
-                            "water": { "item": "minecraft:water_bucket" }
+                            "water": { "item": "minecraft:water" }
                           },
                           "outputs": ["wort"]
                         }
@@ -1622,7 +1637,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                                 "definition": "alcoholic:mash_wort",
                                 "inputs": {
                                   "grist": { "node": "mill", "port": "grist" },
-                                  "water": { "item": "minecraft:water_bucket" }
+                                  "water": { "item": "minecraft:water" }
                                 },
                                 "outputs": ["wort"]
                               },

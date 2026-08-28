@@ -24,4 +24,8 @@ public final class GrowVineUseCase {
     ) {
         return growthService.grow(vine, parameters);
     }
+
+    public Vine<ResourceId> fertilize(Vine<ResourceId> vine) {
+        return growthService.fertilize(vine);
+    }
 }

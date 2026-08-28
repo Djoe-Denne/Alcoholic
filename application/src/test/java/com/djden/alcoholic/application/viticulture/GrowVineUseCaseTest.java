@@ -26,4 +26,15 @@ class GrowVineUseCaseTest {
 
         assertEquals(service.grow(vine, parameters), useCase.grow(vine, parameters));
     }
+
+    @Test
+    void delegatesFertilizeUnchangedToDomainService() {
+        VineyardGrowthService service = new VineyardGrowthService(
+                new VineGrowthConfig(0.0, ClimateProfile.TEMPERATE, 0.25)
+        );
+        GrowVineUseCase useCase = new GrowVineUseCase(service);
+        Vine<ResourceId> vine = Vine.planted(VineVarieties.WHITE_GRAPE);
+
+        assertEquals(service.fertilize(vine), useCase.fertilize(vine));
+    }
 }

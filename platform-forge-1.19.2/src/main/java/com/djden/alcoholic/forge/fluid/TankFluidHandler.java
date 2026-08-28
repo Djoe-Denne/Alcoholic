@@ -1,6 +1,7 @@
 package com.djden.alcoholic.forge.fluid;
 
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
+import com.djden.alcoholic.minecraft.fluid.FluidContent;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
 import net.minecraftforge.fluids.FluidStack;
@@ -8,20 +9,20 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public final class TankFluidHandler implements IFluidHandler {
     private final LiquidVessel vessel;
-    private final ForgeFluidContent fluids;
+    private final FluidContent fluids;
     private final Runnable onChanged;
 
-    public TankFluidHandler(LiquidTank tank, ForgeFluidContent fluids) {
+    public TankFluidHandler(LiquidTank tank, FluidContent fluids) {
         this(new SingleTankVessel(tank), fluids, () -> {
         });
     }
 
-    public TankFluidHandler(LiquidVessel vessel, ForgeFluidContent fluids) {
+    public TankFluidHandler(LiquidVessel vessel, FluidContent fluids) {
         this(vessel, fluids, () -> {
         });
     }
 
-    public TankFluidHandler(LiquidVessel vessel, ForgeFluidContent fluids, Runnable onChanged) {
+    public TankFluidHandler(LiquidVessel vessel, FluidContent fluids, Runnable onChanged) {
         this.vessel = vessel;
         this.fluids = fluids;
         this.onChanged = onChanged == null ? () -> {

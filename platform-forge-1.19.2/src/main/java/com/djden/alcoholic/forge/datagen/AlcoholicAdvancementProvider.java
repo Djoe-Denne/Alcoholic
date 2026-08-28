@@ -142,7 +142,7 @@ final class AlcoholicAdvancementProvider extends AdvancementProvider {
         Advancement.Builder.advancement()
                 .parent(ferment)
                 .display(item("artisanal_blending_crock"), title("blend"), description("blend"),
-                        null, FrameType.TASK, true, true, false)
+                        null, FrameType.TASK, true, true, true)
                 .addCriterion(
                         "blend",
                         ProcessCompletedTrigger.completed(AdvancementHooks.location(BuiltinRegistrations.BLEND))

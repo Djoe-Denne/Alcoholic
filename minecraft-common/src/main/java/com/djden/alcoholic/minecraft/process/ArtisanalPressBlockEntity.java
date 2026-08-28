@@ -184,6 +184,18 @@ public final class ArtisanalPressBlockEntity extends BlockEntity
         if (stack.isEmpty()) {
             return false;
         }
+        ProcessRuntime runtime = ProcessRuntime.shared();
+        Optional<ProcessInvocation> invocation = ProcessRecipeResolver.find(
+                runtime.beverages().catalog(),
+                runtime.beverages().api(),
+                BuiltinRegistrations.PRESS,
+                MinecraftSelectorMatcher.create(runtime.beverages()),
+                Optional.of(ItemLots.id(stack)),
+                Optional.empty()
+        );
+        if (invocation.isEmpty()) {
+            return false;
+        }
         ItemStack existing = items.get(INPUT_SLOT);
         if (existing.isEmpty()) {
             items.set(INPUT_SLOT, stack.split(Math.min(stack.getCount(), stack.getMaxStackSize())));

@@ -53,6 +53,30 @@ class ViticultureRuntimeTest {
         );
     }
 
+    @Test
+    void fertilizeAdvancesEvenWhenGrowthChanceIsZero() {
+        ViticultureSettings defaults = ViticultureSettings.defaults();
+        ViticultureSettings.VarietySettings red =
+                defaults.forVariety(VineVarieties.RED_GRAPE);
+        ViticultureSettingsStore store = new ViticultureSettingsStore(
+                defaults.withVariety(withGrowthChance(red, 0.0))
+        );
+        ViticultureRuntime runtime = new ViticultureRuntime(
+                store,
+                new ResolveGrapeProviderUseCase(
+                        new CompatibilitySnapshot(Set.of()),
+                        NoopProvider.INSTANCE,
+                        NoopProvider.INSTANCE
+                )
+        );
+        Vine<ResourceId> planted = Vine.planted(VineVarieties.RED_GRAPE);
+
+        assertEquals(
+                VineGrowthStage.ESTABLISHING,
+                runtime.fertilize(planted).growthStage()
+        );
+    }
+
     private static ViticultureSettings.VarietySettings withGrowthChance(
             ViticultureSettings.VarietySettings settings,
             double chance

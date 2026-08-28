@@ -95,6 +95,11 @@ public final class ViticultureRuntime {
         );
     }
 
+    public Vine<ResourceId> fertilize(Vine<ResourceId> vine) {
+        ViticultureSettings.VarietySettings variety = settings().forVariety(vine.variety());
+        return new GrowVineUseCase(new VineyardGrowthService(variety.growth())).fertilize(vine);
+    }
+
     public Vine<ResourceId> prune(Vine<ResourceId> vine, PruningLevel level) {
         return pruneVine.prune(vine, level);
     }

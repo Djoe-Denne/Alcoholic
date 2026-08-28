@@ -2,6 +2,8 @@ package com.djden.alcoholic.minecraft.agriculture;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -12,6 +14,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -20,13 +23,15 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
  * Upper grapevine segment. No block entity, no loot, no independent growth.
  */
-public final class VineStemBlock extends Block {
+public final class VineStemBlock extends Block implements BonemealableBlock {
     public static final EnumProperty<VineStage> STAGE = VineBlock.STAGE;
     public static final BooleanProperty TRAINED = VineBlock.TRAINED;
 
@@ -111,6 +116,59 @@ public final class VineStemBlock extends Block {
             return root.use(below, level, position.below(), player, hand, hit);
         }
         return InteractionResult.PASS;
+    }
+
+    @Override
+    public boolean isValidBonemealTarget(
+            BlockGetter level,
+            BlockPos position,
+            BlockState state,
+            boolean client
+    ) {
+        BlockPos rootPos = findRootPos(level, position);
+        if (rootPos == null) {
+            return false;
+        }
+        BlockState rootState = level.getBlockState(rootPos);
+        return rootState.getBlock() instanceof VineBlock root
+                && belongsTo(root)
+                && root.isValidBonemealTarget(level, rootPos, rootState, client);
+    }
+
+    @Override
+    public boolean isBonemealSuccess(
+            Level level,
+            RandomSource random,
+            BlockPos position,
+            BlockState state
+    ) {
+        return true;
+    }
+
+    @Override
+    public void performBonemeal(
+            ServerLevel level,
+            RandomSource random,
+            BlockPos position,
+            BlockState state
+    ) {
+        BlockPos rootPos = findRootPos(level, position);
+        if (rootPos == null) {
+            return;
+        }
+        BlockState rootState = level.getBlockState(rootPos);
+        if (rootState.getBlock() instanceof VineBlock root && belongsTo(root)) {
+            root.performBonemeal(level, random, rootPos, rootState);
+        }
+    }
+
+    @Nullable
+    private BlockPos findRootPos(BlockGetter level, BlockPos position) {
+        BlockState below = level.getBlockState(position.below());
+        if (below.getBlock() instanceof VineBlock root && belongsTo(root)) {
+            return position.below();
+        }
+        return null;
     }
 
     @Override

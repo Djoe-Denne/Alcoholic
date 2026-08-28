@@ -154,4 +154,46 @@ class VineyardGrowthServiceTest {
         assertEquals(0.0, certainGrowth.growthChance(ready, CERTAIN_GROWTH));
         assertSame(ready, certainGrowth.advance(ready, CERTAIN_GROWTH));
     }
+
+    @Test
+    void fertilizeAdvancesOneStageIgnoringClimateAndProgress() {
+        VineyardGrowthService service = new VineyardGrowthService(
+                new VineGrowthConfig(0.0, ClimateProfile.TEMPERATE, 0.25)
+        );
+        Vine<String> vine = Vine.planted(CHARDONNAY).withGrowthProgress(0.1);
+
+        Vine<String> fertilized = service.fertilize(vine);
+
+        assertEquals(VineGrowthStage.ESTABLISHING, fertilized.growthStage());
+        assertEquals(0.0, fertilized.growthProgress());
+    }
+
+    @Test
+    void fertilizeDoesNotAdvanceHarvestReady() {
+        Vine<String> ready = new Vine<>(
+                CHARDONNAY,
+                VineGrowthStage.HARVEST_READY,
+                0,
+                false,
+                VineHealth.HEALTHY
+        );
+
+        assertSame(ready, certainGrowth.fertilize(ready));
+    }
+
+    @Test
+    void fertilizeWakesDormantAtFlowering() {
+        Vine<String> dormant = new Vine<>(
+                CHARDONNAY,
+                VineGrowthStage.DORMANT,
+                1,
+                true,
+                VineHealth.HEALTHY
+        );
+
+        assertEquals(
+                VineGrowthStage.FLOWERING,
+                certainGrowth.fertilize(dormant).growthStage()
+        );
+    }
 }
