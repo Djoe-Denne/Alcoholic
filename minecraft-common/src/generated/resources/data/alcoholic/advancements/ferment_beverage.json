@@ -1,5 +1,5 @@
 {
-  "parent": "alcoholic:produce_must",
+  "parent": "alcoholic:root",
   "criteria": {
     "ferment_beer": {
       "conditions": {

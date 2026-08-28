@@ -1,5 +1,5 @@
 {
-  "parent": "alcoholic:industrial_root",
+  "parent": "alcoholic:form_industrial_mash_tun",
   "criteria": {
     "formed": {
       "conditions": {

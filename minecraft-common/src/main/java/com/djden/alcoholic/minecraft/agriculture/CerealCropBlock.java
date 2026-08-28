@@ -1,8 +1,11 @@
 package com.djden.alcoholic.minecraft.agriculture;
 
+import com.djden.alcoholic.api.ResourceId;
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -11,13 +14,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -32,10 +38,12 @@ public class CerealCropBlock extends CropBlock {
     };
 
     private final Supplier<Item> seeds;
+    private final ResourceId harvestCrop;
 
-    public CerealCropBlock(Properties properties, Supplier<Item> seeds) {
+    public CerealCropBlock(Properties properties, Supplier<Item> seeds, ResourceId harvestCrop) {
         super(properties);
         this.seeds = seeds;
+        this.harvestCrop = Objects.requireNonNull(harvestCrop, "harvestCrop");
         registerDefaultState(stateDefinition.any().setValue(AGE, 0));
     }
 
@@ -87,5 +95,20 @@ public class CerealCropBlock extends CropBlock {
 
     public static boolean isMature(BlockState state) {
         return state.hasProperty(AGE) && state.getValue(AGE) >= 2;
+    }
+
+    @Override
+    public void playerDestroy(
+            Level level,
+            Player player,
+            BlockPos pos,
+            BlockState state,
+            @Nullable BlockEntity blockEntity,
+            ItemStack tool
+    ) {
+        super.playerDestroy(level, player, pos, state, blockEntity, tool);
+        if (isMature(state)) {
+            AdvancementHooks.harvest(player, AdvancementHooks.location(harvestCrop));
+        }
     }
 }

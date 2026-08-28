@@ -1,0 +1,23 @@
+{
+  "replace": false,
+  "values": [
+    "alcoholic:red_grape_must",
+    "alcoholic:flowing_red_grape_must",
+    "alcoholic:white_grape_must",
+    "alcoholic:flowing_white_grape_must",
+    "alcoholic:young_red_wine",
+    "alcoholic:flowing_young_red_wine",
+    "alcoholic:young_white_wine",
+    "alcoholic:flowing_young_white_wine",
+    "alcoholic:red_wine",
+    "alcoholic:flowing_red_wine",
+    "alcoholic:white_wine",
+    "alcoholic:flowing_white_wine",
+    "alcoholic:wort",
+    "alcoholic:flowing_wort",
+    "alcoholic:hopped_wort",
+    "alcoholic:flowing_hopped_wort",
+    "alcoholic:beer",
+    "alcoholic:flowing_beer"
+  ]
+}

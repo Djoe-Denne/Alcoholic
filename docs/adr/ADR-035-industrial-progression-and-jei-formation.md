@@ -2,6 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-08-28
+- Superseded in part by: [ADR-036](ADR-036-wine-beer-progression-graph.md)
 - Extends: [ADR-033](ADR-033-advancements-as-progression-source.md),
   [ADR-034](ADR-034-ftb-quests-optional-chapter.md),
   [ADR-017](ADR-017-industrial-hollow-cuboid-machines.md),
@@ -18,8 +19,9 @@ compile dependency.
 
 ## Decision
 
-Advancements stay the source of truth. The eight artisanal IDs from
-ADR-033 do not change.
+Advancements stay the source of truth. Artisanal IDs from ADR-033 stay
+valid; [ADR-036](ADR-036-wine-beer-progression-graph.md) adds the beer
+line nodes and owns parent shape.
 
 A second Minecraft tab starts at `alcoholic:industrial_root` (no parent
 on `alcoholic:root`). One advancement per formed machine family:
@@ -59,5 +61,7 @@ by layer. Hover text points at JEI.
 - Forming a machine is a progression event even when the last block
   placed is casing, not a click on the controller.
 - Recipe viewers and FTB never re-detect hull geometry.
-- Adding a ninth industrial family needs a new advancement ID, a JEI
-  recipe from the catalogue, and a matching FTB quest hex.
+- Adding a ninth industrial family needs a `ProgressionNode` in
+  [ADR-036](ADR-036-wine-beer-progression-graph.md) (advancement ID,
+  lineage, parents, FTB hex) plus a JEI recipe from the machine
+  catalogue. The formation trigger and IDs above stay valid.

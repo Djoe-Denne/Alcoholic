@@ -21,15 +21,15 @@ class BuiltinFluidDefinitionsTest {
         assertEquals(9, definitions.size());
         assertEquals(9, new HashSet<>(definitions.stream().map(FluidDefinition::id).toList()).size());
 
-        assertProfile(definitions, AlcoholicIds.RED_GRAPE_MUST, BuiltinFluidDefinitions.SUGAR_RICH);
-        assertProfile(definitions, AlcoholicIds.WHITE_GRAPE_MUST, BuiltinFluidDefinitions.SUGAR_RICH);
-        assertProfile(definitions, AlcoholicIds.WORT, BuiltinFluidDefinitions.SUGAR_RICH);
-        assertProfile(definitions, AlcoholicIds.HOPPED_WORT, BuiltinFluidDefinitions.SUGAR_RICH);
-        assertProfile(definitions, AlcoholicIds.YOUNG_RED_WINE, BuiltinFluidDefinitions.FERMENTED);
-        assertProfile(definitions, AlcoholicIds.YOUNG_WHITE_WINE, BuiltinFluidDefinitions.FERMENTED);
-        assertProfile(definitions, AlcoholicIds.RED_WINE, BuiltinFluidDefinitions.FERMENTED);
-        assertProfile(definitions, AlcoholicIds.WHITE_WINE, BuiltinFluidDefinitions.FERMENTED);
-        assertProfile(definitions, AlcoholicIds.BEER, BuiltinFluidDefinitions.FERMENTED);
+        assertPainted(definitions, AlcoholicIds.RED_GRAPE_MUST, BuiltinFluidDefinitions.SUGAR_RICH);
+        assertPainted(definitions, AlcoholicIds.WHITE_GRAPE_MUST, BuiltinFluidDefinitions.SUGAR_RICH);
+        assertPainted(definitions, AlcoholicIds.HOPPED_WORT, BuiltinFluidDefinitions.SUGAR_RICH);
+        assertPainted(definitions, AlcoholicIds.BEER, BuiltinFluidDefinitions.FERMENTED);
+        assertTintedWater(definitions, AlcoholicIds.WORT, BuiltinFluidDefinitions.SUGAR_RICH, 0xFFC9A227);
+        assertTintedWater(definitions, AlcoholicIds.YOUNG_RED_WINE, BuiltinFluidDefinitions.FERMENTED, 0xFF5A1226);
+        assertTintedWater(definitions, AlcoholicIds.YOUNG_WHITE_WINE, BuiltinFluidDefinitions.FERMENTED, 0xFFE8D36B);
+        assertTintedWater(definitions, AlcoholicIds.RED_WINE, BuiltinFluidDefinitions.FERMENTED, 0xFF4A0E1C);
+        assertTintedWater(definitions, AlcoholicIds.WHITE_WINE, BuiltinFluidDefinitions.FERMENTED, 0xFFE6C85A);
         assertFalse(BuiltinFluidDefinitions.SUGAR_RICH.renewableSources());
         assertFalse(BuiltinFluidDefinitions.FERMENTED.renewableSources());
     }
@@ -59,15 +59,22 @@ class BuiltinFluidDefinitionsTest {
         );
     }
 
-    private static void assertProfile(
+    private static FluidDefinition require(
+            List<FluidDefinition> definitions,
+            ResourceId id
+    ) {
+        return definitions.stream()
+                .filter(candidate -> candidate.id().equals(id))
+                .findFirst()
+                .orElseThrow();
+    }
+
+    private static void assertPainted(
             List<FluidDefinition> definitions,
             ResourceId id,
             FluidFlowProfile expected
     ) {
-        FluidDefinition definition = definitions.stream()
-                .filter(candidate -> candidate.id().equals(id))
-                .findFirst()
-                .orElseThrow();
+        FluidDefinition definition = require(definitions, id);
         assertEquals(expected, definition.flowProfile());
         assertEquals(
                 new ResourceId(AlcoholicIds.MOD_ID, "block/" + id.path() + "_still"),
@@ -78,6 +85,19 @@ class BuiltinFluidDefinitionsTest {
                 definition.flowingTexture()
         );
         assertEquals(0xFFFFFFFF, definition.tintArgb());
+    }
+
+    private static void assertTintedWater(
+            List<FluidDefinition> definitions,
+            ResourceId id,
+            FluidFlowProfile expected,
+            int tint
+    ) {
+        FluidDefinition definition = require(definitions, id);
+        assertEquals(expected, definition.flowProfile());
+        assertEquals(ResourceId.parse("minecraft:block/water_still"), definition.stillTexture());
+        assertEquals(ResourceId.parse("minecraft:block/water_flow"), definition.flowingTexture());
+        assertEquals(tint, definition.tintArgb());
     }
 
     private static FluidFlowProfile profile(

@@ -15,10 +15,26 @@ above the base Alcoholic resources.
 - `Alcoholic-512x`: archived full-resolution artwork
 
 The mod uses 16 x 16 item and plant textures by default. Machine atlases may
-still use their model-specific built-in resolution. Fluid still tiles use the
-pack resolution; flowing tiles use twice that size, matching vanilla water.
-All optional item, plant, and fluid textures are generated directly from the
-archived 512 x 512 masters, never from another reduced version.
+still use their model-specific built-in resolution.
+
+Four world fluids are painted and animated like vanilla water (vertical frame
+strips): `beer`, `hopped_wort`, `red_grape_must`, and `white_grape_must`.
+16 / 32 / 64 packs use 32 frames (`frametime` 2). 128 / 256 / 512 packs use
+8 frames (`frametime` 8). Still width is the pack resolution; flow width is
+twice that. Young wines, aged wines, and wort use vanilla water tiles plus a
+Java tint instead of Alcoholic world PNGs.
+
+Shader packs (Complementary, BSL, etc.) only treat a block as water when
+it is listed in that pack's `shaders/block.properties`. Alcoholic cannot
+append to that file from the JAR or from these texture packs without
+replacing the pack's other mappings. The catalog is
+`#alcoholic:world_fluids` (blocks and fluids). On Iris 1.7+ a shader
+author can write `block.8 = %alcoholic:world_fluids`. On Oculus 1.6 /
+1.19.2, add the nine liquid block ids next to `minecraft:water` on the
+`block.8` line. Do not add them to `minecraft:water`.
+
+All optional item, plant, and painted-fluid textures are generated directly
+from the archived 512 x 512 masters, never from another reduced version.
 
 Regenerate every item/plant resolution and install the 16 x 16 defaults with:
 
@@ -26,8 +42,10 @@ Regenerate every item/plant resolution and install the 16 x 16 defaults with:
 python tools/build_item_plant_texture_packs.py
 ```
 
-Regenerate painted fluid still/flow tiles the same way:
+Regenerate painted animated fluid strips (or one fluid with `--fluid beer`)
+and remove leftover tinted-water world tiles with:
 
 ```powershell
 python tools/build_fluid_texture_packs.py
+python tools/build_fluid_texture_packs.py --clean-tinted
 ```

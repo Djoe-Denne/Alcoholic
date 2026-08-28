@@ -109,31 +109,26 @@ not yet visible.
 
 ## World fluids
 
-Painted still/flow tiles are fully opaque and fill the square edge to edge.
-Still masters live at 512 x 512; flow masters live at 1024 x 1024. Do not
-include a bucket, rim, handle, background, or inventory silhouette. Java
-applies a white tint, so the PNG carries the liquid color.
+Only four liquids keep painted Alcoholic world tiles. They are vanilla-style
+vertical animation strips (32 frames at 16/32/64, 8 frames at 128/256/512)
+with foam, pulp, and rising bubbles. Still width equals the pack resolution;
+flow width is twice that. Do not include a bucket, rim, handle, background,
+or inventory silhouette. Java tint is white so the PNG carries the color.
+
+Young red/white wine, aged red/white wine, and wort use
+`minecraft:block/water_still` / `water_flow` plus a Java tint. Do not paint
+world still/flow tiles for those five.
 
 | Texture | Subject prompt |
 | --- | --- |
-| `beer_still` | Top-down seamless amber beer with cream foam patches and a few bubbles. |
-| `beer_flow` | Same beer, stretched into downward diagonal current streaks. |
-| `hopped_wort_still` | Top-down seamless cloudy olive-gold hopped wort with resin flecks. |
-| `hopped_wort_flow` | Same hopped wort as downward diagonal current streaks. |
-| `red_grape_must_still` | Top-down seamless opaque burgundy must with pulp specks. |
-| `red_grape_must_flow` | Same red must as downward diagonal current streaks. |
-| `white_grape_must_still` | Top-down seamless cloudy pale yellow-gold must with tiny flecks. |
-| `white_grape_must_flow` | Same white must as downward diagonal current streaks. |
-| `young_red_wine_still` | Top-down seamless cloudy raspberry-purple young wine with three bubbles. |
-| `young_red_wine_flow` | Same young red wine as downward diagonal current streaks. |
-| `young_white_wine_still` | Top-down seamless cloudy lemon-gold young wine with three bubbles. |
-| `young_white_wine_flow` | Same young white wine as downward diagonal current streaks. |
-| `red_wine_still` | Top-down seamless clear deep ruby wine, glossy, no foam. |
-| `red_wine_flow` | Same red wine as downward diagonal glossy current streaks. |
-| `white_wine_still` | Top-down seamless clear straw-gold wine, glossy, no foam. |
-| `white_wine_flow` | Same white wine as downward diagonal glossy current streaks. |
-| `wort_still` | Top-down seamless cloudy copper-gold wort with malt haze. |
-| `wort_flow` | Same wort as downward diagonal current streaks. |
+| `beer_still` | Top-down seamless amber beer with drifting cream foam and rising bubbles. |
+| `beer_flow` | Same beer as downward current streaks with foam and bubbles. |
+| `hopped_wort_still` | Top-down seamless cloudy olive-gold hopped wort with resin flecks and small bubbles. |
+| `hopped_wort_flow` | Same hopped wort as downward current streaks. |
+| `red_grape_must_still` | Top-down seamless opaque burgundy must with pulp specks and bubbles. |
+| `red_grape_must_flow` | Same red must as downward current streaks. |
+| `white_grape_must_still` | Top-down seamless cloudy pale yellow-gold must with pulp flecks and bubbles. |
+| `white_grape_must_flow` | Same white must as downward current streaks. |
 
 ## Trellis wire
 

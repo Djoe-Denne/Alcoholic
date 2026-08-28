@@ -1,0 +1,32 @@
+{
+  "parent": "alcoholic:mash",
+  "criteria": {
+    "boil": {
+      "conditions": {
+        "liquid": "alcoholic:hopped_wort",
+        "process": "alcoholic:boil"
+      },
+      "trigger": "alcoholic:process_completed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.alcoholic.boil.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "alcoholic:hopped_wort_bucket"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alcoholic.boil.title"
+    }
+  },
+  "requirements": [
+    [
+      "boil"
+    ]
+  ]
+}

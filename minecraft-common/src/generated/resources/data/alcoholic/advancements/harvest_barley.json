@@ -1,0 +1,31 @@
+{
+  "parent": "alcoholic:root",
+  "criteria": {
+    "harvest_barley": {
+      "conditions": {
+        "crop": "alcoholic:barley"
+      },
+      "trigger": "alcoholic:crop_harvested"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.alcoholic.harvest_barley.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "alcoholic:barley"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alcoholic.harvest_barley.title"
+    }
+  },
+  "requirements": [
+    [
+      "harvest_barley"
+    ]
+  ]
+}

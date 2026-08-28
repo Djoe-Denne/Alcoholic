@@ -1,0 +1,31 @@
+{
+  "parent": "alcoholic:malt",
+  "criteria": {
+    "mill": {
+      "conditions": {
+        "process": "alcoholic:mill"
+      },
+      "trigger": "alcoholic:process_completed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.alcoholic.mill.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "alcoholic:malt_mill"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alcoholic.mill.title"
+    }
+  },
+  "requirements": [
+    [
+      "mill"
+    ]
+  ]
+}

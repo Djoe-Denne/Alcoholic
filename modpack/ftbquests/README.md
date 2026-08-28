@@ -1,11 +1,16 @@
 # Alcoholic FTB Quests chapter
 
-Optional presentation of the [ADR-033](../../docs/adr/ADR-033-advancements-as-progression-source.md)
-advancement path. Alcoholic does not load these files. There is no FTB
-compile or runtime dependency.
+Optional presentation of the [ADR-036](../../docs/adr/ADR-036-wine-beer-progression-graph.md)
+wine / beer graph. Detection stays in vanilla advancements
+([ADR-033](../../docs/adr/ADR-033-advancements-as-progression-source.md)).
+Alcoholic does not load these files. There is no FTB compile or runtime
+dependency.
 
 Target: **FTB Quests 1902.5.10**, **FTB Library 1902.3.14+**, quest file
 `version: 13`.
+
+SNBT is generated from `ProgressionCatalog`. Do not hand-edit the chapter
+files; change the catalogue and rerun datagen.
 
 ## Install
 
@@ -21,19 +26,23 @@ Existing quest book: copy
 `config/ftbquests/quests/chapters/`. Leave the pack's `data.snbt`
 alone.
 
-Without FTB the player still has the Alcoholic advancement tab.
+Without FTB the player still has the Alcoholic advancement tabs.
 
-## What this chapter does
+## What these chapters do
 
 Each quest is one `AdvancementTask` on a stable Alcoholic advancement
 ID. Empty `criterion` means the whole advancement. FTB does not
 re-check harvest or process logic.
 
+Wine is the left column (`x < 0`). Beer is the right (`x > 0`). Shared
+nodes sit on `x = 0`. Junctions (`ferment_beverage`, `form_industrial_vat`)
+use `min_required_dependencies: 1` so either lineage can reach the center.
+
 There are no FTB rewards. Toasts and XP come from the advancements.
 
 Animated chapter images use item-atlas sprites
-`alcoholic:item/ftbquests/<id>` plus `.mcmeta`. They stay visible
-before the quest is completed.
+`alcoholic:item/ftbquests/<id>` plus `.mcmeta`. New beer process quests
+use item icons until flipbooks exist.
 
 ## Stable hex IDs
 
@@ -51,6 +60,11 @@ IDs break progress for worlds that already used this chapter.
 | Quest `age_wine` | `A1C0A01C00000015` |
 | Quest `blend` | `A1C0A01C00000016` |
 | Quest `bottle` | `A1C0A01C00000017` |
+| Quest `harvest_barley` | `A1C0A01C00000018` |
+| Quest `malt` | `A1C0A01C00000019` |
+| Quest `mill` | `A1C0A01C0000001A` |
+| Quest `mash` | `A1C0A01C0000001B` |
+| Quest `boil` | `A1C0A01C0000001C` |
 | Task `root` | `A1C0A01C10000010` |
 | Task `harvest_grapes` | `A1C0A01C10000011` |
 | Task `harvest_hops` | `A1C0A01C10000012` |
@@ -59,25 +73,16 @@ IDs break progress for worlds that already used this chapter.
 | Task `age_wine` | `A1C0A01C10000015` |
 | Task `blend` | `A1C0A01C10000016` |
 | Task `bottle` | `A1C0A01C10000017` |
-
-Advancements watched:
-
-- `alcoholic:root`
-- `alcoholic:harvest_grapes`
-- `alcoholic:harvest_hops`
-- `alcoholic:produce_must`
-- `alcoholic:ferment_beverage`
-- `alcoholic:age_wine`
-- `alcoholic:blend`
-- `alcoholic:bottle`
-
-See [ADR-034](../../docs/adr/ADR-034-ftb-quests-optional-chapter.md) and
-[ADR-035](../../docs/adr/ADR-035-industrial-progression-and-jei-formation.md).
+| Task `harvest_barley` | `A1C0A01C10000018` |
+| Task `malt` | `A1C0A01C10000019` |
+| Task `mill` | `A1C0A01C1000001A` |
+| Task `mash` | `A1C0A01C1000001B` |
+| Task `boil` | `A1C0A01C1000001C` |
 
 ## Industrial chapter
 
-Second template chapter. Same rules: `AdvancementTask` only, no rewards,
-no FTB geometry checks. Hex IDs stay in the `A1C0A01C` family.
+Same rules: `AdvancementTask` only, no rewards, no FTB geometry checks.
+Hex IDs stay in the `A1C0A01C` family.
 
 | Object | Hex id |
 |---|---|
@@ -101,19 +106,7 @@ no FTB geometry checks. Hex IDs stay in the `A1C0A01C` family.
 | Task `form_industrial_kettle` | `A1C0A01C10000027` |
 | Task `form_industrial_conditioning` | `A1C0A01C10000028` |
 
-Advancements watched:
-
-- `alcoholic:industrial_root`
-- `alcoholic:form_industrial_press`
-- `alcoholic:form_industrial_vat`
-- `alcoholic:form_industrial_tank`
-- `alcoholic:form_industrial_malt_house`
-- `alcoholic:form_industrial_roller_mill`
-- `alcoholic:form_industrial_mash_tun`
-- `alcoholic:form_industrial_kettle`
-- `alcoholic:form_industrial_conditioning`
-
 Flipbooks: `alcoholic:item/ftbquests/form_press` (and `form_vat`,
 `form_tank`, `form_malt_house`, `form_roller_mill`, `form_mash_tun`,
-`form_kettle`, `form_conditioning`). Each strip is the min hull assembled
-layer by layer. Hover text points at JEI for the cell grid.
+`form_kettle`, `form_conditioning`). Hover text points at JEI for the
+cell grid.

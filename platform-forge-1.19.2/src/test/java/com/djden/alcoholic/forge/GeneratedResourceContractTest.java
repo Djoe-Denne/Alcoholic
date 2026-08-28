@@ -1,5 +1,7 @@
 package com.djden.alcoholic.forge;
 
+import com.djden.alcoholic.minecraft.fluid.BuiltinFluidDefinitions;
+import com.djden.alcoholic.minecraft.fluid.FluidDefinition;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -40,6 +42,23 @@ class GeneratedResourceContractTest {
 
         assertOptionalTag(red, "#vinery:red_grape");
         assertOptionalTag(white, "#vinery:white_grape");
+    }
+
+    @Test
+    void worldFluidTagsListEveryBuiltinLiquidBlockAndFluid() throws IOException {
+        JsonArray blocks = resource("data/alcoholic/tags/blocks/world_fluids.json")
+                .getAsJsonArray("values");
+        JsonArray fluids = resource("data/alcoholic/tags/fluids/world_fluids.json")
+                .getAsJsonArray("values");
+        assertEquals(BuiltinFluidDefinitions.all().size(), blocks.size());
+        assertEquals(BuiltinFluidDefinitions.all().size() * 2, fluids.size());
+        for (FluidDefinition definition : BuiltinFluidDefinitions.all()) {
+            String source = definition.id().toString();
+            String flowing = definition.id().namespace() + ":flowing_" + definition.id().path();
+            assertTrue(containsValue(blocks, source), "missing liquid block " + source);
+            assertTrue(containsValue(fluids, source), "missing source fluid " + source);
+            assertTrue(containsValue(fluids, flowing), "missing flowing fluid " + flowing);
+        }
     }
 
     @Test
@@ -337,16 +356,19 @@ class GeneratedResourceContractTest {
         for (String fluid : new String[]{
                 "red_grape_must",
                 "white_grape_must",
-                "young_red_wine",
-                "young_white_wine",
-                "red_wine",
-                "white_wine",
-                "wort",
                 "hopped_wort",
                 "beer"
         }) {
-            assertPng16("assets/alcoholic/textures/block/" + fluid + "_still.png");
-            assertPngSize("assets/alcoholic/textures/block/" + fluid + "_flow.png", 32, 32);
+            assertPngSize("assets/alcoholic/textures/block/" + fluid + "_still.png", 16, 512);
+            assertPngSize("assets/alcoholic/textures/block/" + fluid + "_flow.png", 32, 1024);
+            JsonObject stillMeta = resource(
+                    "assets/alcoholic/textures/block/" + fluid + "_still.png.mcmeta"
+            );
+            JsonObject flowMeta = resource(
+                    "assets/alcoholic/textures/block/" + fluid + "_flow.png.mcmeta"
+            );
+            assertEquals(2, stillMeta.getAsJsonObject("animation").get("frametime").getAsInt());
+            assertEquals(2, flowMeta.getAsJsonObject("animation").get("frametime").getAsInt());
         }
     }
 
@@ -416,7 +438,12 @@ class GeneratedResourceContractTest {
                     "tooltip.alcoholic.gauge.fluid",
                     "advancements.alcoholic.root.title",
                     "advancements.alcoholic.harvest_grapes.title",
+                    "advancements.alcoholic.harvest_barley.title",
                     "advancements.alcoholic.produce_must.description",
+                    "advancements.alcoholic.malt.title",
+                    "advancements.alcoholic.mill.title",
+                    "advancements.alcoholic.mash.title",
+                    "advancements.alcoholic.boil.description",
                     "advancements.alcoholic.ferment_beverage.title",
                     "advancements.alcoholic.bottle.description",
                     "advancements.alcoholic.industrial_root.title",
@@ -448,18 +475,25 @@ class GeneratedResourceContractTest {
         assertEquals("alcoholic:crop_harvested", criterionTrigger(harvest, "harvest_red"));
 
         JsonObject must = resource("data/alcoholic/advancements/produce_must.json");
+        assertEquals("alcoholic:harvest_grapes", must.get("parent").getAsString());
         assertEquals("alcoholic:process_completed", criterionTrigger(must, "press_red_must"));
-        assertEquals("alcoholic:process_completed", criterionTrigger(must, "mash_wort"));
+        assertFalse(must.getAsJsonObject("criteria").has("mash_wort"));
 
         JsonObject ferment = resource("data/alcoholic/advancements/ferment_beverage.json");
-        assertEquals("alcoholic:produce_must", ferment.get("parent").getAsString());
+        assertEquals("alcoholic:root", ferment.get("parent").getAsString());
         assertEquals("alcoholic:process_completed", criterionTrigger(ferment, "ferment_red"));
 
         JsonObject bottle = resource("data/alcoholic/advancements/bottle.json");
         assertEquals("alcoholic:ferment_beverage", bottle.get("parent").getAsString());
         assertEquals("alcoholic:process_completed", criterionTrigger(bottle, "bottle"));
 
+        assertEquals("minecraft:inventory_changed", criterionTrigger(root, "has_barley_seeds"));
+        resource("data/alcoholic/advancements/harvest_barley.json");
         resource("data/alcoholic/advancements/harvest_hops.json");
+        resource("data/alcoholic/advancements/malt.json");
+        resource("data/alcoholic/advancements/mill.json");
+        resource("data/alcoholic/advancements/mash.json");
+        resource("data/alcoholic/advancements/boil.json");
         resource("data/alcoholic/advancements/age_wine.json");
         resource("data/alcoholic/advancements/blend.json");
     }
@@ -470,6 +504,12 @@ class GeneratedResourceContractTest {
         assertFalse(root.has("parent"));
         assertEquals("minecraft:inventory_changed", criterionTrigger(root, "has_casing"));
         assertEquals("minecraft:inventory_changed", criterionTrigger(root, "has_press"));
+
+        JsonObject vat = resource("data/alcoholic/advancements/form_industrial_vat.json");
+        assertEquals("alcoholic:industrial_root", vat.get("parent").getAsString());
+
+        JsonObject kettle = resource("data/alcoholic/advancements/form_industrial_kettle.json");
+        assertEquals("alcoholic:form_industrial_mash_tun", kettle.get("parent").getAsString());
 
         JsonObject press = resource("data/alcoholic/advancements/form_industrial_press.json");
         assertEquals("alcoholic:industrial_root", press.get("parent").getAsString());
@@ -984,6 +1024,15 @@ class GeneratedResourceContractTest {
         String value = id.startsWith("#") ? id.substring(1) : id;
         int colon = value.indexOf(':');
         return colon < 0 ? "minecraft" : value.substring(0, colon);
+    }
+
+    private static boolean containsValue(JsonArray values, String id) {
+        for (JsonElement element : values) {
+            if (element.isJsonPrimitive() && id.equals(element.getAsString())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static JsonObject resource(String path) throws IOException {

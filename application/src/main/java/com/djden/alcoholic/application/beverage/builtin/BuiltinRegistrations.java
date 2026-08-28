@@ -31,6 +31,7 @@ import com.djden.alcoholic.application.process.PressProcessor;
 import com.djden.alcoholic.application.process.PropertyMerges;
 import com.djden.alcoholic.domain.vessel.VesselProfile;
 
+import java.util.Set;
 import java.util.function.Supplier;
 
 /**
@@ -71,6 +72,14 @@ public final class BuiltinRegistrations {
     };
 
     private BuiltinRegistrations() {
+    }
+
+    public static Set<ResourceId> officialProcessIds() {
+        return Set.of(PRESS, FERMENT, AGE, BLEND, BOTTLE, MALT, MILL, MASH, BOIL, CONDITION);
+    }
+
+    public static Set<ResourceId> stubProcessIds() {
+        return Set.of(new ResourceId("alcoholic", "distill"), new ResourceId("alcoholic", "infuse"));
     }
 
     public static void install(AlcoholicApi api) {

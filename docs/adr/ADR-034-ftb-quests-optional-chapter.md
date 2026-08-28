@@ -2,6 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-08-28
+- Superseded in part by: [ADR-036](ADR-036-wine-beer-progression-graph.md)
 - Extends: [ADR-033](ADR-033-advancements-as-progression-source.md),
   [ADR-001](ADR-001-loader-independent-architecture.md),
   [ADR-003](ADR-003-create-integration-boundary.md)
@@ -48,7 +49,8 @@ quest file `version: 13`.
 ## Consequences
 
 - A player without FTB still has the Alcoholic advancement tab.
-- Adding or renaming an advancement ID requires a matching SNBT edit
-  in the template; the core JAR does not load that SNBT.
+- Adding or renaming an advancement ID is done in `ProgressionCatalog`
+  ([ADR-036](ADR-036-wine-beer-progression-graph.md)); SNBT is generated.
+  The core JAR still does not load that SNBT.
 - Industrial formation is a second template chapter; see
   [ADR-035](ADR-035-industrial-progression-and-jei-formation.md).

@@ -1,15 +1,19 @@
 package com.djden.alcoholic.forge.client;
 
+import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.minecraft.content.AlcoholicContent;
 import com.djden.alcoholic.minecraft.content.GrainContent;
 import com.djden.alcoholic.minecraft.content.IndustrialContent;
 import com.djden.alcoholic.minecraft.content.ProcessingContent;
+import com.djden.alcoholic.minecraft.fluid.FluidContent;
 import com.djden.alcoholic.minecraft.menu.MachineMenu;
 import com.djden.alcoholic.minecraft.menu.MachineMenuContent;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -23,7 +27,8 @@ public final class AlcoholicClient {
             ProcessingContent processing,
             GrainContent grain,
             IndustrialContent industrial,
-            MachineMenuContent menus
+            MachineMenuContent menus,
+            FluidContent fluids
     ) {
         modEventBus.addListener(
                 (FMLClientSetupEvent event) -> event.enqueueWork(() -> {
@@ -49,6 +54,7 @@ public final class AlcoholicClient {
                     ItemBlockRenderTypes.setRenderLayer(grain.wildHops().get(), RenderType.cutout());
                     ItemBlockRenderTypes.setRenderLayer(industrial.machineWindow().get(), RenderType.translucent());
                     ItemBlockRenderTypes.setRenderLayer(industrial.pressController().get(), RenderType.cutout());
+                    registerFluidLayers(fluids);
                     registerMenus(menus);
                 })
         );
@@ -56,6 +62,16 @@ public final class AlcoholicClient {
         ElectricMotorClient.register(modEventBus, processing);
         PrimitiveCombustionEngineClient.register(modEventBus, processing);
         FormedMultiblockClient.register(modEventBus, industrial);
+    }
+
+    private static void registerFluidLayers(FluidContent fluids) {
+        for (ResourceId id : fluids.ids()) {
+            Fluid source = fluids.source(id);
+            if (source instanceof FlowingFluid flowing) {
+                ItemBlockRenderTypes.setRenderLayer(flowing, RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(flowing.getFlowing(), RenderType.translucent());
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")

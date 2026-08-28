@@ -5,8 +5,12 @@ import com.djden.alcoholic.api.data.JsonDataParser;
 import com.djden.alcoholic.application.beverage.codec.ProcessDefinitionCodec;
 import com.djden.alcoholic.integration.create.CreateMillRecipeTranslator;
 import com.djden.alcoholic.integration.vinery.VineryIntegration;
+import com.djden.alcoholic.minecraft.fluid.BuiltinFluidDefinitions;
+import com.djden.alcoholic.minecraft.fluid.FluidDefinition;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 final class GrapeServerDataProvider extends AlcoholicJsonProvider {
@@ -174,6 +178,34 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                         }
                         """
         );
+        addWorldFluidTags(sink);
+    }
+
+    private static void addWorldFluidTags(JsonSink sink) {
+        List<String> blocks = new ArrayList<>();
+        List<String> fluids = new ArrayList<>();
+        for (FluidDefinition definition : BuiltinFluidDefinitions.all()) {
+            ResourceId id = definition.id();
+            blocks.add(id.toString());
+            fluids.add(id.toString());
+            fluids.add(id.namespace() + ":flowing_" + id.path());
+        }
+        sink.add("data/alcoholic/tags/blocks/world_fluids.json", tagJson(blocks));
+        sink.add("data/alcoholic/tags/fluids/world_fluids.json", tagJson(fluids));
+    }
+
+    private static String tagJson(List<String> values) {
+        StringBuilder json = new StringBuilder();
+        json.append("{\n  \"replace\": false,\n  \"values\": [\n");
+        for (int index = 0; index < values.size(); index++) {
+            json.append("    \"").append(values.get(index)).append('"');
+            if (index + 1 < values.size()) {
+                json.append(',');
+            }
+            json.append('\n');
+        }
+        json.append("  ]\n}\n");
+        return json.toString();
     }
 
     private static void addEmptyTag(JsonSink sink, String name) {

@@ -1,0 +1,32 @@
+{
+  "parent": "alcoholic:mill",
+  "criteria": {
+    "mash_wort": {
+      "conditions": {
+        "liquid": "alcoholic:wort",
+        "process": "alcoholic:mash"
+      },
+      "trigger": "alcoholic:process_completed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.alcoholic.mash.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "alcoholic:wort_bucket"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alcoholic.mash.title"
+    }
+  },
+  "requirements": [
+    [
+      "mash_wort"
+    ]
+  ]
+}

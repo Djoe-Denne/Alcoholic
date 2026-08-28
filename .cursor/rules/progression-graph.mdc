@@ -1,0 +1,11 @@
+---
+description: A shipped process or industrial machine family must have a ProgressionNode before it lands.
+globs: application/**/*.java,platform-forge-1.19.2/**/datagen/**/*.java,modpack/ftbquests/**/*.snbt
+alwaysApply: false
+---
+
+# Progression graph
+
+Do not add a shipped `BuiltinRegistrations` process (except `distill` / `infuse` stubs) or a `BuiltinMachines` entry without a `ProgressionNode` in `ProgressionCatalog` (chapter, `WINE` / `BEER` / `SHARED` line, parents).
+
+Do not hand-edit `AlcoholicAdvancementProvider` or FTB SNBT. Change the catalogue, add translations, rerun datagen. See `.cursor/skills/alcoholic-progression-graph/SKILL.md` and ADR-036.

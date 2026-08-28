@@ -2,6 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-08-28
+- Superseded in part by: [ADR-036](ADR-036-wine-beer-progression-graph.md)
 - Extends: [ADR-001](ADR-001-loader-independent-architecture.md)
 
 ## Context
@@ -31,7 +32,8 @@ Alcoholic core JAR.
   `AdvancementProvider` (`registerAdvancements`). Forge 43.5 has no
   `ForgeAdvancementProvider` class.
 
-Stable advancement IDs:
+Stable advancement IDs (original set; beer-line IDs are in
+[ADR-036](ADR-036-wine-beer-progression-graph.md)):
 
 - `alcoholic:root`
 - `alcoholic:harvest_grapes`
@@ -52,5 +54,8 @@ Stable trigger IDs:
 - A player without FTB still sees the Alcoholic advancement tab.
 - Detection is written once. A future FTB chapter does not reimplement
   harvest, fermentation, or bottling checks.
+- The tab shape (parents and which process IDs appear) is owned by
+  [ADR-036](ADR-036-wine-beer-progression-graph.md). Triggers and the
+  rule that vanilla advancements are the detection source stay here.
 - Industrial multiblocks and Create pipes are out of this delivery; they
   can fire the same triggers later without changing IDs.

@@ -1,4 +1,4 @@
-// 1.19.2	2026-08-28T21:02:06.4986966	Alcoholic grape server data
+// 1.19.2	2026-08-28T21:59:10.2039477	Alcoholic grape server data
 bbdab47d2ba360e54aaa2ac4593e2343861807b1 data/alcoholic/alcoholic/beverages/beer.json
 01a7f10047397133d2d7633625d96476cf4f72f0 data/alcoholic/alcoholic/beverages/red_wine.json
 b07fa9fb623a6ad7d917df34135b761220f93418 data/alcoholic/alcoholic/beverages/white_wine.json
@@ -140,7 +140,9 @@ abd33d745c45242dd34ec98afd93633f9d1a7169 data/alcoholic/tags/blocks/fermenter_ca
 abd33d745c45242dd34ec98afd93633f9d1a7169 data/alcoholic/tags/blocks/industrial_tank_casing.json
 abd33d745c45242dd34ec98afd93633f9d1a7169 data/alcoholic/tags/blocks/pressure_safe_casing.json
 815c64be0aab03c5cdef77dd2b2f2e624637065e data/alcoholic/tags/blocks/valid_machine_windows.json
+adfc79c220e56c480fc04851b6a6c82354b0ee96 data/alcoholic/tags/blocks/world_fluids.json
 6b2305f42daefd24bdc2208154aaf3edbe48a259 data/alcoholic/tags/fluids/bottled_liquids.json
+a8d14ee1762c9675c42d49b99108f5d66db88855 data/alcoholic/tags/fluids/world_fluids.json
 a721bb59097693497d45ab5b10b4e3608e86ccf2 data/alcoholic/tags/items/barley.json
 0bee6caef0bac1d7ea65a9cd1699ed539212afb5 data/alcoholic/tags/items/barley/seeds.json
 4ecf0ecfb1312d93c6a6636e6e39f015ed0e2606 data/alcoholic/tags/items/grapes.json

@@ -34,6 +34,10 @@ public final class AlcoholicDataGenerators {
                     event.includeServer(),
                     new AlcoholicAdvancementProvider(generator, event.getExistingFileHelper())
             );
+            generator.addProvider(
+                    event.includeServer(),
+                    new FtbQuestTemplateProvider()
+            );
             String forgeOutput = System.getProperty(FORGE_OUTPUT_PROPERTY);
             if (forgeOutput == null || forgeOutput.isBlank()) {
                 throw new IllegalStateException(

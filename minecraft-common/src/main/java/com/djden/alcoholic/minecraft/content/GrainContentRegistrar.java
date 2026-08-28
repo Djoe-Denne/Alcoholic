@@ -35,7 +35,7 @@ public final class GrainContentRegistrar {
 
         RegistryRef<Block> barleyCrop = ports.blocks().register(
                 AlcoholicIds.BARLEY_CROP,
-                () -> new CerealCropBlock(cropProperties(), () -> seedsHolder.get().get())
+                () -> new CerealCropBlock(cropProperties(), () -> seedsHolder.get().get(), AlcoholicIds.BARLEY)
         );
         RegistryRef<Item> barley = ports.items().register(
                 AlcoholicIds.BARLEY,

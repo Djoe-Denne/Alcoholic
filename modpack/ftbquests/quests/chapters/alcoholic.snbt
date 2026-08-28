@@ -12,8 +12,8 @@
 	]
 	images: [
 		{
-			x: -2.5d
-			y: 0.0d
+			x: -3.2d
+			y: 2.2d
 			width: 2.0d
 			height: 2.0d
 			rotation: 0.0d
@@ -21,10 +21,10 @@
 			hover: ["{translate:ftbquests.alcoholic.hover.press}"]
 			click: ""
 			order: 0
-		}
+		},
 		{
-			x: 2.5d
-			y: 0.0d
+			x: 5.4d
+			y: 4.4d
 			width: 2.0d
 			height: 2.0d
 			rotation: 0.0d
@@ -32,10 +32,10 @@
 			hover: ["{translate:ftbquests.alcoholic.hover.mash_tun}"]
 			click: ""
 			order: 0
-		}
+		},
 		{
-			x: 0.0d
-			y: 4.6d
+			x: 2.0d
+			y: 8.4d
 			width: 2.0d
 			height: 2.0d
 			rotation: 0.0d
@@ -43,10 +43,10 @@
 			hover: ["{translate:ftbquests.alcoholic.hover.fermenter}"]
 			click: ""
 			order: 0
-		}
+		},
 		{
 			x: -3.2d
-			y: 8.0d
+			y: 12.0d
 			width: 2.0d
 			height: 2.0d
 			rotation: 0.0d
@@ -54,10 +54,10 @@
 			hover: ["{translate:ftbquests.alcoholic.hover.barrel}"]
 			click: ""
 			order: 0
-		}
+		},
 		{
-			x: 0.0d
-			y: 8.0d
+			x: -1.6d
+			y: 12.0d
 			width: 2.0d
 			height: 2.0d
 			rotation: 0.0d
@@ -65,10 +65,10 @@
 			hover: ["{translate:ftbquests.alcoholic.hover.crock}"]
 			click: ""
 			order: 0
-		}
+		},
 		{
-			x: 3.2d
-			y: 8.0d
+			x: 2.0d
+			y: 10.4d
 			width: 2.0d
 			height: 2.0d
 			rotation: 0.0d
@@ -92,11 +92,11 @@
 				advancement: "alcoholic:root"
 				criterion: ""
 			}]
-		}
+		},
 		{
 			id: "A1C0A01C00000011"
-			x: -2.5d
-			y: -2.0d
+			x: -3.2d
+			y: -1.6d
 			title: "{translate:advancements.alcoholic.harvest_grapes.title}"
 			description: ["{translate:advancements.alcoholic.harvest_grapes.description}"]
 			icon: "alcoholic:red_grapes"
@@ -107,11 +107,41 @@
 				advancement: "alcoholic:harvest_grapes"
 				criterion: ""
 			}]
-		}
+		},
+		{
+			id: "A1C0A01C00000013"
+			x: -3.2d
+			y: 0.4d
+			title: "{translate:advancements.alcoholic.produce_must.title}"
+			description: ["{translate:advancements.alcoholic.produce_must.description}"]
+			icon: "alcoholic:red_grape_must_bucket"
+			dependencies: ["A1C0A01C00000011"]
+			tasks: [{
+				id: "A1C0A01C10000013"
+				type: "advancement"
+				advancement: "alcoholic:produce_must"
+				criterion: ""
+			}]
+		},
+		{
+			id: "A1C0A01C00000018"
+			x: 3.2d
+			y: -1.6d
+			title: "{translate:advancements.alcoholic.harvest_barley.title}"
+			description: ["{translate:advancements.alcoholic.harvest_barley.description}"]
+			icon: "alcoholic:barley"
+			dependencies: ["A1C0A01C00000010"]
+			tasks: [{
+				id: "A1C0A01C10000018"
+				type: "advancement"
+				advancement: "alcoholic:harvest_barley"
+				criterion: ""
+			}]
+		},
 		{
 			id: "A1C0A01C00000012"
-			x: 2.5d
-			y: -2.0d
+			x: 5.6d
+			y: -1.6d
 			title: "{translate:advancements.alcoholic.harvest_hops.title}"
 			description: ["{translate:advancements.alcoholic.harvest_hops.description}"]
 			icon: "alcoholic:hops"
@@ -122,41 +152,87 @@
 				advancement: "alcoholic:harvest_hops"
 				criterion: ""
 			}]
-		}
+		},
 		{
-			id: "A1C0A01C00000013"
-			x: 0.0d
-			y: 0.0d
-			title: "{translate:advancements.alcoholic.produce_must.title}"
-			description: ["{translate:advancements.alcoholic.produce_must.description}"]
-			icon: "alcoholic:red_grape_must_bucket"
-			dependencies: ["A1C0A01C00000010"]
+			id: "A1C0A01C00000019"
+			x: 3.2d
+			y: 0.4d
+			title: "{translate:advancements.alcoholic.malt.title}"
+			description: ["{translate:advancements.alcoholic.malt.description}"]
+			icon: "alcoholic:malting_floor"
+			dependencies: ["A1C0A01C00000018"]
 			tasks: [{
-				id: "A1C0A01C10000013"
+				id: "A1C0A01C10000019"
 				type: "advancement"
-				advancement: "alcoholic:produce_must"
+				advancement: "alcoholic:malt"
 				criterion: ""
 			}]
-		}
+		},
+		{
+			id: "A1C0A01C0000001A"
+			x: 3.2d
+			y: 2.4d
+			title: "{translate:advancements.alcoholic.mill.title}"
+			description: ["{translate:advancements.alcoholic.mill.description}"]
+			icon: "alcoholic:malt_mill"
+			dependencies: ["A1C0A01C00000019"]
+			tasks: [{
+				id: "A1C0A01C1000001A"
+				type: "advancement"
+				advancement: "alcoholic:mill"
+				criterion: ""
+			}]
+		},
+		{
+			id: "A1C0A01C0000001B"
+			x: 3.2d
+			y: 4.4d
+			title: "{translate:advancements.alcoholic.mash.title}"
+			description: ["{translate:advancements.alcoholic.mash.description}"]
+			icon: "alcoholic:wort_bucket"
+			dependencies: ["A1C0A01C0000001A"]
+			tasks: [{
+				id: "A1C0A01C1000001B"
+				type: "advancement"
+				advancement: "alcoholic:mash"
+				criterion: ""
+			}]
+		},
+		{
+			id: "A1C0A01C0000001C"
+			x: 3.2d
+			y: 6.4d
+			title: "{translate:advancements.alcoholic.boil.title}"
+			description: ["{translate:advancements.alcoholic.boil.description}"]
+			icon: "alcoholic:hopped_wort_bucket"
+			dependencies: ["A1C0A01C0000001B", "A1C0A01C00000012"]
+			tasks: [{
+				id: "A1C0A01C1000001C"
+				type: "advancement"
+				advancement: "alcoholic:boil"
+				criterion: ""
+			}]
+		},
 		{
 			id: "A1C0A01C00000014"
 			x: 0.0d
-			y: 2.8d
+			y: 8.4d
 			title: "{translate:advancements.alcoholic.ferment_beverage.title}"
 			description: ["{translate:advancements.alcoholic.ferment_beverage.description}"]
 			icon: "alcoholic:artisanal_fermenter"
-			dependencies: ["A1C0A01C00000013"]
+			dependencies: ["A1C0A01C00000013", "A1C0A01C0000001C"]
+			min_required_dependencies: 1
 			tasks: [{
 				id: "A1C0A01C10000014"
 				type: "advancement"
 				advancement: "alcoholic:ferment_beverage"
 				criterion: ""
 			}]
-		}
+		},
 		{
 			id: "A1C0A01C00000015"
 			x: -3.2d
-			y: 6.2d
+			y: 10.4d
 			title: "{translate:advancements.alcoholic.age_wine.title}"
 			description: ["{translate:advancements.alcoholic.age_wine.description}"]
 			icon: "alcoholic:oak_barrel"
@@ -167,11 +243,11 @@
 				advancement: "alcoholic:age_wine"
 				criterion: ""
 			}]
-		}
+		},
 		{
 			id: "A1C0A01C00000016"
-			x: 0.0d
-			y: 6.2d
+			x: -1.6d
+			y: 10.4d
 			title: "{translate:advancements.alcoholic.blend.title}"
 			description: ["{translate:advancements.alcoholic.blend.description}"]
 			icon: "alcoholic:artisanal_blending_crock"
@@ -182,11 +258,11 @@
 				advancement: "alcoholic:blend"
 				criterion: ""
 			}]
-		}
+		},
 		{
 			id: "A1C0A01C00000017"
-			x: 3.2d
-			y: 6.2d
+			x: 0.0d
+			y: 10.4d
 			title: "{translate:advancements.alcoholic.bottle.title}"
 			description: ["{translate:advancements.alcoholic.bottle.description}"]
 			icon: "alcoholic:beverage_bottle"

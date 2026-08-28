@@ -24,6 +24,7 @@ Read [examples.md](examples.md) before touching files.
 ## Hard rules
 
 - Do not change block ids, recipes, loot, or process Java.
+- This skill does not create a quest. A new process or machine family needs `.cursor/skills/alcoholic-progression-graph/SKILL.md`.
 - Do not edit the other machines' art, packs, or `assets/alcoholic` files.
 - Paint **512×512** first. Stop for user approval. No downsample and no mod replace before that.
 - Every smaller atlas is resized **from the 512 master only**, never from a previous reduction.

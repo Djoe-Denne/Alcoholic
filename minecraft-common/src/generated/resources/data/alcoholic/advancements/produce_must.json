@@ -1,13 +1,6 @@
 {
-  "parent": "alcoholic:root",
+  "parent": "alcoholic:harvest_grapes",
   "criteria": {
-    "mash_wort": {
-      "conditions": {
-        "liquid": "alcoholic:wort",
-        "process": "alcoholic:mash"
-      },
-      "trigger": "alcoholic:process_completed"
-    },
     "press_red_must": {
       "conditions": {
         "liquid": "alcoholic:red_grape_must",
@@ -41,8 +34,7 @@
   "requirements": [
     [
       "press_red_must",
-      "press_white_must",
-      "mash_wort"
+      "press_white_must"
     ]
   ]
 }

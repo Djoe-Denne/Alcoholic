@@ -10,6 +10,7 @@ import com.djden.alcoholic.domain.viticulture.Vine;
 import com.djden.alcoholic.domain.viticulture.VineGrowthStage;
 import com.djden.alcoholic.domain.viticulture.VineHealth;
 import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
+import com.djden.alcoholic.minecraft.agriculture.CerealCropBlock;
 import com.djden.alcoholic.minecraft.agriculture.HopBineBlock;
 import com.djden.alcoholic.minecraft.agriculture.VineBlock;
 import com.djden.alcoholic.minecraft.agriculture.VineBlockEntity;
@@ -80,6 +81,25 @@ public final class AdvancementGameTests {
         ServerPlayer player = mockPlayer(helper);
         use(helper, ORIGIN, player, ItemStack.EMPTY);
         requireDone(helper, player, "harvest_grapes");
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void harvestingBarleyGrantsHarvestAdvancement(GameTestHelper helper) {
+        CerealCropBlock barley = (CerealCropBlock) block("barley_crop");
+        helper.setBlock(ORIGIN.below(), Blocks.FARMLAND.defaultBlockState());
+        helper.setBlock(ORIGIN, barley.defaultBlockState().setValue(CerealCropBlock.AGE, 2));
+        ServerPlayer player = mockPlayer(helper);
+        BlockState mature = helper.getBlockState(ORIGIN);
+        barley.playerDestroy(
+                helper.getLevel(),
+                player,
+                helper.absolutePos(ORIGIN),
+                mature,
+                null,
+                ItemStack.EMPTY
+        );
+        requireDone(helper, player, "harvest_barley");
         helper.succeed();
     }
 
