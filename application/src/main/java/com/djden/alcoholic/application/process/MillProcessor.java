@@ -7,6 +7,7 @@ import com.djden.alcoholic.api.process.ProcessHandler;
 import com.djden.alcoholic.api.process.ProcessRequest;
 import com.djden.alcoholic.api.process.ProcessResult;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
+import com.djden.alcoholic.domain.process.QualityProfile;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,7 +35,13 @@ public final class MillProcessor implements ProcessHandler<MillConfig> {
         }
         double yield = context.executorModifiers().yieldModifier();
         int amount = Math.max(1, (int) Math.round(config.outputAmount() * units * yield));
-        PropertyBag transferred = AgriculturalTransfer.combine(solids);
+        PropertyBag transferred = QualityProfile.stampCap(
+                AgriculturalTransfer.scaleCharacter(
+                        AgriculturalTransfer.combine(solids),
+                        context.executorModifiers().processFidelity()
+                ),
+                context.executorModifiers()
+        );
         return ProcessResult.success(
                 List.of(),
                 List.of(new ItemOutput(config.outputItem().orElseThrow(), amount, transferred.asMap()))

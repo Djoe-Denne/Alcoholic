@@ -27,7 +27,7 @@
       "max": 105,
       "min": 98
     },
-    "processing_time": 40
+    "processing_time": 1600
   },
   "id": "alcoholic:boil_wort",
   "inputs": {

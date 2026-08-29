@@ -9,6 +9,7 @@ import com.djden.alcoholic.api.process.ProcessResult;
 import com.djden.alcoholic.api.property.PropertyAggregator;
 import com.djden.alcoholic.api.property.PropertyMerge;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
+import com.djden.alcoholic.domain.process.QualityProfile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +71,6 @@ public final class BlendProcessor implements ProcessHandler<BlendConfig> {
             }
             acc = blended.get();
         }
-        return ProcessResult.success(acc);
+        return ProcessResult.success(QualityProfile.stampCap(acc, context.executorModifiers()));
     }
 }

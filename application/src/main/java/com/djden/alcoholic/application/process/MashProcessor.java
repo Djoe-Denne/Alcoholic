@@ -13,6 +13,7 @@ import com.djden.alcoholic.domain.liquid.BatchProvenance;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.LiquidDefinition;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
+import com.djden.alcoholic.domain.process.QualityProfile;
 
 import java.util.List;
 import java.util.Objects;
@@ -59,7 +60,10 @@ public final class MashProcessor implements ProcessHandler<MashConfig> {
         }
         double extraction = config.temperature().extractionYield(context.temperatureCelsius());
         double yield = extraction * context.executorModifiers().yieldModifier();
-        PropertyBag agricultural = AgriculturalTransfer.combine(solids);
+        PropertyBag agricultural = AgriculturalTransfer.scaleCharacter(
+                AgriculturalTransfer.combine(solids),
+                context.executorModifiers().processFidelity()
+        );
         PropertyBag defaults = catalog.get()
                 .liquid(config.outputLiquid().orElseThrow())
                 .map(LiquidDefinition::defaults)
@@ -86,13 +90,22 @@ public final class MashProcessor implements ProcessHandler<MashConfig> {
                         .orElse(0.12));
         combined = combined.with(config.colorProperty(), color);
         combined = combined.with(config.temperatureProperty(), context.temperatureCelsius());
+        if (extraction + 1e-9 < 1.0) {
+            combined = combined.with(
+                    QualityProfile.STRESS,
+                    Math.min(1.0, (1.0 - extraction) * 0.30)
+            );
+        }
         int batchUnits = units;
         double volume = config.outputVolume() * batchUnits;
-        LiquidBatch wort = LiquidBatch.of(
-                config.outputLiquid().orElseThrow(),
-                volume,
-                combined,
-                BatchProvenance.empty()
+        LiquidBatch wort = QualityProfile.stampCap(
+                LiquidBatch.of(
+                        config.outputLiquid().orElseThrow(),
+                        volume,
+                        combined,
+                        BatchProvenance.empty()
+                ),
+                context.executorModifiers()
         );
         List<ItemOutput> items = config.byproduct()
                 .map(item -> List.of(new ItemOutput(item.item(), item.amount() * batchUnits, item.properties())))

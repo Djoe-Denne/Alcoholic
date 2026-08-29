@@ -31,7 +31,7 @@ public final class ArtisanalThermalGameTests {
     private ArtisanalThermalGameTests() {
     }
 
-    @GameTest(template = "empty", timeoutTicks = 80)
+    @GameTest(template = "empty", timeoutTicks = 1300)
     public static void mashTunAdvancesOnMagma(GameTestHelper helper) {
         helper.setBlock(ORIGIN, Blocks.MAGMA_BLOCK.defaultBlockState());
         helper.setBlock(ORIGIN.above(), block("mash_tun").defaultBlockState());
@@ -41,7 +41,7 @@ public final class ArtisanalThermalGameTests {
                 .orElseThrow(IllegalStateException::new);
         int filled = handler.fill(new FluidStack(Fluids.WATER, 1000), IFluidHandler.FluidAction.EXECUTE);
         require(helper, filled == 1000, "Mash tun rejected water");
-        helper.runAtTickTime(50, () -> {
+        helper.runAtTickTime(1210, () -> {
             require(helper, mash.progress() > 0 || mash.tank().contents().isPresent(), "Mash did not advance on magma");
             require(helper, mash.tank().contents().isPresent(), "Mash tun did not produce wort on magma");
             LiquidBatch wort = mash.tank().contents().orElseThrow();
@@ -84,7 +84,7 @@ public final class ArtisanalThermalGameTests {
         });
     }
 
-    @GameTest(template = "empty", timeoutTicks = 80)
+    @GameTest(template = "empty", timeoutTicks = 1700)
     public static void brewingKettleAdvancesOnCampfire(GameTestHelper helper) {
         helper.setBlock(ORIGIN, Blocks.CAMPFIRE.defaultBlockState());
         helper.setBlock(ORIGIN.above(), block("brewing_kettle").defaultBlockState());
@@ -98,7 +98,7 @@ public final class ArtisanalThermalGameTests {
                 false
         );
         kettle.insert(new ItemStack(item("hops"), 1));
-        helper.runAtTickTime(50, () -> {
+        helper.runAtTickTime(1610, () -> {
             require(
                     helper,
                     kettle.progress() > 0 || kettle.tank().contents()

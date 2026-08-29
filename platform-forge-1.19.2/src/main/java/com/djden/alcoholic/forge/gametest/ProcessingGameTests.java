@@ -38,14 +38,14 @@ public final class ProcessingGameTests {
     private ProcessingGameTests() {
     }
 
-    @GameTest(template = "empty", timeoutTicks = 80)
+    @GameTest(template = "empty", timeoutTicks = 250)
     public static void grapesPressIntoMust(GameTestHelper helper) {
         helper.setBlock(PRESS, block("artisanal_press").defaultBlockState());
         ArtisanalPressBlockEntity press = (ArtisanalPressBlockEntity) helper.getBlockEntity(PRESS);
         ItemStack grapes = new ItemStack(item("red_grapes"), 8);
         HarvestLotNbt.write(grapes, VineVarieties.RED_GRAPE.id(), 0.7, 0.82, 0.31);
         press.insert(grapes);
-        helper.runAtTickTime(25, () -> {
+        helper.runAtTickTime(210, () -> {
             require(helper, press.tank().contents().isPresent(), "Press did not produce liquid");
             LiquidBatch batch = press.tank().contents().orElseThrow();
             require(
@@ -62,7 +62,7 @@ public final class ProcessingGameTests {
         });
     }
 
-    @GameTest(template = "empty", timeoutTicks = 80)
+    @GameTest(template = "empty", timeoutTicks = 250)
     public static void harvestBatchesStayDistinguishableAfterPress(GameTestHelper helper) {
         helper.setBlock(PRESS, block("artisanal_press").defaultBlockState());
         helper.setBlock(FERMENTER, block("artisanal_press").defaultBlockState());
@@ -74,7 +74,7 @@ public final class ProcessingGameTests {
         HarvestLotNbt.write(highAcid, VineVarieties.RED_GRAPE.id(), 0.5, 0.20, 0.90);
         first.insert(highSugar);
         second.insert(highAcid);
-        helper.runAtTickTime(25, () -> {
+        helper.runAtTickTime(210, () -> {
             double sugarA = first.tank().contents().orElseThrow()
                     .number(ResourceId.parse("alcoholic:sugar"), 0.0);
             double sugarB = second.tank().contents().orElseThrow()
@@ -231,7 +231,16 @@ public final class ProcessingGameTests {
         helper.setBlock(PRESS, block("oak_barrel").defaultBlockState());
         shelterBarrel(helper, PRESS);
         OakBarrelBlockEntity barrel = (OakBarrelBlockEntity) helper.getBlockEntity(PRESS);
-        barrel.tank().fill(youngWine(1000, 0.12), false);
+        barrel.tank().fill(
+                LiquidBatch.of(
+                        AlcoholicIds.YOUNG_RED_WINE,
+                        1000,
+                        PropertyBag.empty()
+                                .with(ResourceId.parse("alcoholic:sugar"), 0.12)
+                                .with(ResourceId.parse("alcoholic:maturity"), 0.999)
+                ),
+                false
+        );
         helper.runAtTickTime(160, () -> {
             OakBarrelBlockEntity aged = (OakBarrelBlockEntity) helper.getBlockEntity(PRESS);
             LiquidBatch batch = aged.tank().contents().orElseThrow();

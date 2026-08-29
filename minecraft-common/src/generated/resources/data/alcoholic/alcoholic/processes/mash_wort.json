@@ -20,7 +20,7 @@
       "max": 68,
       "min": 62
     },
-    "processing_time": 40,
+    "processing_time": 1200,
     "solid": {
       "amount": 1,
       "tag": "alcoholic:grist"

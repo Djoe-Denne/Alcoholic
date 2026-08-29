@@ -8,6 +8,7 @@ import com.djden.alcoholic.api.process.ProcessResult;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.process.AgingPhysics;
 import com.djden.alcoholic.domain.process.AgingState;
+import com.djden.alcoholic.domain.process.QualityProfile;
 import com.djden.alcoholic.domain.vessel.EnvironmentProfile;
 import com.djden.alcoholic.domain.vessel.VesselProfile;
 
@@ -45,8 +46,8 @@ public final class AgingProcessor implements ProcessHandler<AgingConfig> {
                 config.woodProperty(),
                 config.oxidationProperty(),
                 config.outputLiquid(),
-                context.deltaTicks()
+                context.executorModifiers().scaleDelta(context.deltaTicks())
         );
-        return ProcessResult.success(next.batch());
+        return ProcessResult.success(QualityProfile.stampCap(next.batch(), context.executorModifiers()));
     }
 }

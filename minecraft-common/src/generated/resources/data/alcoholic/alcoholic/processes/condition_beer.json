@@ -14,7 +14,7 @@
       "max": 12,
       "min": 2
     },
-    "processing_time": 80
+    "processing_time": 12000
   },
   "id": "alcoholic:condition_beer",
   "inputs": {},

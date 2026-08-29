@@ -15,7 +15,7 @@
       "amount": 1,
       "item": "alcoholic:malted_barley"
     },
-    "processing_time": 80
+    "processing_time": 12000
   },
   "id": "alcoholic:malt_dark",
   "inputs": {

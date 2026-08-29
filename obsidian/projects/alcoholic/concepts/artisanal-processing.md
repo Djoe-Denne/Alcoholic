@@ -48,7 +48,7 @@ The voxel fermenter is directional: `FACING` (hatch on −Z of the model, copper
 
 ## Oak barrel and blending crock
 
-The oak barrel is one adapter of [[vessel-and-environment]]: 8000 mB, capability `alcoholic:age`, loaded-only catch-up. It exposes `IFluidHandler` for Create. History records previous contents; a used barrel applies seasoning.
+The oak barrel is one adapter of [[vessel-and-environment]]: 4000 mB, capability `alcoholic:age`, loaded-only catch-up. It exposes `IFluidHandler` for Create. History records previous contents; a used barrel applies seasoning. Artisanal press, fermenter, mash tun, and kettle hold 2000 mB.
 
 The artisanal blending crock has two 4000 mB tanks. Both tanks must accept fill (`canFillTank` for index 0 and 1). A review found only the first tank fillable, which made `blend()` unreachable; that is fixed. Filling never auto-merges distinct definitions. Sneak plus empty hand runs [[blend-versus-tank-merge]]. Clicking the jar to open its inventory also opens the voxel lid.
 

@@ -23,7 +23,7 @@ Sources wiki (collection `alcoholic-wiki`) : perennial-viticulture, trellis-trai
 |---|---|---|
 | Pressoir artisanal | `alcoholic:artisanal_press` | `PRESS` uniquement |
 | Cuve de fermentation artisanale | `alcoholic:artisanal_fermenter` | `FERMENT` (la même que pour la bière) |
-| Fût de chêne | `alcoholic:oak_barrel` | `AGE` — 8000 mB |
+| Fût de chêne | `alcoholic:oak_barrel` | `AGE` — 4000 mB |
 | Terrine d’assemblage | `alcoholic:artisanal_blending_crock` | `BLEND` optionnel, **hors DAG** — deux tanks 4000 mB |
 
 Optionnel : sécateur, poteaux, bobine, pressoir / cuve industriels (autres exécuteurs, pas d’autres recettes), tuyaux Create.

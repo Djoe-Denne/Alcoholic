@@ -9,6 +9,7 @@ import com.djden.alcoholic.api.process.ProcessRequest;
 import com.djden.alcoholic.api.process.ProcessResult;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.process.HopProfile;
+import com.djden.alcoholic.domain.process.QualityProfile;
 
 import java.util.List;
 import java.util.Objects;
@@ -96,7 +97,7 @@ public final class BoilProcessor implements ProcessHandler<BoilConfig> {
                 .withProperty(config.bitternessProperty(), existingBitterness + bitterness)
                 .withProperty(config.aromaProperty(), existingAroma + aroma)
                 .withProperty(ResourceId.parse("alcoholic:temperature"), context.temperatureCelsius());
-        return ProcessResult.success(hopped);
+        return ProcessResult.success(QualityProfile.stampCap(hopped, context.executorModifiers()));
     }
 
     static double bitternessWeight(String role, double atProgress) {

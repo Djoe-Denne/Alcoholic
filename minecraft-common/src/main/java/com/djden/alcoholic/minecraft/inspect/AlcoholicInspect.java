@@ -90,6 +90,8 @@ public final class AlcoholicInspect {
                             + " acidity=" + BottleSnapshotNbt.number(tag, "Acidity")
                             + " maturity=" + BottleSnapshotNbt.number(tag, "Maturity")
                             + " quality=" + BottleSnapshotNbt.number(tag, "Quality")
+                            + " purity=" + BottleSnapshotNbt.number(tag, "Purity")
+                            + " complexity=" + BottleSnapshotNbt.number(tag, "Complexity")
                             + " origins=" + BottleSnapshotNbt.origins(tag)
             );
         }

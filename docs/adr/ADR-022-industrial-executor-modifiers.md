@@ -2,6 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-08-25
+- Extended by: [ADR-037](ADR-037-emergent-quality-profile.md)
 
 ## Context
 

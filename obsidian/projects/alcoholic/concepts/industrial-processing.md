@@ -32,7 +32,7 @@ STORAGE   passive tank (never a process executor)
 AGE       oak barrel only — next official industrial family
 ```
 
-Wine and beer DAGs are unchanged. Industrial machines change capacity, throughput, automation, and stability. They do not add industrial recipes. Artisanal executors stay valid.
+Wine and beer DAGs are unchanged. Industrial machines change capacity, throughput, automation, and stability. They do not add industrial recipes. Artisanal executors stay valid. Quality is a derived `QualityProfile`; industrial `complexityCap` 0.55 and `purityFloor` ~0.15 clamp the drink even if the player waits. `speedModifier` finishes FERMENT / AGE / CONDITION sooner without raising that cap.
 
 Industrial wine A→Z currently bottles young wine from the vat controller. Finished `red_wine` / `white_wine` still needs the oak barrel. The next official industrial close is a formed `AGE` warehouse, not `DISTILL`, shipped cider, or drinking.
 

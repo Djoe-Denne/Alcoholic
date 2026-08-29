@@ -99,7 +99,16 @@ public final class MachineDefinitionCodec implements DataCodec<MultiblockDefinit
                         .orElse(1.0),
                 node.get("max_batch_units")
                         .map(value -> value.asNumber(child(path, "modifiers/max_batch_units")).intValue())
-                        .orElse(1)
+                        .orElse(1),
+                node.get("process_fidelity")
+                        .map(value -> value.asNumber(child(path, "modifiers/process_fidelity")).doubleValue())
+                        .orElse(1.0),
+                node.get("complexity_cap")
+                        .map(value -> value.asNumber(child(path, "modifiers/complexity_cap")).doubleValue())
+                        .orElse(1.0),
+                node.get("purity_floor")
+                        .map(value -> value.asNumber(child(path, "modifiers/purity_floor")).doubleValue())
+                        .orElse(0.0)
         );
     }
 

@@ -1,5 +1,6 @@
 package com.djden.alcoholic.minecraft.process;
 
+import com.djden.alcoholic.api.process.ExecutorModifiers;
 import com.djden.alcoholic.api.process.ProcessContext;
 import com.djden.alcoholic.api.process.ProcessInputs;
 import com.djden.alcoholic.api.process.ProcessInvocation;
@@ -160,7 +161,7 @@ public final class ArtisanalBlendingCrockBlockEntity extends BlockEntity
                 runtime.blendExecutor(),
                 invocation.get(),
                 new ProcessInputs(Map.of(), liquids),
-                ProcessContext.empty()
+                ProcessContext.of(20.0, 1.0, false, ExecutorModifiers.artisanal())
         );
         if (!result.success() || result.outputs().isEmpty()) {
             return Component.translatable("message.alcoholic.crock.rejected", result.message());

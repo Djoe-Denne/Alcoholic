@@ -13,7 +13,7 @@ provenance:
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T14:10:00+02:00
-updated: 2026-08-25T16:01:00+02:00
+updated: 2026-08-29T18:30:00+02:00
 ---
 
 # Liquid Batch
@@ -25,6 +25,8 @@ Phase 4 needs tanks, buckets, and pipes without putting `FluidStack` in domain o
 A `LiquidDefinition` is datapack identity such as `alcoholic:red_grape_must`. Files live under `data/<namespace>/alcoholic/liquids/`. Defaults (sugar, acidity, ethanol, temperature) belong on the definition.
 
 A `LiquidBatch` is that identity plus volume in millibuckets plus a typed property bag plus [[batch-provenance]]. There are no `RedWineBatch` subclasses. Category on a [[beverage-framework]] identity remains free metadata, not a Java `switch`. The batch is immutable: `split`, `merge`, and `blend` return new instances.
+
+Drink quality is not a persisted 0–100 field. `QualityProfile` derives purity, complexity, maturity, balance, and defects from the bag and provenance. `alcoholic:quality` remains harvest lot quality. Ethanol is displayed separately and never enters the profile. An executor may stamp `alcoholic:complexity_cap` so an industrial ceiling survives bottling. See ADR-037.
 
 Volume is a domain `double` rounded when crossing into Forge. It is **not** stored in fluid NBT. The Minecraft stack amount is the volume. Putting volume in NBT would make two amounts of the same lot fail `FluidStack.isFluidEqual`, so Create tanks would refuse to merge them.
 

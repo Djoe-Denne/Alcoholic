@@ -56,6 +56,23 @@ public interface ProcessContext {
             double temperatureCelsius,
             double deltaTicks,
             boolean yeastPresent,
+            ExecutorModifiers executorModifiers
+    ) {
+        return of(
+                temperatureCelsius,
+                deltaTicks,
+                yeastPresent,
+                Optional.empty(),
+                Optional.empty(),
+                0L,
+                executorModifiers
+        );
+    }
+
+    static ProcessContext of(
+            double temperatureCelsius,
+            double deltaTicks,
+            boolean yeastPresent,
             Optional<VesselProfileView> vessel,
             Optional<EnvironmentProfileView> environment,
             long gameTime

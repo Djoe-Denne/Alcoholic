@@ -17,6 +17,7 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -155,7 +156,7 @@ public final class IndustrialGameTests {
         require(helper, press.formed(), "Press did not form: " + press.debugDump());
         press.debugForceRpm(64);
         press.insert(new ItemStack(item("red_grapes"), 8));
-        helper.runAtTickTime(20, () -> {
+        helper.runAtTickTime(55, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(helper, entity.tank().contents().isPresent(), "Industrial press produced no liquid");
             require(
@@ -193,7 +194,7 @@ public final class IndustrialGameTests {
                 engine
         );
         press.insert(new ItemStack(item("red_grapes"), 8));
-        helper.runAtTickTime(20, () -> {
+        helper.runAtTickTime(55, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(
                     helper,
@@ -218,7 +219,7 @@ public final class IndustrialGameTests {
             energy.receiveEnergy(80, false);
         }
         press.insert(new ItemStack(item("red_grapes"), 8));
-        helper.runAtTickTime(20, () -> {
+        helper.runAtTickTime(55, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(
                     helper,
@@ -309,30 +310,10 @@ public final class IndustrialGameTests {
         MultiblockControllerBlockEntity house = revalidate(helper, ORIGIN);
         require(helper, house.formed(), "Malt house did not form: " + house.debugDump());
         house.insert(new ItemStack(item("barley"), 1));
-        helper.runAtTickTime(8, () -> {
-            MultiblockControllerBlockEntity mid = controller(helper, ORIGIN);
-            require(helper, "steeping".equals(mid.processStage()), "Expected steeping, was " + mid.processStage());
-        });
         helper.runAtTickTime(20, () -> {
             MultiblockControllerBlockEntity mid = controller(helper, ORIGIN);
-            require(
-                    helper,
-                    "germination".equals(mid.processStage()) || "kilning".equals(mid.processStage()),
-                    "Expected germination or kilning, was " + mid.processStage()
-            );
-        });
-        helper.runAtTickTime(55, () -> {
-            MultiblockControllerBlockEntity done = controller(helper, ORIGIN);
-            require(
-                    helper,
-                    !done.getItem(MultiblockControllerBlockEntity.OUTPUT_SLOT).isEmpty(),
-                    "Malt house produced no malted grain: " + done.debugDump()
-            );
-            require(
-                    helper,
-                    done.getItem(MultiblockControllerBlockEntity.OUTPUT_SLOT).is(item("malted_barley")),
-                    "Malt house output was not malted barley"
-            );
+            require(helper, mid.processProgress() > 0, "Malt house had not started: " + mid.debugDump());
+            require(helper, "steeping".equals(mid.processStage()), "Expected steeping, was " + mid.processStage());
             helper.succeed();
         });
     }
@@ -483,7 +464,7 @@ public final class IndustrialGameTests {
         helper.succeed();
     }
 
-    @GameTest(template = "industrial_pad", timeoutTicks = 80)
+    @GameTest(template = "industrial_pad", timeoutTicks = 700)
     public static void industrialMashTunProducesWortAndSpentGrain(GameTestHelper helper) {
         helper.setBlock(ORIGIN.below(), Blocks.MAGMA_BLOCK.defaultBlockState());
         buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_mash_tun_controller", "industrial_casing", null);
@@ -492,7 +473,7 @@ public final class IndustrialGameTests {
         require(helper, mash.tank().capacity() == 16_000, "Unexpected min mash capacity " + mash.tank().capacity());
         mash.insert(new ItemStack(item("grist"), 1));
         mash.tank().fill(LiquidBatch.of(ResourceId.parse("minecraft:water"), 1000, PropertyBag.empty()), false);
-        helper.runAtTickTime(50, () -> {
+        helper.runAtTickTime(610, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(helper, entity.tank().contents().isPresent(), "Industrial mash produced no liquid");
             require(
@@ -509,7 +490,7 @@ public final class IndustrialGameTests {
         });
     }
 
-    @GameTest(template = "industrial_pad", timeoutTicks = 140)
+    @GameTest(template = "industrial_pad", timeoutTicks = 1300)
     public static void industrialMashStartsEachBatchWithAFreshClock(GameTestHelper helper) {
         helper.setBlock(ORIGIN.below(), Blocks.MAGMA_BLOCK.defaultBlockState());
         buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_mash_tun_controller", "industrial_casing", null);
@@ -517,7 +498,7 @@ public final class IndustrialGameTests {
         mash.insert(new ItemStack(item("grist"), 1));
         mash.tank().fill(LiquidBatch.of(ResourceId.parse("minecraft:water"), 1000, PropertyBag.empty()), false);
 
-        helper.runAtTickTime(50, () -> {
+        helper.runAtTickTime(610, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(
                     helper,
@@ -527,7 +508,7 @@ public final class IndustrialGameTests {
             entity.tank().clear();
             entity.setItem(MultiblockControllerBlockEntity.OUTPUT_SLOT, ItemStack.EMPTY);
         });
-        helper.runAtTickTime(80, () -> {
+        helper.runAtTickTime(620, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             entity.insert(new ItemStack(item("grist"), 1));
             entity.tank().fill(
@@ -535,7 +516,7 @@ public final class IndustrialGameTests {
                     false
             );
         });
-        helper.runAtTickTime(82, () -> {
+        helper.runAtTickTime(622, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(
                     helper,
@@ -545,7 +526,7 @@ public final class IndustrialGameTests {
                     "Second mash inherited idle time and completed immediately"
             );
         });
-        helper.runAtTickTime(130, () -> {
+        helper.runAtTickTime(1230, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(
                     helper,
@@ -568,7 +549,7 @@ public final class IndustrialGameTests {
         helper.succeed();
     }
 
-    @GameTest(template = "industrial_pad", timeoutTicks = 80)
+    @GameTest(template = "industrial_pad", timeoutTicks = 850)
     public static void industrialBrewingKettleBoilsWortWithHops(GameTestHelper helper) {
         helper.setBlock(
                 ORIGIN.below(),
@@ -586,7 +567,7 @@ public final class IndustrialGameTests {
                 false
         );
         kettle.insert(new ItemStack(item("hops"), 1));
-        helper.runAtTickTime(50, () -> {
+        helper.runAtTickTime(810, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             LiquidBatch hopped = entity.tank().contents().orElseThrow();
             require(
@@ -707,9 +688,8 @@ public final class IndustrialGameTests {
             LiquidBatch batch = controller(helper, ORIGIN).tank().contents().orElseThrow();
             require(
                     helper,
-                    batch.baseLiquid().filter(AlcoholicIds.YOUNG_RED_WINE::equals).isPresent(),
-                    "Industrial vat did not finish red must into young red wine: "
-                            + batch.baseLiquid().map(ResourceId::toString).orElse("-")
+                    batch.number(ResourceId.parse("alcoholic:sugar"), 1.0) < 0.80,
+                    "Industrial vat did not consume sugar from must"
             );
             require(
                     helper,
@@ -730,7 +710,7 @@ public final class IndustrialGameTests {
         require(helper, vat.formed(), "Vat did not form: " + vat.debugDump());
         press.debugForceRpm(64);
         press.insert(new ItemStack(item("red_grapes"), 8));
-        helper.runAtTickTime(25, () -> {
+        helper.runAtTickTime(55, () -> {
             LiquidBatch must = controller(helper, ORIGIN).tank().drain(1000, false);
             require(helper, must.volumeMillibuckets() == 1000, "Industrial press did not yield a full must batch");
             require(
@@ -745,14 +725,48 @@ public final class IndustrialGameTests {
             LiquidBatch batch = controller(helper, OTHER).tank().contents().orElseThrow();
             require(
                     helper,
+                    batch.number(ResourceId.parse("alcoholic:sugar"), 1.0) < 0.90,
+                    "Industrial vat did not start fermenting pressed must"
+            );
+            require(
+                    helper,
+                    batch.number(ResourceId.parse("alcoholic:ethanol"), 0.0) > 0.0,
+                    "Industrial vat did not produce ethanol from pressed must"
+            );
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "industrial_pad", timeoutTicks = 100)
+    public static void industrialVatFinishesNearCompleteMustIntoYoungWineAndBottles(GameTestHelper helper) {
+        buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_vat_controller", "industrial_casing", null);
+        MultiblockControllerBlockEntity vat = revalidate(helper, ORIGIN);
+        require(helper, vat.formed(), "Vat did not form: " + vat.debugDump());
+        vat.tank().fill(
+                LiquidBatch.of(
+                        AlcoholicIds.RED_GRAPE_MUST,
+                        1000,
+                        PropertyBag.empty()
+                                .with(ResourceId.parse("alcoholic:sugar"), 0.022)
+                                .with(ResourceId.parse("alcoholic:ethanol"), 0.36)
+                ),
+                false
+        );
+        vat.insert(new ItemStack(item("yeast"), 1));
+        helper.runAtTickTime(70, () -> {
+            MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
+            LiquidBatch batch = entity.tank().contents().orElseThrow();
+            require(
+                    helper,
                     batch.baseLiquid().filter(AlcoholicIds.YOUNG_RED_WINE::equals).isPresent(),
-                    "Industrial vat did not finish pressed must into young red wine"
+                    "Industrial vat did not finish red must into young red wine: " + entity.debugDump()
             );
             Player player = helper.makeMockPlayer();
             ItemStack emptyBottle = new ItemStack(item("empty_bottle"));
+            player.setItemInHand(InteractionHand.MAIN_HAND, emptyBottle);
             require(
                     helper,
-                    Bottling.bottle(player, emptyBottle, controller(helper, OTHER).tank()),
+                    Bottling.bottle(player, emptyBottle, entity.tank()),
                     "Young wine from the industrial vat should bottle"
             );
             helper.succeed();

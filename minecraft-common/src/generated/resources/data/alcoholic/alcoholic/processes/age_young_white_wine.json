@@ -15,7 +15,7 @@
       "max": 16,
       "min": 10
     },
-    "ticks_to_complete": 80
+    "ticks_to_complete": 72000
   },
   "id": "alcoholic:age_young_white_wine",
   "inputs": {},

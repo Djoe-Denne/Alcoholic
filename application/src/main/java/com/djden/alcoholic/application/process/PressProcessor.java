@@ -11,6 +11,7 @@ import com.djden.alcoholic.domain.liquid.BatchProvenance;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.LiquidDefinition;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
+import com.djden.alcoholic.domain.process.QualityProfile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,10 @@ public final class PressProcessor implements ProcessHandler<PressConfig> {
         if (units < 1) {
             return ProcessResult.rejected("insufficient solid input for press");
         }
-        PropertyBag agricultural = AgriculturalTransfer.combine(solids);
+        PropertyBag agricultural = AgriculturalTransfer.scaleCharacter(
+                AgriculturalTransfer.combine(solids),
+                context.executorModifiers().processFidelity()
+        );
         PropertyBag defaults = catalog.get()
                 .liquid(config.outputLiquid().orElseThrow())
                 .map(LiquidDefinition::defaults)
@@ -63,11 +67,14 @@ public final class PressProcessor implements ProcessHandler<PressConfig> {
             }
         }
         double yield = config.yield() * context.executorModifiers().yieldModifier();
-        LiquidBatch batch = LiquidBatch.of(
-                config.outputLiquid().orElseThrow(),
-                config.outputVolume() * yield * units,
-                combined,
-                provenance
+        LiquidBatch batch = QualityProfile.stampCap(
+                LiquidBatch.of(
+                        config.outputLiquid().orElseThrow(),
+                        config.outputVolume() * yield * units,
+                        combined,
+                        provenance
+                ),
+                context.executorModifiers()
         );
         return ProcessResult.success(
                 List.of(batch),

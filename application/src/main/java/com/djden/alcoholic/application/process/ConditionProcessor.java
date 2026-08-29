@@ -6,6 +6,7 @@ import com.djden.alcoholic.api.process.ProcessHandler;
 import com.djden.alcoholic.api.process.ProcessRequest;
 import com.djden.alcoholic.api.process.ProcessResult;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
+import com.djden.alcoholic.domain.process.QualityProfile;
 
 import java.util.Objects;
 
@@ -39,7 +40,9 @@ public final class ConditionProcessor implements ProcessHandler<ConditionConfig>
             return ProcessResult.rejected("temperature is outside the conditioning operating range");
         }
         double stability = context.executorModifiers().thermalStability();
-        double advance = context.deltaTicks() * rate * config.kinetics().maturityPerTick()
+        double advance = context.executorModifiers().scaleDelta(context.deltaTicks())
+                * rate
+                * config.kinetics().maturityPerTick()
                 * Math.min(2.0, stability / 3.0 + 0.67);
         double nextMaturity = Math.min(1.0, maturity + advance);
         LiquidBatch next = batch.withProperty(config.maturityProperty(), nextMaturity);
@@ -53,6 +56,6 @@ public final class ConditionProcessor implements ProcessHandler<ConditionConfig>
         if (nextMaturity + 1e-9 >= config.kinetics().completionThreshold()) {
             next = next.withBaseLiquid(config.outputLiquid().orElseThrow());
         }
-        return ProcessResult.success(next);
+        return ProcessResult.success(QualityProfile.stampCap(next, context.executorModifiers()));
     }
 }

@@ -572,7 +572,7 @@ final class IndustrialProcessTicks {
         }
         machine.beginProcessJob(
                 invocation.get().nodeId() + "|" + batch.baseLiquid().map(ResourceId::toString).orElse(""),
-                config.processingTicks()
+                Math.max(1, config.processingTicks())
         );
         double maturity = batch.number(config.maturityProperty(), 0.0);
         double completion = config.kinetics().completionThreshold();

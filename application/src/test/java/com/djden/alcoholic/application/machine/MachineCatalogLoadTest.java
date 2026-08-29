@@ -36,6 +36,12 @@ class MachineCatalogLoadTest {
         assertTrue(catalog.get(BuiltinMachines.INDUSTRIAL_MASH_TUN).orElseThrow().processType().isPresent());
         assertEquals(4.0, catalog.get(BuiltinMachines.INDUSTRIAL_ROLLER_MILL).orElseThrow()
                 .kinetic().requiredCapacity(), 1e-9);
+        assertEquals(0.70, catalog.get(BuiltinMachines.INDUSTRIAL_PRESS).orElseThrow()
+                .modifiers().processFidelity(), 1e-9);
+        assertEquals(0.55, catalog.get(BuiltinMachines.INDUSTRIAL_PRESS).orElseThrow()
+                .modifiers().complexityCap(), 1e-9);
+        assertEquals(0.82, catalog.get(BuiltinCraftMachines.CRAFT_VAT).orElseThrow()
+                .modifiers().complexityCap(), 1e-9);
     }
 
     @Test

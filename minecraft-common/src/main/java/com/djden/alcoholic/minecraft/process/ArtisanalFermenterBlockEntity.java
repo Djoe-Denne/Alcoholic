@@ -1,5 +1,6 @@
 package com.djden.alcoholic.minecraft.process;
 
+import com.djden.alcoholic.api.process.ExecutorModifiers;
 import com.djden.alcoholic.api.process.ProcessContext;
 import com.djden.alcoholic.api.process.ProcessInputs;
 import com.djden.alcoholic.api.process.ProcessInvocation;
@@ -42,7 +43,7 @@ import java.util.Optional;
 public final class ArtisanalFermenterBlockEntity extends BlockEntity
         implements WorldlyContainer, LiquidVessel, MachineAccess, AdvancementActor {
     public static final int YEAST_SLOT = 0;
-    public static final int CAPACITY = 8_000;
+    public static final int CAPACITY = 2_000;
 
     private final NonNullList<ItemStack> items = NonNullList.withSize(1, ItemStack.EMPTY);
     private final LiquidTank tank;
@@ -174,7 +175,12 @@ public final class ArtisanalFermenterBlockEntity extends BlockEntity
                 runtime.fermentExecutor(),
                 invocation.get(),
                 ProcessInputs.ofLiquid("must", batch),
-                ProcessContext.of(temperatureCelsius(), 1.0, yeastPitched || !config.requireYeast())
+                ProcessContext.of(
+                        temperatureCelsius(),
+                        1.0,
+                        yeastPitched || !config.requireYeast(),
+                        ExecutorModifiers.artisanal()
+                )
         );
         if (!result.success() || result.outputs().isEmpty()) {
             return;

@@ -3,6 +3,7 @@ package com.djden.alcoholic.minecraft.bottle;
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.domain.liquid.BatchProvenance;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
+import com.djden.alcoholic.domain.process.QualityProfile;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +17,8 @@ import java.util.Optional;
  */
 public final class BottleSnapshotNbt {
     public static final String ROOT = "AlcoholicBottle";
-    public static final int VERSION = 1;
+    public static final int VERSION = 2;
+    public static final int LEGACY_VERSION = 1;
     public static final int BOTTLE_VOLUME = 250;
 
     private BottleSnapshotNbt() {
@@ -30,7 +32,12 @@ public final class BottleSnapshotNbt {
         tag.putInt("Sugar", quantize(batch.number(ResourceId.parse("alcoholic:sugar"), 0.0)));
         tag.putInt("Acidity", quantize(batch.number(ResourceId.parse("alcoholic:acidity"), 0.0)));
         tag.putInt("Maturity", quantize(batch.number(ResourceId.parse("alcoholic:maturity"), 0.0)));
-        tag.putInt("Quality", quantize(batch.number(ResourceId.parse("alcoholic:quality"), 0.0)));
+        QualityProfile profile = QualityProfile.derive(batch);
+        tag.putInt("Quality", quantize(profile.summary()));
+        tag.putInt("Purity", quantize(profile.purity()));
+        tag.putInt("Complexity", quantize(profile.complexity()));
+        tag.putInt("Balance", quantize(profile.balance()));
+        tag.putInt("Defects", quantize(profile.defects()));
         CompoundTag origins = new CompoundTag();
         batch.batchProvenance().originComposition()
                 .forEach((id, fraction) -> origins.putInt(id.toString(), quantize(fraction)));
@@ -44,7 +51,8 @@ public final class BottleSnapshotNbt {
             return Optional.empty();
         }
         CompoundTag snapshot = tag.getCompound(ROOT);
-        return snapshot.getInt("Version") == VERSION ? Optional.of(snapshot) : Optional.empty();
+        int version = snapshot.getInt("Version");
+        return version == VERSION || version == LEGACY_VERSION ? Optional.of(snapshot) : Optional.empty();
     }
 
     public static void write(ItemStack stack, LiquidBatch batch) {

@@ -117,7 +117,7 @@ public final class AdvancementGameTests {
         helper.succeed();
     }
 
-    @GameTest(template = "empty", timeoutTicks = 80)
+    @GameTest(template = "empty", timeoutTicks = 250)
     public static void pressWithLastActorGrantsMustAdvancement(GameTestHelper helper) {
         helper.setBlock(ORIGIN, block("artisanal_press").defaultBlockState());
         ArtisanalPressBlockEntity press = (ArtisanalPressBlockEntity) helper.getBlockEntity(ORIGIN);
@@ -126,7 +126,7 @@ public final class AdvancementGameTests {
         HarvestLotNbt.write(grapes, VineVarieties.RED_GRAPE.id(), 0.7, 0.82, 0.31);
         player.setItemInHand(InteractionHand.MAIN_HAND, grapes);
         use(helper, ORIGIN, player, grapes);
-        helper.runAtTickTime(25, () -> {
+        helper.runAtTickTime(210, () -> {
             require(helper, press.tank().contents().isPresent(), "Press did not produce must");
             requireDone(helper, player, "produce_must");
             helper.succeed();

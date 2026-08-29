@@ -1,6 +1,7 @@
 package com.djden.alcoholic.minecraft.process;
 
 import com.djden.alcoholic.api.ResourceId;
+import com.djden.alcoholic.api.process.ExecutorModifiers;
 import com.djden.alcoholic.api.process.ProcessContext;
 import com.djden.alcoholic.api.process.ProcessInputs;
 import com.djden.alcoholic.api.process.ProcessInvocation;
@@ -38,7 +39,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.Optional;
 
 public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVessel, MachineAccess, AdvancementActor {
-    public static final int CAPACITY = 8_000;
+    public static final int CAPACITY = 4_000;
 
     private final LiquidTank tank;
     private final ProcessAdvancementState advancements = new ProcessAdvancementState();
@@ -168,7 +169,8 @@ public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVes
                         false,
                         Optional.of(vesselProfile()),
                         Optional.of(environment),
-                        now
+                        now,
+                        ExecutorModifiers.artisanal()
                 )
         );
         if (!result.success() || result.outputs().isEmpty()) {

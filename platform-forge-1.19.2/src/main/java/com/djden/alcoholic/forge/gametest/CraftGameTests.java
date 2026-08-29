@@ -54,7 +54,7 @@ public final class CraftGameTests {
         helper.succeed();
     }
 
-    @GameTest(template = "industrial_pad", timeoutTicks = 80)
+    @GameTest(template = "industrial_pad", timeoutTicks = 1000)
     public static void craftMashTunProducesWortAndSpentGrain(GameTestHelper helper) {
         helper.setBlock(ORIGIN.below(), Blocks.MAGMA_BLOCK.defaultBlockState());
         buildHollow(helper, ORIGIN, 3, 3, 3, "craft_mash_tun_controller", "craft_casing", null);
@@ -63,7 +63,7 @@ public final class CraftGameTests {
         require(helper, mash.tank().capacity() == 2_000, "Unexpected min craft mash capacity " + mash.tank().capacity());
         mash.insert(new ItemStack(item("grist"), 1));
         mash.tank().fill(LiquidBatch.of(ResourceId.parse("minecraft:water"), 1000, PropertyBag.empty()), false);
-        helper.runAtTickTime(50, () -> {
+        helper.runAtTickTime(970, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(helper, entity.tank().contents().isPresent(), "Craft mash produced no liquid");
             require(

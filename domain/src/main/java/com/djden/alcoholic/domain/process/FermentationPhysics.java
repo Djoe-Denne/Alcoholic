@@ -7,6 +7,8 @@ import java.util.Objects;
 
 /**
  * Progressive sugar-to-ethanol conversion. Beverage identity is not consulted.
+ * Produced CO₂ is accumulated then vented by the vessel; dissolved carbonation
+ * is a separate {@code alcoholic:carbonation} property written by CONDITION.
  */
 public final class FermentationPhysics {
     private FermentationPhysics() {

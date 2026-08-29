@@ -1,6 +1,7 @@
 package com.djden.alcoholic.minecraft.process;
 
 import com.djden.alcoholic.api.ResourceId;
+import com.djden.alcoholic.api.process.ExecutorModifiers;
 import com.djden.alcoholic.api.process.ProcessContext;
 import com.djden.alcoholic.api.process.ProcessInputs;
 import com.djden.alcoholic.api.process.ProcessInvocation;
@@ -42,7 +43,7 @@ import java.util.Optional;
 
 public final class BrewingKettleBlockEntity extends BlockEntity implements WorldlyContainer, LiquidVessel, MachineAccess {
     public static final int ADDITION_SLOT = 0;
-    public static final int CAPACITY = 8_000;
+    public static final int CAPACITY = 2_000;
 
     private final NonNullList<ItemStack> items = NonNullList.withSize(1, ItemStack.EMPTY);
     private final LiquidTank tank;
@@ -175,7 +176,7 @@ public final class BrewingKettleBlockEntity extends BlockEntity implements World
                 lots.isEmpty()
                         ? ProcessInputs.ofLiquid("wort", liquid)
                         : ProcessInputs.of("hops", lots, "wort", liquid),
-                ProcessContext.of(temperatureCelsius(), 1.0, false)
+                ProcessContext.of(temperatureCelsius(), 1.0, false, ExecutorModifiers.artisanal())
         );
         if (!result.success() || result.outputs().isEmpty()) {
             cancelProcess();

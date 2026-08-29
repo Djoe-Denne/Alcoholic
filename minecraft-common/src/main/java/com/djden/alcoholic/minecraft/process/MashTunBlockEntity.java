@@ -1,6 +1,7 @@
 package com.djden.alcoholic.minecraft.process;
 
 import com.djden.alcoholic.api.ResourceId;
+import com.djden.alcoholic.api.process.ExecutorModifiers;
 import com.djden.alcoholic.api.process.ProcessContext;
 import com.djden.alcoholic.api.process.ProcessInputs;
 import com.djden.alcoholic.api.process.ProcessInvocation;
@@ -49,7 +50,7 @@ public final class MashTunBlockEntity extends BlockEntity
         implements WorldlyContainer, LiquidVessel, MachineAccess, AdvancementActor {
     public static final int INPUT_SLOT = 0;
     public static final int BYPRODUCT_SLOT = 1;
-    public static final int CAPACITY = 8_000;
+    public static final int CAPACITY = 2_000;
     public static final int INPUT_TANK = 0;
     public static final int OUTPUT_TANK = 1;
 
@@ -210,7 +211,7 @@ public final class MashTunBlockEntity extends BlockEntity
                 runtime.mashExecutor(),
                 invocation.get(),
                 ProcessInputs.of("grist", List.of(lot), "water", extracted),
-                ProcessContext.of(temperatureCelsius(), 1.0, false)
+                ProcessContext.of(temperatureCelsius(), 1.0, false, ExecutorModifiers.artisanal())
         );
         if (!result.success() || result.outputs().isEmpty()) {
             progress = 0;

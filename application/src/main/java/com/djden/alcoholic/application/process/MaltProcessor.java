@@ -8,6 +8,7 @@ import com.djden.alcoholic.api.process.ProcessHandler;
 import com.djden.alcoholic.api.process.ProcessRequest;
 import com.djden.alcoholic.api.process.ProcessResult;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
+import com.djden.alcoholic.domain.process.QualityProfile;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -48,10 +49,15 @@ public final class MaltProcessor implements ProcessHandler<MaltConfig> {
         if (units < 1) {
             return ProcessResult.rejected("insufficient solid input for malt");
         }
+        double extraction = config.temperature().extractionYield(context.temperatureCelsius());
+        double fidelity = context.executorModifiers().processFidelity();
         Map<ResourceId, Object> properties = new LinkedHashMap<>();
         properties.put(COLOR, config.kiln().colorPotential());
-        properties.put(SUGAR, config.kiln().fermentablePotential());
+        properties.put(SUGAR, config.kiln().fermentablePotential() * extraction * fidelity);
         properties.put(ROAST, config.kiln().roastIntensity());
+        if (extraction + 1e-9 < 1.0) {
+            properties.put(QualityProfile.STRESS, Math.min(1.0, (1.0 - extraction) * 0.30));
+        }
         PropertyBag agricultural = AgriculturalTransfer.combine(solids);
         agricultural.get(COLOR).ifPresent(value -> properties.put(COLOR, value));
         return ProcessResult.success(
@@ -59,7 +65,7 @@ public final class MaltProcessor implements ProcessHandler<MaltConfig> {
                 List.of(new ItemOutput(
                         config.outputItem().orElseThrow(),
                         config.outputAmount() * units,
-                        Map.copyOf(properties)
+                        QualityProfile.stampCap(properties, context.executorModifiers())
                 ))
         );
     }

@@ -9,7 +9,7 @@
       "amount": 1,
       "item": "alcoholic:grist"
     },
-    "processing_time": 80
+    "processing_time": 200
   },
   "id": "alcoholic:mill_malted_grain",
   "inputs": {

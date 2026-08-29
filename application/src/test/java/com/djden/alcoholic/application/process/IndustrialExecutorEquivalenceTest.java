@@ -14,6 +14,7 @@ import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
 import com.djden.alcoholic.domain.ingredient.IngredientLot;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
+import com.djden.alcoholic.domain.process.QualityProfile;
 import com.djden.alcoholic.domain.process.ThermalStability;
 import org.junit.jupiter.api.Test;
 
@@ -130,6 +131,8 @@ class IndustrialExecutorEquivalenceTest {
         LiquidBatch batch = (LiquidBatch) result.outputs().get(0);
         int units = 500 / 8;
         assertEquals(1000.0 * 1.05 * units, batch.volume(), 1e-6);
+        assertEquals(0.55, batch.number(ResourceId.parse("alcoholic:complexity_cap"), 1.0), 1e-9);
+        assertEquals(0.15, batch.number(ResourceId.parse("alcoholic:purity_floor"), 0.0), 1e-9);
         assertTrue(result.items().isEmpty());
     }
 
@@ -166,6 +169,44 @@ class IndustrialExecutorEquivalenceTest {
     }
 
     @Test
+    void fermentSpeedModifierAdvancesTheSameBatchFaster() {
+        Harness harness = Harness.load();
+        ProcessInvocation node = ProcessRecipeResolver.find(
+                harness.catalog,
+                harness.api,
+                FERMENT,
+                harness.matcher,
+                Optional.empty(),
+                Optional.of(ResourceId.parse("testpack:apple_must"))
+        ).orElseThrow();
+        ProcessResult baseline = harness.engine.execute(
+                new CapabilityProcessExecutor(FERMENT),
+                node,
+                ProcessInputs.ofLiquid("must", must(2_000)),
+                ProcessContext.of(20.0, 10.0, true)
+        );
+        ProcessResult industrial = harness.engine.execute(
+                new CapabilityProcessExecutor(FERMENT),
+                node,
+                ProcessInputs.ofLiquid("must", must(2_000)),
+                ProcessContext.of(
+                        20.0,
+                        10.0,
+                        true,
+                        new ExecutorModifiers(1.0, 4.0, 4.0, 1, 0.70, 0.55, 0.12)
+                )
+        );
+        double slowSugar = ((LiquidBatch) baseline.outputs().get(0)).number(SUGAR, 1.0);
+        double fastSugar = ((LiquidBatch) industrial.outputs().get(0)).number(SUGAR, 1.0);
+        assertTrue(fastSugar < slowSugar);
+        assertEquals(
+                0.55,
+                ((LiquidBatch) industrial.outputs().get(0)).number(ResourceId.parse("alcoholic:complexity_cap"), 1.0),
+                1e-9
+        );
+    }
+
+    @Test
     void thermalStabilityDampsAmbientSwing() {
         assertEquals(18.0, ThermalStability.effectiveCelsius(18.0, 18.0, 4.0), 1e-9);
         assertEquals(19.5, ThermalStability.effectiveCelsius(24.0, 18.0, 4.0), 1e-9);
@@ -188,6 +229,30 @@ class IndustrialExecutorEquivalenceTest {
                 .orElseThrow();
         assertEquals(40_000, merged.volume(), 1e-9);
         assertEquals(0.60, merged.number(SUGAR, 0.0), 1e-9);
+    }
+
+    @Test
+    void industrialComplexityCapDoesNotRiseOnBlend() {
+        Harness harness = Harness.load();
+        ResourceId must = ResourceId.parse("testpack:apple_must");
+        LiquidBatch industrial = QualityProfile.stampCap(
+                LiquidBatch.of(must, 1000, PropertyBag.empty().with(SUGAR, 0.80)),
+                ExecutorModifiers.industrialPress()
+        );
+        LiquidBatch artisanal = QualityProfile.stampCap(
+                LiquidBatch.of(must, 1000, PropertyBag.empty().with(SUGAR, 0.40)),
+                ExecutorModifiers.artisanal()
+        );
+        LiquidBatch merged = industrial.merge(
+                artisanal,
+                PropertyMerges.from(harness.api),
+                PropertyMerges.aggregators(harness.api)
+        ).orElseThrow();
+        assertEquals(0.55, merged.number(QualityProfile.COMPLEXITY_CAP, 1.0), 1e-9);
+        assertEquals(0.15, merged.number(QualityProfile.PURITY_FLOOR, 0.0), 1e-9);
+        QualityProfile profile = QualityProfile.derive(merged);
+        assertTrue(profile.complexity() <= 0.55 + 1e-9);
+        assertTrue(profile.defects() >= 0.15 - 1e-9);
     }
 
     private static LiquidBatch must(double volume) {

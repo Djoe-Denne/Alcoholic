@@ -1,5 +1,7 @@
 package com.djden.alcoholic.minecraft.process;
 
+import com.djden.alcoholic.api.process.ExecutorModifiers;
+import com.djden.alcoholic.api.process.ProcessContext;
 import com.djden.alcoholic.api.process.ProcessInputs;
 import com.djden.alcoholic.api.process.ProcessInvocation;
 import com.djden.alcoholic.api.process.ProcessResult;
@@ -39,7 +41,7 @@ public final class ArtisanalPressBlockEntity extends BlockEntity
         implements WorldlyContainer, LiquidVessel, MachineAccess, AdvancementActor {
     public static final int INPUT_SLOT = 0;
     public static final int BYPRODUCT_SLOT = 1;
-    public static final int CAPACITY = 8_000;
+    public static final int CAPACITY = 2_000;
 
     private final NonNullList<ItemStack> items = NonNullList.withSize(2, ItemStack.EMPTY);
     private final LiquidTank tank;
@@ -124,7 +126,7 @@ public final class ArtisanalPressBlockEntity extends BlockEntity
                 runtime.pressExecutor(),
                 invocation.get(),
                 ProcessInputs.ofSolids("source", List.of(lot)),
-                com.djden.alcoholic.api.process.ProcessContext.empty()
+                ProcessContext.of(20.0, 1.0, false, ExecutorModifiers.artisanalPress())
         );
         if (!result.success() || result.outputs().isEmpty()) {
             progress = 0;

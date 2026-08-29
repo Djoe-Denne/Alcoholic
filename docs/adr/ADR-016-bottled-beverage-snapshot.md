@@ -12,8 +12,12 @@ runtime into inventory and invite desync when the bottle returns to a tank.
 ## Decision
 
 `BeverageBottleItem` stores a snapshot NBT (definition, ethanol, residual
-sugar, acidity, maturity, origin fractions, quality). It omits runtime
-fields (yeast, lastProcessed, vessel clock).
+sugar, acidity, maturity, origin fractions, derived quality summary,
+purity, complexity, balance, and defects). Version is `2`. Version `1`
+snapshots remain readable. It omits runtime fields (yeast, lastProcessed,
+vessel clock).
+Harvest `alcoholic:quality` stays on the lot; bottle `Quality` is
+`QualityProfile.summary()` (see [ADR-037](ADR-037-emergent-quality-profile.md)).
 
 Bottling is `alcoholic:bottle`: right-click a barrel, crock, or fermenter
 with an empty bottle. Default volume is 250 mB. No player potion effects.

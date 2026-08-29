@@ -2,6 +2,7 @@ package com.djden.alcoholic.minecraft.process;
 
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.api.process.ItemOutput;
+import com.djden.alcoholic.api.process.ExecutorModifiers;
 import com.djden.alcoholic.api.process.ProcessContext;
 import com.djden.alcoholic.api.process.ProcessInputs;
 import com.djden.alcoholic.api.process.ProcessInvocation;
@@ -190,7 +191,8 @@ public final class MaltingFloorBlockEntity extends BlockEntity implements Worldl
                         false,
                         Optional.empty(),
                         Optional.of(environment),
-                        level == null ? 0L : level.getGameTime()
+                        level == null ? 0L : level.getGameTime(),
+                        ExecutorModifiers.artisanal()
                 ),
                 "grain"
         );

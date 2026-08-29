@@ -11,6 +11,8 @@ import java.util.Optional;
 
 /**
  * Progressive property evolution for {@code alcoholic:age}. Beverage identity is not consulted.
+ * Oxidation is accumulated linearly; {@link OxygenCurve} interprets that exposure when
+ * deriving {@link QualityProfile}.
  */
 public final class AgingPhysics {
     private AgingPhysics() {

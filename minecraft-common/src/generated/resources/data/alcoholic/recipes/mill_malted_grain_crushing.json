@@ -15,7 +15,7 @@
             "tag": "alcoholic:malted_grain"
           }
         ],
-        "processingTime": 40,
+        "processingTime": 100,
         "results": [
           {
             "count": 1,

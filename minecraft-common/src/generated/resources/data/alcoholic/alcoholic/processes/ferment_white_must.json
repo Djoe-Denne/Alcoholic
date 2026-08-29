@@ -18,7 +18,7 @@
       "min": 18
     },
     "require_yeast": true,
-    "ticks_to_complete": 80,
+    "ticks_to_complete": 24000,
     "yeast": {
       "tag": "alcoholic:yeast"
     }

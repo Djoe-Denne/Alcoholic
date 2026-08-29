@@ -18,8 +18,11 @@
     "z": 3
   },
   "modifiers": {
+    "complexity_cap": 0.82,
     "max_batch_units": 1,
-    "speed": 1.0,
+    "process_fidelity": 0.94,
+    "purity_floor": 0.04,
+    "speed": 1.25,
     "thermal_stability": 2.0,
     "yield": 1.0
   },

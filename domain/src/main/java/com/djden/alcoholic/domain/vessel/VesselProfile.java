@@ -48,7 +48,7 @@ public final class VesselProfile implements VesselProfileView {
         return new VesselProfile(
                 ResourceId.parse("alcoholic:oak_barrel"),
                 ResourceId.parse("alcoholic:oak"),
-                8_000,
+                4_000,
                 Set.of(ResourceId.parse("alcoholic:age")),
                 0.35,
                 1.0,

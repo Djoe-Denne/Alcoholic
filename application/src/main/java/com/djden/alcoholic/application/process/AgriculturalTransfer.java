@@ -7,11 +7,21 @@ import com.djden.alcoholic.domain.liquid.PropertyBag;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Copies agricultural lot properties onto a produced liquid without drink-family logic.
  */
 public final class AgriculturalTransfer {
+    private static final Set<ResourceId> CHARACTER = Set.of(
+            ResourceId.parse("alcoholic:quality"),
+            ResourceId.parse("alcoholic:acidity"),
+            ResourceId.parse("alcoholic:aroma"),
+            ResourceId.parse("alcoholic:bitterness"),
+            ResourceId.parse("alcoholic:tannin"),
+            ResourceId.parse("alcoholic:color")
+    );
+
     private AgriculturalTransfer() {
     }
 
@@ -44,5 +54,21 @@ public final class AgriculturalTransfer {
         int weight = total;
         numeric.forEach((id, sum) -> merged.put(id, sum / weight));
         return new PropertyBag(merged);
+    }
+
+    public static PropertyBag scaleCharacter(PropertyBag bag, double fidelity) {
+        PropertyBag source = bag == null ? PropertyBag.empty() : bag;
+        if (!Double.isFinite(fidelity) || fidelity >= 1.0 - 1e-12) {
+            return source;
+        }
+        double factor = Math.max(0.0, fidelity);
+        PropertyBag next = source;
+        for (ResourceId id : CHARACTER) {
+            Object value = source.get(id).orElse(null);
+            if (value instanceof Number number) {
+                next = next.with(id, number.doubleValue() * factor);
+            }
+        }
+        return next;
     }
 }

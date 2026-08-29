@@ -9,6 +9,7 @@ import com.djden.alcoholic.api.process.ProcessResult;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.process.FermentationPhysics;
 import com.djden.alcoholic.domain.process.FermentationState;
+import com.djden.alcoholic.domain.process.QualityProfile;
 
 import java.util.Objects;
 
@@ -55,8 +56,19 @@ public final class FermentProcessor implements ProcessHandler<FermentConfig> {
                 config.stressProperty(),
                 output,
                 context.temperatureCelsius(),
-                context.deltaTicks()
+                context.executorModifiers().scaleDelta(context.deltaTicks())
         );
-        return ProcessResult.success(next.batch());
+        LiquidBatch result = next.batch();
+        double stress = Math.max(
+                result.batchProvenance().fermentationStress(),
+                result.number(config.stressProperty(), 0.0)
+        );
+        result = result.withProvenance(result.batchProvenance().withSummaries(
+                stress,
+                result.batchProvenance().totalAgingTime(),
+                result.batchProvenance().woodExposure(),
+                result.batchProvenance().oxidationExposure()
+        ));
+        return ProcessResult.success(QualityProfile.stampCap(result, context.executorModifiers()));
     }
 }

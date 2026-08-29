@@ -912,7 +912,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "hollow_interior": true,
                           "capacity_per_internal_block": 4000,
                           "controller": "alcoholic:industrial_press_controller",
-                          "modifiers": { "yield": 1.05, "speed": 2.0, "thermal_stability": 1.0, "max_batch_units": 2147483647 },
+                          "modifiers": { "yield": 1.05, "speed": 2.0, "thermal_stability": 1.0, "max_batch_units": 2147483647, "process_fidelity": 0.70, "complexity_cap": 0.55, "purity_floor": 0.15 },
                           "kinetic": { "min_rpm": 16, "max_rpm": 256, "required": true }
                         }
                         """
@@ -935,7 +935,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "hollow_interior": true,
                           "capacity_per_internal_block": 8000,
                           "controller": "alcoholic:industrial_vat_controller",
-                          "modifiers": { "yield": 1.0, "speed": 1.0, "thermal_stability": 4.0, "max_batch_units": 1 }
+                          "modifiers": { "yield": 1.0, "speed": 1.0, "thermal_stability": 4.0, "max_batch_units": 1, "process_fidelity": 0.70, "complexity_cap": 0.55, "purity_floor": 0.12 }
                         }
                         """
         );
@@ -1007,7 +1007,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "hollow_interior": true,
                           "capacity_per_internal_block": 2000,
                           "controller": "alcoholic:industrial_malt_house_controller",
-                          "modifiers": { "yield": 1.0, "speed": 2.0, "thermal_stability": 2.0, "max_batch_units": 2147483647 }
+                          "modifiers": { "yield": 1.0, "speed": 2.0, "thermal_stability": 2.0, "max_batch_units": 2147483647, "process_fidelity": 0.70, "complexity_cap": 0.55, "purity_floor": 0.15 }
                         }
                         """
         );
@@ -1029,7 +1029,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "hollow_interior": true,
                           "capacity_per_internal_block": 1000,
                           "controller": "alcoholic:industrial_roller_mill_controller",
-                          "modifiers": { "yield": 1.0, "speed": 4.0, "thermal_stability": 1.0, "max_batch_units": 2147483647 },
+                          "modifiers": { "yield": 1.0, "speed": 4.0, "thermal_stability": 1.0, "max_batch_units": 2147483647, "process_fidelity": 0.70, "complexity_cap": 0.55, "purity_floor": 0.15 },
                           "mechanical": { "min_speed": 16, "max_speed": 256, "required_capacity": 4.0, "required": true }
                         }
                         """
@@ -1052,7 +1052,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "hollow_interior": true,
                           "capacity_per_internal_block": 8000,
                           "controller": "alcoholic:industrial_mash_tun_controller",
-                          "modifiers": { "yield": 1.05, "speed": 1.5, "thermal_stability": 6.0, "max_batch_units": 2147483647 }
+                          "modifiers": { "yield": 1.05, "speed": 1.5, "thermal_stability": 6.0, "max_batch_units": 2147483647, "process_fidelity": 0.70, "complexity_cap": 0.55, "purity_floor": 0.12 }
                         }
                         """
         );
@@ -1074,7 +1074,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "hollow_interior": true,
                           "capacity_per_internal_block": 6000,
                           "controller": "alcoholic:industrial_brewing_kettle_controller",
-                          "modifiers": { "yield": 1.0, "speed": 1.5, "thermal_stability": 3.0, "max_batch_units": 1 }
+                          "modifiers": { "yield": 1.0, "speed": 1.5, "thermal_stability": 3.0, "max_batch_units": 1, "process_fidelity": 0.70, "complexity_cap": 0.55, "purity_floor": 0.12 }
                         }
                         """
         );
@@ -1096,7 +1096,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "hollow_interior": true,
                           "capacity_per_internal_block": 8000,
                           "controller": "alcoholic:industrial_conditioning_vessel_controller",
-                          "modifiers": { "yield": 1.0, "speed": 1.0, "thermal_stability": 3.0, "max_batch_units": 1 }
+                          "modifiers": { "yield": 1.0, "speed": 1.0, "thermal_stability": 3.0, "max_batch_units": 1, "process_fidelity": 0.70, "complexity_cap": 0.55, "purity_floor": 0.15 }
                         }
                         """
         );
@@ -1123,7 +1123,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "hollow_interior": true,
                           "capacity_per_internal_block": 1000,
                           "controller": "alcoholic:craft_malt_house_controller",
-                          "modifiers": { "yield": 1.0, "speed": 1.25, "thermal_stability": 1.5, "max_batch_units": 8 }
+                          "modifiers": { "yield": 1.0, "speed": 1.25, "thermal_stability": 1.5, "max_batch_units": 8, "process_fidelity": 0.94, "complexity_cap": 0.82, "purity_floor": 0.04 }
                         }
                         """
         );
@@ -1146,7 +1146,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "hollow_interior": true,
                           "capacity_per_internal_block": 1000,
                           "controller": "alcoholic:craft_mill_controller",
-                          "modifiers": { "yield": 1.0, "speed": 2.0, "thermal_stability": 1.0, "max_batch_units": 8 },
+                          "modifiers": { "yield": 1.0, "speed": 2.0, "thermal_stability": 1.0, "max_batch_units": 8, "process_fidelity": 0.94, "complexity_cap": 0.82, "purity_floor": 0.04 },
                           "kinetic": { "min_rpm": 8, "max_rpm": 256, "required_capacity": 2.0, "required": true }
                         }
                         """
@@ -1170,7 +1170,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "hollow_interior": true,
                           "capacity_per_internal_block": 2000,
                           "controller": "alcoholic:craft_mash_tun_controller",
-                          "modifiers": { "yield": 1.02, "speed": 1.25, "thermal_stability": 3.0, "max_batch_units": 8 }
+                          "modifiers": { "yield": 1.02, "speed": 1.25, "thermal_stability": 3.0, "max_batch_units": 8, "process_fidelity": 0.94, "complexity_cap": 0.82, "purity_floor": 0.04 }
                         }
                         """
         );
@@ -1193,7 +1193,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "hollow_interior": true,
                           "capacity_per_internal_block": 2000,
                           "controller": "alcoholic:craft_brewing_kettle_controller",
-                          "modifiers": { "yield": 1.0, "speed": 1.25, "thermal_stability": 2.0, "max_batch_units": 1 }
+                          "modifiers": { "yield": 1.0, "speed": 1.25, "thermal_stability": 2.0, "max_batch_units": 1, "process_fidelity": 0.94, "complexity_cap": 0.82, "purity_floor": 0.04 }
                         }
                         """
         );
@@ -1216,7 +1216,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "hollow_interior": true,
                           "capacity_per_internal_block": 2000,
                           "controller": "alcoholic:craft_vat_controller",
-                          "modifiers": { "yield": 1.0, "speed": 1.0, "thermal_stability": 2.0, "max_batch_units": 1 }
+                          "modifiers": { "yield": 1.0, "speed": 1.25, "thermal_stability": 2.0, "max_batch_units": 1, "process_fidelity": 0.94, "complexity_cap": 0.82, "purity_floor": 0.04 }
                         }
                         """
         );
@@ -1313,7 +1313,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                             "input": { "tag": "%s", "amount": 8 },
                             "output": { "liquid": "%s", "volume": 1000 },
                             "byproduct": { "item": "alcoholic:grape_pomace", "amount": 1 },
-                            "processing_time": 20,
+                            "processing_time": 200,
                             "yield": 1.0,
                             "create_compatible": true
                           },
@@ -1338,7 +1338,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                             "require_yeast": true,
                             "preferred_temperature": { "min": 18, "max": 24 },
                             "operating_temperature": { "min": 10, "max": 30 },
-                            "ticks_to_complete": 80,
+                            "ticks_to_complete": 24000,
                             "kinetics": {
                               "sugar_to_ethanol": 0.47,
                               "completion_threshold": 0.02,
@@ -1407,7 +1407,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                             "output": { "liquid": "%s" },
                             "preferred_temperature": { "min": 10, "max": 16 },
                             "operating_temperature": { "min": 0, "max": 36 },
-                            "ticks_to_complete": 80,
+                            "ticks_to_complete": 72000,
                             "kinetics": {
                               "completion_threshold": 1.0
                             }
@@ -1730,7 +1730,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                             "liquid": { "fluid": "minecraft:water", "volume": 1000 },
                             "output": { "liquid": "alcoholic:wort", "volume": 1000 },
                             "byproduct": { "item": "alcoholic:spent_grain", "amount": 1 },
-                            "processing_time": 40,
+                            "processing_time": 1200,
                             "preferred_temperature": { "min": 62, "max": 68 },
                             "operating_temperature": { "min": 52, "max": 78 }
                           },
@@ -1752,7 +1752,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                             "input_liquid": "alcoholic:wort",
                             "output": { "liquid": "alcoholic:hopped_wort" },
                             "addition": { "tag": "alcoholic:hops", "amount": 1 },
-                            "processing_time": 40,
+                            "processing_time": 1600,
                             "preferred_temperature": { "min": 98, "max": 105 },
                             "operating_temperature": { "min": 90, "max": 110 },
                             "hop_profile": {
@@ -1778,7 +1778,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "config": {
                             "input_liquid": "alcoholic:beer",
                             "output": { "liquid": "alcoholic:beer" },
-                            "processing_time": 80,
+                            "processing_time": 12000,
                             "preferred_temperature": { "min": 2, "max": 12 },
                             "operating_temperature": { "min": 0, "max": 20 },
                             "carbonation_from_residual_sugar": 0.35,
@@ -1858,7 +1858,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
               "config": {
                 "input": { "tag": "alcoholic:malted_grain", "amount": 1 },
                 "output": { "item": "alcoholic:grist", "amount": 1 },
-                "processing_time": 80,
+                "processing_time": 200,
                 "create_compatible": true
               },
               "inputs": { "malt": { "tag": "alcoholic:malted_grain" } },
@@ -1901,7 +1901,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "config": {
                             "input": { "tag": "alcoholic:barley", "amount": 1 },
                             "output": { "item": "alcoholic:malted_barley", "amount": 1 },
-                            "processing_time": 80,
+                            "processing_time": 12000,
                             "moisture_requirement": 0.4,
                             "kiln_profile": {
                               "id": "alcoholic:%s",

@@ -104,6 +104,9 @@ public final class BuiltinRegistrations {
             registerDouble(api, path, PropertyMerge.WEIGHTED_AVERAGE);
         }
         registerDouble(api, "maturity", PropertyMerge.WEIGHTED_AVERAGE);
+        registerDouble(api, "complexity_cap", PropertyMerge.MIN);
+        registerDouble(api, "purity_floor", PropertyMerge.MAX);
+        registerDouble(api, "stress", PropertyMerge.WEIGHTED_AVERAGE);
         registerString(api, "variety", PropertyMerge.MATCH_OR_BLENDED);
         registerOakVessel(api);
     }
