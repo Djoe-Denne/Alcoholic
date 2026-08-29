@@ -11,6 +11,7 @@ import com.djden.alcoholic.application.beverage.BeverageCatalog;
 import com.djden.alcoholic.application.beverage.FixtureCatalogs;
 import com.djden.alcoholic.application.beverage.LoadBeverageCatalogUseCase;
 import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
+import com.djden.alcoholic.application.quality.QualityProfiles;
 import com.djden.alcoholic.domain.ingredient.IngredientLot;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
@@ -250,7 +251,7 @@ class IndustrialExecutorEquivalenceTest {
         ).orElseThrow();
         assertEquals(0.55, merged.number(QualityProfile.COMPLEXITY_CAP, 1.0), 1e-9);
         assertEquals(0.15, merged.number(QualityProfile.PURITY_FLOOR, 0.0), 1e-9);
-        QualityProfile profile = QualityProfile.derive(merged);
+        QualityProfile profile = QualityProfiles.derive(merged, harness.catalog, harness.api);
         assertTrue(profile.complexity() <= 0.55 + 1e-9);
         assertTrue(profile.defects() >= 0.15 - 1e-9);
     }
@@ -289,6 +290,7 @@ class IndustrialExecutorEquivalenceTest {
                             FixtureCatalogs.read("data/testpack/alcoholic/beverages/cider.json")
                     ),
                     FixtureCatalogs.liquids(),
+                    FixtureCatalogs.quality(),
                     api
             );
             catalog.set(loaded);

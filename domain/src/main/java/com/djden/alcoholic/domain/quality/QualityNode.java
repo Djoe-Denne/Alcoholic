@@ -24,9 +24,7 @@ public record QualityNode(
         Objects.requireNonNull(operator, "operator");
         config = config == null ? DataNode.object(Map.of()) : config;
         inputs = copyInputs(inputs);
-        outputs = outputs == null || outputs.isEmpty()
-                ? List.of("value")
-                : List.copyOf(new ArrayList<>(outputs));
+        outputs = outputs == null ? List.of() : List.copyOf(new ArrayList<>(outputs));
     }
 
     public boolean hasOutput(String port) {

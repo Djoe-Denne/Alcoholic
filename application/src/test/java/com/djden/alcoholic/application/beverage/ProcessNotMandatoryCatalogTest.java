@@ -22,6 +22,7 @@ class ProcessNotMandatoryCatalogTest {
                 FixtureCatalogs.processes(),
                 FixtureCatalogs.acceptanceBeverages(),
                 FixtureCatalogs.liquids(),
+                FixtureCatalogs.quality(),
                 api
         );
 

@@ -3,6 +3,7 @@ package com.djden.alcoholic.application.beverage;
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.api.data.DataNode;
 import com.djden.alcoholic.api.data.JsonDataParser;
+import com.djden.alcoholic.application.quality.ShippedQualityGraphs;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +25,10 @@ public final class FixtureCatalogs {
         processes.put(source("testpack", "processes/press_fruit"), read("data/testpack/alcoholic/processes/press_fruit.json"));
         processes.put(source("testpack", "processes/age_new_make"), read("data/testpack/alcoholic/processes/age_new_make.json"));
         return processes;
+    }
+
+    public static Map<ResourceId, DataNode> quality() {
+        return ShippedQualityGraphs.sources();
     }
 
     public static Map<ResourceId, DataNode> liquids() {

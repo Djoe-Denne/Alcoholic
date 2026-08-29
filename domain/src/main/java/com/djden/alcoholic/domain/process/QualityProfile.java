@@ -6,7 +6,6 @@ import com.djden.alcoholic.api.process.ExecutorModifiers;
 import com.djden.alcoholic.api.quality.QualityOperator;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
-import com.djden.alcoholic.domain.quality.BuiltinQualityGraphs;
 import com.djden.alcoholic.domain.quality.QualityEvaluator;
 import com.djden.alcoholic.domain.quality.QualityGraph;
 
@@ -19,9 +18,9 @@ import java.util.Objects;
  * under these names; {@link #summary()} is a UI fold that still respects
  * the tightest complexity cap and highest purity floor stamped on the batch.
  *
- * <p>The default {@link #derive(LiquidBatchView)} path evaluates
- * {@code alcoholic:generic}. Call {@link #evaluate(QualityGraph, LiquidBatchView, ExecutorModifiers)}
- * to use a beverage-selected DAG.</p>
+ * <p>Evaluate a catalog graph with {@link #evaluate(QualityGraph, LiquidBatchView, ExecutorModifiers)}.
+ * Runtime resolution (identity / {@code baseLiquid} / generic) lives in application
+ * {@code QualityProfiles}.</p>
  */
 public record QualityProfile(
         double purity,
@@ -48,6 +47,7 @@ public record QualityProfile(
     public static final ResourceId FERMENTATION_STRESS = ResourceId.parse("alcoholic:fermentation_stress");
     public static final ResourceId COMPLEXITY_CAP = ResourceId.parse("alcoholic:complexity_cap");
     public static final ResourceId PURITY_FLOOR = ResourceId.parse("alcoholic:purity_floor");
+    public static final ResourceId ETHANOL = ResourceId.parse("alcoholic:ethanol");
 
     public QualityProfile {
         purity = clamp01(purity);
@@ -56,14 +56,6 @@ public record QualityProfile(
         balance = clamp01(balance);
         defects = clamp01(defects);
         summary = clamp01(summary);
-    }
-
-    public static QualityProfile derive(LiquidBatchView batch) {
-        return derive(batch, ExecutorModifiers.identity());
-    }
-
-    public static QualityProfile derive(LiquidBatchView batch, ExecutorModifiers modifiers) {
-        return evaluate(BuiltinQualityGraphs.generic(), batch, modifiers);
     }
 
     public static QualityProfile evaluate(

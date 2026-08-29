@@ -86,11 +86,7 @@ public final class LoadBeverageCatalogUseCase {
                 LiquidDefinition::id,
                 issues
         );
-        Map<ResourceId, QualityGraph> decodedQuality = qualityLoader.load(quality, api);
-        if (!issues.isEmpty()) {
-            throw new IllegalArgumentException(new ValidationResult(issues).format());
-        }
-
+        Map<ResourceId, QualityGraph> decodedQuality = qualityLoader.load(quality, api, issues);
         BeverageCatalog raw = new BeverageCatalog(
                 decodedIngredients,
                 decodedProcesses,
@@ -99,8 +95,8 @@ public final class LoadBeverageCatalogUseCase {
                 decodedQuality
         );
         BeverageCatalog expanded = expand(raw);
-        ValidationResult result = validator.validate(expanded, api);
-        result.throwIfInvalid();
+        issues.addAll(validator.validate(expanded, api).issues());
+        new ValidationResult(issues).throwIfInvalid();
         return expanded;
     }
 

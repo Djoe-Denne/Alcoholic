@@ -16,28 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class QualityGraphValidatorTest {
     @Test
-    void shippedGraphsAreAcyclic() {
-        BuiltinQualityGraphs.all().values().forEach(graph ->
-                assertTrue(QualityGraphValidator.validate(graph, "quality/" + graph.id()).isEmpty())
-        );
-    }
-
-    @Test
     void rejectsCycles() {
-        QualityNode first = new QualityNode(
-                "a",
-                BuiltinQualityOperators.READ,
-                DataNode.object(Map.of()),
-                Map.of("in", new QualityInput.NodePort("b")),
-                List.of("value")
-        );
-        QualityNode second = new QualityNode(
-                "b",
-                BuiltinQualityOperators.READ,
-                DataNode.object(Map.of()),
-                Map.of("in", new QualityInput.NodePort("a")),
-                List.of("value")
-        );
+        QualityNode first = node("a", Map.of("in", new QualityInput.NodePort("b")));
+        QualityNode second = node("b", Map.of("in", new QualityInput.NodePort("a")));
         QualityGraph graph = new QualityGraph(
                 ResourceId.parse("test:loop"),
                 List.of(first, second),
@@ -65,16 +46,70 @@ class QualityGraphValidatorTest {
         assertTrue(QualityGraphValidator.validate(graph, "quality/test:limit").isEmpty());
     }
 
+    @Test
+    void rejectsEmptyGraphMissingProfile() {
+        QualityGraph graph = new QualityGraph(ResourceId.parse("test:empty"), List.of(), Map.of());
+        List<GraphIssue> issues = QualityGraphValidator.validate(graph, "quality/test:empty");
+        assertTrue(issues.stream().anyMatch(issue -> issue.message().contains("outputs.profile")));
+    }
+
+    @Test
+    void acceptsSingleNodeGraph() {
+        QualityGraph graph = new QualityGraph(
+                ResourceId.parse("test:one"),
+                List.of(node("only", Map.of())),
+                Map.of("profile", new OutputReference("only", "value"))
+        );
+        assertTrue(QualityGraphValidator.validate(graph, "quality/test:one").isEmpty());
+    }
+
+    @Test
+    void rejectsDuplicateNodeIds() {
+        QualityGraph graph = new QualityGraph(
+                ResourceId.parse("test:dup"),
+                List.of(node("x", Map.of()), node("x", Map.of())),
+                Map.of("profile", new OutputReference("x", "value"))
+        );
+        List<GraphIssue> issues = QualityGraphValidator.validate(graph, "quality/test:dup");
+        assertTrue(issues.stream().anyMatch(issue -> issue.message().contains("duplicate node")));
+    }
+
+    @Test
+    void rejectsUnknownInputNode() {
+        QualityGraph graph = new QualityGraph(
+                ResourceId.parse("test:missing"),
+                List.of(node("x", Map.of("in", new QualityInput.NodePort("gone")))),
+                Map.of("profile", new OutputReference("x", "value"))
+        );
+        List<GraphIssue> issues = QualityGraphValidator.validate(graph, "quality/test:missing");
+        assertTrue(issues.stream().anyMatch(issue -> issue.message().contains("unknown node gone")));
+    }
+
+    @Test
+    void rejectsUnknownOutputPort() {
+        QualityGraph graph = new QualityGraph(
+                ResourceId.parse("test:port"),
+                List.of(node("x", Map.of())),
+                Map.of("profile", new OutputReference("x", "summary"))
+        );
+        List<GraphIssue> issues = QualityGraphValidator.validate(graph, "quality/test:port");
+        assertTrue(issues.stream().anyMatch(issue -> issue.message().contains("unknown port summary")));
+    }
+
+    private static QualityNode node(String id, Map<String, QualityInput> inputs) {
+        return new QualityNode(
+                id,
+                BuiltinQualityOperators.READ,
+                DataNode.object(Map.of()),
+                inputs,
+                List.of("value")
+        );
+    }
+
     private static QualityGraph graphWithNodes(int count) {
         List<QualityNode> nodes = new ArrayList<>();
         for (int index = 0; index < count; index++) {
-            nodes.add(new QualityNode(
-                    "n" + index,
-                    BuiltinQualityOperators.READ,
-                    DataNode.object(Map.of()),
-                    Map.of(),
-                    List.of("value")
-            ));
+            nodes.add(node("n" + index, Map.of()));
         }
         return new QualityGraph(
                 ResourceId.parse("test:sized"),

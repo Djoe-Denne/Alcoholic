@@ -11,7 +11,11 @@
       "id": "fold",
       "op": "alcoholic:fold_summary",
       "inputs": {
-        "complexity": ["harvest", "wood", "oxygen"],
+        "complexity": [
+          "harvest",
+          "wood",
+          { "node": "oxygen", "port": "complexity" }
+        ],
         "maturity": "maturity",
         "defects": [
           "stress",

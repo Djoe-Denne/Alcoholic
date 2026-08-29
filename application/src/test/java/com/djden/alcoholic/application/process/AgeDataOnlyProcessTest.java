@@ -91,6 +91,7 @@ class AgeDataOnlyProcessTest {
                         FixtureCatalogs.read("data/testpack/alcoholic/beverages/whisky.json")
                 ),
                 FixtureCatalogs.liquids(),
+                FixtureCatalogs.quality(),
                 api
         );
         Optional<ProcessInvocation> found = ProcessRecipeResolver.find(

@@ -27,6 +27,7 @@ class LoadBeverageCatalogUseCaseTest {
                 FixtureCatalogs.processes(),
                 FixtureCatalogs.acceptanceBeverages(),
                 FixtureCatalogs.liquids(),
+                FixtureCatalogs.quality(),
                 api
         );
 
@@ -293,6 +294,7 @@ class LoadBeverageCatalogUseCaseTest {
                 FixtureCatalogs.processes(),
                 FixtureCatalogs.acceptanceBeverages(),
                 FixtureCatalogs.liquids(),
+                FixtureCatalogs.quality(),
                 api
         );
         store.replace(valid);
@@ -321,6 +323,84 @@ class LoadBeverageCatalogUseCaseTest {
                 api
         ));
         assertEquals(valid, store.snapshot());
+    }
+
+    @Test
+    void rejectsUnknownQualityGraph() {
+        AlcoholicApi api = api();
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> loader.load(
+                Map.of(),
+                Map.of(),
+                Map.of(
+                        ResourceId.parse("testpack:beverages/missing_quality"),
+                        JsonDataParser.parse("""
+                                {
+                                  "id": "testpack:missing_quality",
+                                  "quality": "testpack:missing",
+                                  "graph": {
+                                    "nodes": [
+                                      { "id": "press", "process": "alcoholic:press", "outputs": ["must"] }
+                                    ]
+                                  }
+                                }
+                                """)
+                ),
+                Map.of(),
+                Map.of(),
+                api
+        ));
+        assertTrue(thrown.getMessage().contains("unknown quality graph"));
+    }
+
+    @Test
+    void accumulatesQualityAndBeverageIssues() {
+        AlcoholicApi api = api();
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> loader.load(
+                Map.of(),
+                Map.of(),
+                Map.of(
+                        ResourceId.parse("testpack:beverages/cycle"),
+                        JsonDataParser.parse("""
+                                {
+                                  "id": "testpack:cycle",
+                                  "graph": {
+                                    "nodes": [
+                                      {
+                                        "id": "a",
+                                        "process": "alcoholic:press",
+                                        "inputs": { "in": { "node": "a", "port": "out" } },
+                                        "outputs": ["out"]
+                                      }
+                                    ]
+                                  }
+                                }
+                                """)
+                ),
+                Map.of(),
+                Map.of(
+                        ResourceId.parse("testpack:quality/loop"),
+                        JsonDataParser.parse("""
+                                {
+                                  "id": "testpack:loop",
+                                  "nodes": [
+                                    {
+                                      "id": "a",
+                                      "op": "alcoholic:harvest_complexity",
+                                      "inputs": { "in": "b" }
+                                    },
+                                    {
+                                      "id": "b",
+                                      "op": "alcoholic:harvest_complexity",
+                                      "inputs": { "in": "a" }
+                                    }
+                                  ],
+                                  "outputs": { "profile": { "node": "a", "port": "value" } }
+                                }
+                                """)
+                ),
+                api
+        ));
+        assertTrue(thrown.getMessage().contains("cycle"));
     }
 
     private static AlcoholicApi api() {

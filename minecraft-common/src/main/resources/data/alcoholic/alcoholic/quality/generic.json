@@ -69,7 +69,15 @@
       "id": "fold",
       "op": "alcoholic:fold_summary",
       "inputs": {
-        "complexity": ["harvest", "nuance", "hop", "tannin_c", "color_c", "wood", "oxygen"],
+        "complexity": [
+          "harvest",
+          "nuance",
+          "hop",
+          "tannin_c",
+          "color_c",
+          "wood",
+          { "node": "oxygen", "port": "complexity" }
+        ],
         "balance": "balance",
         "maturity": "maturity",
         "defects": [

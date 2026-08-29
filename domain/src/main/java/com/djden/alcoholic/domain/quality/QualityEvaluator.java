@@ -84,20 +84,14 @@ public final class QualityEvaluator {
             Map<String, QualitySignal> evaluated
     ) {
         OutputReference output = graph.outputs().get("profile");
-        if (output != null) {
-            QualitySignal signal = evaluated.get(output.nodeId());
-            if (signal == null) {
-                throw new IllegalArgumentException("unknown quality output node " + output.nodeId());
-            }
-            return signal;
+        if (output == null) {
+            throw new IllegalArgumentException("quality graph " + graph.id() + " has no profile output");
         }
-        for (int index = graph.nodes().size() - 1; index >= 0; index--) {
-            QualityNode node = graph.nodes().get(index);
-            if (BuiltinQualityOperators.FOLD_SUMMARY.equals(node.operator())) {
-                return evaluated.get(node.id());
-            }
+        QualitySignal signal = evaluated.get(output.nodeId());
+        if (signal == null) {
+            throw new IllegalArgumentException("unknown quality output node " + output.nodeId());
         }
-        throw new IllegalArgumentException("quality graph " + graph.id() + " has no profile output");
+        return signal;
     }
 
     private static Map<String, QualitySignal> resolveInputs(
@@ -116,13 +110,13 @@ public final class QualityEvaluator {
     ) {
         if (input instanceof QualityInput.NodePort reference) {
             QualitySignal source = require(evaluated, reference.nodeId());
-            double extracted = pick(source, reference.port(), inputPort);
+            double extracted = pick(source, reference.port());
             return source.with("value", extracted).with(inputPort, extracted);
         }
         if (input instanceof QualityInput.Sum sum) {
             double total = 0.0;
             for (QualityInput.NodePort reference : sum.sources()) {
-                total += pick(require(evaluated, reference.nodeId()), reference.port(), inputPort);
+                total += pick(require(evaluated, reference.nodeId()), reference.port());
             }
             return QualitySignal.empty().with("value", total).with(inputPort, total);
         }
@@ -137,23 +131,8 @@ public final class QualityEvaluator {
         return signal;
     }
 
-    private static double pick(QualitySignal signal, String requestedPort, String inputPort) {
-        if (!"value".equals(requestedPort) && signal.ports().containsKey(requestedPort)) {
-            return signal.get(requestedPort, 0.0);
-        }
-        if ("complexity".equals(inputPort) && signal.ports().containsKey("complexity")) {
-            return signal.get("complexity", 0.0);
-        }
-        if ("defects".equals(inputPort) && signal.ports().containsKey("defects")) {
-            return signal.get("defects", 0.0);
-        }
-        if ("defects".equals(inputPort) && signal.ports().containsKey("floor")) {
-            return signal.get("floor", 0.0);
-        }
-        if (signal.ports().containsKey(requestedPort)) {
-            return signal.get(requestedPort, 0.0);
-        }
-        return signal.get("value", 0.0);
+    private static double pick(QualitySignal signal, String requestedPort) {
+        return signal.get(requestedPort, 0.0);
     }
 
     private static List<String> topological(QualityGraph graph, Map<String, QualityNode> nodes) {

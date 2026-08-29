@@ -7,6 +7,7 @@ data/<namespace>/alcoholic/ingredients/*.json
 data/<namespace>/alcoholic/processes/*.json
 data/<namespace>/alcoholic/beverages/*.json
 data/<namespace>/alcoholic/liquids/*.json
+data/<namespace>/alcoholic/quality/*.json
 ```
 
 The core never inspects a finite list of drink families. A datapack that only
@@ -371,7 +372,9 @@ Java registers operators (`alcoholic:harvest_complexity`,
 `alcoholic:distance_balance`, `alcoholic:fold_summary`, …). The datapack
 wires them. Shipped graphs: `alcoholic:wine`, `alcoholic:beer`,
 `alcoholic:spirit`, `alcoholic:generic`. Omit `quality` to use generic
-(present axes only). Ethanol is never an input. See ADR-038.
+from the catalog (present axes only). Graphs are datapack-only, must
+declare `outputs.profile`, and may have at most 256 nodes. Ethanol is
+rejected as a quality input at load. See ADR-038.
 
 Inspect and bottling resolve the graph from beverage identity, then
 `baseLiquid`, then generic.

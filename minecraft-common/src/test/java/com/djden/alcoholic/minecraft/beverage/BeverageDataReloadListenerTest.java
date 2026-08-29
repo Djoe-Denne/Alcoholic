@@ -3,6 +3,7 @@ package com.djden.alcoholic.minecraft.beverage;
 import com.djden.alcoholic.api.AlcoholicApi;
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.application.beverage.BeverageCatalog;
+import com.djden.alcoholic.application.beverage.BeverageCatalogStore;
 import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -106,6 +107,84 @@ class BeverageDataReloadListenerTest {
                 IllegalArgumentException.class,
                 () -> BeverageDataReloadListener.parseSnapshot(resources, api)
         );
+    }
+
+    @Test
+    void loadsQualityGraphsFromSnapshot() {
+        AlcoholicApi api = AlcoholicApi.create();
+        BuiltinRegistrations.install(api);
+        BeverageCatalog parsed = BeverageDataReloadListener.parseSnapshot(
+                Map.of(
+                        id("alcoholic", "quality/wine"),
+                        json("""
+                                {
+                                  "id": "alcoholic:wine",
+                                  "nodes": [
+                                    { "id": "harvest", "op": "alcoholic:harvest_complexity" },
+                                    {
+                                      "id": "fold",
+                                      "op": "alcoholic:fold_summary",
+                                      "inputs": { "complexity": "harvest" }
+                                    }
+                                  ],
+                                  "outputs": { "profile": { "node": "fold", "port": "summary" } }
+                                }
+                                """)
+                ),
+                api
+        );
+        assertEquals(1, parsed.qualityGraphs().size());
+        assertTrue(parsed.quality(ResourceId.parse("alcoholic:wine")).isPresent());
+    }
+
+    @Test
+    void keepsPreviousSnapshotWhenQualityReloadFails() {
+        AlcoholicApi api = AlcoholicApi.create();
+        BuiltinRegistrations.install(api);
+        BeverageCatalog previous = BeverageDataReloadListener.parseSnapshot(
+                Map.of(
+                        id("testpack", "beverages/cider"),
+                        json("""
+                                {
+                                  "id": "testpack:cider",
+                                  "graph": {
+                                    "nodes": [
+                                      { "id": "press", "process": "alcoholic:press", "outputs": ["must"] }
+                                    ]
+                                  }
+                                }
+                                """)
+                ),
+                api
+        );
+        BeverageCatalogStore store = new BeverageCatalogStore(previous);
+        BeverageDataReloadListener listener = new BeverageDataReloadListener(store, api);
+        listener.apply(
+                Map.of(
+                        id("testpack", "quality/loop"),
+                        json("""
+                                {
+                                  "id": "testpack:loop",
+                                  "nodes": [
+                                    {
+                                      "id": "a",
+                                      "op": "alcoholic:harvest_complexity",
+                                      "inputs": { "in": "b" }
+                                    },
+                                    {
+                                      "id": "b",
+                                      "op": "alcoholic:harvest_complexity",
+                                      "inputs": { "in": "a" }
+                                    }
+                                  ],
+                                  "outputs": { "profile": { "node": "a", "port": "value" } }
+                                }
+                                """)
+                ),
+                null,
+                null
+        );
+        assertEquals(previous, store.snapshot());
     }
 
     private static ResourceLocation id(String namespace, String path) {

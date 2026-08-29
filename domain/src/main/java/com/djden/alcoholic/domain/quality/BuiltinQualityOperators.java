@@ -97,7 +97,7 @@ public final class BuiltinQualityOperators {
 
     private static QualitySignal harvest(QualityEvaluationContext context, Void config) {
         double harvest = number(context.batch(), QualityProfile.HARVEST_QUALITY);
-        return QualitySignal.value(harvest * context.modifiers().processFidelity());
+        return QualitySignal.value(harvest);
     }
 
     private static QualitySignal balance(QualityEvaluationContext context, DistanceBalanceConfig config) {

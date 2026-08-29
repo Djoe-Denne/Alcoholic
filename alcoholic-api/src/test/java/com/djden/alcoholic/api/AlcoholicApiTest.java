@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AlcoholicApiTest {
     @Test
-    void freezesProcessAndPropertyRegistration() {
+    void freezesProcessPropertyVesselAndQualityRegistration() {
         AlcoholicApi api = AlcoholicApi.create();
         ResourceId process = ResourceId.parse("addon:custom_process");
         api.processes().register(process, DataCodecs.UNIT, (request, config, context) ->

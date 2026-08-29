@@ -46,6 +46,9 @@ public final class QualityGraphValidator {
             ));
         }
 
+        if (!graph.outputs().containsKey("profile")) {
+            issues.add(new GraphIssue(path + "/outputs/profile", "missing outputs.profile"));
+        }
         graph.outputs().forEach((name, output) -> {
             String outputPath = path + "/outputs/" + name;
             QualityNode source = nodes.get(output.nodeId());

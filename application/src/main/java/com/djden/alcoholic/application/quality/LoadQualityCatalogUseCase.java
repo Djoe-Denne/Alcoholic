@@ -9,7 +9,8 @@ import com.djden.alcoholic.application.beverage.ValidationResult;
 import com.djden.alcoholic.application.beverage.codec.ProcessDefinitionCodec;
 import com.djden.alcoholic.application.beverage.codec.QualityGraphCodec;
 import com.djden.alcoholic.domain.beverage.GraphIssue;
-import com.djden.alcoholic.domain.quality.BuiltinQualityGraphs;
+import com.djden.alcoholic.domain.process.QualityProfile;
+import com.djden.alcoholic.domain.quality.BuiltinQualityOperators;
 import com.djden.alcoholic.domain.quality.QualityGraph;
 import com.djden.alcoholic.domain.quality.QualityGraphValidator;
 import com.djden.alcoholic.domain.quality.QualityNode;
@@ -25,17 +26,33 @@ import java.util.Set;
 
 public final class LoadQualityCatalogUseCase {
     public Map<ResourceId, QualityGraph> load(Map<ResourceId, DataNode> sources, AlcoholicApi api) {
-        Objects.requireNonNull(api, "api");
         List<ValidationIssue> issues = new ArrayList<>();
-        Map<ResourceId, QualityGraph> graphs = new LinkedHashMap<>(BuiltinQualityGraphs.all());
+        Map<ResourceId, QualityGraph> graphs = load(sources, api, issues);
+        new ValidationResult(issues).throwIfInvalid();
+        return graphs;
+    }
+
+    public Map<ResourceId, QualityGraph> load(
+            Map<ResourceId, DataNode> sources,
+            AlcoholicApi api,
+            List<ValidationIssue> issues
+    ) {
+        Objects.requireNonNull(api, "api");
+        Objects.requireNonNull(issues, "issues");
+        Map<ResourceId, QualityGraph> graphs = new LinkedHashMap<>();
         Set<ResourceId> datapackIds = new HashSet<>();
         Objects.requireNonNull(sources, "quality").forEach((source, node) -> {
             String path = "quality/" + source;
             try {
-                QualityGraph graph = QualityGraphCodec.INSTANCE.decode(
-                        node,
+                QualityGraph graph = applyDefaultOutputs(
+                        QualityGraphCodec.INSTANCE.decode(
+                                node,
+                                path,
+                                ProcessDefinitionCodec.fallbackId(source)
+                        ),
+                        api,
                         path,
-                        ProcessDefinitionCodec.fallbackId(source)
+                        issues
                 );
                 if (!datapackIds.add(graph.id())) {
                     issues.add(new ValidationIssue(path, "duplicate id " + graph.id()));
@@ -47,8 +64,33 @@ public final class LoadQualityCatalogUseCase {
             }
         });
         graphs.forEach((id, graph) -> validate(graph, "quality/" + id, api, issues));
-        new ValidationResult(issues).throwIfInvalid();
         return Map.copyOf(graphs);
+    }
+
+    private static QualityGraph applyDefaultOutputs(
+            QualityGraph graph,
+            AlcoholicApi api,
+            String path,
+            List<ValidationIssue> issues
+    ) {
+        List<QualityNode> nodes = new ArrayList<>();
+        for (QualityNode node : graph.nodes()) {
+            List<String> outputs = node.outputs();
+            if (outputs.isEmpty()) {
+                Optional<QualityOperator<?>> operator = api.qualityOperators().get(node.operator());
+                if (operator.isPresent()) {
+                    outputs = operator.get().defaultOutputs();
+                }
+                if (outputs.isEmpty()) {
+                    issues.add(new ValidationIssue(
+                            path + "/nodes/" + node.id() + "/outputs",
+                            "node must declare outputs"
+                    ));
+                }
+            }
+            nodes.add(new QualityNode(node.id(), node.operator(), node.config(), node.inputs(), outputs));
+        }
+        return new QualityGraph(graph.id(), nodes, graph.outputs());
     }
 
     private static void validate(
@@ -68,10 +110,44 @@ public final class LoadQualityCatalogUseCase {
                 continue;
             }
             try {
-                operator.get().configCodec().decode(node.config(), nodePath + "/config");
+                Object config = operator.get().configCodec().decode(node.config(), nodePath + "/config");
+                rejectEthanolInputs(config, nodePath + "/config", issues);
             } catch (RuntimeException exception) {
                 issues.add(new ValidationIssue(nodePath + "/config", exception.getMessage()));
             }
+        }
+    }
+
+    private static void rejectEthanolInputs(Object config, String path, List<ValidationIssue> issues) {
+        ResourceId ethanol = QualityProfile.ETHANOL;
+        if (config instanceof BuiltinQualityOperators.ReadConfig read && ethanol.equals(read.property())) {
+            issues.add(new ValidationIssue(path, "ethanol is never a quality input"));
+            return;
+        }
+        if (config instanceof BuiltinQualityOperators.WoodSweetSpotConfig wood) {
+            rejectEthanol(wood.property().orElse(null), path + "/property", issues);
+            rejectEthanol(wood.fallback().orElse(null), path + "/fallback", issues);
+            return;
+        }
+        if (config instanceof BuiltinQualityOperators.DistanceBalanceConfig balance) {
+            for (int index = 0; index < balance.groups().size(); index++) {
+                BuiltinQualityOperators.DistanceBalanceConfig.Group group = balance.groups().get(index);
+                String groupPath = path + "/groups[" + index + "]";
+                group.present().forEach(id -> rejectEthanol(id, groupPath + "/present", issues));
+                group.targets().keySet().forEach(id -> rejectEthanol(id, groupPath + "/targets", issues));
+            }
+            return;
+        }
+        if (config instanceof BuiltinQualityOperators.WeightedPresentConfig weighted) {
+            weighted.weights().keySet().forEach(id -> rejectEthanol(id, path + "/weights", issues));
+            weighted.left().ifPresent(id -> rejectEthanol(id, path + "/left", issues));
+            weighted.right().ifPresent(id -> rejectEthanol(id, path + "/right", issues));
+        }
+    }
+
+    private static void rejectEthanol(ResourceId id, String path, List<ValidationIssue> issues) {
+        if (QualityProfile.ETHANOL.equals(id)) {
+            issues.add(new ValidationIssue(path, "ethanol is never a quality input"));
         }
     }
 }
