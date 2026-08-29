@@ -51,5 +51,6 @@
     "alcoholic:acidity",
     "alcoholic:quality",
     "alcoholic:maturity"
-  ]
+  ],
+  "quality": "alcoholic:wine"
 }

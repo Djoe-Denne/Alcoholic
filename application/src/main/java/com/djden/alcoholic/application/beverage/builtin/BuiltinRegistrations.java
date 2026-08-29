@@ -29,6 +29,7 @@ import com.djden.alcoholic.application.process.MillProcessor;
 import com.djden.alcoholic.application.process.PressConfig;
 import com.djden.alcoholic.application.process.PressProcessor;
 import com.djden.alcoholic.application.process.PropertyMerges;
+import com.djden.alcoholic.domain.quality.BuiltinQualityOperators;
 import com.djden.alcoholic.domain.vessel.VesselProfile;
 
 import java.util.Set;
@@ -109,6 +110,7 @@ public final class BuiltinRegistrations {
         registerDouble(api, "stress", PropertyMerge.WEIGHTED_AVERAGE);
         registerString(api, "variety", PropertyMerge.MATCH_OR_BLENDED);
         registerOakVessel(api);
+        BuiltinQualityOperators.install(api);
     }
 
     private static void registerPress(AlcoholicApi api, Supplier<BeverageCatalog> catalog) {

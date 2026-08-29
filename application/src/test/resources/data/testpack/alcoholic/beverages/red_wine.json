@@ -57,5 +57,6 @@
     "alcoholic:ethanol",
     "alcoholic:acidity",
     "alcoholic:tannin"
-  ]
+  ],
+  "quality": "alcoholic:wine"
 }

@@ -788,7 +788,18 @@ class GeneratedResourceContractTest {
         resource("data/alcoholic/alcoholic/processes/boil_wort.json");
         resource("data/alcoholic/alcoholic/processes/ferment_hopped_wort.json");
         resource("data/alcoholic/alcoholic/processes/condition_beer.json");
-        resource("data/alcoholic/alcoholic/beverages/beer.json");
+        JsonObject beer = resource("data/alcoholic/alcoholic/beverages/beer.json");
+        assertEquals("alcoholic:beer", beer.get("quality").getAsString());
+        assertEquals(
+                "alcoholic:wine",
+                resource("data/alcoholic/alcoholic/quality/wine.json").get("id").getAsString()
+        );
+        assertEquals(
+                "alcoholic:beer",
+                resource("data/alcoholic/alcoholic/quality/beer.json").get("id").getAsString()
+        );
+        resource("data/alcoholic/alcoholic/quality/generic.json");
+        resource("data/alcoholic/alcoholic/quality/spirit.json");
         resource("data/alcoholic/alcoholic/liquids/wort.json");
         JsonObject barley = resource("data/alcoholic/tags/items/barley.json");
         assertTrue(barley.getAsJsonArray("values").size() > 0);

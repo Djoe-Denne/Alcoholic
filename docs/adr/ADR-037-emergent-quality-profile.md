@@ -5,6 +5,7 @@
 - Extends: [ADR-022](ADR-022-industrial-executor-modifiers.md),
   [ADR-008](ADR-008-process-executor-capability-model.md)
 - Related: [ADR-016](ADR-016-bottled-beverage-snapshot.md)
+- Extended by: [ADR-038](ADR-038-quality-operator-dag.md)
 
 ## Context
 

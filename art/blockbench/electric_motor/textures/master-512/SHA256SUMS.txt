@@ -1,2 +1,0 @@
-2bd04f085eaadd610db655ef0b704d254c2f3e5fc721340e9c96de7d31d376f3  electric_motor.png
-987ac1a68cbf7cd76a5527f55bdae9952a8444fe252b8746bba8a9ba77f50c59  electric_motor_on.png

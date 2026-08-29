@@ -25,6 +25,8 @@ crash-reports/
 .DS_Store
 Thumbs.db
 Desktop.ini
+nul
+NUL
 hs_err_pid*
 replay_pid*
 *.hprof

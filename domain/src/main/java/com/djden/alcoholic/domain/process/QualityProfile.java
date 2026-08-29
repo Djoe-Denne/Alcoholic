@@ -1,11 +1,14 @@
 package com.djden.alcoholic.domain.process;
 
 import com.djden.alcoholic.api.ResourceId;
-import com.djden.alcoholic.api.liquid.BatchProvenanceView;
 import com.djden.alcoholic.api.liquid.LiquidBatchView;
 import com.djden.alcoholic.api.process.ExecutorModifiers;
+import com.djden.alcoholic.api.quality.QualityOperator;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
+import com.djden.alcoholic.domain.quality.BuiltinQualityGraphs;
+import com.djden.alcoholic.domain.quality.QualityEvaluator;
+import com.djden.alcoholic.domain.quality.QualityGraph;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,6 +18,10 @@ import java.util.Objects;
  * Derived drink profile. Ethanol is never an input. Axes are not persisted
  * under these names; {@link #summary()} is a UI fold that still respects
  * the tightest complexity cap and highest purity floor stamped on the batch.
+ *
+ * <p>The default {@link #derive(LiquidBatchView)} path evaluates
+ * {@code alcoholic:generic}. Call {@link #evaluate(QualityGraph, LiquidBatchView, ExecutorModifiers)}
+ * to use a beverage-selected DAG.</p>
  */
 public record QualityProfile(
         double purity,
@@ -41,8 +48,6 @@ public record QualityProfile(
     public static final ResourceId FERMENTATION_STRESS = ResourceId.parse("alcoholic:fermentation_stress");
     public static final ResourceId COMPLEXITY_CAP = ResourceId.parse("alcoholic:complexity_cap");
     public static final ResourceId PURITY_FLOOR = ResourceId.parse("alcoholic:purity_floor");
-    /** One hour at 20 tps. Ages the maturity axis without farming complexity. */
-    private static final double MATURITY_AGING_TICKS = 72_000.0;
 
     public QualityProfile {
         purity = clamp01(purity);
@@ -58,71 +63,24 @@ public record QualityProfile(
     }
 
     public static QualityProfile derive(LiquidBatchView batch, ExecutorModifiers modifiers) {
-        Objects.requireNonNull(batch, "batch");
-        ExecutorModifiers scale = modifiers == null ? ExecutorModifiers.identity() : modifiers;
-        BatchProvenanceView provenance = batch.provenance();
-        double harvest = number(batch, HARVEST_QUALITY);
-        double sugar = number(batch, SUGAR);
-        double acid = number(batch, ACIDITY);
-        double tannin = number(batch, TANNIN);
-        double color = number(batch, COLOR);
-        double maturityValue = number(batch, MATURITY);
-        double wood = first(batch, WOOD, WOOD_ALT);
-        double oxidation = first(batch, OXIDATION, OXIDATION_ALT);
-        double aroma = number(batch, AROMA);
-        double bitterness = number(batch, BITTERNESS);
-        double carbonation = number(batch, CARBONATION);
-        double stress = Math.max(
-                provenance.fermentationStress(),
-                Math.max(number(batch, STRESS), number(batch, FERMENTATION_STRESS))
-        );
-        OxygenCurve.Evaluation oxygen = OxygenCurve.evaluate(oxidation, provenance.totalAgingTime());
-        double floor = Math.max(scale.purityFloor(), number(batch, PURITY_FLOOR, 0.0));
-        double defects = clamp01(stress + oxygen.defects() + floor);
-        double purity = clamp01(1.0 - defects);
-        double nuance = (acid > 0.0 || sugar > 0.0)
-                ? clamp01((1.0 - Math.abs(acid - sugar)) * 0.15)
-                : 0.0;
-        double hop = (aroma > 0.0 || bitterness > 0.0)
-                ? clamp01(aroma * 0.35 + bitterness * 0.20)
-                : 0.0;
-        double tanninComplexity = tannin > 0.0 ? OxygenCurve.woodSweetSpot(tannin) * 0.45 : 0.0;
-        double colorComplexity = color > 0.0 ? clamp01(color * 0.10) : 0.0;
-        double rawComplexity = harvest * scale.processFidelity()
-                + nuance
-                + hop
-                + tanninComplexity
-                + colorComplexity
-                + OxygenCurve.woodSweetSpot(wood)
-                + oxygen.complexityBonus();
-        double cap = Math.min(scale.complexityCap(), number(batch, COMPLEXITY_CAP, 1.0));
-        double complexity = Math.min(cap, clamp01(rawComplexity));
-        double agingFactor = provenance.totalAgingTime() > 0.0
-                ? Math.min(0.25, provenance.totalAgingTime() / MATURITY_AGING_TICKS * 0.25)
-                : 0.0;
-        double maturityAxis = clamp01(maturityValue + agingFactor);
-        double balanceSum = 0.0;
-        int balanceCount = 0;
-        if (acid > 0.0 || sugar > 0.0) {
-            balanceSum += clamp01(1.0 - (Math.abs(sugar - 0.35) + Math.abs(acid - 0.45)) / 2.0);
-            balanceCount++;
-        }
-        if (bitterness > 0.0 || aroma > 0.0) {
-            balanceSum += clamp01(1.0 - Math.abs(bitterness - 0.40));
-            balanceCount++;
-        }
-        if (carbonation > 0.0) {
-            balanceSum += clamp01(1.0 - Math.abs(carbonation - 0.35));
-            balanceCount++;
-        }
-        if (tannin > 0.0) {
-            balanceSum += clamp01(1.0 - Math.abs(tannin - 0.45));
-            balanceCount++;
-        }
-        double balance = balanceCount == 0 ? 0.5 : clamp01(balanceSum / balanceCount);
-        double summary = clamp01(((purity + complexity + maturityAxis + balance) / 4.0) * (1.0 - defects));
-        summary = Math.min(cap, summary);
-        return new QualityProfile(purity, complexity, maturityAxis, balance, defects, summary);
+        return evaluate(BuiltinQualityGraphs.generic(), batch, modifiers);
+    }
+
+    public static QualityProfile evaluate(
+            QualityGraph graph,
+            LiquidBatchView batch,
+            ExecutorModifiers modifiers
+    ) {
+        return QualityEvaluator.evaluate(graph, batch, modifiers);
+    }
+
+    public static QualityProfile evaluate(
+            QualityGraph graph,
+            Map<ResourceId, ? extends QualityOperator<?>> operators,
+            LiquidBatchView batch,
+            ExecutorModifiers modifiers
+    ) {
+        return QualityEvaluator.evaluate(graph, operators, batch, modifiers);
     }
 
     public static LiquidBatch stampCap(LiquidBatch batch, ExecutorModifiers modifiers) {
@@ -146,19 +104,6 @@ public record QualityProfile(
     public static PropertyBag stampCap(PropertyBag bag, ExecutorModifiers modifiers) {
         PropertyBag source = bag == null ? PropertyBag.empty() : bag;
         return new PropertyBag(stampCap(source.asMap(), modifiers));
-    }
-
-    private static double first(LiquidBatchView batch, ResourceId primary, ResourceId secondary) {
-        double value = number(batch, primary);
-        return value > 0.0 ? value : number(batch, secondary);
-    }
-
-    private static double number(LiquidBatchView batch, ResourceId id) {
-        return number(batch, id, 0.0);
-    }
-
-    private static double number(LiquidBatchView batch, ResourceId id, double fallback) {
-        return numeric(batch.property(id).orElse(null), fallback);
     }
 
     private static double numeric(Object value, double fallback) {

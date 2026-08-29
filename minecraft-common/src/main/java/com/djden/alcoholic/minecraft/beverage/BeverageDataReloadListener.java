@@ -55,11 +55,12 @@ public final class BeverageDataReloadListener extends SimpleJsonResourceReloadLi
             store.replace(replacement);
             api.notifyCatalogReloaded();
             LOGGER.info(
-                    "Loaded {} beverage definition(s), {} process definition(s), {} ingredient definition(s), {} liquid definition(s)",
+                    "Loaded {} beverage definition(s), {} process definition(s), {} ingredient definition(s), {} liquid definition(s), {} quality graph(s)",
                     replacement.beverages().size(),
                     replacement.processes().size(),
                     replacement.ingredients().size(),
-                    replacement.liquids().size()
+                    replacement.liquids().size(),
+                    replacement.qualityGraphs().size()
             );
         } catch (RuntimeException exception) {
             LOGGER.error(
@@ -79,6 +80,7 @@ public final class BeverageDataReloadListener extends SimpleJsonResourceReloadLi
         Map<ResourceId, DataNode> processes = new LinkedHashMap<>();
         Map<ResourceId, DataNode> beverages = new LinkedHashMap<>();
         Map<ResourceId, DataNode> liquids = new LinkedHashMap<>();
+        Map<ResourceId, DataNode> quality = new LinkedHashMap<>();
         for (Map.Entry<ResourceLocation, JsonElement> entry : resources.entrySet()) {
             ResourceLocation source = entry.getKey();
             String path = source.getPath();
@@ -92,8 +94,10 @@ public final class BeverageDataReloadListener extends SimpleJsonResourceReloadLi
                 beverages.put(id, node);
             } else if (path.startsWith("liquids/")) {
                 liquids.put(id, node);
+            } else if (path.startsWith("quality/")) {
+                quality.put(id, node);
             }
         }
-        return LOADER.load(ingredients, processes, beverages, liquids, api);
+        return LOADER.load(ingredients, processes, beverages, liquids, quality, api);
     }
 }

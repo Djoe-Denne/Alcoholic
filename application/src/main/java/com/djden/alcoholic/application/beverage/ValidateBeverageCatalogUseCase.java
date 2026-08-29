@@ -87,6 +87,11 @@ public final class ValidateBeverageCatalogUseCase {
                 issues.add(new ValidationIssue(path + "/properties", "unknown property " + propertyId));
             }
         }
+        definition.quality().ifPresent(quality -> {
+            if (catalog.quality(quality).isEmpty()) {
+                issues.add(new ValidationIssue(path + "/quality", "unknown quality graph " + quality));
+            }
+        });
         String graphPath = path + "/graph";
         for (GraphIssue issue : ProcessGraphValidator.validate(definition.graph(), graphPath)) {
             issues.add(new ValidationIssue(issue.path(), issue.message()));

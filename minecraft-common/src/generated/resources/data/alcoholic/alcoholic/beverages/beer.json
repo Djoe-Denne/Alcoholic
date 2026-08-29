@@ -89,5 +89,6 @@
     "alcoholic:bitterness",
     "alcoholic:color",
     "alcoholic:aroma"
-  ]
+  ],
+  "quality": "alcoholic:beer"
 }

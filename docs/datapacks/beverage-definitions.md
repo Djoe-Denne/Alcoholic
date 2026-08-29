@@ -360,6 +360,22 @@ Exactly one kind:
 Category is free metadata. The engine does not require pressing, fermentation,
 a crop, or any cultural production order.
 
+## Quality graphs
+
+Drink quality is a derived profile (purity, complexity, maturity, balance,
+defects, summary). Processors write chemistry only. Optional field
+`quality` on a beverage names a graph under
+`data/<ns>/alcoholic/quality/*.json`.
+
+Java registers operators (`alcoholic:harvest_complexity`,
+`alcoholic:distance_balance`, `alcoholic:fold_summary`, …). The datapack
+wires them. Shipped graphs: `alcoholic:wine`, `alcoholic:beer`,
+`alcoholic:spirit`, `alcoholic:generic`. Omit `quality` to use generic
+(present axes only). Ethanol is never an input. See ADR-038.
+
+Inspect and bottling resolve the graph from beverage identity, then
+`baseLiquid`, then generic.
+
 ## Built-in process types
 
 `alcoholic:press`, `alcoholic:mill`, `alcoholic:malt`, `alcoholic:mash`,

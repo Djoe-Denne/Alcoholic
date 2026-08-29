@@ -14,7 +14,8 @@ public record BeverageDefinition(
         ResourceId id,
         Optional<ResourceId> category,
         ProcessGraph graph,
-        List<ResourceId> properties
+        List<ResourceId> properties,
+        Optional<ResourceId> quality
 ) {
     public BeverageDefinition {
         Objects.requireNonNull(id, "id");
@@ -23,6 +24,16 @@ public record BeverageDefinition(
         properties = List.copyOf(new ArrayList<>(new LinkedHashSet<>(
                 Objects.requireNonNull(properties, "properties")
         )));
+        quality = quality == null ? Optional.empty() : quality;
+    }
+
+    public BeverageDefinition(
+            ResourceId id,
+            Optional<ResourceId> category,
+            ProcessGraph graph,
+            List<ResourceId> properties
+    ) {
+        this(id, category, graph, properties, Optional.empty());
     }
 
     public BeverageIdentity identity() {

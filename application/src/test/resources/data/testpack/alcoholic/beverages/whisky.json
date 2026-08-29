@@ -57,5 +57,6 @@
       "result": { "node": "age", "port": "finished" }
     }
   },
-  "properties": ["alcoholic:ethanol", "alcoholic:maturity"]
+  "properties": ["alcoholic:ethanol", "alcoholic:maturity"],
+  "quality": "alcoholic:spirit"
 }

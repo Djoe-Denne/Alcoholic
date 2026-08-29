@@ -5,6 +5,8 @@ import com.djden.alcoholic.api.data.DataNode;
 import com.djden.alcoholic.api.data.JsonDataParser;
 import com.djden.alcoholic.api.process.ProcessExecutor;
 import com.djden.alcoholic.api.process.ProcessResult;
+import com.djden.alcoholic.api.quality.QualityOperator;
+import com.djden.alcoholic.api.quality.QualitySignal;
 import com.djden.alcoholic.api.registry.RegistrationException;
 import com.djden.alcoholic.api.vessel.VesselProfileView;
 import org.junit.jupiter.api.Test;
@@ -71,6 +73,14 @@ class AlcoholicApiTest {
                         return 0.2;
                     }
                 })
+        );
+        assertThrows(
+                RegistrationException.class,
+                () -> api.qualityOperators().register(QualityOperator.of(
+                        ResourceId.parse("addon:quality_op"),
+                        DataCodecs.UNIT,
+                        (context, config) -> QualitySignal.empty()
+                ))
         );
     }
 

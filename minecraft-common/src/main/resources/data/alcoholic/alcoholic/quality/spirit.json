@@ -1,0 +1,27 @@
+{
+  "id": "alcoholic:spirit",
+  "nodes": [
+    { "id": "harvest", "op": "alcoholic:harvest_complexity" },
+    { "id": "wood", "op": "alcoholic:wood_sweet_spot" },
+    { "id": "oxygen", "op": "alcoholic:oxygen_curve", "outputs": ["complexity", "defects"] },
+    { "id": "maturity", "op": "alcoholic:aging_maturity" },
+    { "id": "stress", "op": "alcoholic:stress" },
+    { "id": "caps", "op": "alcoholic:cap_floor", "outputs": ["cap", "floor"] },
+    {
+      "id": "fold",
+      "op": "alcoholic:fold_summary",
+      "inputs": {
+        "complexity": ["harvest", "wood", "oxygen"],
+        "maturity": "maturity",
+        "defects": [
+          "stress",
+          { "node": "oxygen", "port": "defects" },
+          { "node": "caps", "port": "floor" }
+        ],
+        "caps": { "node": "caps", "port": "cap" }
+      },
+      "outputs": ["purity", "complexity", "maturity", "balance", "defects", "summary"]
+    }
+  ],
+  "outputs": { "profile": { "node": "fold", "port": "summary" } }
+}

@@ -5,6 +5,7 @@ import com.djden.alcoholic.domain.beverage.BeverageDefinition;
 import com.djden.alcoholic.domain.ingredient.IngredientDefinition;
 import com.djden.alcoholic.domain.liquid.LiquidDefinition;
 import com.djden.alcoholic.domain.process.ProcessDefinition;
+import com.djden.alcoholic.domain.quality.QualityGraph;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,13 +16,15 @@ public record BeverageCatalog(
         Map<ResourceId, IngredientDefinition> ingredients,
         Map<ResourceId, ProcessDefinition> processes,
         Map<ResourceId, BeverageDefinition> beverages,
-        Map<ResourceId, LiquidDefinition> liquids
+        Map<ResourceId, LiquidDefinition> liquids,
+        Map<ResourceId, QualityGraph> qualityGraphs
 ) {
     public BeverageCatalog {
         ingredients = copy(ingredients, "ingredients");
         processes = copy(processes, "processes");
         beverages = copy(beverages, "beverages");
         liquids = copy(liquids, "liquids");
+        qualityGraphs = copy(qualityGraphs, "qualityGraphs");
     }
 
     public BeverageCatalog(
@@ -29,11 +32,20 @@ public record BeverageCatalog(
             Map<ResourceId, ProcessDefinition> processes,
             Map<ResourceId, BeverageDefinition> beverages
     ) {
-        this(ingredients, processes, beverages, Map.of());
+        this(ingredients, processes, beverages, Map.of(), Map.of());
+    }
+
+    public BeverageCatalog(
+            Map<ResourceId, IngredientDefinition> ingredients,
+            Map<ResourceId, ProcessDefinition> processes,
+            Map<ResourceId, BeverageDefinition> beverages,
+            Map<ResourceId, LiquidDefinition> liquids
+    ) {
+        this(ingredients, processes, beverages, liquids, Map.of());
     }
 
     public static BeverageCatalog empty() {
-        return new BeverageCatalog(Map.of(), Map.of(), Map.of(), Map.of());
+        return new BeverageCatalog(Map.of(), Map.of(), Map.of(), Map.of(), Map.of());
     }
 
     public Optional<IngredientDefinition> ingredient(ResourceId id) {
@@ -50,6 +62,10 @@ public record BeverageCatalog(
 
     public Optional<LiquidDefinition> liquid(ResourceId id) {
         return Optional.ofNullable(liquids.get(id));
+    }
+
+    public Optional<QualityGraph> quality(ResourceId id) {
+        return Optional.ofNullable(qualityGraphs.get(id));
     }
 
     private static <T> Map<ResourceId, T> copy(Map<ResourceId, T> values, String name) {

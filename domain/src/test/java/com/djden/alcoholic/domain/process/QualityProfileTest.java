@@ -5,6 +5,7 @@ import com.djden.alcoholic.api.process.ExecutorModifiers;
 import com.djden.alcoholic.domain.liquid.BatchProvenance;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
+import com.djden.alcoholic.domain.quality.BuiltinQualityGraphs;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -91,9 +92,36 @@ class QualityProfileTest {
     @Test
     void wineBalanceDoesNotDiluteMissingHopAxes() {
         LiquidBatch wine = batch(0.70, 0.45, 0.12, 0.20);
-        QualityProfile profile = QualityProfile.derive(wine);
+        QualityProfile generic = QualityProfile.derive(wine);
+        QualityProfile wineGraph = QualityProfile.evaluate(BuiltinQualityGraphs.wine(), wine, ExecutorModifiers.identity());
         double sugarAcid = 1.0 - (Math.abs(0.50 - 0.35) + Math.abs(0.45 - 0.45)) / 2.0;
-        assertEquals(sugarAcid, profile.balance(), 1e-9);
+        assertEquals(sugarAcid, generic.balance(), 1e-9);
+        assertEquals(generic.summary(), wineGraph.summary(), 1e-9);
+        assertEquals(sugarAcid, wineGraph.balance(), 1e-9);
+    }
+
+    @Test
+    void beerGraphDoesNotDiluteWineBalance() {
+        LiquidBatch wine = batch(0.70, 0.45, 0.12, 0.20);
+        QualityProfile beerGraph = QualityProfile.evaluate(BuiltinQualityGraphs.beer(), wine, ExecutorModifiers.identity());
+        QualityProfile wineGraph = QualityProfile.evaluate(BuiltinQualityGraphs.wine(), wine, ExecutorModifiers.identity());
+        assertEquals(0.5, beerGraph.balance(), 1e-9);
+        assertTrue(wineGraph.balance() > beerGraph.balance());
+    }
+
+    @Test
+    void beerGraphIgnoresTanninComplexity() {
+        LiquidBatch plain = batch(0.70, 0.45, 0.12, 0.20);
+        LiquidBatch tannic = plain.withProperty(QualityProfile.TANNIN, 0.50);
+        assertEquals(
+                QualityProfile.evaluate(BuiltinQualityGraphs.beer(), plain, ExecutorModifiers.identity()).complexity(),
+                QualityProfile.evaluate(BuiltinQualityGraphs.beer(), tannic, ExecutorModifiers.identity()).complexity(),
+                1e-9
+        );
+        assertTrue(
+                QualityProfile.evaluate(BuiltinQualityGraphs.wine(), tannic, ExecutorModifiers.identity()).complexity()
+                        > QualityProfile.evaluate(BuiltinQualityGraphs.wine(), plain, ExecutorModifiers.identity()).complexity()
+        );
     }
 
     @Test

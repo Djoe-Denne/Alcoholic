@@ -8,6 +8,8 @@ import com.djden.alcoholic.application.beverage.codec.BeverageDefinitionCodec;
 import com.djden.alcoholic.application.beverage.codec.IngredientDefinitionCodec;
 import com.djden.alcoholic.application.beverage.codec.LiquidDefinitionCodec;
 import com.djden.alcoholic.application.beverage.codec.ProcessDefinitionCodec;
+import com.djden.alcoholic.application.quality.LoadQualityCatalogUseCase;
+import com.djden.alcoholic.domain.quality.QualityGraph;
 import com.djden.alcoholic.domain.beverage.BeverageDefinition;
 import com.djden.alcoholic.domain.beverage.InputReference;
 import com.djden.alcoholic.domain.beverage.ProcessGraph;
@@ -25,6 +27,7 @@ import java.util.Optional;
 
 public final class LoadBeverageCatalogUseCase {
     private final ValidateBeverageCatalogUseCase validator = new ValidateBeverageCatalogUseCase();
+    private final LoadQualityCatalogUseCase qualityLoader = new LoadQualityCatalogUseCase();
 
     public BeverageCatalog load(
             Map<ResourceId, DataNode> ingredients,
@@ -32,7 +35,7 @@ public final class LoadBeverageCatalogUseCase {
             Map<ResourceId, DataNode> beverages,
             AlcoholicApi api
     ) {
-        return load(ingredients, processes, beverages, Map.of(), api);
+        return load(ingredients, processes, beverages, Map.of(), Map.of(), api);
     }
 
     public BeverageCatalog load(
@@ -40,6 +43,17 @@ public final class LoadBeverageCatalogUseCase {
             Map<ResourceId, DataNode> processes,
             Map<ResourceId, DataNode> beverages,
             Map<ResourceId, DataNode> liquids,
+            AlcoholicApi api
+    ) {
+        return load(ingredients, processes, beverages, liquids, Map.of(), api);
+    }
+
+    public BeverageCatalog load(
+            Map<ResourceId, DataNode> ingredients,
+            Map<ResourceId, DataNode> processes,
+            Map<ResourceId, DataNode> beverages,
+            Map<ResourceId, DataNode> liquids,
+            Map<ResourceId, DataNode> quality,
             AlcoholicApi api
     ) {
         Objects.requireNonNull(api, "api");
@@ -72,6 +86,7 @@ public final class LoadBeverageCatalogUseCase {
                 LiquidDefinition::id,
                 issues
         );
+        Map<ResourceId, QualityGraph> decodedQuality = qualityLoader.load(quality, api);
         if (!issues.isEmpty()) {
             throw new IllegalArgumentException(new ValidationResult(issues).format());
         }
@@ -80,7 +95,8 @@ public final class LoadBeverageCatalogUseCase {
                 decodedIngredients,
                 decodedProcesses,
                 decodedBeverages,
-                decodedLiquids
+                decodedLiquids,
+                decodedQuality
         );
         BeverageCatalog expanded = expand(raw);
         ValidationResult result = validator.validate(expanded, api);
@@ -95,7 +111,8 @@ public final class LoadBeverageCatalogUseCase {
                 catalog.ingredients(),
                 catalog.processes(),
                 beverages,
-                catalog.liquids()
+                catalog.liquids(),
+                catalog.qualityGraphs()
         );
     }
 
@@ -125,7 +142,8 @@ public final class LoadBeverageCatalogUseCase {
                 definition.id(),
                 definition.category(),
                 new ProcessGraph(nodes, definition.graph().outputs()),
-                definition.properties()
+                definition.properties(),
+                definition.quality()
         );
     }
 

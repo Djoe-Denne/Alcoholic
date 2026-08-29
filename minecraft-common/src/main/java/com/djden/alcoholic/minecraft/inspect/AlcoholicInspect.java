@@ -1,6 +1,9 @@
 package com.djden.alcoholic.minecraft.inspect;
 
+import com.djden.alcoholic.application.quality.QualityProfiles;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
+import com.djden.alcoholic.domain.process.QualityProfile;
+import com.djden.alcoholic.minecraft.beverage.BeverageRuntime;
 import com.djden.alcoholic.minecraft.bottle.BottleSnapshotNbt;
 import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
@@ -116,8 +119,16 @@ public final class AlcoholicInspect {
                 continue;
             }
             LiquidBatch batch = contents.get();
+            QualityProfile profile = QualityProfiles.derive(
+                    batch,
+                    BeverageRuntime.shared().catalog(),
+                    BeverageRuntime.shared().api()
+            );
             builder.append(" def=").append(batch.baseLiquid())
                     .append(" vol=").append(batch.volume())
+                    .append(" quality=").append(profile.summary())
+                    .append(" purity=").append(profile.purity())
+                    .append(" complexity=").append(profile.complexity())
                     .append(" props=").append(batch.properties().asMap());
         }
         return builder.toString();

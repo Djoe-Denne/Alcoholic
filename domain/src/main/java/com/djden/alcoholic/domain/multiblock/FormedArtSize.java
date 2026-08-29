@@ -19,6 +19,10 @@ public record FormedArtSize(int width, int height, int depth) {
     public static final FormedArtSize STORAGE_TANK = new FormedArtSize(3, 5, 3);
     public static final FormedArtSize PRESS = new FormedArtSize(3, 4, 3);
     public static final FormedArtSize CRAFT_MALT_HOUSE = new FormedArtSize(3, 3, 3);
+    public static final FormedArtSize CRAFT_MILL = new FormedArtSize(3, 3, 3);
+    public static final FormedArtSize CRAFT_MASH_TUN = new FormedArtSize(3, 3, 3);
+    public static final FormedArtSize CRAFT_BREWING_KETTLE = new FormedArtSize(3, 3, 3);
+    public static final FormedArtSize CRAFT_VAT = new FormedArtSize(3, 3, 3);
 
     public static final ResourceId MALT_HOUSE_ID = ResourceId.parse("alcoholic:industrial_malt_house");
     public static final ResourceId ROLLER_MILL_ID = ResourceId.parse("alcoholic:industrial_roller_mill");
@@ -30,6 +34,10 @@ public record FormedArtSize(int width, int height, int depth) {
     public static final ResourceId STORAGE_TANK_ID = ResourceId.parse("alcoholic:industrial_storage_tank");
     public static final ResourceId PRESS_ID = ResourceId.parse("alcoholic:industrial_press");
     public static final ResourceId CRAFT_MALT_HOUSE_ID = ResourceId.parse("alcoholic:craft_malt_house");
+    public static final ResourceId CRAFT_MILL_ID = ResourceId.parse("alcoholic:craft_mill");
+    public static final ResourceId CRAFT_MASH_TUN_ID = ResourceId.parse("alcoholic:craft_mash_tun");
+    public static final ResourceId CRAFT_BREWING_KETTLE_ID = ResourceId.parse("alcoholic:craft_brewing_kettle");
+    public static final ResourceId CRAFT_VAT_ID = ResourceId.parse("alcoholic:craft_vat");
 
     private static final Map<ResourceId, FormedArtSize> BY_DEFINITION = Map.ofEntries(
             Map.entry(MALT_HOUSE_ID, MALT_HOUSE),
@@ -40,7 +48,11 @@ public record FormedArtSize(int width, int height, int depth) {
             Map.entry(CONDITIONING_VESSEL_ID, CONDITIONING_VESSEL),
             Map.entry(STORAGE_TANK_ID, STORAGE_TANK),
             Map.entry(PRESS_ID, PRESS),
-            Map.entry(CRAFT_MALT_HOUSE_ID, CRAFT_MALT_HOUSE)
+            Map.entry(CRAFT_MALT_HOUSE_ID, CRAFT_MALT_HOUSE),
+            Map.entry(CRAFT_MILL_ID, CRAFT_MILL),
+            Map.entry(CRAFT_MASH_TUN_ID, CRAFT_MASH_TUN),
+            Map.entry(CRAFT_BREWING_KETTLE_ID, CRAFT_BREWING_KETTLE),
+            Map.entry(CRAFT_VAT_ID, CRAFT_VAT)
     );
 
     public FormedArtSize {

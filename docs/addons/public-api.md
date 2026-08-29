@@ -27,7 +27,7 @@ without notice. Do not compile against them.
 ## Registration lifecycle
 
 1. During mod construction, obtain `AlcoholicApi.shared()`.
-2. Register process types and liquid properties.
+2. Register process types, liquid properties, and optional quality operators.
 3. Alcoholic freezes the API at `FMLCommonSetupEvent` with lowest priority.
 4. Datapacks may then reference those IDs. Registration after freeze fails.
 
@@ -121,6 +121,12 @@ invent 1000 mB.
 ## Bottling
 
 `alcoholic:bottle` writes a consumer snapshot (definition, ethanol, sugar,
-acidity, maturity, origin, quality). It is not runtime state. Right-click
-a barrel, crock, or fermenter with `alcoholic:empty_bottle`.
+acidity, maturity, origin, quality). Quality axes are derived from the
+beverage's quality DAG (`QualityOperator` + `data/*/alcoholic/quality`).
+It is not runtime state. Right-click a barrel, crock, or fermenter with
+`alcoholic:empty_bottle`.
+
+```java
+api.qualityOperators().register(QualityOperator.of(myOpId, codec, handler));
+```
 

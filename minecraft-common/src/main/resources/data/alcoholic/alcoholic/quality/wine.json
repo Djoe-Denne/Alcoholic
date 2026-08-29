@@ -1,0 +1,67 @@
+{
+  "id": "alcoholic:wine",
+  "nodes": [
+    { "id": "harvest", "op": "alcoholic:harvest_complexity" },
+    {
+      "id": "nuance",
+      "op": "alcoholic:weighted_present",
+      "config": {
+        "mode": "closeness",
+        "left": "alcoholic:acidity",
+        "right": "alcoholic:sugar",
+        "weight": 0.15
+      }
+    },
+    {
+      "id": "tannin_c",
+      "op": "alcoholic:wood_sweet_spot",
+      "config": { "property": "alcoholic:tannin", "weight": 0.45 }
+    },
+    {
+      "id": "color_c",
+      "op": "alcoholic:weighted_present",
+      "config": {
+        "mode": "sum",
+        "weights": { "alcoholic:color": 0.10 }
+      }
+    },
+    { "id": "wood", "op": "alcoholic:wood_sweet_spot" },
+    { "id": "oxygen", "op": "alcoholic:oxygen_curve", "outputs": ["complexity", "defects"] },
+    {
+      "id": "balance",
+      "op": "alcoholic:distance_balance",
+      "config": {
+        "groups": [
+          {
+            "present": ["alcoholic:sugar", "alcoholic:acidity"],
+            "targets": { "alcoholic:sugar": 0.35, "alcoholic:acidity": 0.45 }
+          },
+          {
+            "present": ["alcoholic:tannin"],
+            "targets": { "alcoholic:tannin": 0.45 }
+          }
+        ]
+      }
+    },
+    { "id": "maturity", "op": "alcoholic:aging_maturity" },
+    { "id": "stress", "op": "alcoholic:stress" },
+    { "id": "caps", "op": "alcoholic:cap_floor", "outputs": ["cap", "floor"] },
+    {
+      "id": "fold",
+      "op": "alcoholic:fold_summary",
+      "inputs": {
+        "complexity": ["harvest", "nuance", "tannin_c", "color_c", "wood", "oxygen"],
+        "balance": "balance",
+        "maturity": "maturity",
+        "defects": [
+          "stress",
+          { "node": "oxygen", "port": "defects" },
+          { "node": "caps", "port": "floor" }
+        ],
+        "caps": { "node": "caps", "port": "cap" }
+      },
+      "outputs": ["purity", "complexity", "maturity", "balance", "defects", "summary"]
+    }
+  ],
+  "outputs": { "profile": { "node": "fold", "port": "summary" } }
+}

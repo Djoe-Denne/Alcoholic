@@ -102,5 +102,6 @@
     "alcoholic:ethanol",
     "alcoholic:bitterness",
     "alcoholic:carbonation"
-  ]
+  ],
+  "quality": "alcoholic:beer"
 }

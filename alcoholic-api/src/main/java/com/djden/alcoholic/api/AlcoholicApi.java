@@ -5,9 +5,11 @@ import com.djden.alcoholic.api.event.CatalogReloadListener;
 import com.djden.alcoholic.api.process.ProcessHandler;
 import com.djden.alcoholic.api.process.ProcessType;
 import com.djden.alcoholic.api.property.LiquidProperty;
+import com.djden.alcoholic.api.quality.QualityOperator;
 import com.djden.alcoholic.api.registry.MutableRegistry;
 import com.djden.alcoholic.api.registry.ProcessRegistrar;
 import com.djden.alcoholic.api.registry.PropertyRegistrar;
+import com.djden.alcoholic.api.registry.QualityOperatorRegistrar;
 import com.djden.alcoholic.api.registry.RegistrationException;
 import com.djden.alcoholic.api.registry.RegistryView;
 import com.djden.alcoholic.api.registry.VesselRegistrar;
@@ -22,8 +24,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Versioned public façade. Java addons register process types and properties here
- * during bootstrap. The instance is frozen before the first datapack reload.
+ * Versioned public façade. Java addons register process types, properties,
+ * and quality operators here during bootstrap. The instance is frozen before
+ * the first datapack reload.
  */
 @PublicApi
 public final class AlcoholicApi {
@@ -32,9 +35,11 @@ public final class AlcoholicApi {
     private final MutableRegistry<ProcessType<?>> processes = new MutableRegistry<>(ProcessType::id);
     private final MutableRegistry<LiquidProperty<?>> properties = new MutableRegistry<>(LiquidProperty::id);
     private final MutableRegistry<VesselProfileView> vessels = new MutableRegistry<>(VesselProfileView::id);
+    private final MutableRegistry<QualityOperator<?>> qualityOperators = new MutableRegistry<>(QualityOperator::id);
     private final ProcessRegistrar processRegistrar = new ProcessRegistrarView();
     private final PropertyRegistrar propertyRegistrar = new PropertyRegistrarView();
     private final VesselRegistrar vesselRegistrar = new VesselRegistrarView();
+    private final QualityOperatorRegistrar qualityRegistrar = new QualityOperatorRegistrarView();
     private final List<CatalogReloadListener> reloadListeners = new CopyOnWriteArrayList<>();
 
     public static AlcoholicApi shared() {
@@ -64,6 +69,10 @@ public final class AlcoholicApi {
         return vesselRegistrar;
     }
 
+    public QualityOperatorRegistrar qualityOperators() {
+        return qualityRegistrar;
+    }
+
     public RegistryView<ProcessType<?>> processView() {
         return processes;
     }
@@ -74,6 +83,10 @@ public final class AlcoholicApi {
 
     public RegistryView<VesselProfileView> vesselView() {
         return vessels;
+    }
+
+    public RegistryView<QualityOperator<?>> qualityView() {
+        return qualityOperators;
     }
 
     public void addReloadListener(CatalogReloadListener listener) {
@@ -90,10 +103,14 @@ public final class AlcoholicApi {
         processes.freeze();
         properties.freeze();
         vessels.freeze();
+        qualityOperators.freeze();
     }
 
     public boolean isFrozen() {
-        return processes.isFrozen() && properties.isFrozen() && vessels.isFrozen();
+        return processes.isFrozen()
+                && properties.isFrozen()
+                && vessels.isFrozen()
+                && qualityOperators.isFrozen();
     }
 
     private final class ProcessRegistrarView implements ProcessRegistrar {
@@ -153,6 +170,29 @@ public final class AlcoholicApi {
         @Override
         public Collection<LiquidProperty<?>> values() {
             return properties.values();
+        }
+    }
+
+    private final class QualityOperatorRegistrarView implements QualityOperatorRegistrar {
+        @Override
+        public <C> QualityOperator<C> register(QualityOperator<C> operator) {
+            qualityOperators.register(operator);
+            return operator;
+        }
+
+        @Override
+        public Optional<QualityOperator<?>> get(ResourceId id) {
+            return qualityOperators.get(id);
+        }
+
+        @Override
+        public Set<ResourceId> ids() {
+            return qualityOperators.ids();
+        }
+
+        @Override
+        public Collection<QualityOperator<?>> values() {
+            return qualityOperators.values();
         }
     }
 

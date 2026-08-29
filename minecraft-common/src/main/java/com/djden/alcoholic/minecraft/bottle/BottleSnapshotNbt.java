@@ -1,9 +1,11 @@
 package com.djden.alcoholic.minecraft.bottle;
 
 import com.djden.alcoholic.api.ResourceId;
+import com.djden.alcoholic.application.quality.QualityProfiles;
 import com.djden.alcoholic.domain.liquid.BatchProvenance;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.process.QualityProfile;
+import com.djden.alcoholic.minecraft.beverage.BeverageRuntime;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
@@ -32,7 +34,11 @@ public final class BottleSnapshotNbt {
         tag.putInt("Sugar", quantize(batch.number(ResourceId.parse("alcoholic:sugar"), 0.0)));
         tag.putInt("Acidity", quantize(batch.number(ResourceId.parse("alcoholic:acidity"), 0.0)));
         tag.putInt("Maturity", quantize(batch.number(ResourceId.parse("alcoholic:maturity"), 0.0)));
-        QualityProfile profile = QualityProfile.derive(batch);
+        QualityProfile profile = QualityProfiles.derive(
+                batch,
+                BeverageRuntime.shared().catalog(),
+                BeverageRuntime.shared().api()
+        );
         tag.putInt("Quality", quantize(profile.summary()));
         tag.putInt("Purity", quantize(profile.purity()));
         tag.putInt("Complexity", quantize(profile.complexity()));

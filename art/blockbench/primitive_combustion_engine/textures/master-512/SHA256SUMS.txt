@@ -1,2 +1,0 @@
-59e96daa3e66142c16fd6864660aa2a518d129b86456404b38a3605573471e83  primitive_combustion_engine.png
-c620b4c9f5b6c1da6aad6c49dff4ab56d923f67ff806512b581af4fd848912c2  primitive_combustion_engine_on.png

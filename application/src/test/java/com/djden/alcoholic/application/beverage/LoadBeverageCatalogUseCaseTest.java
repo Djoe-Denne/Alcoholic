@@ -31,6 +31,11 @@ class LoadBeverageCatalogUseCaseTest {
         );
 
         assertEquals(9, catalog.beverages().size());
+        assertEquals(
+                ResourceId.parse("alcoholic:wine"),
+                catalog.beverage(ResourceId.parse("testpack:red_wine")).orElseThrow().quality().orElseThrow()
+        );
+        assertTrue(catalog.quality(ResourceId.parse("alcoholic:wine")).isPresent());
         assertTrue(catalog.beverage(ResourceId.parse("testpack:cider")).isPresent());
         assertTrue(catalog.beverage(ResourceId.parse("testpack:fruit_liqueur")).isPresent());
 

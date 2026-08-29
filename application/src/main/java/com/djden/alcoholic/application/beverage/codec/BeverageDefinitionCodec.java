@@ -35,11 +35,15 @@ public final class BeverageDefinitionCodec implements DataCodec<BeverageDefiniti
                         DataDecodeException.child(path, "properties")
                 ))
                 .orElse(List.of());
+        Optional<ResourceId> quality = object.get("quality").map(value ->
+                DataCodecs.RESOURCE_ID.decode(value, DataDecodeException.child(path, "quality"))
+        );
         return new BeverageDefinition(
                 id,
                 category,
                 decodeGraph(graphNode, DataDecodeException.child(path, "graph")),
-                properties
+                properties,
+                quality
         );
     }
 
@@ -55,6 +59,7 @@ public final class BeverageDefinitionCodec implements DataCodec<BeverageDefiniti
         value.category().ifPresent(category -> builder.put("category", DataNode.string(category.toString())));
         builder.put("graph", encodeGraph(value.graph()));
         builder.put("properties", DataCodecs.RESOURCE_ID.listOf().encode(value.properties()));
+        value.quality().ifPresent(quality -> builder.put("quality", DataNode.string(quality.toString())));
         return builder.build();
     }
 

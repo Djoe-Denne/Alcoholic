@@ -1389,7 +1389,8 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                             "alcoholic:ethanol",
                             "alcoholic:acidity",
                             "alcoholic:quality"
-                          ]
+                          ],
+                          "quality": "alcoholic:wine"
                         }
                         """.formatted(id, press, grapeTag, ferment)
         );
@@ -1483,7 +1484,8 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                             "alcoholic:acidity",
                             "alcoholic:quality",
                             "alcoholic:maturity"
-                          ]
+                          ],
+                          "quality": "alcoholic:wine"
                         }
                         """.formatted(id, press, grapeTag, ferment, age)
         );
@@ -1844,7 +1846,8 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                             "alcoholic:bitterness",
                             "alcoholic:color",
                             "alcoholic:aroma"
-                          ]
+                          ],
+                          "quality": "alcoholic:beer"
                         }
                         """
         );

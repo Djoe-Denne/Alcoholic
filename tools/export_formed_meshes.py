@@ -21,6 +21,10 @@ ART_SIZES = {
     "industrial_storage_tank": (3, 5, 3),
     "industrial_press": (3, 4, 3),
     "craft_malt_house": (3, 3, 3),
+    "craft_mill": (3, 3, 3),
+    "craft_mash_tun": (3, 3, 3),
+    "craft_brewing_kettle": (3, 3, 3),
+    "craft_vat": (3, 3, 3),
 }
 
 TEXTURE_RL = {
@@ -43,8 +47,20 @@ TEXTURE_RL = {
     "craft_casing": "alcoholic:block/craft_casing",
     "craft_casing.png": "alcoholic:block/craft_casing",
     "craft_malt_house_controller.png": "alcoholic:block/craft_malt_house_controller",
+    "craft_mill_controller.png": "alcoholic:block/craft_mill_controller",
+    "craft_mash_tun_controller.png": "alcoholic:block/craft_mash_tun_controller",
+    "craft_brewing_kettle_controller.png": "alcoholic:block/craft_brewing_kettle_controller",
+    "craft_vat_controller.png": "alcoholic:block/craft_vat_controller",
     "craft_malt_house": "alcoholic:block/formed/craft_malt_house",
     "craft_malt_house.png": "alcoholic:block/formed/craft_malt_house",
+    "craft_siding.png": "alcoholic:block/craft_siding",
+    "craft_frame.png": "alcoholic:block/craft_frame",
+    "craft_window_glass.png": "alcoholic:block/craft_window_glass",
+    "craft_window_frame.png": "alcoholic:block/craft_window_frame",
+    "craft_malt_house_desk.png": "alcoholic:block/craft_malt_house_desk",
+    "craft_fluid_face.png": "alcoholic:block/craft_fluid_face",
+    "craft_item_face.png": "alcoholic:block/craft_item_face",
+    "brewing_kettle.png": "alcoholic:block/brewing_kettle",
 }
 
 
@@ -70,9 +86,10 @@ def convert_model(name: str) -> dict:
         rl = texture_rl(str(texture.get("name") or f"tex_{index}"))
         key = str(index)
         tex_map[key] = f"#{key}"
-        if texture.get("id") is not None:
-            tex_map[str(texture["id"])] = f"#{key}"
         texture_defs[key] = rl
+    for index, texture in enumerate(textures):
+        if texture.get("id") is not None:
+            tex_map[str(texture["id"])] = f"#{index}"
     texture_defs["particle"] = next(iter(texture_defs.values()), "alcoholic:block/industrial_casing")
     resolution = (data.get("resolution") or {}).get("width") or 512
     elements = []
@@ -130,11 +147,14 @@ def downsample_png(src: Path, dest: Path, size: int = 64) -> None:
 
 
 def main() -> None:
+    import sys
+
     OUT.mkdir(parents=True, exist_ok=True)
     kettle = ART / "industrial_brewing_kettle" / "textures" / "master-512" / "industrial_brewing_kettle.png"
     if kettle.exists():
         downsample_png(kettle, TEX_OUT / "industrial_brewing_kettle.png")
-    for name in ART_SIZES:
+    names = [n for n in ART_SIZES if n.startswith("craft_")] if sys.argv[1:] == ["craft"] else list(ART_SIZES)
+    for name in names:
         model = convert_model(name)
         path = OUT / f"{name}.json"
         path.write_text(json.dumps(model, indent=2) + "\n", encoding="utf-8")
