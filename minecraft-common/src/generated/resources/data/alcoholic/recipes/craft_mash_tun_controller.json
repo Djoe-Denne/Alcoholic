@@ -1,0 +1,39 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "C": {
+            "item": "minecraft:copper_ingot"
+          },
+          "T": {
+            "item": "alcoholic:mash_tun"
+          },
+          "X": {
+            "item": "alcoholic:craft_casing"
+          }
+        },
+        "pattern": [
+          "CTC",
+          "CXC",
+          "CCC"
+        ],
+        "result": {
+          "count": 1,
+          "item": "alcoholic:craft_mash_tun_controller"
+        }
+      }
+    }
+  ]
+}

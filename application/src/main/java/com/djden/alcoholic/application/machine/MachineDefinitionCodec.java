@@ -8,6 +8,7 @@ import com.djden.alcoholic.api.data.DataNode;
 import com.djden.alcoholic.api.process.ExecutorModifiers;
 import com.djden.alcoholic.domain.multiblock.KineticRequirement;
 import com.djden.alcoholic.domain.multiblock.MachineKind;
+import com.djden.alcoholic.domain.multiblock.MachineScale;
 import com.djden.alcoholic.domain.multiblock.MultiblockConstraints;
 import com.djden.alcoholic.domain.multiblock.MultiblockDefinition;
 import com.djden.alcoholic.domain.multiblock.PartRole;
@@ -46,6 +47,9 @@ public final class MachineDefinitionCodec implements DataCodec<MultiblockDefinit
         Set<PartRole> requiredPorts = EnumSetLike(object, path, "required_ports");
         ExecutorModifiers modifiers = modifiers(object, path);
         KineticRequirement kinetic = kinetic(object, path);
+        MachineScale scale = object.get("scale")
+                .map(value -> MachineScale.valueOf(value.asString(child(path, "scale")).toUpperCase()))
+                .orElse(MachineScale.INDUSTRIAL);
         MultiblockConstraints constraints = new MultiblockConstraints(
                 number(min, "x", child(path, "min_exterior")),
                 number(min, "y", child(path, "min_exterior")),
@@ -64,7 +68,9 @@ public final class MachineDefinitionCodec implements DataCodec<MultiblockDefinit
                         .map(value -> value.asBoolean(child(path, "hollow_interior")))
                         .orElse(true)
         );
-        return new MultiblockDefinition(id, kind, process, constraints, capacity, modifiers, kinetic, controller);
+        return new MultiblockDefinition(
+                id, kind, process, constraints, capacity, modifiers, kinetic, controller, scale
+        );
     }
 
     @Override

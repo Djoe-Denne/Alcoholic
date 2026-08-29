@@ -74,7 +74,11 @@ ignore_all_files_in_gitignore: true
 # Maps the language key to the options.
 # The settings are considered only if the project is trusted (see global configuration to define trusted projects).
 # See https://oraios.github.io/serena/02-usage/050_configuration.html#language-server-specific-settings
-ls_specific_settings: {}
+ls_specific_settings:
+  java:
+    # Forge / Architectury plugins live in the project wrapper, not Serena's bundled Gradle.
+    gradle_wrapper_enabled: true
+    jdtls_xmx: "4G"
 
 # list of workspace folder paths (LSP backend only).
 # These folders will be used to build up Serena's symbol index.
@@ -109,7 +113,10 @@ ls_additional_workspace_folders: []
 #     - "**/bin/**"
 #     - "**/obj/**"
 # Note: global ignored_paths from serena_config.yml are also applied additively.
-ignored_paths: []
+ignored_paths:
+  - "**/bin/**"
+  - "**/build/**"
+  - "**/.gradle/**"
 
 # whether the project is in read-only mode
 # If set to true, all editing tools will be disabled and attempts to use them will result in an error

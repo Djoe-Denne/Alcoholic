@@ -23,10 +23,17 @@ class FormedArtSizeTest {
         assertTrue(FormedArtSize.overlayMesh(FormedArtSize.CONDITIONING_VESSEL_ID, 3, 6, 3).isPresent());
         assertTrue(FormedArtSize.overlayMesh(FormedArtSize.STORAGE_TANK_ID, 3, 5, 3).isPresent());
         assertTrue(FormedArtSize.overlayMesh(FormedArtSize.PRESS_ID, 3, 4, 3).isPresent());
+        assertTrue(FormedArtSize.overlayMesh(FormedArtSize.CRAFT_MALT_HOUSE_ID, 3, 3, 3).isPresent());
     }
 
     @Test
-    void catalogCoversEveryIndustrialMachine() {
-        assertEquals(8, FormedArtSize.all().size());
+    void craftMaltHouseKeepsNineSliceWhenTheCubeGrows() {
+        assertTrue(FormedArtSize.overlayMesh(FormedArtSize.CRAFT_MALT_HOUSE_ID, 4, 4, 4).isEmpty());
+        assertTrue(FormedArtSize.overlayMesh(FormedArtSize.CRAFT_MALT_HOUSE_ID, 5, 5, 5).isEmpty());
+    }
+
+    @Test
+    void catalogCoversEveryArtMachine() {
+        assertEquals(9, FormedArtSize.all().size());
     }
 }

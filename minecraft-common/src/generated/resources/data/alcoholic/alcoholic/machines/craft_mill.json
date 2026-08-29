@@ -1,0 +1,44 @@
+{
+  "capacity_per_internal_block": 1000,
+  "casing_tags": [
+    "alcoholic:craft_casing"
+  ],
+  "controller": "alcoholic:craft_mill_controller",
+  "hollow_interior": true,
+  "id": "alcoholic:craft_mill",
+  "kind": "mill",
+  "kinetic": {
+    "max_rpm": 256,
+    "min_rpm": 8,
+    "required": true,
+    "required_capacity": 2.0
+  },
+  "max_exterior": {
+    "x": 5,
+    "y": 5,
+    "z": 5
+  },
+  "min_exterior": {
+    "x": 3,
+    "y": 3,
+    "z": 3
+  },
+  "modifiers": {
+    "max_batch_units": 8,
+    "speed": 2.0,
+    "thermal_stability": 1.0,
+    "yield": 1.0
+  },
+  "port_tags": [
+    "alcoholic:industrial_ports"
+  ],
+  "process": "alcoholic:mill",
+  "required_controllers": 1,
+  "required_ports": [
+    "kinetic_port"
+  ],
+  "scale": "craft",
+  "window_tags": [
+    "alcoholic:valid_machine_windows"
+  ]
+}

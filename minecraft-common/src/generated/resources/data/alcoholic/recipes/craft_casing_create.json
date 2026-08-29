@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "C": {
+            "item": "create:copper_casing"
+          }
+        },
+        "pattern": [
+          "CCC",
+          "C C",
+          "CCC"
+        ],
+        "result": {
+          "count": 4,
+          "item": "alcoholic:craft_casing"
+        }
+      }
+    }
+  ]
+}

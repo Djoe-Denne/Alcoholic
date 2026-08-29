@@ -42,6 +42,13 @@ public record MechanicalRequirement(
         return new MechanicalRequirement(16.0, 256.0, 4.0, true);
     }
 
+    /**
+     * Between the artisanal malt mill and the industrial roller mill.
+     */
+    public static MechanicalRequirement craftMill() {
+        return new MechanicalRequirement(8.0, 256.0, 2.0, true);
+    }
+
     public boolean satisfied(MechanicalDriveState state) {
         if (!required) {
             return true;

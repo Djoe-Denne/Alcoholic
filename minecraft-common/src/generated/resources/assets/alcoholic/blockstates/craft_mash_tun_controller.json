@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "alcoholic:block/craft_mash_tun_controller"
+    }
+  }
+}

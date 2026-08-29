@@ -13,7 +13,7 @@ class MultiblockDisplayRecipesTest {
     @Test
     void builtinsExposeEightMinHullRecipes() {
         List<MultiblockDisplayRecipe> recipes = MultiblockDisplayRecipes.from(MachineCatalog.builtins());
-        assertEquals(8, recipes.size());
+        assertEquals(13, recipes.size());
         assertEquals(4, recipes.get(0).layers().size());
     }
 
@@ -23,11 +23,16 @@ class MultiblockDisplayRecipesTest {
         MultiblockDisplayRecipe press = recipe(recipes, BuiltinMachines.INDUSTRIAL_PRESS.toString());
         MultiblockDisplayRecipe mill = recipe(recipes, BuiltinMachines.INDUSTRIAL_ROLLER_MILL.toString());
         MultiblockDisplayRecipe tank = recipe(recipes, BuiltinMachines.INDUSTRIAL_TANK.toString());
+        MultiblockDisplayRecipe craftMill = recipe(recipes, BuiltinCraftMachines.CRAFT_MILL.toString());
+        MultiblockDisplayRecipe craftMash = recipe(recipes, BuiltinCraftMachines.CRAFT_MASH_TUN.toString());
         assertTrue(press.kineticRequired());
         assertTrue(mill.kineticRequired());
+        assertTrue(craftMill.kineticRequired());
         assertFalse(tank.kineticRequired());
+        assertEquals(3, craftMash.layers().size());
         assertTrue(hasRole(press, PartRole.KINETIC_PORT));
         assertTrue(hasRole(mill, PartRole.KINETIC_PORT));
+        assertTrue(hasRole(craftMill, PartRole.KINETIC_PORT));
         assertFalse(hasRole(tank, PartRole.KINETIC_PORT));
     }
 

@@ -2,6 +2,7 @@ package com.djden.alcoholic.forge.client;
 
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.domain.multiblock.FormedArtSize;
+import com.djden.alcoholic.minecraft.content.CraftContent;
 import com.djden.alcoholic.minecraft.content.IndustrialContent;
 import com.djden.alcoholic.minecraft.multiblock.MultiblockControllerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -13,7 +14,7 @@ public final class FormedMultiblockClient {
     private FormedMultiblockClient() {
     }
 
-    public static void register(IEventBus modEventBus, IndustrialContent industrial) {
+    public static void register(IEventBus modEventBus, IndustrialContent industrial, CraftContent craft) {
         modEventBus.addListener((ModelEvent.RegisterAdditional event) -> {
             for (ResourceId id : FormedArtSize.all().keySet()) {
                 event.register(FormedMultiblockRenderer.meshModel(id));
@@ -28,6 +29,11 @@ public final class FormedMultiblockClient {
             register(event, industrial.mashTunControllerEntity().get());
             register(event, industrial.brewingKettleControllerEntity().get());
             register(event, industrial.conditioningVesselControllerEntity().get());
+            register(event, craft.maltHouseControllerEntity().get());
+            register(event, craft.millControllerEntity().get());
+            register(event, craft.mashTunControllerEntity().get());
+            register(event, craft.brewingKettleControllerEntity().get());
+            register(event, craft.vatControllerEntity().get());
         });
     }
 

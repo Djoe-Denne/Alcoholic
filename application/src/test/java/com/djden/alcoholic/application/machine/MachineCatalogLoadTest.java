@@ -3,6 +3,7 @@ package com.djden.alcoholic.application.machine;
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.api.data.DataNode;
 import com.djden.alcoholic.domain.multiblock.MachineKind;
+import com.djden.alcoholic.domain.multiblock.MachineScale;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -14,7 +15,17 @@ class MachineCatalogLoadTest {
     @Test
     void builtinsArePresentWithoutDatapackOverlay() {
         MachineCatalog catalog = new LoadMachineCatalogUseCase().load(Map.of());
-        assertEquals(8, catalog.machines().size());
+        assertEquals(13, catalog.machines().size());
+        assertEquals(8, BuiltinMachines.all().size());
+        assertEquals(5, BuiltinCraftMachines.all().size());
+        assertEquals(
+                MachineScale.CRAFT,
+                catalog.get(BuiltinCraftMachines.CRAFT_MASH_TUN).orElseThrow().scale()
+        );
+        assertEquals(
+                MachineScale.INDUSTRIAL,
+                catalog.get(BuiltinMachines.INDUSTRIAL_MASH_TUN).orElseThrow().scale()
+        );
         assertEquals(MachineKind.STORAGE, catalog.get(BuiltinMachines.INDUSTRIAL_TANK).orElseThrow().kind());
         assertEquals(MachineKind.MALT, catalog.get(BuiltinMachines.INDUSTRIAL_MALT_HOUSE).orElseThrow().kind());
         assertEquals(MachineKind.MILL, catalog.get(BuiltinMachines.INDUSTRIAL_ROLLER_MILL).orElseThrow().kind());

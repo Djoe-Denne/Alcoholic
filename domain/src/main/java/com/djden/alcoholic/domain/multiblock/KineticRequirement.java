@@ -39,6 +39,10 @@ public record KineticRequirement(double minRpm, double maxRpm, double requiredCa
         return from(MechanicalRequirement.industrialRollerMill());
     }
 
+    public static KineticRequirement craftMill() {
+        return from(MechanicalRequirement.craftMill());
+    }
+
     public static KineticRequirement from(MechanicalRequirement mechanical) {
         MechanicalRequirement value = mechanical == null ? MechanicalRequirement.none() : mechanical;
         return new KineticRequirement(

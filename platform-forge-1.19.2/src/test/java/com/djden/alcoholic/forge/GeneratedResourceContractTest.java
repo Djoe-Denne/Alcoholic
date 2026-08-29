@@ -322,7 +322,13 @@ class GeneratedResourceContractTest {
                 "industrial_malt_house_controller",
                 "industrial_mash_tun_controller",
                 "industrial_brewing_kettle_controller",
-                "industrial_conditioning_vessel_controller"
+                "industrial_conditioning_vessel_controller",
+                "craft_casing",
+                "craft_malt_house_controller",
+                "craft_mill_controller",
+                "craft_mash_tun_controller",
+                "craft_brewing_kettle_controller",
+                "craft_vat_controller"
         }) {
             resource("assets/alcoholic/blockstates/" + block + ".json");
             resource("assets/alcoholic/models/block/" + block + ".json");
@@ -413,6 +419,12 @@ class GeneratedResourceContractTest {
                     "block.alcoholic.industrial_mash_tun_controller",
                     "block.alcoholic.industrial_brewing_kettle_controller",
                     "block.alcoholic.industrial_conditioning_vessel_controller",
+                    "block.alcoholic.craft_casing",
+                    "block.alcoholic.craft_malt_house_controller",
+                    "block.alcoholic.craft_mill_controller",
+                    "block.alcoholic.craft_mash_tun_controller",
+                    "block.alcoholic.craft_brewing_kettle_controller",
+                    "block.alcoholic.craft_vat_controller",
                     "message.alcoholic.port.mode",
                     "block.alcoholic.malting_floor",
                     "block.alcoholic.mash_tun",
@@ -566,7 +578,13 @@ class GeneratedResourceContractTest {
             "industrial_roller_mill_controller",
             "industrial_mash_tun_controller",
             "industrial_brewing_kettle_controller",
-            "industrial_conditioning_vessel_controller"
+            "industrial_conditioning_vessel_controller",
+            "craft_casing",
+            "craft_malt_house_controller",
+            "craft_mill_controller",
+            "craft_mash_tun_controller",
+            "craft_brewing_kettle_controller",
+            "craft_vat_controller"
     };
 
     private static final String[] ALWAYS_VANILLA_RECIPES = {
@@ -758,6 +776,12 @@ class GeneratedResourceContractTest {
         resource("data/alcoholic/tags/blocks/pressure_safe_casing.json");
         resource("data/alcoholic/tags/blocks/valid_machine_windows.json");
         resource("data/alcoholic/tags/blocks/industrial_ports.json");
+        resource("data/alcoholic/tags/blocks/craft_casing.json");
+        resource("data/alcoholic/alcoholic/machines/craft_malt_house.json");
+        resource("data/alcoholic/alcoholic/machines/craft_mill.json");
+        resource("data/alcoholic/alcoholic/machines/craft_mash_tun.json");
+        resource("data/alcoholic/alcoholic/machines/craft_brewing_kettle.json");
+        resource("data/alcoholic/alcoholic/machines/craft_vat.json");
         resource("data/alcoholic/alcoholic/processes/malt_pale.json");
         resource("data/alcoholic/alcoholic/processes/mill_malted_grain.json");
         resource("data/alcoholic/alcoholic/processes/mash_wort.json");

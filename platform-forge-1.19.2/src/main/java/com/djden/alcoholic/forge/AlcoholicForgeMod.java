@@ -31,6 +31,8 @@ import com.djden.alcoholic.forge.item.ForgeItemCapabilities;
 import com.djden.alcoholic.minecraft.content.GrapeContentRegistrar;
 import com.djden.alcoholic.minecraft.content.GrainContent;
 import com.djden.alcoholic.minecraft.content.GrainContentRegistrar;
+import com.djden.alcoholic.minecraft.content.CraftContent;
+import com.djden.alcoholic.minecraft.content.CraftContentRegistrar;
 import com.djden.alcoholic.minecraft.content.IndustrialContent;
 import com.djden.alcoholic.minecraft.content.ProcessingContent;
 import com.djden.alcoholic.minecraft.content.ProcessingContentRegistrar;
@@ -73,6 +75,7 @@ public final class AlcoholicForgeMod {
     private final ProcessingContent processing;
     private final GrainContent grain;
     private final IndustrialContent industrial;
+    private final CraftContent craft;
     private final MachineMenuContent menus;
     private final FluidContent fluids;
 
@@ -131,6 +134,7 @@ public final class AlcoholicForgeMod {
                 () -> cropPolicy.isBuiltinAcquisitionEnabled(CropKind.HOPS, GameplaySource.CREATIVE_DISCOVERY)
         );
         industrial = registerIndustrial(ports);
+        craft = CraftContentRegistrar.register(ports);
         menus = MachineMenuRegistrar.register(ports);
         fluids = FluidContentRegistrar.register(fluidRegistration);
 
@@ -158,7 +162,7 @@ public final class AlcoholicForgeMod {
         DistExecutor.unsafeRunWhenOn(
                 Dist.CLIENT,
                 () -> () -> AlcoholicClient.register(
-                        modEventBus, content, processing, grain, industrial, menus, fluids
+                        modEventBus, content, processing, grain, industrial, craft, menus, fluids
                 )
         );
 
@@ -190,6 +194,10 @@ public final class AlcoholicForgeMod {
 
     public IndustrialContent industrial() {
         return industrial;
+    }
+
+    public CraftContent craft() {
+        return craft;
     }
 
     public MachineMenuContent menus() {

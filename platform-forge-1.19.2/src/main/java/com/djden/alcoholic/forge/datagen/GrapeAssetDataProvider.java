@@ -155,6 +155,12 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "block.alcoholic.industrial_mash_tun_controller": "Industrial Mash Tun Controller",
                           "block.alcoholic.industrial_brewing_kettle_controller": "Industrial Brewing Kettle Controller",
                           "block.alcoholic.industrial_conditioning_vessel_controller": "Industrial Conditioning Vessel Controller",
+                          "block.alcoholic.craft_casing": "Craft Casing",
+                          "block.alcoholic.craft_malt_house_controller": "Craft Malt House Controller",
+                          "block.alcoholic.craft_mill_controller": "Craft Mill Controller",
+                          "block.alcoholic.craft_mash_tun_controller": "Craft Mash Tun Controller",
+                          "block.alcoholic.craft_brewing_kettle_controller": "Craft Brewing Kettle Controller",
+                          "block.alcoholic.craft_vat_controller": "Craft Fermentation Vat Controller",
                           "message.alcoholic.port.mode": "Port mode: %s",
                           "death.attack.alcoholic.industrial_press": "%1$s was crushed in an industrial press",
                           "block.alcoholic.barley_crop": "Barley",
@@ -403,6 +409,12 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "block.alcoholic.industrial_mash_tun_controller": "Contrôleur de cuve d'empâtage industrielle",
                           "block.alcoholic.industrial_brewing_kettle_controller": "Contrôleur de chaudière de brassage industrielle",
                           "block.alcoholic.industrial_conditioning_vessel_controller": "Contrôleur de cuve de conditionnement industrielle",
+                          "block.alcoholic.craft_casing": "Revêtement craft",
+                          "block.alcoholic.craft_malt_house_controller": "Contrôleur de touraille craft",
+                          "block.alcoholic.craft_mill_controller": "Contrôleur de broyeur craft",
+                          "block.alcoholic.craft_mash_tun_controller": "Contrôleur de cuve d'empâtage craft",
+                          "block.alcoholic.craft_brewing_kettle_controller": "Contrôleur de chaudière de brassage craft",
+                          "block.alcoholic.craft_vat_controller": "Contrôleur de cuve de fermentation craft",
                           "message.alcoholic.port.mode": "Mode du port : %s",
                           "death.attack.alcoholic.industrial_press": "%1$s a été écrasé dans un pressoir industriel",
                           "block.alcoholic.barley_crop": "Orge",
@@ -946,6 +958,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
         }
         IndustrialPressControllerAssetData.add(sink);
         IndustrialRollerMillControllerAssetData.add(sink);
+        CraftAssetData.add(sink);
     }
 
     private static void addHandmadeSimpleBlock(JsonSink sink, String name) {

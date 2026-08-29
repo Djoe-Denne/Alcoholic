@@ -740,6 +740,12 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         addShaped(sink, "industrial_mash_tun_controller", "ITI", "ICI", "III", "I", "minecraft:iron_ingot", "T", "alcoholic:mash_tun", "C", "alcoholic:industrial_casing", 1);
         addShaped(sink, "industrial_brewing_kettle_controller", "IKI", "ICI", "III", "I", "minecraft:iron_ingot", "K", "alcoholic:brewing_kettle", "C", "alcoholic:industrial_casing", 1);
         addShaped(sink, "industrial_conditioning_vessel_controller", "IFI", "ICI", "III", "I", "minecraft:iron_ingot", "F", "alcoholic:oak_barrel", "C", "alcoholic:industrial_casing", 1);
+        addShaped(sink, "craft_casing", "CCC", "C C", "CCC", "C", "minecraft:copper_ingot", 4);
+        addShaped(sink, "craft_malt_house_controller", "CMC", "CXC", "CCC", "C", "minecraft:copper_ingot", "M", "alcoholic:malting_floor", "X", "alcoholic:craft_casing", 1);
+        addShaped(sink, "craft_mill_controller", "CRC", "CXC", "CCC", "C", "minecraft:copper_ingot", "R", "alcoholic:malt_mill", "X", "alcoholic:craft_casing", 1);
+        addShaped(sink, "craft_mash_tun_controller", "CTC", "CXC", "CCC", "C", "minecraft:copper_ingot", "T", "alcoholic:mash_tun", "X", "alcoholic:craft_casing", 1);
+        addShaped(sink, "craft_brewing_kettle_controller", "CKC", "CXC", "CCC", "C", "minecraft:copper_ingot", "K", "alcoholic:brewing_kettle", "X", "alcoholic:craft_casing", 1);
+        addShaped(sink, "craft_vat_controller", "CFC", "CXC", "CCC", "C", "minecraft:copper_ingot", "F", "alcoholic:artisanal_fermenter", "X", "alcoholic:craft_casing", 1);
         addCreateMachineRecipes(sink);
     }
 
@@ -850,6 +856,12 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                 "alcoholic:industrial_casing",
                 "alcoholic:access_hatch"
         );
+        addBlockTag(
+                sink,
+                "craft_casing",
+                "alcoholic:craft_casing",
+                "alcoholic:access_hatch"
+        );
         addBlockTag(sink, "valid_machine_windows", "alcoholic:machine_window");
         addBlockTag(
                 sink,
@@ -860,6 +872,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         );
         for (String part : new String[]{
                 "industrial_casing",
+                "craft_casing",
                 "machine_window",
                 "access_hatch",
                 "fluid_port",
@@ -876,6 +889,11 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         addEmptyLoot(sink, "industrial_mash_tun_controller");
         addEmptyLoot(sink, "industrial_brewing_kettle_controller");
         addEmptyLoot(sink, "industrial_conditioning_vessel_controller");
+        addEmptyLoot(sink, "craft_malt_house_controller");
+        addEmptyLoot(sink, "craft_mill_controller");
+        addEmptyLoot(sink, "craft_mash_tun_controller");
+        addEmptyLoot(sink, "craft_brewing_kettle_controller");
+        addEmptyLoot(sink, "craft_vat_controller");
         addMachine(
                 sink,
                 "industrial_press",
@@ -940,7 +958,13 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                             "alcoholic:industrial_roller_mill_controller",
                             "alcoholic:industrial_mash_tun_controller",
                             "alcoholic:industrial_brewing_kettle_controller",
-                            "alcoholic:industrial_conditioning_vessel_controller"
+                            "alcoholic:industrial_conditioning_vessel_controller",
+                            "alcoholic:craft_casing",
+                            "alcoholic:craft_malt_house_controller",
+                            "alcoholic:craft_mill_controller",
+                            "alcoholic:craft_mash_tun_controller",
+                            "alcoholic:craft_brewing_kettle_controller",
+                            "alcoholic:craft_vat_controller"
                           ]
                         }
                         """
@@ -1073,6 +1097,126 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "capacity_per_internal_block": 8000,
                           "controller": "alcoholic:industrial_conditioning_vessel_controller",
                           "modifiers": { "yield": 1.0, "speed": 1.0, "thermal_stability": 3.0, "max_batch_units": 1 }
+                        }
+                        """
+        );
+        addCraftMachines(sink);
+    }
+
+    private static void addCraftMachines(JsonSink sink) {
+        addMachine(
+                sink,
+                "craft_malt_house",
+                """
+                        {
+                          "id": "alcoholic:craft_malt_house",
+                          "kind": "malt",
+                          "process": "alcoholic:malt",
+                          "scale": "craft",
+                          "min_exterior": { "x": 3, "y": 3, "z": 3 },
+                          "max_exterior": { "x": 5, "y": 5, "z": 5 },
+                          "required_controllers": 1,
+                          "casing_tags": ["alcoholic:craft_casing"],
+                          "window_tags": ["alcoholic:valid_machine_windows"],
+                          "port_tags": ["alcoholic:industrial_ports"],
+                          "required_ports": [],
+                          "hollow_interior": true,
+                          "capacity_per_internal_block": 1000,
+                          "controller": "alcoholic:craft_malt_house_controller",
+                          "modifiers": { "yield": 1.0, "speed": 1.25, "thermal_stability": 1.5, "max_batch_units": 8 }
+                        }
+                        """
+        );
+        addMachine(
+                sink,
+                "craft_mill",
+                """
+                        {
+                          "id": "alcoholic:craft_mill",
+                          "kind": "mill",
+                          "process": "alcoholic:mill",
+                          "scale": "craft",
+                          "min_exterior": { "x": 3, "y": 3, "z": 3 },
+                          "max_exterior": { "x": 5, "y": 5, "z": 5 },
+                          "required_controllers": 1,
+                          "casing_tags": ["alcoholic:craft_casing"],
+                          "window_tags": ["alcoholic:valid_machine_windows"],
+                          "port_tags": ["alcoholic:industrial_ports"],
+                          "required_ports": ["kinetic_port"],
+                          "hollow_interior": true,
+                          "capacity_per_internal_block": 1000,
+                          "controller": "alcoholic:craft_mill_controller",
+                          "modifiers": { "yield": 1.0, "speed": 2.0, "thermal_stability": 1.0, "max_batch_units": 8 },
+                          "kinetic": { "min_rpm": 8, "max_rpm": 256, "required_capacity": 2.0, "required": true }
+                        }
+                        """
+        );
+        addMachine(
+                sink,
+                "craft_mash_tun",
+                """
+                        {
+                          "id": "alcoholic:craft_mash_tun",
+                          "kind": "mash",
+                          "process": "alcoholic:mash",
+                          "scale": "craft",
+                          "min_exterior": { "x": 3, "y": 3, "z": 3 },
+                          "max_exterior": { "x": 5, "y": 5, "z": 5 },
+                          "required_controllers": 1,
+                          "casing_tags": ["alcoholic:craft_casing"],
+                          "window_tags": ["alcoholic:valid_machine_windows"],
+                          "port_tags": ["alcoholic:industrial_ports"],
+                          "required_ports": [],
+                          "hollow_interior": true,
+                          "capacity_per_internal_block": 2000,
+                          "controller": "alcoholic:craft_mash_tun_controller",
+                          "modifiers": { "yield": 1.02, "speed": 1.25, "thermal_stability": 3.0, "max_batch_units": 8 }
+                        }
+                        """
+        );
+        addMachine(
+                sink,
+                "craft_brewing_kettle",
+                """
+                        {
+                          "id": "alcoholic:craft_brewing_kettle",
+                          "kind": "boil",
+                          "process": "alcoholic:boil",
+                          "scale": "craft",
+                          "min_exterior": { "x": 3, "y": 3, "z": 3 },
+                          "max_exterior": { "x": 5, "y": 5, "z": 5 },
+                          "required_controllers": 1,
+                          "casing_tags": ["alcoholic:craft_casing"],
+                          "window_tags": ["alcoholic:valid_machine_windows"],
+                          "port_tags": ["alcoholic:industrial_ports"],
+                          "required_ports": [],
+                          "hollow_interior": true,
+                          "capacity_per_internal_block": 2000,
+                          "controller": "alcoholic:craft_brewing_kettle_controller",
+                          "modifiers": { "yield": 1.0, "speed": 1.25, "thermal_stability": 2.0, "max_batch_units": 1 }
+                        }
+                        """
+        );
+        addMachine(
+                sink,
+                "craft_vat",
+                """
+                        {
+                          "id": "alcoholic:craft_vat",
+                          "kind": "ferment",
+                          "process": "alcoholic:ferment",
+                          "scale": "craft",
+                          "min_exterior": { "x": 3, "y": 3, "z": 3 },
+                          "max_exterior": { "x": 5, "y": 5, "z": 5 },
+                          "required_controllers": 1,
+                          "casing_tags": ["alcoholic:craft_casing"],
+                          "window_tags": ["alcoholic:valid_machine_windows"],
+                          "port_tags": ["alcoholic:industrial_ports"],
+                          "required_ports": [],
+                          "hollow_interior": true,
+                          "capacity_per_internal_block": 2000,
+                          "controller": "alcoholic:craft_vat_controller",
+                          "modifiers": { "yield": 1.0, "speed": 1.0, "thermal_stability": 2.0, "max_batch_units": 1 }
                         }
                         """
         );
@@ -1867,6 +2011,28 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                 "B", "create:brass_ingot",
                 "F", "alcoholic:oak_barrel",
                 "C", "alcoholic:industrial_casing");
+        addCreateShaped(sink, "craft_casing", "CCC", "C C", "CCC", 4,
+                "C", "create:copper_casing");
+        addCreateShaped(sink, "craft_malt_house_controller", "CMC", "CXC", "CCC", 1,
+                "C", "create:copper_casing",
+                "M", "alcoholic:malting_floor",
+                "X", "alcoholic:craft_casing");
+        addCreateShaped(sink, "craft_mill_controller", "CRC", "CXC", "CCC", 1,
+                "C", "create:copper_casing",
+                "R", "alcoholic:malt_mill",
+                "X", "alcoholic:craft_casing");
+        addCreateShaped(sink, "craft_mash_tun_controller", "CTC", "CXC", "CCC", 1,
+                "C", "create:copper_casing",
+                "T", "alcoholic:mash_tun",
+                "X", "alcoholic:craft_casing");
+        addCreateShaped(sink, "craft_brewing_kettle_controller", "CKC", "CXC", "CCC", 1,
+                "C", "create:copper_casing",
+                "K", "alcoholic:brewing_kettle",
+                "X", "alcoholic:craft_casing");
+        addCreateShaped(sink, "craft_vat_controller", "CFC", "CXC", "CCC", 1,
+                "C", "create:copper_casing",
+                "F", "alcoholic:artisanal_fermenter",
+                "X", "alcoholic:craft_casing");
     }
 
     private static void addCreateShaped(

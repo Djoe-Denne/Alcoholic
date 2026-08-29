@@ -12,6 +12,7 @@ public final class AlcoholicBlockTags {
     public static final TagKey<Block> PRESSURE_SAFE_CASING = tag("pressure_safe_casing");
     public static final TagKey<Block> VALID_MACHINE_WINDOWS = tag("valid_machine_windows");
     public static final TagKey<Block> INDUSTRIAL_PORTS = tag("industrial_ports");
+    public static final TagKey<Block> CRAFT_CASING = tag("craft_casing");
 
     private AlcoholicBlockTags() {
     }

@@ -1,0 +1,39 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "C": {
+            "item": "minecraft:copper_ingot"
+          },
+          "R": {
+            "item": "alcoholic:malt_mill"
+          },
+          "X": {
+            "item": "alcoholic:craft_casing"
+          }
+        },
+        "pattern": [
+          "CRC",
+          "CXC",
+          "CCC"
+        ],
+        "result": {
+          "count": 1,
+          "item": "alcoholic:craft_mill_controller"
+        }
+      }
+    }
+  ]
+}

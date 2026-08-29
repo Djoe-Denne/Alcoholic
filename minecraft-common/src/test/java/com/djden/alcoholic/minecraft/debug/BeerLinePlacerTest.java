@@ -33,6 +33,9 @@ class BeerLinePlacerTest {
         assertTrue(BeerLinePlacer.spec("unknown").isEmpty());
         assertEquals(5, BeerLinePlacer.artisanalLineAliases().size());
         assertEquals(7, BeerLinePlacer.industrialLineAliases().size());
+        assertEquals(5, BeerLinePlacer.craftLineAliases().size());
+        assertTrue(BeerLinePlacer.spec("craft_mash_tun").isPresent());
+        assertTrue(BeerLinePlacer.spec("craft_mill").orElseThrow().industrial());
         assertFalse(BeerLinePlacer.spec("malting_floor").orElseThrow().industrial());
         assertTrue(BeerLinePlacer.spec("malt_house").orElseThrow().industrial());
     }
@@ -56,6 +59,21 @@ class BeerLinePlacerTest {
     }
 
     @Test
+    void craftLineLeavesAirGapBetweenMachines() {
+        List<Integer> offsets = BeerLinePlacer.craftLineOffsets();
+        List<String> aliases = BeerLinePlacer.craftLineAliases();
+        assertEquals(aliases.size(), offsets.size());
+        for (int i = 0; i < aliases.size() - 1; i++) {
+            BeerLinePlacer.MachineSpec spec = BeerLinePlacer.spec(aliases.get(i)).orElseThrow();
+            int occupied = spec.size().width() + (spec.engine() ? 1 : 0);
+            assertTrue(
+                    offsets.get(i + 1) >= offsets.get(i) + occupied + BeerLinePlacer.INDUSTRIAL_GAP,
+                    aliases.get(i) + " overlaps " + aliases.get(i + 1)
+            );
+        }
+    }
+
+    @Test
     void industrialLineLeavesAirGapBetweenMachines() {
         List<Integer> offsets = BeerLinePlacer.industrialLineOffsets();
         List<String> aliases = BeerLinePlacer.industrialLineAliases();
@@ -67,6 +85,33 @@ class BeerLinePlacerTest {
                     offsets.get(i + 1) >= offsets.get(i) + occupied + BeerLinePlacer.INDUSTRIAL_GAP,
                     aliases.get(i) + " overlaps " + aliases.get(i + 1)
             );
+        }
+    }
+
+    @Test
+    void craftMinHullsForm() {
+        for (String alias : BeerLinePlacer.craftLineAliases()) {
+            BeerLinePlacer.MachineSpec spec = BeerLinePlacer.spec(alias).orElseThrow();
+            MultiblockDefinition definition = MachineCatalog.builtins().get(spec.definitionId()).orElseThrow();
+            BeerLinePlacer.Dimensions size = spec.size();
+            boolean kinetic = definition.constraints().requiredPorts().contains(PartRole.KINETIC_PORT);
+            String casing = definition.constraints().casingTags().iterator().next();
+            ValidationResult result = HollowCuboidValidator.validate(
+                    definition,
+                    IndustrialHullPattern.controller(size.width(), size.height(), size.depth()),
+                    IndustrialHullPattern.query(
+                            size.width(),
+                            size.height(),
+                            size.depth(),
+                            kinetic,
+                            casing,
+                            BuiltinMachines.WINDOWS,
+                            BuiltinMachines.PORTS,
+                            definition.controllerBlockId()
+                    ),
+                    0
+            );
+            assertTrue(result.formed(), alias + ": " + result.reason());
         }
     }
 

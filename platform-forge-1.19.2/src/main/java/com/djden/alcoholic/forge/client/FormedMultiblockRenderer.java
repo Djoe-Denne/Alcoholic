@@ -5,6 +5,7 @@ import com.djden.alcoholic.domain.multiblock.AxisBox;
 import com.djden.alcoholic.domain.multiblock.Box3;
 import com.djden.alcoholic.domain.multiblock.FormedArtSize;
 import com.djden.alcoholic.domain.multiblock.FormedHullKit;
+import com.djden.alcoholic.domain.multiblock.MachineScale;
 import com.djden.alcoholic.domain.multiblock.MultiblockGeometry;
 import com.djden.alcoholic.minecraft.multiblock.MultiblockControllerBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -34,8 +35,10 @@ import java.util.List;
  * 1×1 world blocks, sculpted mega-mesh overlay only at the art size.
  */
 public class FormedMultiblockRenderer implements BlockEntityRenderer<MultiblockControllerBlockEntity> {
-    static final ResourceLocation CASING_TEXTURE =
+    static final ResourceLocation INDUSTRIAL_CASING_TEXTURE =
             ResourceLocation.fromNamespaceAndPath("alcoholic", "textures/block/industrial_casing.png");
+    static final ResourceLocation CRAFT_CASING_TEXTURE =
+            ResourceLocation.fromNamespaceAndPath("alcoholic", "textures/block/craft_casing.png");
 
     public FormedMultiblockRenderer(BlockEntityRendererProvider.Context context) {
     }
@@ -81,13 +84,20 @@ public class FormedMultiblockRenderer implements BlockEntityRenderer<MultiblockC
                 box.minY() - origin.getY(),
                 box.minZ() - origin.getZ()
         );
-        VertexConsumer consumer = buffers.getBuffer(RenderType.entitySolid(CASING_TEXTURE));
+        VertexConsumer consumer = buffers.getBuffer(RenderType.entitySolid(hullTexture(entity)));
         Matrix4f matrix = pose.last().pose();
         Matrix3f normal = pose.last().normal();
         for (FormedHullKit.HullQuad quad : quads) {
             emit(consumer, matrix, normal, quad, packedLight, packedOverlay);
         }
         pose.popPose();
+    }
+
+    private static ResourceLocation hullTexture(MultiblockControllerBlockEntity entity) {
+        if (entity.definition().map(definition -> definition.scale() == MachineScale.CRAFT).orElse(false)) {
+            return CRAFT_CASING_TEXTURE;
+        }
+        return INDUSTRIAL_CASING_TEXTURE;
     }
 
     private static void renderArtMesh(

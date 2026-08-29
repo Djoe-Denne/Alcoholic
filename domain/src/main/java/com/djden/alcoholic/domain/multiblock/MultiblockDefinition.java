@@ -17,7 +17,8 @@ public record MultiblockDefinition(
         int capacityPerInternalBlock,
         ExecutorModifiers modifiers,
         KineticRequirement kinetic,
-        String controllerBlockId
+        String controllerBlockId,
+        MachineScale scale
 ) {
     public MultiblockDefinition {
         Objects.requireNonNull(id, "id");
@@ -30,6 +31,30 @@ public record MultiblockDefinition(
         modifiers = modifiers == null ? ExecutorModifiers.identity() : modifiers;
         kinetic = kinetic == null ? KineticRequirement.none() : kinetic;
         controllerBlockId = controllerBlockId == null ? "" : controllerBlockId;
+        scale = scale == null ? MachineScale.INDUSTRIAL : scale;
+    }
+
+    public MultiblockDefinition(
+            ResourceId id,
+            MachineKind kind,
+            Optional<ResourceId> processType,
+            MultiblockConstraints constraints,
+            int capacityPerInternalBlock,
+            ExecutorModifiers modifiers,
+            KineticRequirement kinetic,
+            String controllerBlockId
+    ) {
+        this(
+                id,
+                kind,
+                processType,
+                constraints,
+                capacityPerInternalBlock,
+                modifiers,
+                kinetic,
+                controllerBlockId,
+                MachineScale.INDUSTRIAL
+        );
     }
 
     public boolean hasProcess() {

@@ -66,4 +66,24 @@ public record ExecutorModifiers(
     public static ExecutorModifiers industrialConditioningVessel() {
         return new ExecutorModifiers(1.0, 1.0, 3.0, 1);
     }
+
+    public static ExecutorModifiers craftMaltHouse() {
+        return new ExecutorModifiers(1.0, 1.25, 1.5, 8);
+    }
+
+    public static ExecutorModifiers craftMill() {
+        return new ExecutorModifiers(1.0, 2.0, 1.0, 8);
+    }
+
+    public static ExecutorModifiers craftMashTun() {
+        return new ExecutorModifiers(1.02, 1.25, 3.0, 8);
+    }
+
+    public static ExecutorModifiers craftBrewingKettle() {
+        return new ExecutorModifiers(1.0, 1.25, 2.0, 1);
+    }
+
+    public static ExecutorModifiers craftVat() {
+        return new ExecutorModifiers(1.0, 1.0, 2.0, 1);
+    }
 }

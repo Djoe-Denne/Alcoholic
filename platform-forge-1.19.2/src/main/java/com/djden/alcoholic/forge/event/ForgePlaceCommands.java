@@ -48,7 +48,10 @@ public final class ForgePlaceCommands {
                                         .executes(this::placeArtisanalLine)))
                         .then(Commands.literal("industrial")
                                 .then(Commands.argument("pos", BlockPosArgument.blockPos())
-                                        .executes(this::placeIndustrialLine))))
+                                        .executes(this::placeIndustrialLine)))
+                        .then(Commands.literal("craft")
+                                .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                                        .executes(this::placeCraftLine))))
                 .then(Commands.argument("machine", StringArgumentType.word())
                         .suggests(MACHINE_SUGGESTIONS)
                         .then(Commands.argument("pos", BlockPosArgument.blockPos())
@@ -131,6 +134,13 @@ public final class ForgePlaceCommands {
 
     private int placeIndustrialLine(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         return reportLine(context, "industrial", BeerLinePlacer.placeIndustrial(
+                context.getSource().getLevel(),
+                BlockPosArgument.getLoadedBlockPos(context, "pos")
+        ));
+    }
+
+    private int placeCraftLine(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        return reportLine(context, "craft", BeerLinePlacer.placeCraft(
                 context.getSource().getLevel(),
                 BlockPosArgument.getLoadedBlockPos(context, "pos")
         ));

@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class FormedMeshResourceContractTest {
     @Test
     void everyArtMachineHasABerJsonWithoutANewBlockId() throws IOException {
-        assertEquals(8, FormedArtSize.all().size());
+        assertEquals(9, FormedArtSize.all().size());
         for (ResourceId id : FormedArtSize.all().keySet()) {
             JsonObject model = resource("assets/alcoholic/models/block/formed/" + id.path() + ".json");
             assertEquals("minecraft:block/block", model.get("parent").getAsString());

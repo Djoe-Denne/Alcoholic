@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "alcoholic:block/craft_vat_controller"
+    }
+  }
+}

@@ -11,7 +11,7 @@ import java.util.Objects;
 public final class LoadMachineCatalogUseCase {
     public MachineCatalog load(Map<ResourceId, DataNode> resources) {
         Objects.requireNonNull(resources, "resources");
-        Map<ResourceId, MultiblockDefinition> machines = new LinkedHashMap<>(BuiltinMachines.all());
+        Map<ResourceId, MultiblockDefinition> machines = new LinkedHashMap<>(MachineCatalog.builtins().machines());
         resources.forEach((id, node) -> {
             ResourceId fallback = fallbackId(id);
             machines.put(fallback, MachineDefinitionCodec.INSTANCE.decode(node, id.toString(), fallback));

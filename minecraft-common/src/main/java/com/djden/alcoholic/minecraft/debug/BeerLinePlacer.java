@@ -1,10 +1,12 @@
 package com.djden.alcoholic.minecraft.debug;
 
 import com.djden.alcoholic.api.ResourceId;
+import com.djden.alcoholic.application.machine.BuiltinCraftMachines;
 import com.djden.alcoholic.application.machine.BuiltinMachines;
 import com.djden.alcoholic.application.machine.MachineCatalog;
 import com.djden.alcoholic.domain.multiblock.CellCoord;
 import com.djden.alcoholic.domain.multiblock.IndustrialHullPattern;
+import com.djden.alcoholic.domain.multiblock.MachineScale;
 import com.djden.alcoholic.domain.multiblock.MultiblockConstraints;
 import com.djden.alcoholic.domain.multiblock.MultiblockDefinition;
 import com.djden.alcoholic.domain.multiblock.PartRole;
@@ -62,6 +64,15 @@ public final class BeerLinePlacer {
         register(MachineSpec.industrial("vat", BuiltinMachines.INDUSTRIAL_VAT).sized(3, 5, 3));
         register(MachineSpec.industrial("conditioning", BuiltinMachines.INDUSTRIAL_CONDITIONING_VESSEL).sized(3, 6, 3));
         register(MachineSpec.industrial("tank", BuiltinMachines.INDUSTRIAL_TANK).sized(3, 5, 3));
+        register(MachineSpec.industrial("craft_malt_house", BuiltinCraftMachines.CRAFT_MALT_HOUSE).sized(3, 3, 3));
+        register(MachineSpec.industrial("craft_mill", BuiltinCraftMachines.CRAFT_MILL).withEngine().sized(3, 3, 3));
+        register(MachineSpec.industrial("craft_mash_tun", BuiltinCraftMachines.CRAFT_MASH_TUN)
+                .withHeat(HeatPad.MAGMA)
+                .sized(3, 3, 3));
+        register(MachineSpec.industrial("craft_brewing_kettle", BuiltinCraftMachines.CRAFT_BREWING_KETTLE)
+                .withHeat(HeatPad.CAMPFIRE)
+                .sized(3, 3, 3));
+        register(MachineSpec.industrial("craft_vat", BuiltinCraftMachines.CRAFT_VAT).sized(3, 3, 3));
     }
 
     private static final List<String> ARTISANAL_LINE = List.of(
@@ -80,6 +91,14 @@ public final class BeerLinePlacer {
             "vat",
             "conditioning",
             "tank"
+    );
+
+    private static final List<String> CRAFT_LINE = List.of(
+            "craft_malt_house",
+            "craft_mill",
+            "craft_mash_tun",
+            "craft_brewing_kettle",
+            "craft_vat"
     );
 
     private BeerLinePlacer() {
@@ -114,6 +133,31 @@ public final class BeerLinePlacer {
         ));
         results.add(placeMachine(level, "fermenter", origin.offset(9, 0, 0), null).orElseThrow());
         return List.copyOf(results);
+    }
+
+    public static List<PlaceResult> placeCraft(Level level, BlockPos origin) {
+        Objects.requireNonNull(level, "level");
+        Objects.requireNonNull(origin, "origin");
+        List<PlaceResult> results = new ArrayList<>();
+        List<Integer> offsets = craftLineOffsets();
+        int index = 0;
+        for (String alias : CRAFT_LINE) {
+            results.add(placeMachine(level, alias, origin.offset(offsets.get(index), 0, 0), null).orElseThrow());
+            index++;
+        }
+        return List.copyOf(results);
+    }
+
+    public static List<Integer> craftLineOffsets() {
+        int x = 0;
+        List<Integer> offsets = new ArrayList<>();
+        for (String alias : CRAFT_LINE) {
+            MachineSpec spec = SPECS.get(alias);
+            offsets.add(x);
+            Dimensions size = resolvedSize(spec, null);
+            x += size.width() + INDUSTRIAL_GAP + (needsEngine(spec) ? 1 : 0);
+        }
+        return List.copyOf(offsets);
     }
 
     public static List<PlaceResult> placeIndustrial(Level level, BlockPos origin) {
@@ -167,6 +211,10 @@ public final class BeerLinePlacer {
         return INDUSTRIAL_LINE;
     }
 
+    public static List<String> craftLineAliases() {
+        return CRAFT_LINE;
+    }
+
     private static PlaceResult placeArtisanalMachine(Level level, MachineSpec spec, BlockPos origin) {
         if (spec.heat() != HeatPad.NONE) {
             return placeHeatedSingle(level, spec, origin);
@@ -204,7 +252,9 @@ public final class BeerLinePlacer {
                 height,
                 depth,
                 controllerBlock(definition),
-                requireBlock(AlcoholicIds.INDUSTRIAL_CASING),
+                definition.scale() == MachineScale.CRAFT
+                        ? requireBlock(AlcoholicIds.CRAFT_CASING)
+                        : requireBlock(AlcoholicIds.INDUSTRIAL_CASING),
                 requireBlock(AlcoholicIds.MACHINE_WINDOW),
                 requireBlock(AlcoholicIds.ACCESS_HATCH),
                 requireBlock(AlcoholicIds.ITEM_PORT),

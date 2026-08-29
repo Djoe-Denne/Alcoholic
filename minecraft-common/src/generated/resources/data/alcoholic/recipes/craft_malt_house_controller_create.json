@@ -1,0 +1,36 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "C": {
+            "item": "create:copper_casing"
+          },
+          "M": {
+            "item": "alcoholic:malting_floor"
+          },
+          "X": {
+            "item": "alcoholic:craft_casing"
+          }
+        },
+        "pattern": [
+          "CMC",
+          "CXC",
+          "CCC"
+        ],
+        "result": {
+          "count": 1,
+          "item": "alcoholic:craft_malt_house_controller"
+        }
+      }
+    }
+  ]
+}

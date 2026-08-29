@@ -3,6 +3,7 @@ package com.djden.alcoholic.forge.client;
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.minecraft.content.AlcoholicContent;
 import com.djden.alcoholic.minecraft.content.GrainContent;
+import com.djden.alcoholic.minecraft.content.CraftContent;
 import com.djden.alcoholic.minecraft.content.IndustrialContent;
 import com.djden.alcoholic.minecraft.content.ProcessingContent;
 import com.djden.alcoholic.minecraft.fluid.FluidContent;
@@ -27,6 +28,7 @@ public final class AlcoholicClient {
             ProcessingContent processing,
             GrainContent grain,
             IndustrialContent industrial,
+            CraftContent craft,
             MachineMenuContent menus,
             FluidContent fluids
     ) {
@@ -61,7 +63,7 @@ public final class AlcoholicClient {
         MaltMillClient.register(modEventBus, processing);
         ElectricMotorClient.register(modEventBus, processing);
         PrimitiveCombustionEngineClient.register(modEventBus, processing);
-        FormedMultiblockClient.register(modEventBus, industrial);
+        FormedMultiblockClient.register(modEventBus, industrial, craft);
     }
 
     private static void registerFluidLayers(FluidContent fluids) {

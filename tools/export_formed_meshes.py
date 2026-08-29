@@ -20,6 +20,7 @@ ART_SIZES = {
     "industrial_conditioning_vessel": (3, 6, 3),
     "industrial_storage_tank": (3, 5, 3),
     "industrial_press": (3, 4, 3),
+    "craft_malt_house": (3, 3, 3),
 }
 
 TEXTURE_RL = {
@@ -39,6 +40,11 @@ TEXTURE_RL = {
     "industrial_tank_controller.png": "alcoholic:block/industrial_tank_controller",
     "industrial_press_controller.png": "alcoholic:block/industrial_press_controller",
     "industrial_brewing_kettle.png": "alcoholic:block/formed/industrial_brewing_kettle",
+    "craft_casing": "alcoholic:block/craft_casing",
+    "craft_casing.png": "alcoholic:block/craft_casing",
+    "craft_malt_house_controller.png": "alcoholic:block/craft_malt_house_controller",
+    "craft_malt_house": "alcoholic:block/formed/craft_malt_house",
+    "craft_malt_house.png": "alcoholic:block/formed/craft_malt_house",
 }
 
 

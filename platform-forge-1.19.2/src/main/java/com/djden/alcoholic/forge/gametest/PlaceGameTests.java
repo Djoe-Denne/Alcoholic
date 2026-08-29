@@ -53,6 +53,25 @@ public final class PlaceGameTests {
     }
 
     @GameTest(template = "industrial_pad", timeoutTicks = 40)
+    public static void placesFormedCraftMashTun(GameTestHelper helper) {
+        BeerLinePlacer.PlaceResult result = BeerLinePlacer.placeMachine(
+                helper.getLevel(),
+                "craft_mash_tun",
+                helper.absolutePos(ORIGIN),
+                null
+        ).orElseThrow();
+        require(helper, result.formed(), "Craft mash tun result was unformed: " + result.reason());
+        requireBlock(helper, ORIGIN, "craft_mash_tun_controller", "Craft mash controller missing");
+        requireBlock(helper, ORIGIN.offset(2, 0, 0), "craft_casing", "Craft casing missing");
+        if (!(helper.getBlockEntity(ORIGIN) instanceof MultiblockControllerBlockEntity controller)) {
+            helper.fail("Craft mash controller entity missing");
+            return;
+        }
+        require(helper, controller.formed(), "Craft mash tun did not form: " + controller.debugDump());
+        helper.succeed();
+    }
+
+    @GameTest(template = "industrial_pad", timeoutTicks = 40)
     public static void placesFormedMaltHouse(GameTestHelper helper) {
         BeerLinePlacer.PlaceResult result = BeerLinePlacer.placeMachine(
                 helper.getLevel(),

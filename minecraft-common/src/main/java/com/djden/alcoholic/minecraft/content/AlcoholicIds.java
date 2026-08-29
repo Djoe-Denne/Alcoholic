@@ -68,6 +68,17 @@ public final class AlcoholicIds {
     public static final ResourceId INDUSTRIAL_BREWING_KETTLE_ENTITY = id("industrial_brewing_kettle_controller");
     public static final ResourceId INDUSTRIAL_CONDITIONING_VESSEL_ENTITY =
             id("industrial_conditioning_vessel_controller");
+    public static final ResourceId CRAFT_CASING = id("craft_casing");
+    public static final ResourceId CRAFT_MALT_HOUSE_CONTROLLER = id("craft_malt_house_controller");
+    public static final ResourceId CRAFT_MILL_CONTROLLER = id("craft_mill_controller");
+    public static final ResourceId CRAFT_MASH_TUN_CONTROLLER = id("craft_mash_tun_controller");
+    public static final ResourceId CRAFT_BREWING_KETTLE_CONTROLLER = id("craft_brewing_kettle_controller");
+    public static final ResourceId CRAFT_VAT_CONTROLLER = id("craft_vat_controller");
+    public static final ResourceId CRAFT_MALT_HOUSE_ENTITY = id("craft_malt_house_controller");
+    public static final ResourceId CRAFT_MILL_ENTITY = id("craft_mill_controller");
+    public static final ResourceId CRAFT_MASH_TUN_ENTITY = id("craft_mash_tun_controller");
+    public static final ResourceId CRAFT_BREWING_KETTLE_ENTITY = id("craft_brewing_kettle_controller");
+    public static final ResourceId CRAFT_VAT_ENTITY = id("craft_vat_controller");
     public static final ResourceId BARLEY = id("barley");
     public static final ResourceId BARLEY_SEEDS = id("barley_seeds");
     public static final ResourceId BARLEY_CROP = id("barley_crop");
