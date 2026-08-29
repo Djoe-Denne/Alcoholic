@@ -27,8 +27,19 @@ Thumbs.db
 Desktop.ini
 nul
 NUL
+*~
+*.bak
+*.orig
+*.swp
+*.swo
 hs_err_pid*
 replay_pid*
 *.hprof
 .kotlin/
 .tmp-review/*
+
+# Local art locks / checksums (not a repo gate yet)
+SHA256SUMS.txt
+face_lock.json
+*.bbmodelBackup
+*.bbmodel.backup
