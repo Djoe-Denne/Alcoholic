@@ -5,6 +5,7 @@ import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
 import com.djden.alcoholic.domain.multiblock.Box3;
 import com.djden.alcoholic.domain.multiblock.PressStrokeState;
+import com.djden.alcoholic.minecraft.bottle.Bottling;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
 import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlock;
 import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlockEntity;
@@ -16,6 +17,7 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -680,6 +682,78 @@ public final class IndustrialGameTests {
                     helper,
                     batch.number(ResourceId.parse("alcoholic:bitterness"), 0.0) > 0.39,
                     "Bitterness was lost during generic FERMENT"
+            );
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "industrial_pad", timeoutTicks = 220)
+    public static void industrialVatFermentsRedMustThroughGenericFerment(GameTestHelper helper) {
+        buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_vat_controller", "industrial_casing", null);
+        MultiblockControllerBlockEntity vat = revalidate(helper, ORIGIN);
+        require(helper, vat.formed(), "Vat did not form: " + vat.debugDump());
+        vat.tank().fill(
+                LiquidBatch.of(
+                        AlcoholicIds.RED_GRAPE_MUST,
+                        1000,
+                        PropertyBag.empty()
+                                .with(ResourceId.parse("alcoholic:sugar"), 0.80)
+                                .with(ResourceId.parse("alcoholic:ethanol"), 0.0)
+                ),
+                false
+        );
+        vat.insert(new ItemStack(item("yeast"), 1));
+        helper.runAtTickTime(180, () -> {
+            LiquidBatch batch = controller(helper, ORIGIN).tank().contents().orElseThrow();
+            require(
+                    helper,
+                    batch.baseLiquid().filter(AlcoholicIds.YOUNG_RED_WINE::equals).isPresent(),
+                    "Industrial vat did not finish red must into young red wine: "
+                            + batch.baseLiquid().map(ResourceId::toString).orElse("-")
+            );
+            require(
+                    helper,
+                    batch.number(ResourceId.parse("alcoholic:ethanol"), 0.0) > 0.0,
+                    "Industrial vat did not produce ethanol from must"
+            );
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "industrial_pad", timeoutTicks = 280)
+    public static void industrialPressMustFermentsInVatThenBottlesYoungWine(GameTestHelper helper) {
+        buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_press_controller", "industrial_casing", "kinetic_port");
+        buildHollow(helper, OTHER, 3, 4, 3, "industrial_vat_controller", "industrial_casing", null);
+        MultiblockControllerBlockEntity press = revalidate(helper, ORIGIN);
+        MultiblockControllerBlockEntity vat = revalidate(helper, OTHER);
+        require(helper, press.formed(), "Press did not form: " + press.debugDump());
+        require(helper, vat.formed(), "Vat did not form: " + vat.debugDump());
+        press.debugForceRpm(64);
+        press.insert(new ItemStack(item("red_grapes"), 8));
+        helper.runAtTickTime(25, () -> {
+            LiquidBatch must = controller(helper, ORIGIN).tank().drain(1000, false);
+            require(helper, must.volumeMillibuckets() == 1000, "Industrial press did not yield a full must batch");
+            require(
+                    helper,
+                    must.baseLiquid().filter(AlcoholicIds.RED_GRAPE_MUST::equals).isPresent(),
+                    "Industrial press did not produce red grape must"
+            );
+            controller(helper, OTHER).tank().fill(must, false);
+            controller(helper, OTHER).insert(new ItemStack(item("yeast"), 1));
+        });
+        helper.runAtTickTime(220, () -> {
+            LiquidBatch batch = controller(helper, OTHER).tank().contents().orElseThrow();
+            require(
+                    helper,
+                    batch.baseLiquid().filter(AlcoholicIds.YOUNG_RED_WINE::equals).isPresent(),
+                    "Industrial vat did not finish pressed must into young red wine"
+            );
+            Player player = helper.makeMockPlayer();
+            ItemStack emptyBottle = new ItemStack(item("empty_bottle"));
+            require(
+                    helper,
+                    Bottling.bottle(player, emptyBottle, controller(helper, OTHER).tank()),
+                    "Young wine from the industrial vat should bottle"
             );
             helper.succeed();
         });

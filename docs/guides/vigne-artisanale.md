@@ -213,6 +213,8 @@ On **ne** bouteille **pas** depuis le pressoir, la cuve d’empâtage ni le chau
 
 Les contrôleurs industriels (pressoir, cuve de fermentation, tank passif) sont des **exécuteurs supplémentaires** des mêmes process. Ils ne changent pas le DAG.
 
+Un joueur **uniquement industriel** peut aller de la récolte au **vin jeune en bouteille** (pressoir → tank optionnel → cuve → `empty_bottle` sur le contrôleur). L’**élevage** (`AGE` → `red_wine` / `white_wine`) reste le **fût de chêne** tant qu’il n’existe pas de famille `BuiltinMachines` pour `AGE`. C’est le prochain trou industriel officiel à fermer, pas `DISTILL` ni le cidre.
+
 Create reste optionnel (Mechanical Press, tuyaux). Le pressoir Alcoholic conserve le lot de récolte ; le compactage Create ne le conserve pas.
 
 ---

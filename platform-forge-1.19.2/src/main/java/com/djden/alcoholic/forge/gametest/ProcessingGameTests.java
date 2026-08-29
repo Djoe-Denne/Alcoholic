@@ -4,6 +4,7 @@ import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.application.viticulture.VineVarieties;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
+import com.djden.alcoholic.minecraft.bottle.Bottling;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
 import com.djden.alcoholic.minecraft.process.ArtisanalFermenterBlockEntity;
 import com.djden.alcoholic.minecraft.process.ArtisanalPressBlockEntity;
@@ -14,9 +15,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -222,6 +226,30 @@ public final class ProcessingGameTests {
         helper.succeed();
     }
 
+    @GameTest(template = "empty", timeoutTicks = 200)
+    public static void oakBarrelAgesYoungRedWineThenBottles(GameTestHelper helper) {
+        helper.setBlock(PRESS, block("oak_barrel").defaultBlockState());
+        shelterBarrel(helper, PRESS);
+        OakBarrelBlockEntity barrel = (OakBarrelBlockEntity) helper.getBlockEntity(PRESS);
+        barrel.tank().fill(youngWine(1000, 0.12), false);
+        helper.runAtTickTime(160, () -> {
+            OakBarrelBlockEntity aged = (OakBarrelBlockEntity) helper.getBlockEntity(PRESS);
+            LiquidBatch batch = aged.tank().contents().orElseThrow();
+            require(
+                    helper,
+                    batch.baseLiquid().filter(AlcoholicIds.RED_WINE::equals).isPresent(),
+                    "Oak barrel did not finish AGE into red wine: "
+                            + batch.baseLiquid().map(ResourceId::toString).orElse("-")
+                            + " maturity="
+                            + batch.number(ResourceId.parse("alcoholic:maturity"), 0.0)
+            );
+            Player player = helper.makeMockPlayer();
+            ItemStack emptyBottle = new ItemStack(item("empty_bottle"));
+            require(helper, Bottling.bottle(player, emptyBottle, aged.tank()), "Finished red wine should bottle");
+            helper.succeed();
+        });
+    }
+
     @GameTest(template = "empty", timeoutTicks = 40)
     public static void barrelPartialDrainKeepsRemainder(GameTestHelper helper) {
         helper.setBlock(PRESS, block("oak_barrel").defaultBlockState());
@@ -346,6 +374,16 @@ public final class ProcessingGameTests {
                 "Create round-trip lost rich batch metadata"
         );
         helper.succeed();
+    }
+
+    private static void shelterBarrel(GameTestHelper helper, BlockPos origin) {
+        helper.setBlock(origin.below(), Blocks.STONE.defaultBlockState());
+        helper.setBlock(origin.above(), Blocks.STONE.defaultBlockState());
+        for (Direction direction : new Direction[] {
+                Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST
+        }) {
+            helper.setBlock(origin.relative(direction), Blocks.STONE.defaultBlockState());
+        }
     }
 
     private static LiquidBatch youngWine(int volume, double sugar) {

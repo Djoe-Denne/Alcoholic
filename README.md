@@ -147,6 +147,10 @@ Current limits:
 - bottles fill only from a fermenter, oak barrel, blending crock, or industrial controller — not from a press, mash tun, or brewing kettle; unfinished must and wort cannot be bottled;
 - no Alcoholic shaft, gearbox, or pipe network (Create remains optional logistics);
 - no industrial aging warehouses, stills, or custom pipes/pumps/belts;
+  **next official industrial close** is wine `AGE` (a formed warehouse / cellar
+  that executes generic `AGE`). Until that ships, industrial wine A→Z ends at
+  young wine in bottle; finished `red_wine` / `white_wine` still uses the oak
+  barrel. `DISTILL`, shipped cider, and drinking stay later families;
 - no gas network (CO2 is modelled and vented);
 - no drinking, intoxication, taverns, or villagers;
 - Forge 1.19.2 is the only runnable platform; Fabric remains a future adapter.

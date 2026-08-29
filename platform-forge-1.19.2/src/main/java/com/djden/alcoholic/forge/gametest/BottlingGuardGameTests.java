@@ -34,6 +34,12 @@ public final class BottlingGuardGameTests {
     }
 
     @GameTest(template = "empty", timeoutTicks = 40)
+    public static void bottlesRedWine(GameTestHelper helper) {
+        require(helper, bottle(helper, AlcoholicIds.RED_WINE), "Finished red wine should bottle");
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
     public static void bottlesBeer(GameTestHelper helper) {
         require(helper, bottle(helper, AlcoholicIds.BEER), "Beer should bottle");
         helper.succeed();

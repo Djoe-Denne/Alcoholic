@@ -50,6 +50,8 @@ Alcoholic is a Minecraft mod for realistic brewing, winemaking, and distillation
 
 **Phase 7A** — second beverage family through generic process types: barley and hops agriculture, `MALT` / `MILL` / `MASH` / `BOIL`, malting floor, mash tun, brewing kettle. See [[grain-processing]]. Official DAGs follow the [[native-executor-invariant]]: the Malt Mill plus [[mechanical-drive-port]] keep MILL playable without Create. Create millstone/crushing stay optional extras. Shipped grain beer ends after generic `FERMENT`. AGE stays optional. Whisky remains a structural DAG fixture (`DISTILL` is still a stub).
 
+**Next official industrial close** — wine `AGE` warehouse (`BuiltinMachines` + `form_*` node). Industrial wine A→Z currently bottles young wine; finished wine still uses the oak barrel. `DISTILL`, shipped cider, and drinking are later families.
+
 **Mechanical supplies (ADR-031)** — four ways to feed the same port: primitive combustion engine, [[electric-motor]] (generic FE; IE connector is one provider), optional Create, optional [[crossroads-rotary-adapter]]. Machines never branch on which mod is installed.
 
 **Artisanal visuals** — Codex replaced the cube placeholders for the malting floor, primitive engine, and malt mill with Java voxel models authored in [[blockbench]]. See [[artisanal-machine-voxel-models]] and [[resource-pack-resolution-chain]].
