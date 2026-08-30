@@ -1,6 +1,8 @@
 package com.djden.alcoholic.minecraft.content;
 
 import com.djden.alcoholic.minecraft.bottle.BeverageBottleItem;
+import com.djden.alcoholic.minecraft.guide.GrimoireItem;
+import com.djden.alcoholic.minecraft.guide.GrimoireKind;
 import com.djden.alcoholic.minecraft.process.ArtisanalBlendingCrockBlock;
 import com.djden.alcoholic.minecraft.process.ArtisanalBlendingCrockBlockEntity;
 import com.djden.alcoholic.minecraft.process.ArtisanalFermenterBlock;
@@ -161,6 +163,20 @@ public final class ProcessingContentRegistrar {
         RegistryRef<Item> spentGrain = ports.items().register(
                 AlcoholicIds.SPENT_GRAIN,
                 () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC))
+        );
+        ports.items().register(
+                AlcoholicIds.WINE_GRIMOIRE,
+                () -> new GrimoireItem(
+                        GrimoireKind.WINE,
+                        new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC)
+                )
+        );
+        ports.items().register(
+                AlcoholicIds.BEER_GRIMOIRE,
+                () -> new GrimoireItem(
+                        GrimoireKind.BEER,
+                        new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC)
+                )
         );
         RegistryRef<BlockEntityType<?>> pressEntity = ports.blockEntities().register(
                 AlcoholicIds.ARTISANAL_PRESS_ENTITY,

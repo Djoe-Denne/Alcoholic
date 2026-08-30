@@ -38,6 +38,14 @@ replay_pid*
 .kotlin/
 .tmp-review/*
 
+# Forge HashCache: rewritten on every runData, not a source of truth.
+# Keep generated JSON/PNG tracked; drop only the hash sidecar folder.
+**/src/generated/resources/.cache/
+
+# Python bytecode
+**/__pycache__/
+*.py[cod]
+
 # Local art locks / checksums (not a repo gate yet)
 SHA256SUMS.txt
 face_lock.json

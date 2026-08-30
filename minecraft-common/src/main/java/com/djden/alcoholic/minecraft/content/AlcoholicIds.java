@@ -26,6 +26,8 @@ public final class AlcoholicIds {
     public static final ResourceId ARTISANAL_PRESS = id("artisanal_press");
     public static final ResourceId ARTISANAL_FERMENTER = id("artisanal_fermenter");
     public static final ResourceId YEAST = id("yeast");
+    public static final ResourceId WINE_GRIMOIRE = id("wine_grimoire");
+    public static final ResourceId BEER_GRIMOIRE = id("beer_grimoire");
     public static final ResourceId GRAPE_POMACE = id("grape_pomace");
     public static final ResourceId ARTISANAL_PRESS_ENTITY = id("artisanal_press");
     public static final ResourceId ARTISANAL_FERMENTER_ENTITY = id("artisanal_fermenter");

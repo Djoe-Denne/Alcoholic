@@ -7,8 +7,10 @@ import com.djden.alcoholic.minecraft.content.CraftContent;
 import com.djden.alcoholic.minecraft.content.IndustrialContent;
 import com.djden.alcoholic.minecraft.content.ProcessingContent;
 import com.djden.alcoholic.minecraft.fluid.FluidContent;
+import com.djden.alcoholic.minecraft.guide.GrimoireClientOpen;
 import com.djden.alcoholic.minecraft.menu.MachineMenu;
 import com.djden.alcoholic.minecraft.menu.MachineMenuContent;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -60,6 +62,7 @@ public final class AlcoholicClient {
                     registerMenus(menus);
                 })
         );
+        GrimoireClientOpen.bind(kind -> Minecraft.getInstance().setScreen(new GrimoireScreen(kind)));
         MaltMillClient.register(modEventBus, processing);
         ElectricMotorClient.register(modEventBus, processing);
         PrimitiveCombustionEngineClient.register(modEventBus, processing);

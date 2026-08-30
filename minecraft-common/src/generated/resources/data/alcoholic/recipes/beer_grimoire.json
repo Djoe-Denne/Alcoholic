@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:book"
+    },
+    {
+      "tag": "alcoholic:barley"
+    }
+  ],
+  "result": {
+    "item": "alcoholic:beer_grimoire"
+  }
+}

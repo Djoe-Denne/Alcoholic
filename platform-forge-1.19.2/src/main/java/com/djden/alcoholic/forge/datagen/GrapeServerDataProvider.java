@@ -505,6 +505,36 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                         """
         );
         sink.add(
+                "data/alcoholic/recipes/wine_grimoire.json",
+                """
+                        {
+                          "type": "minecraft:crafting_shapeless",
+                          "ingredients": [
+                            { "item": "minecraft:book" },
+                            { "tag": "alcoholic:grapes" }
+                          ],
+                          "result": {
+                            "item": "alcoholic:wine_grimoire"
+                          }
+                        }
+                        """
+        );
+        sink.add(
+                "data/alcoholic/recipes/beer_grimoire.json",
+                """
+                        {
+                          "type": "minecraft:crafting_shapeless",
+                          "ingredients": [
+                            { "item": "minecraft:book" },
+                            { "tag": "alcoholic:barley" }
+                          ],
+                          "result": {
+                            "item": "alcoholic:beer_grimoire"
+                          }
+                        }
+                        """
+        );
+        sink.add(
                 "data/alcoholic/recipes/oak_barrel.json",
                 wrapUnlessCreate(
                         """

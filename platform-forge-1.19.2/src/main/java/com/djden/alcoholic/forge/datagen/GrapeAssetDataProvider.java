@@ -34,6 +34,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
 
         sink.add(
                 "assets/alcoholic/lang/en_us.json",
+                GrimoireLangData.mergeEnglish(
                 """
                         {
                           "block.alcoholic.red_grapevine": "Red Grapevine",
@@ -296,10 +297,11 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "ftbquests.alcoholic.hover.form_kettle": "Minimum 3×4×3 hull. Ports sit on the −Z face. Layer details are in JEI.",
                           "ftbquests.alcoholic.hover.form_conditioning": "Minimum 3×4×3 hull. Ports sit on the −Z face. Layer details are in JEI."
                         }
-                        """
+                        """)
         );
         sink.add(
                 "assets/alcoholic/lang/fr_fr.json",
+                GrimoireLangData.mergeFrench(
                 """
                         {
                           "block.alcoholic.red_grapevine": "Vigne rouge",
@@ -562,7 +564,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "ftbquests.alcoholic.hover.form_kettle": "Coque minimale 3×4×3. Les ports sont sur la face −Z. Le détail des couches est dans JEI.",
                           "ftbquests.alcoholic.hover.form_conditioning": "Coque minimale 3×4×3. Les ports sont sur la face −Z. Le détail des couches est dans JEI."
                         }
-                        """
+                        """)
         );
     }
 
@@ -952,6 +954,8 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
         ArtisanalBlendingCrockAssetData.add(sink);
         ElectricMotorAssetData.add(sink);
         addGeneratedItem(sink, "yeast");
+        addGeneratedItem(sink, "wine_grimoire");
+        addGeneratedItem(sink, "beer_grimoire");
         addGeneratedItem(sink, "grape_pomace");
         addGeneratedItem(sink, "empty_bottle");
         addGeneratedItem(sink, "beverage_bottle");

@@ -39,8 +39,37 @@ final class AlcoholicTextureProvider implements DataProvider {
         for (Map.Entry<String, Integer> entry : textures.entrySet()) {
             writePng(cache, "assets/alcoholic/textures/" + entry.getKey() + ".png", entry.getValue());
         }
+        writeImage(cache, "assets/alcoholic/textures/item/wine_grimoire.png", bookIcon(0xFF6B2A4A, 0xFFE8D5B0));
+        writeImage(cache, "assets/alcoholic/textures/item/beer_grimoire.png", bookIcon(0xFFC9A227, 0xFFF3E6C0));
         writeImage(cache, "assets/alcoholic/textures/gui/machine.png", machinePanel());
         writeImage(cache, "assets/alcoholic/textures/gui/elements.png", machineElements());
+        writeImage(cache, "assets/alcoholic/textures/gui/grimoire/placeholder.png", grimoirePlaceholder());
+    }
+
+    private static BufferedImage bookIcon(int cover, int page) {
+        BufferedImage image = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+        fill(image, 3, 2, 11, 13, cover);
+        fill(image, 3, 2, 2, 13, darken(cover));
+        fill(image, 6, 3, 7, 11, page);
+        fill(image, 7, 5, 5, 1, darken(page));
+        fill(image, 7, 8, 5, 1, darken(page));
+        fill(image, 7, 11, 4, 1, darken(page));
+        return image;
+    }
+
+    private static BufferedImage grimoirePlaceholder() {
+        int width = 100;
+        int height = 56;
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        fill(image, 0, 0, width, height, 0xFFE8D5B0);
+        rect(image, 0, 0, width, height, 0xFF6B4A2A);
+        rect(image, 2, 2, width - 4, height - 4, 0xFFA67C52);
+        fill(image, 8, 10, width - 16, 1, 0xFFC4A574);
+        fill(image, 8, 18, width - 22, 1, 0xFFC4A574);
+        fill(image, 8, 26, width - 18, 1, 0xFFC4A574);
+        fill(image, 8, 34, width - 28, 1, 0xFFC4A574);
+        fill(image, 8, 42, width - 24, 1, 0xFFC4A574);
+        return image;
     }
 
     private static BufferedImage machinePanel() {

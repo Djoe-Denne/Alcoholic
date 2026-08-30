@@ -2,6 +2,9 @@ package com.djden.alcoholic.forge;
 
 import com.djden.alcoholic.minecraft.fluid.BuiltinFluidDefinitions;
 import com.djden.alcoholic.minecraft.fluid.FluidDefinition;
+import com.djden.alcoholic.minecraft.guide.GrimoireCatalog;
+import com.djden.alcoholic.minecraft.guide.GrimoireChapter;
+import com.djden.alcoholic.minecraft.guide.GrimoireKind;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -354,7 +357,9 @@ class GeneratedResourceContractTest {
                 "spent_grain",
                 "wort_bucket",
                 "hopped_wort_bucket",
-                "beer_bucket"
+                "beer_bucket",
+                "wine_grimoire",
+                "beer_grimoire"
         }) {
             resource("assets/alcoholic/models/item/" + item + ".json");
             assertPng16("assets/alcoholic/textures/item/" + item + ".png");
@@ -470,12 +475,44 @@ class GeneratedResourceContractTest {
                     "ftbquests.alcoholic.hover.press",
                     "ftbquests.alcoholic.hover.bottle",
                     "ftbquests.alcoholic.industrial.chapter.title",
-                    "ftbquests.alcoholic.hover.form_press"
+                    "ftbquests.alcoholic.hover.form_press",
+                    "item.alcoholic.wine_grimoire",
+                    "item.alcoholic.beer_grimoire",
+                    "grimoire.alcoholic.toc",
+                    "grimoire.alcoholic.illustration.pending"
             }) {
                 assertTrue(
                         translations.has(key),
                         "Missing " + language + " translation " + key
                 );
+            }
+        }
+    }
+
+    @Test
+    void englishAndFrenchCoverEveryGrimoirePage() throws IOException {
+        JsonObject wineRecipe = resource("data/alcoholic/recipes/wine_grimoire.json");
+        JsonObject beerRecipe = resource("data/alcoholic/recipes/beer_grimoire.json");
+        assertEquals("minecraft:crafting_shapeless", wineRecipe.get("type").getAsString());
+        assertEquals("minecraft:crafting_shapeless", beerRecipe.get("type").getAsString());
+        assertEquals("alcoholic:wine_grimoire", resultItem(wineRecipe));
+        assertEquals("alcoholic:beer_grimoire", resultItem(beerRecipe));
+        assertPngSize("assets/alcoholic/textures/gui/grimoire/placeholder.png", 100, 56);
+        for (String language : new String[]{"en_us", "fr_fr"}) {
+            JsonObject translations = resource("assets/alcoholic/lang/" + language + ".json");
+            for (GrimoireKind kind : GrimoireKind.values()) {
+                for (GrimoireChapter chapter : GrimoireCatalog.chapters(kind)) {
+                    assertTrue(
+                            translations.has(chapter.titleKey()),
+                            "Missing " + language + " translation " + chapter.titleKey()
+                    );
+                    for (String pageKey : chapter.pageKeys()) {
+                        assertTrue(
+                                translations.has(pageKey),
+                                "Missing " + language + " translation " + pageKey
+                        );
+                    }
+                }
             }
         }
     }
@@ -709,6 +746,8 @@ class GeneratedResourceContractTest {
         resource("data/alcoholic/recipes/brewing_kettle.json");
         resource("data/alcoholic/recipes/empty_bottle.json");
         resource("data/alcoholic/recipes/yeast.json");
+        resource("data/alcoholic/recipes/wine_grimoire.json");
+        resource("data/alcoholic/recipes/beer_grimoire.json");
         resource("data/alcoholic/tags/items/grapes.json");
         resource("data/alcoholic/tags/items/barley.json");
         resource("data/alcoholic/tags/items/barley/seeds.json");
