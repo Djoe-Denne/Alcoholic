@@ -373,8 +373,11 @@ Java registers operators (`alcoholic:harvest_complexity`,
 wires them. Shipped graphs: `alcoholic:wine`, `alcoholic:beer`,
 `alcoholic:spirit`, `alcoholic:generic`. Omit `quality` to use generic
 from the catalog (present axes only). Graphs are datapack-only, must
-declare `outputs.profile`, and may have at most 256 nodes. Ethanol is
-rejected as a quality input at load. See ADR-038.
+declare `outputs.profile` on a node that emits the six profile ports
+(`purity`, `complexity`, `maturity`, `balance`, `defects`, `summary`),
+and may have at most 256 nodes. Ethanol is rejected as a quality input
+at load. A catalog that ships any quality graph must include
+`alcoholic:generic`. See ADR-038.
 
 Inspect and bottling resolve the graph from beverage identity, then
 `baseLiquid`, then generic.

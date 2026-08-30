@@ -37,6 +37,15 @@ public record QualitySignal(Map<String, Double> ports) {
         return value == null ? fallback : value;
     }
 
+    public double getPortOrValue(String port, double fallback) {
+        Double value = ports.get(port);
+        if (value != null) {
+            return value;
+        }
+        Double scalar = ports.get("value");
+        return scalar == null ? fallback : scalar;
+    }
+
     public QualitySignal with(String port, double value) {
         Map<String, Double> next = new LinkedHashMap<>(ports);
         next.put(port, value);

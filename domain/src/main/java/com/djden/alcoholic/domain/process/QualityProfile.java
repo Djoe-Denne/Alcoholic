@@ -18,9 +18,9 @@ import java.util.Objects;
  * under these names; {@link #summary()} is a UI fold that still respects
  * the tightest complexity cap and highest purity floor stamped on the batch.
  *
- * <p>Evaluate a catalog graph with {@link #evaluate(QualityGraph, LiquidBatchView, ExecutorModifiers)}.
- * Runtime resolution (identity / {@code baseLiquid} / generic) lives in application
- * {@code QualityProfiles}.</p>
+ * <p>Evaluate a catalog graph with {@link #evaluate(QualityGraph, Map, LiquidBatchView, ExecutorModifiers)}
+ * and the operator registry. Runtime resolution (identity / {@code baseLiquid} /
+ * generic) lives in application {@code QualityProfiles}.</p>
  */
 public record QualityProfile(
         double purity,
@@ -56,14 +56,6 @@ public record QualityProfile(
         balance = clamp01(balance);
         defects = clamp01(defects);
         summary = clamp01(summary);
-    }
-
-    public static QualityProfile evaluate(
-            QualityGraph graph,
-            LiquidBatchView batch,
-            ExecutorModifiers modifiers
-    ) {
-        return QualityEvaluator.evaluate(graph, batch, modifiers);
     }
 
     public static QualityProfile evaluate(

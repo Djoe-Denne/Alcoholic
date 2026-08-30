@@ -12,7 +12,7 @@ import com.djden.alcoholic.domain.liquid.BatchProvenance;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
 import com.djden.alcoholic.domain.process.QualityProfile;
-import com.djden.alcoholic.domain.quality.QualityGraph;
+import com.djden.alcoholic.domain.quality.QualityEvaluator;
 import com.djden.alcoholic.domain.quality.QualityGraphIds;
 import org.junit.jupiter.api.Test;
 
@@ -110,10 +110,9 @@ class QualityProfilesTest {
         LiquidBatch tannic = plain.withProperty(QualityProfile.TANNIN, 0.50);
         assertTrue(QualityProfiles.derive(tannic, catalog, api).complexity()
                 > QualityProfiles.derive(plain, catalog, api).complexity());
-        QualityGraph wine = ShippedQualityGraphs.graph(api, QualityGraphIds.WINE);
         assertTrue(
-                QualityProfile.evaluate(wine, tannic, ExecutorModifiers.identity()).complexity()
-                        > QualityProfile.evaluate(wine, plain, ExecutorModifiers.identity()).complexity()
+                evaluateGraph(api, QualityGraphIds.WINE, tannic).complexity()
+                        > evaluateGraph(api, QualityGraphIds.WINE, plain).complexity()
         );
     }
 
@@ -123,11 +122,7 @@ class QualityProfilesTest {
         BeverageCatalog catalog = catalog(api);
         LiquidBatch wine = batch(0.70, 0.45, 0.12, 0.20);
         QualityProfile generic = QualityProfiles.derive(wine, catalog, api);
-        QualityProfile wineGraph = QualityProfile.evaluate(
-                ShippedQualityGraphs.graph(api, QualityGraphIds.WINE),
-                wine,
-                ExecutorModifiers.identity()
-        );
+        QualityProfile wineGraph = evaluateGraph(api, QualityGraphIds.WINE, wine);
         double sugarAcid = 1.0 - (Math.abs(0.50 - 0.35) + Math.abs(0.45 - 0.45)) / 2.0;
         assertEquals(sugarAcid, generic.balance(), 1e-9);
         assertEquals(generic.summary(), wineGraph.summary(), 1e-9);
@@ -138,16 +133,8 @@ class QualityProfilesTest {
     void beerGraphDoesNotDiluteWineBalance() {
         AlcoholicApi api = api();
         LiquidBatch wine = batch(0.70, 0.45, 0.12, 0.20);
-        QualityProfile beerGraph = QualityProfile.evaluate(
-                ShippedQualityGraphs.graph(api, QualityGraphIds.BEER),
-                wine,
-                ExecutorModifiers.identity()
-        );
-        QualityProfile wineGraph = QualityProfile.evaluate(
-                ShippedQualityGraphs.graph(api, QualityGraphIds.WINE),
-                wine,
-                ExecutorModifiers.identity()
-        );
+        QualityProfile beerGraph = evaluateGraph(api, QualityGraphIds.BEER, wine);
+        QualityProfile wineGraph = evaluateGraph(api, QualityGraphIds.WINE, wine);
         assertEquals(0.5, beerGraph.balance(), 1e-9);
         assertTrue(wineGraph.balance() > beerGraph.balance());
     }
@@ -157,16 +144,14 @@ class QualityProfilesTest {
         AlcoholicApi api = api();
         LiquidBatch plain = batch(0.70, 0.45, 0.12, 0.20);
         LiquidBatch tannic = plain.withProperty(QualityProfile.TANNIN, 0.50);
-        QualityGraph beer = ShippedQualityGraphs.graph(api, QualityGraphIds.BEER);
-        QualityGraph wine = ShippedQualityGraphs.graph(api, QualityGraphIds.WINE);
         assertEquals(
-                QualityProfile.evaluate(beer, plain, ExecutorModifiers.identity()).complexity(),
-                QualityProfile.evaluate(beer, tannic, ExecutorModifiers.identity()).complexity(),
+                evaluateGraph(api, QualityGraphIds.BEER, plain).complexity(),
+                evaluateGraph(api, QualityGraphIds.BEER, tannic).complexity(),
                 1e-9
         );
         assertTrue(
-                QualityProfile.evaluate(wine, tannic, ExecutorModifiers.identity()).complexity()
-                        > QualityProfile.evaluate(wine, plain, ExecutorModifiers.identity()).complexity()
+                evaluateGraph(api, QualityGraphIds.WINE, tannic).complexity()
+                        > evaluateGraph(api, QualityGraphIds.WINE, plain).complexity()
         );
     }
 
@@ -184,11 +169,7 @@ class QualityProfilesTest {
     @Test
     void spiritGraphEvaluates() {
         AlcoholicApi api = api();
-        QualityProfile profile = QualityProfile.evaluate(
-                ShippedQualityGraphs.graph(api, QualityGraphIds.SPIRIT),
-                batch(0.70, 0.20, 0.40, 0.30),
-                ExecutorModifiers.identity()
-        );
+        QualityProfile profile = evaluateGraph(api, QualityGraphIds.SPIRIT, batch(0.70, 0.20, 0.40, 0.30));
         assertTrue(profile.summary() > 0.0);
         assertEquals(0.5, profile.balance(), 1e-9);
     }
@@ -228,6 +209,15 @@ class QualityProfilesTest {
         LiquidBatch unknown = LiquidBatch.of(ResourceId.parse("testpack:unknown"), 1000, PropertyBag.empty());
         assertEquals(QualityGraphIds.GENERIC, QualityResolver.resolve(unknown, catalog).id());
         assertTrue(QualityProfiles.derive(unknown, catalog, api).summary() >= 0.0);
+    }
+
+    private static QualityProfile evaluateGraph(AlcoholicApi api, ResourceId graphId, LiquidBatch batch) {
+        return QualityEvaluator.evaluate(
+                ShippedQualityGraphs.graph(api, graphId),
+                api.qualityOperators(),
+                batch,
+                ExecutorModifiers.identity()
+        );
     }
 
     private static BeverageCatalog catalog(AlcoholicApi api) {

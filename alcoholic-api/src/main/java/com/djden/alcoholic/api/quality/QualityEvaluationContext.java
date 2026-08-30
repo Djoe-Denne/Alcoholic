@@ -16,6 +16,6 @@ public interface QualityEvaluationContext {
     QualitySignal inputSignal(String port);
 
     default double input(String port, double fallback) {
-        return inputSignal(port).get(port, fallback);
+        return inputSignal(port).getPortOrValue(port, fallback);
     }
 }

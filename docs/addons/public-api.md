@@ -130,3 +130,6 @@ It is not runtime state. Right-click a barrel, crock, or fermenter with
 api.qualityOperators().register(QualityOperator.of(myOpId, codec, handler));
 ```
 
+Operator configs that read batch properties should implement
+`QualityPropertyRefs` so the catalog can reject `alcoholic:ethanol`.
+

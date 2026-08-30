@@ -151,6 +151,26 @@ class LoadQualityCatalogUseCaseTest {
     }
 
     @Test
+    void rejectsProfilePointedAtHarvest() {
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> loader.load(
+                Map.of(
+                        ResourceId.parse("testpack:quality/harvest"),
+                        JsonDataParser.parse("""
+                                {
+                                  "id": "testpack:harvest",
+                                  "nodes": [
+                                    { "id": "harvest", "op": "alcoholic:harvest_complexity" }
+                                  ],
+                                  "outputs": { "profile": { "node": "harvest", "port": "value" } }
+                                }
+                                """)
+                ),
+                api()
+        ));
+        assertTrue(thrown.getMessage().contains("profile node harvest missing port"));
+    }
+
+    @Test
     void foldWithoutOutputsInheritsDefaultOutputs() {
         var graphs = loader.load(
                 Map.of(
@@ -247,9 +267,11 @@ class LoadQualityCatalogUseCaseTest {
             if (index > 0) {
                 json.append(',');
             }
-            json.append("{\"id\":\"n").append(index).append("\",\"op\":\"alcoholic:harvest_complexity\"}");
+            json.append("{\"id\":\"n").append(index).append("\",\"op\":\"")
+                    .append(index == 0 ? "alcoholic:fold_summary" : "alcoholic:harvest_complexity")
+                    .append("\"}");
         }
-        json.append("],\"outputs\":{\"profile\":{\"node\":\"n0\",\"port\":\"value\"}}}");
+        json.append("],\"outputs\":{\"profile\":{\"node\":\"n0\",\"port\":\"summary\"}}}");
         return json.toString();
     }
 

@@ -3,8 +3,10 @@ package com.djden.alcoholic.application.beverage;
 import com.djden.alcoholic.addon.test.TestAddonBootstrap;
 import com.djden.alcoholic.api.AlcoholicApi;
 import com.djden.alcoholic.api.ResourceId;
+import com.djden.alcoholic.api.data.DataNode;
 import com.djden.alcoholic.api.data.JsonDataParser;
 import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
+import com.djden.alcoholic.application.quality.ShippedQualityGraphs;
 import com.djden.alcoholic.domain.beverage.InputReference;
 import com.djden.alcoholic.domain.beverage.ProcessNode;
 import org.junit.jupiter.api.Test;
@@ -350,6 +352,21 @@ class LoadBeverageCatalogUseCaseTest {
                 api
         ));
         assertTrue(thrown.getMessage().contains("unknown quality graph"));
+    }
+
+    @Test
+    void rejectsQualityCatalogMissingGeneric() {
+        AlcoholicApi api = api();
+        DataNode wine = ShippedQualityGraphs.sources().get(new ResourceId("alcoholic", "quality/wine"));
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> loader.load(
+                Map.of(),
+                Map.of(),
+                Map.of(),
+                Map.of(),
+                Map.of(new ResourceId("alcoholic", "quality/wine"), wine),
+                api
+        ));
+        assertTrue(thrown.getMessage().contains("alcoholic:generic"));
     }
 
     @Test

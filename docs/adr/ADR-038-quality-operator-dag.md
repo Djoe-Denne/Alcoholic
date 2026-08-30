@@ -40,9 +40,12 @@ Shipped operators extract the former `QualityProfile.derive` formula
 
 Unknown operators, cycles, missing `outputs.profile`, invalid operator
 config, and ethanol as a quality input are rejected when the catalog
-loads. A graph may have at most 256 nodes. Fold inputs may use
-`QualityInput.Sum` (quality-only combinator). Graphs are datapack-only;
-there is no Java seed.
+loads. `outputs.profile` names the node that emits the profile bag; that
+node must declare `purity`, `complexity`, `maturity`, `balance`,
+`defects`, and `summary`. A graph may have at most 256 nodes. Fold
+inputs may use `QualityInput.Sum` (quality-only combinator). Graphs are
+datapack-only; there is no Java seed. When any quality graph is present,
+`alcoholic:generic` is required.
 
 ## Consequences
 

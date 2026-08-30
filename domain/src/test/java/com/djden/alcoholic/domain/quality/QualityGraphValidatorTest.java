@@ -11,24 +11,22 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class QualityGraphValidatorTest {
     @Test
     void rejectsCycles() {
-        QualityNode first = node("a", Map.of("in", new QualityInput.NodePort("b")));
-        QualityNode second = node("b", Map.of("in", new QualityInput.NodePort("a")));
+        QualityNode first = profileNode("a", Map.of("in", new QualityInput.NodePort("b")));
+        QualityNode second = valueNode("b", Map.of("in", new QualityInput.NodePort("a", "summary")));
         QualityGraph graph = new QualityGraph(
                 ResourceId.parse("test:loop"),
                 List.of(first, second),
-                Map.of("profile", new OutputReference("a", "value"))
+                Map.of("profile", new OutputReference("a", "summary"))
         );
         List<GraphIssue> issues = QualityGraphValidator.validate(graph, "quality/test:loop");
-        assertFalse(issues.isEmpty());
-        assertTrue(issues.get(0).message().contains("cycle"));
-        assertTrue(issues.get(0).message().contains("a"));
-        assertTrue(issues.get(0).message().contains("b"));
+        assertTrue(issues.stream().anyMatch(issue -> issue.message().contains("cycle")
+                && issue.message().contains("a")
+                && issue.message().contains("b")));
     }
 
     @Test
@@ -57,8 +55,8 @@ class QualityGraphValidatorTest {
     void acceptsSingleNodeGraph() {
         QualityGraph graph = new QualityGraph(
                 ResourceId.parse("test:one"),
-                List.of(node("only", Map.of())),
-                Map.of("profile", new OutputReference("only", "value"))
+                List.of(profileNode("only", Map.of())),
+                Map.of("profile", new OutputReference("only", "summary"))
         );
         assertTrue(QualityGraphValidator.validate(graph, "quality/test:one").isEmpty());
     }
@@ -67,8 +65,8 @@ class QualityGraphValidatorTest {
     void rejectsDuplicateNodeIds() {
         QualityGraph graph = new QualityGraph(
                 ResourceId.parse("test:dup"),
-                List.of(node("x", Map.of()), node("x", Map.of())),
-                Map.of("profile", new OutputReference("x", "value"))
+                List.of(profileNode("x", Map.of()), profileNode("x", Map.of())),
+                Map.of("profile", new OutputReference("x", "summary"))
         );
         List<GraphIssue> issues = QualityGraphValidator.validate(graph, "quality/test:dup");
         assertTrue(issues.stream().anyMatch(issue -> issue.message().contains("duplicate node")));
@@ -78,8 +76,8 @@ class QualityGraphValidatorTest {
     void rejectsUnknownInputNode() {
         QualityGraph graph = new QualityGraph(
                 ResourceId.parse("test:missing"),
-                List.of(node("x", Map.of("in", new QualityInput.NodePort("gone")))),
-                Map.of("profile", new OutputReference("x", "value"))
+                List.of(profileNode("x", Map.of("in", new QualityInput.NodePort("gone")))),
+                Map.of("profile", new OutputReference("x", "summary"))
         );
         List<GraphIssue> issues = QualityGraphValidator.validate(graph, "quality/test:missing");
         assertTrue(issues.stream().anyMatch(issue -> issue.message().contains("unknown node gone")));
@@ -89,14 +87,77 @@ class QualityGraphValidatorTest {
     void rejectsUnknownOutputPort() {
         QualityGraph graph = new QualityGraph(
                 ResourceId.parse("test:port"),
-                List.of(node("x", Map.of())),
+                List.of(valueNode("x", Map.of())),
                 Map.of("profile", new OutputReference("x", "summary"))
         );
         List<GraphIssue> issues = QualityGraphValidator.validate(graph, "quality/test:port");
         assertTrue(issues.stream().anyMatch(issue -> issue.message().contains("unknown port summary")));
     }
 
-    private static QualityNode node(String id, Map<String, QualityInput> inputs) {
+    @Test
+    void acceptsSumInputs() {
+        QualityGraph graph = new QualityGraph(
+                ResourceId.parse("test:sum"),
+                List.of(
+                        valueNode("left", Map.of()),
+                        valueNode("right", Map.of()),
+                        profileNode("fold", Map.of(
+                                "complexity",
+                                new QualityInput.Sum(List.of(
+                                        new QualityInput.NodePort("left"),
+                                        new QualityInput.NodePort("right")
+                                ))
+                        ))
+                ),
+                Map.of("profile", new OutputReference("fold", "summary"))
+        );
+        assertTrue(QualityGraphValidator.validate(graph, "quality/test:sum").isEmpty());
+    }
+
+    @Test
+    void rejectsUndeclaredValuePort() {
+        QualityNode oxygen = new QualityNode(
+                "oxygen",
+                BuiltinQualityOperators.OXYGEN_CURVE,
+                DataNode.object(Map.of()),
+                Map.of(),
+                List.of("complexity", "defects")
+        );
+        QualityGraph graph = new QualityGraph(
+                ResourceId.parse("test:value"),
+                List.of(
+                        oxygen,
+                        profileNode("fold", Map.of("complexity", new QualityInput.NodePort("oxygen", "value")))
+                ),
+                Map.of("profile", new OutputReference("fold", "summary"))
+        );
+        List<GraphIssue> issues = QualityGraphValidator.validate(graph, "quality/test:value");
+        assertTrue(issues.stream().anyMatch(issue -> issue.message().contains("unknown port value")));
+    }
+
+    @Test
+    void rejectsProfilePointedAtHarvestValue() {
+        QualityGraph graph = new QualityGraph(
+                ResourceId.parse("test:harvest"),
+                List.of(valueNode("harvest", Map.of())),
+                Map.of("profile", new OutputReference("harvest", "value"))
+        );
+        List<GraphIssue> issues = QualityGraphValidator.validate(graph, "quality/test:harvest");
+        assertTrue(issues.stream().anyMatch(issue ->
+                issue.message().contains("profile node harvest missing port purity")));
+    }
+
+    private static QualityNode profileNode(String id, Map<String, QualityInput> inputs) {
+        return new QualityNode(
+                id,
+                BuiltinQualityOperators.FOLD_SUMMARY,
+                DataNode.object(Map.of()),
+                inputs,
+                QualityGraphValidator.PROFILE_PORTS
+        );
+    }
+
+    private static QualityNode valueNode(String id, Map<String, QualityInput> inputs) {
         return new QualityNode(
                 id,
                 BuiltinQualityOperators.READ,
@@ -108,13 +169,14 @@ class QualityGraphValidatorTest {
 
     private static QualityGraph graphWithNodes(int count) {
         List<QualityNode> nodes = new ArrayList<>();
-        for (int index = 0; index < count; index++) {
-            nodes.add(node("n" + index, Map.of()));
+        nodes.add(profileNode("n0", Map.of()));
+        for (int index = 1; index < count; index++) {
+            nodes.add(valueNode("n" + index, Map.of()));
         }
         return new QualityGraph(
                 ResourceId.parse("test:sized"),
                 nodes,
-                Map.of("profile", new OutputReference("n0", "value"))
+                Map.of("profile", new OutputReference("n0", "summary"))
         );
     }
 }

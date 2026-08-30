@@ -27,14 +27,6 @@ public final class QualityEvaluator {
 
     public static QualityProfile evaluate(
             QualityGraph graph,
-            LiquidBatchView batch,
-            ExecutorModifiers modifiers
-    ) {
-        return evaluate(graph, BuiltinQualityOperators.map(), batch, modifiers);
-    }
-
-    public static QualityProfile evaluate(
-            QualityGraph graph,
             RegistryView<QualityOperator<?>> operators,
             LiquidBatchView batch,
             ExecutorModifiers modifiers
@@ -132,7 +124,7 @@ public final class QualityEvaluator {
     }
 
     private static double pick(QualitySignal signal, String requestedPort) {
-        return signal.get(requestedPort, 0.0);
+        return signal.getPortOrValue(requestedPort, 0.0);
     }
 
     private static List<String> topological(QualityGraph graph, Map<String, QualityNode> nodes) {

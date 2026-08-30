@@ -10,6 +10,7 @@ import com.djden.alcoholic.api.liquid.LiquidBatchView;
 import com.djden.alcoholic.api.process.ExecutorModifiers;
 import com.djden.alcoholic.api.quality.QualityEvaluationContext;
 import com.djden.alcoholic.api.quality.QualityOperator;
+import com.djden.alcoholic.api.quality.QualityPropertyRefs;
 import com.djden.alcoholic.api.quality.QualitySignal;
 import com.djden.alcoholic.api.registry.RegistrationException;
 import com.djden.alcoholic.domain.process.OxygenCurve;
@@ -252,7 +253,11 @@ public final class BuiltinQualityOperators {
         return Math.max(0.0, Math.min(1.0, value));
     }
 
-    public record ReadConfig(ResourceId property) {
+    public record ReadConfig(ResourceId property) implements QualityPropertyRefs {
+        @Override
+        public List<ResourceId> propertyIds() {
+            return List.of(property);
+        }
         public static final DataCodec<ReadConfig> CODEC = new DataCodec<>() {
             @Override
             public ReadConfig decode(DataNode node, String path) {
@@ -272,9 +277,19 @@ public final class BuiltinQualityOperators {
         };
     }
 
-    public record DistanceBalanceConfig(List<Group> groups) {
+    public record DistanceBalanceConfig(List<Group> groups) implements QualityPropertyRefs {
         public DistanceBalanceConfig {
             groups = List.copyOf(new ArrayList<>(Objects.requireNonNull(groups, "groups")));
+        }
+
+        @Override
+        public List<ResourceId> propertyIds() {
+            List<ResourceId> ids = new ArrayList<>();
+            for (Group group : groups) {
+                ids.addAll(group.present());
+                ids.addAll(group.targets().keySet());
+            }
+            return ids;
         }
 
         public record Group(List<ResourceId> present, Map<ResourceId, Double> targets) {
@@ -331,7 +346,7 @@ public final class BuiltinQualityOperators {
             Optional<ResourceId> left,
             Optional<ResourceId> right,
             double weight
-    ) {
+    ) implements QualityPropertyRefs {
         public WeightedPresentConfig {
             mode = mode == null || mode.isBlank() ? "sum" : mode;
             weights = Map.copyOf(new LinkedHashMap<>(Objects.requireNonNullElse(weights, Map.of())));
@@ -340,6 +355,14 @@ public final class BuiltinQualityOperators {
             if (!Double.isFinite(weight)) {
                 weight = 0.15;
             }
+        }
+
+        @Override
+        public List<ResourceId> propertyIds() {
+            List<ResourceId> ids = new ArrayList<>(weights.keySet());
+            left.ifPresent(ids::add);
+            right.ifPresent(ids::add);
+            return ids;
         }
 
         public static final DataCodec<WeightedPresentConfig> CODEC = new DataCodec<>() {
@@ -382,13 +405,21 @@ public final class BuiltinQualityOperators {
         };
     }
 
-    public record WoodSweetSpotConfig(Optional<ResourceId> property, Optional<ResourceId> fallback, double weight) {
+    public record WoodSweetSpotConfig(Optional<ResourceId> property, Optional<ResourceId> fallback, double weight) implements QualityPropertyRefs {
         public WoodSweetSpotConfig {
             property = property == null ? Optional.empty() : property;
             fallback = fallback == null ? Optional.empty() : fallback;
             if (!Double.isFinite(weight) || weight <= 0.0) {
                 weight = 1.0;
             }
+        }
+
+        @Override
+        public List<ResourceId> propertyIds() {
+            List<ResourceId> ids = new ArrayList<>();
+            property.ifPresent(ids::add);
+            fallback.ifPresent(ids::add);
+            return ids;
         }
 
         public static final DataCodec<WoodSweetSpotConfig> CODEC = new DataCodec<>() {

@@ -17,6 +17,14 @@ import java.util.Set;
  */
 public final class QualityGraphValidator {
     public static final int MAX_NODES = 256;
+    public static final List<String> PROFILE_PORTS = List.of(
+            "purity",
+            "complexity",
+            "maturity",
+            "balance",
+            "defects",
+            "summary"
+    );
 
     private QualityGraphValidator() {
     }
@@ -62,6 +70,16 @@ public final class QualityGraphValidator {
                         "unknown port " + output.port() + " on node " + output.nodeId()
                 ));
             }
+            if ("profile".equals(name)) {
+                for (String port : PROFILE_PORTS) {
+                    if (!source.hasOutput(port)) {
+                        issues.add(new GraphIssue(
+                                outputPath,
+                                "profile node " + output.nodeId() + " missing port " + port
+                        ));
+                    }
+                }
+            }
         });
 
         issues.addAll(detectCycles(graph, nodes, path));
@@ -101,7 +119,7 @@ public final class QualityGraphValidator {
             issues.add(new GraphIssue(path, "unknown node " + reference.nodeId()));
             return;
         }
-        if (!source.hasOutput(reference.port()) && !"value".equals(reference.port())) {
+        if (!source.hasOutput(reference.port())) {
             issues.add(new GraphIssue(
                     path,
                     "unknown port " + reference.port() + " on node " + reference.nodeId()

@@ -115,6 +115,16 @@ class BeverageDataReloadListenerTest {
         BuiltinRegistrations.install(api);
         BeverageCatalog parsed = BeverageDataReloadListener.parseSnapshot(
                 Map.of(
+                        id("alcoholic", "quality/generic"),
+                        json("""
+                                {
+                                  "id": "alcoholic:generic",
+                                  "nodes": [
+                                    { "id": "fold", "op": "alcoholic:fold_summary" }
+                                  ],
+                                  "outputs": { "profile": { "node": "fold", "port": "summary" } }
+                                }
+                                """),
                         id("alcoholic", "quality/wine"),
                         json("""
                                 {
@@ -133,8 +143,9 @@ class BeverageDataReloadListenerTest {
                 ),
                 api
         );
-        assertEquals(1, parsed.qualityGraphs().size());
+        assertEquals(2, parsed.qualityGraphs().size());
         assertTrue(parsed.quality(ResourceId.parse("alcoholic:wine")).isPresent());
+        assertTrue(parsed.quality(ResourceId.parse("alcoholic:generic")).isPresent());
     }
 
     @Test

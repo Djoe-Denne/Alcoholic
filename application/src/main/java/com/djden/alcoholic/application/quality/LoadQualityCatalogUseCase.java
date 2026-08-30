@@ -4,13 +4,13 @@ import com.djden.alcoholic.api.AlcoholicApi;
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.api.data.DataNode;
 import com.djden.alcoholic.api.quality.QualityOperator;
+import com.djden.alcoholic.api.quality.QualityPropertyRefs;
 import com.djden.alcoholic.application.beverage.ValidationIssue;
 import com.djden.alcoholic.application.beverage.ValidationResult;
 import com.djden.alcoholic.application.beverage.codec.ProcessDefinitionCodec;
 import com.djden.alcoholic.application.beverage.codec.QualityGraphCodec;
 import com.djden.alcoholic.domain.beverage.GraphIssue;
 import com.djden.alcoholic.domain.process.QualityProfile;
-import com.djden.alcoholic.domain.quality.BuiltinQualityOperators;
 import com.djden.alcoholic.domain.quality.QualityGraph;
 import com.djden.alcoholic.domain.quality.QualityGraphValidator;
 import com.djden.alcoholic.domain.quality.QualityNode;
@@ -119,29 +119,8 @@ public final class LoadQualityCatalogUseCase {
     }
 
     private static void rejectEthanolInputs(Object config, String path, List<ValidationIssue> issues) {
-        ResourceId ethanol = QualityProfile.ETHANOL;
-        if (config instanceof BuiltinQualityOperators.ReadConfig read && ethanol.equals(read.property())) {
-            issues.add(new ValidationIssue(path, "ethanol is never a quality input"));
-            return;
-        }
-        if (config instanceof BuiltinQualityOperators.WoodSweetSpotConfig wood) {
-            rejectEthanol(wood.property().orElse(null), path + "/property", issues);
-            rejectEthanol(wood.fallback().orElse(null), path + "/fallback", issues);
-            return;
-        }
-        if (config instanceof BuiltinQualityOperators.DistanceBalanceConfig balance) {
-            for (int index = 0; index < balance.groups().size(); index++) {
-                BuiltinQualityOperators.DistanceBalanceConfig.Group group = balance.groups().get(index);
-                String groupPath = path + "/groups[" + index + "]";
-                group.present().forEach(id -> rejectEthanol(id, groupPath + "/present", issues));
-                group.targets().keySet().forEach(id -> rejectEthanol(id, groupPath + "/targets", issues));
-            }
-            return;
-        }
-        if (config instanceof BuiltinQualityOperators.WeightedPresentConfig weighted) {
-            weighted.weights().keySet().forEach(id -> rejectEthanol(id, path + "/weights", issues));
-            weighted.left().ifPresent(id -> rejectEthanol(id, path + "/left", issues));
-            weighted.right().ifPresent(id -> rejectEthanol(id, path + "/right", issues));
+        if (config instanceof QualityPropertyRefs refs) {
+            refs.propertyIds().forEach(id -> rejectEthanol(id, path, issues));
         }
     }
 

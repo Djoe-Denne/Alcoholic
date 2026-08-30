@@ -11,6 +11,7 @@ import com.djden.alcoholic.domain.beverage.InputReference;
 import com.djden.alcoholic.domain.beverage.ProcessGraphValidator;
 import com.djden.alcoholic.domain.beverage.ProcessNode;
 import com.djden.alcoholic.domain.process.ProcessDefinition;
+import com.djden.alcoholic.domain.quality.QualityGraphIds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,12 @@ public final class ValidateBeverageCatalogUseCase {
         catalog.liquids().values().forEach(definition ->
                 validateLiquid(definition, api, issues)
         );
+        if (!catalog.qualityGraphs().isEmpty() && catalog.quality(QualityGraphIds.GENERIC).isEmpty()) {
+            issues.add(new ValidationIssue(
+                    "quality/" + QualityGraphIds.GENERIC,
+                    "quality catalog missing " + QualityGraphIds.GENERIC
+            ));
+        }
         return new ValidationResult(issues);
     }
 
