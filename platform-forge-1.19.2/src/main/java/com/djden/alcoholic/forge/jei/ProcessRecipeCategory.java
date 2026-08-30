@@ -16,6 +16,7 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,11 +24,8 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.List;
 
 final class ProcessRecipeCategory implements IRecipeCategory<ProcessDisplayRecipe> {
-    static final int WIDTH = 176;
-    static final int HEIGHT = 90;
-    private static final int SLOT = 18;
-    private static final int ROW_Y = 40;
-    private static final int FLUID_Y = 16;
+    static final int WIDTH = JeiProcessLayout.WIDTH;
+    static final int HEIGHT = JeiProcessLayout.HEIGHT;
 
     private final JeiProcessSpec spec;
     private final IDrawable background;
@@ -66,20 +64,22 @@ final class ProcessRecipeCategory implements IRecipeCategory<ProcessDisplayRecip
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, ProcessDisplayRecipe recipe, IFocusGroup focuses) {
-        Layout layout = Layout.of(recipe);
+        JeiProcessLayout layout = JeiProcessLayout.of(recipe);
         int itemIndex = 0;
         for (ProcessDisplaySpec.ItemPart part : recipe.itemInputs()) {
-            addItem(builder, RecipeIngredientRole.INPUT, layout.item(itemIndex++), JeiIngredients.items(part));
+            addItem(builder, RecipeIngredientRole.INPUT, layout.itemIn(itemIndex++), JeiIngredients.items(part));
         }
+        itemIndex = 0;
         for (ProcessDisplaySpec.ItemPart part : recipe.itemOutputs()) {
-            addItem(builder, RecipeIngredientRole.OUTPUT, layout.item(itemIndex++), JeiIngredients.items(part));
+            addItem(builder, RecipeIngredientRole.OUTPUT, layout.itemOut(itemIndex++), JeiIngredients.items(part));
         }
         int fluidIndex = 0;
         for (ProcessDisplaySpec.FluidPart part : recipe.fluidInputs()) {
-            addFluid(builder, RecipeIngredientRole.INPUT, layout.fluid(fluidIndex++), part);
+            addFluid(builder, RecipeIngredientRole.INPUT, layout.fluidIn(fluidIndex++), part);
         }
+        fluidIndex = 0;
         for (ProcessDisplaySpec.FluidPart part : recipe.fluidOutputs()) {
-            addFluid(builder, RecipeIngredientRole.OUTPUT, layout.fluid(fluidIndex++), part);
+            addFluid(builder, RecipeIngredientRole.OUTPUT, layout.fluidOut(fluidIndex++), part);
         }
     }
 
@@ -91,11 +91,24 @@ final class ProcessRecipeCategory implements IRecipeCategory<ProcessDisplayRecip
             double mouseX,
             double mouseY
     ) {
-        Layout layout = Layout.of(recipe);
-        int itemSlots = recipe.itemInputs().size() + recipe.itemOutputs().size();
-        for (int index = 0; index < itemSlots; index++) {
-            SlotPos pos = layout.item(index);
+        JeiProcessLayout layout = JeiProcessLayout.of(recipe);
+        for (int index = 0; index < recipe.itemInputs().size(); index++) {
+            JeiProcessLayout.SlotPos pos = layout.itemIn(index);
             slot.draw(pose, pos.x() - 1, pos.y() - 1);
+        }
+        for (int index = 0; index < recipe.itemOutputs().size(); index++) {
+            JeiProcessLayout.SlotPos pos = layout.itemOut(index);
+            slot.draw(pose, pos.x() - 1, pos.y() - 1);
+        }
+        for (int index = 0; index < recipe.fluidInputs().size(); index++) {
+            drawTankFrame(pose, layout.fluidIn(index));
+        }
+        for (int index = 0; index < recipe.fluidOutputs().size(); index++) {
+            drawTankFrame(pose, layout.fluidOut(index));
+        }
+        if (!recipe.fluidInputs().isEmpty() || !recipe.fluidOutputs().isEmpty()
+                || !recipe.itemInputs().isEmpty() || !recipe.itemOutputs().isEmpty()) {
+            drawArrow(pose, layout.arrow());
         }
         Font font = Minecraft.getInstance().font;
         boolean hasDuration = recipe.durationTicks().isPresent();
@@ -121,8 +134,8 @@ final class ProcessRecipeCategory implements IRecipeCategory<ProcessDisplayRecip
         int hintIndex = 0;
         for (ProcessDisplaySpec.ItemPart part : recipe.itemInputs()) {
             if (part.hint().isPresent()) {
-                SlotPos pos = layout.item(hintIndex);
-                font.draw(pose, part.hint().get(), pos.x(), pos.y() + SLOT, 0x555555);
+                JeiProcessLayout.SlotPos pos = layout.itemIn(hintIndex);
+                font.draw(pose, part.hint().get(), pos.x(), pos.y() + JeiProcessLayout.SLOT, 0x555555);
             }
             hintIndex++;
         }
@@ -131,7 +144,7 @@ final class ProcessRecipeCategory implements IRecipeCategory<ProcessDisplayRecip
     private static void addItem(
             IRecipeLayoutBuilder builder,
             RecipeIngredientRole role,
-            SlotPos slot,
+            JeiProcessLayout.SlotPos slot,
             List<ItemStack> stacks
     ) {
         if (stacks.isEmpty()) {
@@ -143,7 +156,7 @@ final class ProcessRecipeCategory implements IRecipeCategory<ProcessDisplayRecip
     private static void addFluid(
             IRecipeLayoutBuilder builder,
             RecipeIngredientRole role,
-            SlotPos pos,
+            JeiProcessLayout.SlotPos pos,
             ProcessDisplaySpec.FluidPart part
     ) {
         FluidStack stack = JeiIngredients.fluid(part);
@@ -151,10 +164,12 @@ final class ProcessRecipeCategory implements IRecipeCategory<ProcessDisplayRecip
             return;
         }
         IRecipeSlotBuilder slot = builder.addSlot(role, pos.x(), pos.y());
-        int rendererCapacity = JeiIngredients.volumeKnown(part)
-                ? Math.max(stack.getAmount(), 1000)
-                : 1000;
-        slot.setFluidRenderer(rendererCapacity, false, 16, 32);
+        slot.setFluidRenderer(
+                JeiIngredients.tankCapacity(part),
+                false,
+                JeiProcessLayout.TANK_WIDTH,
+                JeiProcessLayout.TANK_HEIGHT
+        );
         slot.addIngredient(ForgeTypes.FLUID_STACK, stack);
         if (!JeiIngredients.volumeKnown(part)) {
             slot.addTooltipCallback((recipeSlotView, tooltip) ->
@@ -162,43 +177,29 @@ final class ProcessRecipeCategory implements IRecipeCategory<ProcessDisplayRecip
         }
     }
 
+    private static void drawTankFrame(PoseStack pose, JeiProcessLayout.SlotPos pos) {
+        int x = pos.x() - 1;
+        int y = pos.y() - 1;
+        int width = JeiProcessLayout.TANK_WIDTH + 2;
+        int height = JeiProcessLayout.TANK_HEIGHT + 2;
+        int color = 0xFF8B8B8B;
+        GuiComponent.fill(pose, x, y, x + width, y + 1, color);
+        GuiComponent.fill(pose, x, y + height - 1, x + width, y + height, color);
+        GuiComponent.fill(pose, x, y, x + 1, y + height, color);
+        GuiComponent.fill(pose, x + width - 1, y, x + width, y + height, color);
+    }
+
+    private static void drawArrow(PoseStack pose, JeiProcessLayout.SlotPos pos) {
+        int x = pos.x();
+        int y = pos.y();
+        int color = 0xFF8B8B8B;
+        GuiComponent.fill(pose, x, y + 7, x + 16, y + 10, color);
+        GuiComponent.fill(pose, x + 14, y + 4, x + 17, y + 13, color);
+        GuiComponent.fill(pose, x + 17, y + 5, x + 20, y + 12, color);
+        GuiComponent.fill(pose, x + 20, y + 6, x + 23, y + 11, color);
+    }
+
     private static String formatSeconds(int ticks) {
         return String.format(java.util.Locale.ROOT, "%.1f", ticks / 20.0);
-    }
-
-    private record SlotPos(int x, int y) {
-    }
-
-    private static final class Layout {
-        private final int itemInputs;
-        private final int fluids;
-
-        private Layout(int itemInputs, int fluids) {
-            this.itemInputs = itemInputs;
-            this.fluids = fluids;
-        }
-
-        static Layout of(ProcessDisplayRecipe recipe) {
-            return new Layout(
-                    recipe.itemInputs().size(),
-                    recipe.fluidInputs().size() + recipe.fluidOutputs().size()
-            );
-        }
-
-        SlotPos item(int index) {
-            int column = index < itemInputs ? index : index - itemInputs;
-            int x = index < itemInputs ? 8 + column * 22 : 116 + column * 22;
-            int row = 0;
-            if (x > WIDTH - SLOT - 8) {
-                row = 1;
-                x = (index < itemInputs ? 8 : 116) + (column % 3) * 22;
-            }
-            return new SlotPos(Math.min(x, WIDTH - SLOT - 8), ROW_Y + row * 22);
-        }
-
-        SlotPos fluid(int index) {
-            int start = Math.max(8, WIDTH - 8 - fluids * 22);
-            return new SlotPos(start + index * 22, FLUID_Y);
-        }
     }
 }

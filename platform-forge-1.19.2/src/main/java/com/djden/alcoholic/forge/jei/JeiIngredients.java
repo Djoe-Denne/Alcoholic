@@ -51,6 +51,10 @@ final class JeiIngredients {
         return part.millibuckets().isPresent();
     }
 
+    static int tankCapacity(ProcessDisplaySpec.FluidPart part) {
+        return part.millibuckets().orElse(1);
+    }
+
     private static List<ItemStack> resolve(IngredientSelector selector) {
         if (selector instanceof IngredientSelector.Item item) {
             return List.of(itemStack(item.id()));
@@ -81,6 +85,10 @@ final class JeiIngredients {
             }
         }
         return copies;
+    }
+
+    static ItemStack stack(ResourceId id) {
+        return itemStack(id);
     }
 
     private static ItemStack itemStack(ResourceId id) {

@@ -64,6 +64,7 @@ public final class AlcoholicJeiPlugin implements IModPlugin {
         }
         formations = MultiblockDisplayRecipes.from(IndustrialRuntime.shared().machines());
         registration.addRecipes(MultiblockFormationCategory.TYPE, formations);
+        JeiIngredientGuides.register(registration);
     }
 
     @Override
