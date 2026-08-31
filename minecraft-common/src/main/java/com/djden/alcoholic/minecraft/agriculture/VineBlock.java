@@ -58,7 +58,8 @@ import java.util.function.Supplier;
 /**
  * Persistent perennial vine backed by the domain {@link Vine} model.
  */
-public class VineBlock extends BaseEntityBlock implements BonemealableBlock {
+public class VineBlock extends BaseEntityBlock
+        implements BonemealableBlock, ClimbingColumnRoot, ColumnHarvest {
     public static final int MAX_LEGACY_AGE = 4;
     public static final IntegerProperty AGE =
             IntegerProperty.create("age", 0, MAX_LEGACY_AGE);
@@ -294,14 +295,42 @@ public class VineBlock extends BaseEntityBlock implements BonemealableBlock {
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
-        if (isHarvestReadyState(state)) {
-            if (!level.isClientSide) {
-                harvest(level, position, state, player);
+        if (SickleItem.isSickle(held) && harvestColumn(player, level, position, state)) {
+            if (!level.isClientSide && !player.getAbilities().instabuild) {
+                held.hurtAndBreak(1, player, brokenBy -> brokenBy.broadcastBreakEvent(hand));
             }
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
         return InteractionResult.PASS;
+    }
+
+    @Override
+    public InteractionResult useAsRoot(
+            BlockState state,
+            Level level,
+            BlockPos position,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hit
+    ) {
+        return use(state, level, position, player, hand, hit);
+    }
+
+    @Override
+    public boolean harvestColumn(
+            Player player,
+            Level level,
+            BlockPos rootPos,
+            BlockState rootState
+    ) {
+        if (!isHarvestReadyState(rootState)) {
+            return false;
+        }
+        if (!level.isClientSide) {
+            harvest(level, rootPos, rootState, player);
+        }
+        return true;
     }
 
     @Override
@@ -345,7 +374,7 @@ public class VineBlock extends BaseEntityBlock implements BonemealableBlock {
             boolean moving
     ) {
         if (!state.canSurvive(level, position)) {
-            VineColumn.removeProjection(level, position, this);
+            ClimbingColumn.removeProjection(level, position, this);
             level.destroyBlock(position, true);
             return;
         }
@@ -365,7 +394,7 @@ public class VineBlock extends BaseEntityBlock implements BonemealableBlock {
             boolean isMoving
     ) {
         if (!state.is(newState.getBlock())) {
-            VineColumn.removeProjection(level, position, this);
+            ClimbingColumn.removeProjection(level, position, this);
         }
         super.onRemove(state, level, position, newState, isMoving);
     }
@@ -449,7 +478,9 @@ public class VineBlock extends BaseEntityBlock implements BonemealableBlock {
 
         entity.setVine(result.harvest().vine());
         refreshStructure(level, position, result.harvest().vine().growthStage(), false);
-        popResource(level, position, grapes);
+        if (!player.getInventory().add(grapes)) {
+            player.drop(grapes, false);
+        }
         AdvancementHooks.harvest(
                 player,
                 AdvancementHooks.location(

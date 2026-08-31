@@ -52,6 +52,8 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "item.alcoholic.white_grape_cutting": "White Grapevine Cutting",
                           "item.alcoholic.trellis_spool": "Trellis Wire Spool",
                           "item.alcoholic.pruning_shears": "Pruning Shears",
+                          "item.alcoholic.sickle": "Sickle",
+                          "tooltip.alcoholic.sickle.use": "Harvests a ripe vine or hop column. The plant stays.",
                           "message.alcoholic.vine.pruned": "Vine pruned: %s",
                           "message.alcoholic.vine.no_harvest_item": "No grape item is available for this variety",
                           "message.alcoholic.vine.inspect": "Climate: %1$s · Health: %2$s · Maturity: %3$s %4$s%% · Pruning: %5$s",
@@ -169,6 +171,8 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "death.attack.alcoholic.industrial_press": "%1$s was crushed in an industrial press",
                           "block.alcoholic.barley_crop": "Barley",
                           "block.alcoholic.hop_bine": "Hop Bine",
+                          "block.alcoholic.hop_bine_stem": "Hop Bine Stem",
+                          "block.alcoholic.hop_bine_canopy": "Hop Bine Canopy",
                           "block.alcoholic.wild_hops": "Wild Hops",
                           "block.alcoholic.malting_floor": "Malting Floor",
                           "block.alcoholic.mash_tun": "Mash Tun",
@@ -221,10 +225,10 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "jei.alcoholic.volume.unspecified": "Volume not specified",
                           "jei.alcoholic.info.grapevine.find": "Find a wild grapevine that is ready to harvest in plains, sunflower plains, forest, flower forest, or birch forest. Break it for one cutting (red or white). If Vinery is loaded, Alcoholic wild vines do not generate.",
                           "jei.alcoholic.info.grapevine.grow": "Plant the cutting on dirt or farmland. Bone meal advances one stage (stump, stem, or canopy). Grape pomace and spent grain compost into bone meal. A vine can grow without a trellis, but yield is about 70% and quality about 85% of a trained vine. String wire between two posts with a trellis spool, then plant under or along the wire.",
-                          "jei.alcoholic.info.grapevine.harvest": "First cycle: planted, establishing, vegetative, flowering, green fruit, ripening, harvest-ready, then dormant. Later cycles return from dormant to flowering. Right-click a harvest-ready vine to pick grapes; the plant stays and goes dormant. Sneak with an empty hand to inspect the plant. Pruning shears only work while dormant and are optional.",
+                          "jei.alcoholic.info.grapevine.harvest": "First cycle: planted, establishing, vegetative, flowering, green fruit, ripening, harvest-ready, then dormant. Later cycles return from dormant to flowering. Right-click a harvest-ready vine with a sickle to pick grapes; the plant stays and goes dormant. Sneak with an empty hand to inspect the plant. Pruning shears only work while dormant and are optional.",
                           "jei.alcoholic.info.hops.find": "Break wild hops in forest, flower forest, birch forest, taiga, or river for one rhizome and one hop. If Brewery is loaded, Alcoholic wild hops do not generate.",
-                          "jei.alcoholic.info.hops.grow": "A hop bine dies without a trellis wire above it (up to 4 blocks). Place two posts at the same height, use the trellis spool on the first post then the second, and plant the rhizome on dirt, grass, or farmland under the wire. The bine grows upward (age 0 to 2, then a new tier).",
-                          "jei.alcoholic.info.hops.harvest": "Right-click a mature bine for one hop; that tier resets to age 0. Breaking a bine drops one rhizome, plus one hop if it was mature.",
+                          "jei.alcoholic.info.hops.grow": "A hop bine dies without a trellis wire above it (up to 2 blocks). Place two posts at the same height, use the trellis spool on the first post then the second, and plant the rhizome on dirt, grass, or farmland under the wire. The bine occupies up to three blocks: cep, stem, and canopy.",
+                          "jei.alcoholic.info.hops.harvest": "Right-click any block of a mature bine with a sickle to harvest the whole column. The plant stays; age resets to 0. Breaking the cep drops one rhizome, plus one hop if it was mature.",
                           "jei.alcoholic.info.barley.find": "Wild mature barley grows in plains, sunflower plains, and meadows. Break it for barley and seeds.",
                           "jei.alcoholic.info.barley.grow": "Plant barley seeds on farmland. The crop has three stages, like wheat. Bone meal speeds growth. A mature crop drops 1 barley and 1 seed. If Brewery is loaded, its barley is accepted as #alcoholic:barley.",
                           "jei.alcoholic.info.trellis": "Place two vineyard or end posts at the same height and aligned. Use the trellis spool on the first post, then the second, to string wires. Grapevines grow better on a wire. Hop bines need a wire above them or they die.",
@@ -319,6 +323,8 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "item.alcoholic.white_grape_cutting": "Bouture de vigne blanche",
                           "item.alcoholic.trellis_spool": "Bobine de fil de palissage",
                           "item.alcoholic.pruning_shears": "Cisailles de taille",
+                          "item.alcoholic.sickle": "Serpe",
+                          "tooltip.alcoholic.sickle.use": "Récolte une vigne ou une bine mûre. La plante reste.",
                           "message.alcoholic.vine.pruned": "Vigne taillée : %s",
                           "message.alcoholic.vine.no_harvest_item": "Aucun raisin disponible pour cette variété",
                           "message.alcoholic.vine.inspect": "Climat : %1$s · Santé : %2$s · Maturité : %3$s %4$s%% · Taille : %5$s",
@@ -436,6 +442,8 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "death.attack.alcoholic.industrial_press": "%1$s a été écrasé dans un pressoir industriel",
                           "block.alcoholic.barley_crop": "Orge",
                           "block.alcoholic.hop_bine": "Bine de houblon",
+                          "block.alcoholic.hop_bine_stem": "Tige de houblon",
+                          "block.alcoholic.hop_bine_canopy": "Canopée de houblon",
                           "block.alcoholic.wild_hops": "Houblon sauvage",
                           "block.alcoholic.malting_floor": "Aire de maltage",
                           "block.alcoholic.mash_tun": "Cuve de brassage",
@@ -488,10 +496,10 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "jei.alcoholic.volume.unspecified": "Volume non spécifié",
                           "jei.alcoholic.info.grapevine.find": "Trouvez une vigne sauvage prête à vendanger dans les plaines, plaines de tournesols, forêts, forêts fleuries ou forêts de bouleaux. Cassez-la pour une bouture (rouge ou blanche). Si Vinery est chargé, les vignes sauvages Alcoholic ne se génèrent pas.",
                           "jei.alcoholic.info.grapevine.grow": "Plantez la bouture sur de la terre ou de la terre labourée. La poudre d'os avance un stade (souche, tige ou canopée). Le marc et la drêche au composteur produisent de la poudre d'os. Une vigne peut pousser sans fil, mais le rendement est d'environ 70 % et la qualité d'environ 85 % par rapport à une vigne palissée. Tendez le fil entre deux poteaux avec la bobine, puis plantez sous le fil ou le long.",
-                          "jei.alcoholic.info.grapevine.harvest": "Premier cycle : plantée, enracinement, végétatif, floraison, fruit vert, véraison, prête à vendanger, puis dormance. Les cycles suivants repartent de la dormance vers la floraison. Clic droit sur une vigne prête à vendanger : les raisins tombent, le plant reste et passe en dormance. Shift + main vide pour inspecter. Le sécateur ne taille qu'en dormance et reste optionnel.",
+                          "jei.alcoholic.info.grapevine.harvest": "Premier cycle : plantée, enracinement, végétatif, floraison, fruit vert, véraison, prête à vendanger, puis dormance. Les cycles suivants repartent de la dormance vers la floraison. Clic droit à la serpe sur une vigne prête à vendanger : les raisins vont dans l'inventaire, le plant reste et passe en dormance. Shift + main vide pour inspecter. Le sécateur ne taille qu'en dormance et reste optionnel.",
                           "jei.alcoholic.info.hops.find": "Cassez du houblon sauvage en forêt, forêt fleurie, forêt de bouleaux, taïga ou rivière : 1 rhizome et 1 houblon. Si Brewery est chargé, ce worldgen Alcoholic est coupé.",
-                          "jei.alcoholic.info.hops.grow": "Une bine meurt sans fil de palissage au-dessus (4 blocs max). Placez deux poteaux à la même hauteur, cliquez le premier puis le second avec la bobine, et plantez le rhizome sur terre, herbe ou terre labourée, sous le fil. La bine monte (âge 0 à 2, puis un étage au-dessus).",
-                          "jei.alcoholic.info.hops.harvest": "Clic droit sur une bine mature : 1 houblon, l'étage revient à l'âge 0. Casser une bine : 1 rhizome (+ 1 houblon si mature).",
+                          "jei.alcoholic.info.hops.grow": "Une bine meurt sans fil de palissage au-dessus (2 blocs max). Placez deux poteaux à la même hauteur, cliquez le premier puis le second avec la bobine, et plantez le rhizome sur terre, herbe ou terre labourée, sous le fil. La bine occupe jusqu'à trois blocs : cep, tige et canopée.",
+                          "jei.alcoholic.info.hops.harvest": "Clic droit à la serpe n'importe où sur une bine mature : toute la colonne se récolte d'un coup. La plante reste ; l'âge revient à 0. Casser le cep : 1 rhizome (+ 1 houblon si mature).",
                           "jei.alcoholic.info.barley.find": "L'orge sauvage mature pousse dans les plaines, plaines de tournesols et prairies. Cassez-la pour de l'orge et des graines.",
                           "jei.alcoholic.info.barley.grow": "Plantez les graines d'orge sur de la terre labourée. Trois stades, comme le blé. La poudre d'os accélère. À maturité : 1 orge et 1 graine. Si Brewery est chargé, son orge est acceptée via #alcoholic:barley.",
                           "jei.alcoholic.info.trellis": "Placez deux poteaux (vigne ou extrémité) au même niveau, alignés. Clic sur le premier avec la bobine, puis sur le second, pour tendre les fils. Les vignes poussent mieux palissées. Les bines de houblon exigent un fil au-dessus, sinon elles meurent.",
@@ -851,6 +859,121 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
         };
     }
 
+    private static void addHopColumnAssets(JsonSink sink) {
+        StringBuilder hopVariants = new StringBuilder("{\n  \"variants\": {\n");
+        boolean firstHopVariant = true;
+        for (int age = 0; age <= 2; age++) {
+            for (boolean trained : new boolean[]{false, true}) {
+                for (boolean extended : new boolean[]{false, true}) {
+                    if (!firstHopVariant) {
+                        hopVariants.append(",\n");
+                    }
+                    String modelName = hopRootModelName(age, trained);
+                    hopVariants.append("    \"age=")
+                            .append(age)
+                            .append(",extended=")
+                            .append(extended)
+                            .append(",trained=")
+                            .append(trained)
+                            .append("\": { \"model\": \"alcoholic:block/")
+                            .append(modelName)
+                            .append("\" }");
+                    firstHopVariant = false;
+                }
+            }
+            sink.add(
+                    "assets/alcoholic/models/block/hop_bine_" + age + ".json",
+                    """
+                            {
+                              "parent": "minecraft:block/cross",
+                              "textures": { "cross": "alcoholic:block/hop_bine_%s" }
+                            }
+                            """.formatted(age)
+            );
+            sink.add(
+                    "assets/alcoholic/models/block/hop_bine_" + age + "_bottom.json",
+                    hopBineModel(age, "bottom")
+            );
+        }
+        hopVariants.append("\n  }\n}\n");
+        sink.add("assets/alcoholic/blockstates/hop_bine.json", hopVariants.toString());
+
+        StringBuilder stemVariants = new StringBuilder("{\n  \"variants\": {\n");
+        boolean firstStem = true;
+        for (int age = 0; age <= 2; age++) {
+            for (boolean trained : new boolean[]{false, true}) {
+                if (!firstStem) {
+                    stemVariants.append(",\n");
+                }
+                String training = trained ? "trained" : "untrained";
+                stemVariants.append("    \"age=")
+                        .append(age)
+                        .append(",trained=")
+                        .append(trained)
+                        .append("\": { \"model\": \"alcoholic:block/hop_bine_stem_")
+                        .append(age)
+                        .append("_")
+                        .append(training)
+                        .append("\" }");
+                firstStem = false;
+            }
+            sink.add(
+                    "assets/alcoholic/models/block/hop_bine_stem_" + age + "_trained.json",
+                    hopBineModel(age, "middle")
+            );
+            sink.add(
+                    "assets/alcoholic/models/block/hop_bine_stem_" + age + "_untrained.json",
+                    hopBineModel(age, "middle")
+            );
+            sink.add(
+                    "assets/alcoholic/models/block/hop_bine_canopy_" + age + ".json",
+                    canopyModel("hop_bine_" + age, false)
+            );
+            sink.add(
+                    "assets/alcoholic/models/block/hop_bine_canopy_" + age + "_trunk.json",
+                    canopyModel("hop_bine_" + age, true)
+            );
+        }
+        stemVariants.append("\n  }\n}\n");
+        sink.add("assets/alcoholic/blockstates/hop_bine_stem.json", stemVariants.toString());
+
+        StringBuilder canopyVariants = new StringBuilder("{\n  \"variants\": {\n");
+        boolean firstCanopy = true;
+        for (int age = 0; age <= 2; age++) {
+            for (boolean trunk : new boolean[]{false, true}) {
+                for (String axis : new String[]{"x", "z"}) {
+                    if (!firstCanopy) {
+                        canopyVariants.append(",\n");
+                    }
+                    canopyVariants.append("    \"age=")
+                            .append(age)
+                            .append(",axis=")
+                            .append(axis)
+                            .append(",trunk=")
+                            .append(trunk)
+                            .append("\": { \"model\": \"alcoholic:block/hop_bine_canopy_")
+                            .append(age)
+                            .append(trunk ? "_trunk" : "")
+                            .append("\"");
+                    if ("z".equals(axis)) {
+                        canopyVariants.append(", \"y\": 90");
+                    }
+                    canopyVariants.append(" }");
+                    firstCanopy = false;
+                }
+            }
+        }
+        canopyVariants.append("\n  }\n}\n");
+        sink.add("assets/alcoholic/blockstates/hop_bine_canopy.json", canopyVariants.toString());
+    }
+
+    private static String hopRootModelName(int age, boolean trained) {
+        if (!trained) {
+            return "hop_bine_" + age;
+        }
+        return "hop_bine_" + age + "_bottom";
+    }
+
     private static String canopyModel(String texture, boolean trunk) {
         String woodTexture = trunk
                 ? ",\n                    \"wood\": \"alcoholic:block/vineyard_post\""
@@ -945,6 +1068,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
         addBlockItem(sink, "trellis_wire");
         addGeneratedItem(sink, "trellis_spool");
         addGeneratedItem(sink, "pruning_shears");
+        addGeneratedItem(sink, "sickle");
     }
 
     private static void addProcessingAssets(JsonSink sink) {
@@ -1110,42 +1234,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
         barleyVariants.append("\n  }\n}\n");
         sink.add("assets/alcoholic/blockstates/barley_crop.json", barleyVariants.toString());
 
-        StringBuilder hopVariants = new StringBuilder("{\n  \"variants\": {\n");
-        boolean firstHopVariant = true;
-        for (int age = 0; age <= 2; age++) {
-            for (String segment : new String[]{"single", "bottom", "middle", "top"}) {
-                if (!firstHopVariant) {
-                    hopVariants.append(",\n");
-                }
-                String modelName = "hop_bine_" + age
-                        + ("single".equals(segment) ? "" : "_" + segment);
-                hopVariants.append("    \"age=")
-                        .append(age)
-                        .append(",segment=")
-                        .append(segment)
-                        .append("\": { \"model\": \"alcoholic:block/")
-                        .append(modelName)
-                        .append("\" }");
-                firstHopVariant = false;
-                if (!"single".equals(segment)) {
-                    sink.add(
-                            "assets/alcoholic/models/block/" + modelName + ".json",
-                            hopBineModel(age, segment)
-                    );
-                }
-            }
-            sink.add(
-                    "assets/alcoholic/models/block/hop_bine_" + age + ".json",
-                    """
-                            {
-                              "parent": "minecraft:block/cross",
-                              "textures": { "cross": "alcoholic:block/hop_bine_%s" }
-                            }
-                            """.formatted(age)
-            );
-        }
-        hopVariants.append("\n  }\n}\n");
-        sink.add("assets/alcoholic/blockstates/hop_bine.json", hopVariants.toString());
+        addHopColumnAssets(sink);
 
         sink.add(
                 "assets/alcoholic/models/block/wild_hops.json",

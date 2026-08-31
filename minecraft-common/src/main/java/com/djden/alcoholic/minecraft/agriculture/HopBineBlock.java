@@ -5,7 +5,7 @@ import com.djden.alcoholic.minecraft.content.AlcoholicIds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.StringRepresentable;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -23,22 +23,24 @@ import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
- * Vertical supported bine. Grows toward an overhead trellis run rather than
- * as a reskinned cereal crop.
+ * Hop cep. Column geometry is {@link ClimbingColumn}; age is the only
+ * hop-specific growth variable. No pruning, no harvest lot.
  */
-public class HopBineBlock extends BushBlock implements BonemealableBlock {
+public class HopBineBlock extends BushBlock
+        implements BonemealableBlock, ClimbingColumnRoot, ColumnHarvest {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
-    public static final EnumProperty<Segment> SEGMENT = EnumProperty.create("segment", Segment.class);
-    public static final int MAX_HEIGHT = 4;
+    public static final BooleanProperty TRAINED = BooleanProperty.create("trained");
+    public static final BooleanProperty EXTENDED = BooleanProperty.create("extended");
     private static final VoxelShape[] SHAPES = {
             Block.box(4.0, 0.0, 4.0, 12.0, 6.0, 12.0),
             Block.box(3.0, 0.0, 3.0, 13.0, 12.0, 13.0),
@@ -46,29 +48,59 @@ public class HopBineBlock extends BushBlock implements BonemealableBlock {
     };
 
     private final Supplier<ItemStack> harvest;
+    private final Supplier<? extends Block> stemBlock;
+    private final Supplier<? extends Block> canopyBlock;
 
-    public HopBineBlock(Properties properties, Supplier<ItemStack> harvest) {
+    public HopBineBlock(
+            Properties properties,
+            Supplier<ItemStack> harvest,
+            Supplier<? extends Block> stemBlock,
+            Supplier<? extends Block> canopyBlock
+    ) {
         super(properties);
-        this.harvest = harvest;
+        this.harvest = Objects.requireNonNull(harvest, "harvest");
+        this.stemBlock = Objects.requireNonNull(stemBlock, "stemBlock");
+        this.canopyBlock = Objects.requireNonNull(canopyBlock, "canopyBlock");
         registerDefaultState(stateDefinition.any()
                 .setValue(AGE, 0)
-                .setValue(SEGMENT, Segment.SINGLE));
+                .setValue(TRAINED, false)
+                .setValue(EXTENDED, false));
+    }
+
+    @Override
+    public Block stemBlock() {
+        return stemBlock.get();
+    }
+
+    @Override
+    public Block canopyBlock() {
+        return canopyBlock.get();
+    }
+
+    public ItemStack harvestItem() {
+        return harvest.get();
+    }
+
+    public static int boundAge(int age) {
+        return Mth.clamp(age, 0, 2);
+    }
+
+    public static boolean isMature(BlockState state) {
+        return state.hasProperty(AGE) && state.getValue(AGE) >= 2;
     }
 
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
         return state.is(Blocks.FARMLAND)
                 || state.is(Blocks.DIRT)
-                || state.is(Blocks.GRASS_BLOCK)
-                || state.getBlock() instanceof HopBineBlock
-                || state.getBlock() instanceof CropSupportPost;
+                || state.is(Blocks.GRASS_BLOCK);
     }
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockState below = level.getBlockState(pos.below());
         return mayPlaceOn(below, level, pos.below())
-                && TrellisDetector.shared().hasOverheadRun(level, pos, MAX_HEIGHT);
+                && TrellisDetector.shared().hasOverheadRun(level, pos, HopColumn.MAX_WIRE_OFFSET);
     }
 
     @Override
@@ -87,41 +119,20 @@ public class HopBineBlock extends BushBlock implements BonemealableBlock {
     private void grow(ServerLevel level, BlockPos pos, BlockState state) {
         int age = state.getValue(AGE);
         if (age < 2) {
-            level.setBlock(pos, state.setValue(AGE, age + 1), Block.UPDATE_CLIENTS);
+            refresh(level, pos, state.setValue(AGE, age + 1), true);
             return;
         }
-        BlockPos above = pos.above();
-        if (level.isEmptyBlock(above)
-                && above.getY() - ground(level, pos) < MAX_HEIGHT
-                && TrellisDetector.shared().hasOverheadRun(level, above, MAX_HEIGHT)) {
-            level.setBlock(
-                    above,
-                    segmentStateAt(level, above, defaultBlockState()),
-                    Block.UPDATE_ALL
-            );
-            syncSegment(level, pos, state);
-        }
-    }
-
-    private static int ground(LevelReader level, BlockPos pos) {
-        BlockPos cursor = pos;
-        while (level.getBlockState(cursor.below()).getBlock() instanceof HopBineBlock) {
-            cursor = cursor.below();
-        }
-        return cursor.getY();
-    }
-
-    public ItemStack harvestItem() {
-        return harvest.get();
-    }
-
-    public static boolean isMature(BlockState state) {
-        return state.hasProperty(AGE) && state.getValue(AGE) >= 2;
+        refresh(level, pos, state, true);
     }
 
     @Override
     public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean client) {
-        return state.getValue(AGE) < 2 || level.getBlockState(pos.above()).isAir();
+        if (state.getValue(AGE) < 2) {
+            return true;
+        }
+        return level instanceof LevelReader reader
+                && TrellisDetector.shared().boundedWireHeightAbove(reader, pos) == HopColumn.MAX_WIRE_OFFSET
+                && level.getBlockState(pos.above()).isAir();
     }
 
     @Override
@@ -136,12 +147,12 @@ public class HopBineBlock extends BushBlock implements BonemealableBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return segmentStateAt(context.getLevel(), context.getClickedPos(), defaultBlockState());
+        return defaultBlockState();
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(AGE, SEGMENT);
+        builder.add(AGE, TRAINED, EXTENDED);
     }
 
     @Override
@@ -156,14 +167,7 @@ public class HopBineBlock extends BushBlock implements BonemealableBlock {
         if (!state.canSurvive(level, pos)) {
             return Blocks.AIR.defaultBlockState();
         }
-        if (direction == Direction.UP || direction == Direction.DOWN) {
-            return stateForSegment(
-                    state,
-                    isHopBine(level.getBlockState(pos.below())),
-                    isHopBine(level.getBlockState(pos.above()))
-            );
-        }
-        return super.updateShape(state, direction, neighbor, level, pos, neighborPos);
+        return state;
     }
 
     @Override
@@ -176,10 +180,26 @@ public class HopBineBlock extends BushBlock implements BonemealableBlock {
             InteractionHand hand,
             BlockHitResult hit
     ) {
-        if (harvestBy(player, level, pos, state)) {
+        ItemStack held = player.getItemInHand(hand);
+        if (SickleItem.isSickle(held) && harvestColumn(player, level, pos, state)) {
+            if (!level.isClientSide && !player.getAbilities().instabuild) {
+                held.hurtAndBreak(1, player, brokenBy -> brokenBy.broadcastBreakEvent(hand));
+            }
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return InteractionResult.PASS;
+    }
+
+    @Override
+    public InteractionResult useAsRoot(
+            BlockState state,
+            Level level,
+            BlockPos position,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hit
+    ) {
+        return use(state, level, position, player, hand, hit);
     }
 
     @Override
@@ -193,81 +213,67 @@ public class HopBineBlock extends BushBlock implements BonemealableBlock {
             boolean moving
     ) {
         if (!state.canSurvive(level, pos)) {
+            ClimbingColumn.removeProjection(level, pos, this);
             level.destroyBlock(pos, true);
             return;
         }
-        syncSegment(level, pos, state);
+        if (!level.isClientSide) {
+            refresh(level, pos, state, false);
+        }
     }
 
-    public static BlockState segmentStateAt(LevelReader level, BlockPos pos, BlockState state) {
-        return stateForSegment(
-                state,
-                isHopBine(level.getBlockState(pos.below())),
-                isHopBine(level.getBlockState(pos.above()))
-        );
-    }
-
-    static BlockState stateForSegment(
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onRemove(
             BlockState state,
-            boolean hasHopBineBelow,
-            boolean hasHopBineAbove
+            Level level,
+            BlockPos position,
+            BlockState newState,
+            boolean isMoving
     ) {
-        return state.setValue(SEGMENT, Segment.fromNeighbors(hasHopBineBelow, hasHopBineAbove));
-    }
-
-    private static boolean isHopBine(BlockState state) {
-        return state.getBlock() instanceof HopBineBlock;
-    }
-
-    private static void syncSegment(Level level, BlockPos pos, BlockState state) {
-        if (level.isClientSide) {
-            return;
+        if (!state.is(newState.getBlock())) {
+            ClimbingColumn.removeProjection(level, position, this);
         }
-        BlockState next = stateForSegment(
-                state,
-                isHopBine(level.getBlockState(pos.below())),
-                isHopBine(level.getBlockState(pos.above()))
-        );
-        if (!next.equals(state)) {
-            level.setBlock(pos, next, Block.UPDATE_CLIENTS);
-        }
+        super.onRemove(state, level, position, newState, isMoving);
     }
 
-    public boolean harvestBy(Player player, Level level, BlockPos pos, BlockState state) {
-        if (!isMature(state) || level.isClientSide) {
+    @Override
+    public boolean harvestColumn(
+            Player player,
+            Level level,
+            BlockPos rootPos,
+            BlockState rootState
+    ) {
+        if (!isMature(rootState)) {
             return false;
+        }
+        if (level.isClientSide) {
+            return true;
         }
         ItemStack drop = harvest.get();
         if (!player.getInventory().add(drop)) {
             player.drop(drop, false);
         }
         AdvancementHooks.harvest(player, AdvancementHooks.location(AlcoholicIds.HOPS));
-        level.setBlock(pos, state.setValue(AGE, 0), Block.UPDATE_CLIENTS);
+        refresh(level, rootPos, rootState.setValue(AGE, 0), false);
         return true;
     }
 
-    public enum Segment implements StringRepresentable {
-        SINGLE("single"),
-        BOTTOM("bottom"),
-        MIDDLE("middle"),
-        TOP("top");
-
-        private final String serializedName;
-
-        Segment(String serializedName) {
-            this.serializedName = serializedName;
+    private void refresh(Level level, BlockPos pos, BlockState state, boolean allowGrowth) {
+        if (level.isClientSide) {
+            return;
         }
-
-        public static Segment fromNeighbors(boolean hasHopBineBelow, boolean hasHopBineAbove) {
-            if (hasHopBineBelow) {
-                return hasHopBineAbove ? MIDDLE : TOP;
-            }
-            return hasHopBineAbove ? BOTTOM : SINGLE;
+        if (!state.equals(level.getBlockState(pos))) {
+            level.setBlock(pos, state, Block.UPDATE_CLIENTS);
+            state = level.getBlockState(pos);
         }
-
-        @Override
-        public String getSerializedName() {
-            return serializedName;
-        }
+        HopColumn.sync(
+                level,
+                pos,
+                this,
+                state.getValue(AGE),
+                TrellisDetector.shared(),
+                allowGrowth
+        );
     }
 }

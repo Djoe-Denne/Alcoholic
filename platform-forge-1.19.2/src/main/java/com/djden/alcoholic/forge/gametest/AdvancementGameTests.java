@@ -79,7 +79,7 @@ public final class AdvancementGameTests {
                 Vine.NO_HARVEST
         ));
         ServerPlayer player = mockPlayer(helper);
-        use(helper, ORIGIN, player, ItemStack.EMPTY);
+        use(helper, ORIGIN, player, new ItemStack(item("sickle")));
         requireDone(helper, player, "harvest_grapes");
         helper.succeed();
     }
@@ -110,7 +110,7 @@ public final class AdvancementGameTests {
         ServerPlayer player = mockPlayer(helper);
         require(
                 helper,
-                hopBine.harvestBy(player, helper.getLevel(), helper.absolutePos(ORIGIN), helper.getBlockState(ORIGIN)),
+                hopBine.harvestColumn(player, helper.getLevel(), helper.absolutePos(ORIGIN), helper.getBlockState(ORIGIN)),
                 "Mature hop bine did not harvest"
         );
         requireDone(helper, player, "harvest_hops");

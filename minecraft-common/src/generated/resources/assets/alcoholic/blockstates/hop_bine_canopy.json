@@ -1,0 +1,46 @@
+{
+  "variants": {
+    "age=0,axis=x,trunk=false": {
+      "model": "alcoholic:block/hop_bine_canopy_0"
+    },
+    "age=0,axis=x,trunk=true": {
+      "model": "alcoholic:block/hop_bine_canopy_0_trunk"
+    },
+    "age=0,axis=z,trunk=false": {
+      "model": "alcoholic:block/hop_bine_canopy_0",
+      "y": 90
+    },
+    "age=0,axis=z,trunk=true": {
+      "model": "alcoholic:block/hop_bine_canopy_0_trunk",
+      "y": 90
+    },
+    "age=1,axis=x,trunk=false": {
+      "model": "alcoholic:block/hop_bine_canopy_1"
+    },
+    "age=1,axis=x,trunk=true": {
+      "model": "alcoholic:block/hop_bine_canopy_1_trunk"
+    },
+    "age=1,axis=z,trunk=false": {
+      "model": "alcoholic:block/hop_bine_canopy_1",
+      "y": 90
+    },
+    "age=1,axis=z,trunk=true": {
+      "model": "alcoholic:block/hop_bine_canopy_1_trunk",
+      "y": 90
+    },
+    "age=2,axis=x,trunk=false": {
+      "model": "alcoholic:block/hop_bine_canopy_2"
+    },
+    "age=2,axis=x,trunk=true": {
+      "model": "alcoholic:block/hop_bine_canopy_2_trunk"
+    },
+    "age=2,axis=z,trunk=false": {
+      "model": "alcoholic:block/hop_bine_canopy_2",
+      "y": 90
+    },
+    "age=2,axis=z,trunk=true": {
+      "model": "alcoholic:block/hop_bine_canopy_2_trunk",
+      "y": 90
+    }
+  }
+}

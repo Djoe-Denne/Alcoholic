@@ -23,6 +23,7 @@ public record AlcoholicContent(
         RegistryRef<Item> endPostItem,
         RegistryRef<Item> trellisSpool,
         RegistryRef<Item> pruningShears,
+        RegistryRef<Item> sickle,
         RegistryRef<BlockEntityType<?>> vineBlockEntity
 ) {
 }

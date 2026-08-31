@@ -3,6 +3,7 @@ package com.djden.alcoholic.minecraft.agriculture;
 import com.djden.alcoholic.domain.viticulture.VineGrowthStage;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -29,5 +30,11 @@ class VineColumnTest {
         assertTrue(VineColumn.shouldOccupyWire(2, VineGrowthStage.HARVEST_READY));
         assertFalse(VineColumn.shouldOccupyWire(0, VineGrowthStage.VEGETATIVE));
         assertFalse(VineColumn.shouldOccupyWire(3, VineGrowthStage.VEGETATIVE));
+    }
+
+    @Test
+    void vineColumnHeightIsTheSharedClimbingColumnHeight() {
+        assertEquals(ClimbingColumn.MAX_WIRE_OFFSET, VineColumn.MAX_WIRE_OFFSET);
+        assertEquals(2, ClimbingColumn.MAX_WIRE_OFFSET);
     }
 }

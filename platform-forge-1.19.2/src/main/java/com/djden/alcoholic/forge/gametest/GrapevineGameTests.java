@@ -87,7 +87,7 @@ public final class GrapevineGameTests {
         );
         VineBlockEntity entity = placeVine(helper, vineBlock, mature);
 
-        helper.useBlock(VINE_POSITION);
+        useWithSickle(helper, VINE_POSITION);
 
         Vine<ResourceId> harvested = entity.vine();
         require(
@@ -110,82 +110,65 @@ public final class GrapevineGameTests {
     }
 
     @GameTest(template = "empty", timeoutTicks = 40)
-    public static void harvestReadyWithPruningShearsDropsGrapes(GameTestHelper helper) {
+    public static void harvestReadyWithPruningShearsDoesNotHarvest(GameTestHelper helper) {
         VineBlock vineBlock = vine("red_grapevine");
         VineBlockEntity entity = placeVine(
                 helper,
                 vineBlock,
                 vineAt(VineGrowthStage.HARVEST_READY, 0, true, 0.0, Vine.NO_HARVEST)
         );
-        Player player = helper.makeMockPlayer();
-        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(item("pruning_shears")));
-        helper.getBlockState(VINE_POSITION).use(
-                helper.getLevel(),
-                player,
-                InteractionHand.MAIN_HAND,
-                new BlockHitResult(
-                        Vec3.atCenterOf(helper.absolutePos(VINE_POSITION)),
-                        Direction.UP,
-                        helper.absolutePos(VINE_POSITION),
-                        false
-                )
-        );
+        useWithHeld(helper, VINE_POSITION, new ItemStack(item("pruning_shears")));
 
-        ResourceId grapeId = ModList.get().isLoaded(VineryIntegration.MOD_ID)
-                ? VineryIntegration.RED_GRAPE
-                : AlcoholicIds.RED_GRAPES;
-        Item grapes = ForgeRegistries.ITEMS.getValue(
-                ResourceLocation.fromNamespaceAndPath(grapeId.namespace(), grapeId.path())
-        );
         require(
                 helper,
                 helper.getBlockState(VINE_POSITION).getBlock() == vineBlock,
-                "Harvest with pruning shears removed the perennial vine block"
+                "Pruning shears on a ripe vine removed the perennial vine block"
         );
         require(
                 helper,
-                entity.vine().growthStage() == VineGrowthStage.DORMANT,
-                "Harvest with pruning shears did not enter DORMANT"
-        );
-        require(
-                helper,
-                grapes != null && itemCountNear(helper, VINE_POSITION, grapes) > 0,
-                "Harvest with pruning shears did not drop grapes"
+                entity.vine().growthStage() == VineGrowthStage.HARVEST_READY,
+                "Pruning shears harvested a ripe vine"
         );
         helper.succeed();
     }
 
     @GameTest(template = "empty", timeoutTicks = 40)
-    public static void harvestReadyWithStickEntersDormant(GameTestHelper helper) {
+    public static void harvestReadyWithStickDoesNotHarvest(GameTestHelper helper) {
         VineBlock vineBlock = vine("red_grapevine");
         VineBlockEntity entity = placeVine(
                 helper,
                 vineBlock,
                 vineAt(VineGrowthStage.HARVEST_READY, 0, true, 0.0, Vine.NO_HARVEST)
         );
-        Player player = helper.makeMockPlayer();
-        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.STICK));
-        helper.getBlockState(VINE_POSITION).use(
-                helper.getLevel(),
-                player,
-                InteractionHand.MAIN_HAND,
-                new BlockHitResult(
-                        Vec3.atCenterOf(helper.absolutePos(VINE_POSITION)),
-                        Direction.UP,
-                        helper.absolutePos(VINE_POSITION),
-                        false
-                )
-        );
+        useWithHeld(helper, VINE_POSITION, new ItemStack(Items.STICK));
 
         require(
                 helper,
                 helper.getBlockState(VINE_POSITION).getBlock() == vineBlock,
-                "Harvest with a stick removed the perennial vine block"
+                "A stick on a ripe vine removed the perennial vine block"
         );
         require(
                 helper,
-                entity.vine().growthStage() == VineGrowthStage.DORMANT,
-                "Harvest with a stick did not enter DORMANT"
+                entity.vine().growthStage() == VineGrowthStage.HARVEST_READY,
+                "A stick harvested a ripe vine"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void emptyHandDoesNotHarvestMatureVine(GameTestHelper helper) {
+        VineBlock vineBlock = vine("red_grapevine");
+        VineBlockEntity entity = placeVine(
+                helper,
+                vineBlock,
+                vineAt(VineGrowthStage.HARVEST_READY, 0, true, 0.0, Vine.NO_HARVEST)
+        );
+        helper.useBlock(VINE_POSITION);
+
+        require(
+                helper,
+                entity.vine().growthStage() == VineGrowthStage.HARVEST_READY,
+                "Empty-hand click harvested a ripe vine"
         );
         helper.succeed();
     }
@@ -646,7 +629,7 @@ public final class GrapevineGameTests {
         );
         placeTrellis(helper, 2);
         growOnce(helper, vineBlock);
-        helper.useBlock(VINE_POSITION.above());
+        useWithSickle(helper, VINE_POSITION.above());
 
         require(
                 helper,
@@ -671,7 +654,7 @@ public final class GrapevineGameTests {
         );
         placeTrellis(helper, 3);
         attachStem(helper, vineBlock);
-        helper.useBlock(VINE_POSITION.above());
+        useWithSickle(helper, VINE_POSITION.above());
 
         require(
                 helper,
@@ -969,6 +952,26 @@ public final class GrapevineGameTests {
                 helper.getBlockState(VINE_POSITION)
                         .setValue(VineBlock.EXTENDED, true)
                         .setValue(VineBlock.TRAINED, true)
+        );
+    }
+
+    private static void useWithSickle(GameTestHelper helper, BlockPos pos) {
+        useWithHeld(helper, pos, new ItemStack(item("sickle")));
+    }
+
+    private static void useWithHeld(GameTestHelper helper, BlockPos pos, ItemStack held) {
+        Player player = helper.makeMockPlayer();
+        player.setItemInHand(InteractionHand.MAIN_HAND, held);
+        helper.getBlockState(pos).use(
+                helper.getLevel(),
+                player,
+                InteractionHand.MAIN_HAND,
+                new BlockHitResult(
+                        Vec3.atCenterOf(helper.absolutePos(pos)),
+                        Direction.UP,
+                        helper.absolutePos(pos),
+                        false
+                )
         );
     }
 

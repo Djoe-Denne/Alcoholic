@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -27,12 +27,12 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
- * Upper grapevine segment. No block entity, no loot, no independent growth.
+ * Mid-column hop projection. Clicks and bone meal route to the cep.
  */
-public final class VineStemBlock extends Block
+public final class HopStemBlock extends Block
         implements BonemealableBlock, ClimbingColumnStem {
-    public static final EnumProperty<VineStage> STAGE = VineBlock.STAGE;
-    public static final BooleanProperty TRAINED = VineBlock.TRAINED;
+    public static final IntegerProperty AGE = HopBineBlock.AGE;
+    public static final BooleanProperty TRAINED = HopBineBlock.TRAINED;
 
     private static final VoxelShape TRUNK_SHAPE =
             Block.box(6.0, 0.0, 6.0, 10.0, 16.0, 10.0);
@@ -41,12 +41,12 @@ public final class VineStemBlock extends Block
 
     private final Supplier<? extends Block> rootBlock;
 
-    public VineStemBlock(Properties properties, Supplier<? extends Block> rootBlock) {
+    public HopStemBlock(Properties properties, Supplier<? extends Block> rootBlock) {
         super(properties);
         this.rootBlock = Objects.requireNonNull(rootBlock, "rootBlock");
         registerDefaultState(
                 stateDefinition.any()
-                        .setValue(STAGE, VineStage.VEGETATIVE)
+                        .setValue(AGE, 0)
                         .setValue(TRAINED, true)
         );
     }
@@ -64,12 +64,11 @@ public final class VineStemBlock extends Block
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos position) {
         BlockState below = level.getBlockState(position.below());
-        if (!(below.getBlock() instanceof VineBlock root) || !belongsTo(root)) {
+        if (!(below.getBlock() instanceof HopBineBlock root) || !belongsTo(root)) {
             return false;
         }
-        return VineColumn.canExtend(below.getValue(VineBlock.STAGE).domainStage())
-                && TrellisDetector.shared().boundedWireHeightAbove(level, position.below())
-                == VineColumn.MAX_WIRE_OFFSET;
+        return TrellisDetector.shared().boundedWireHeightAbove(level, position.below())
+                == HopColumn.MAX_WIRE_OFFSET;
     }
 
     @Override
@@ -126,7 +125,7 @@ public final class VineStemBlock extends Block
             return false;
         }
         BlockState rootState = level.getBlockState(rootPos);
-        return rootState.getBlock() instanceof VineBlock root
+        return rootState.getBlock() instanceof HopBineBlock root
                 && belongsTo(root)
                 && root.isValidBonemealTarget(level, rootPos, rootState, client);
     }
@@ -153,7 +152,7 @@ public final class VineStemBlock extends Block
             return;
         }
         BlockState rootState = level.getBlockState(rootPos);
-        if (rootState.getBlock() instanceof VineBlock root && belongsTo(root)) {
+        if (rootState.getBlock() instanceof HopBineBlock root && belongsTo(root)) {
             root.performBonemeal(level, random, rootPos, rootState);
         }
     }
@@ -175,6 +174,6 @@ public final class VineStemBlock extends Block
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(STAGE, TRAINED);
+        builder.add(AGE, TRAINED);
     }
 }

@@ -34,7 +34,8 @@ import java.util.function.Supplier;
  * Top grapevine segment that occupies the trellis wire coordinate. The wire
  * block is replaced; the model keeps a wire so the row still reads as trained.
  */
-public final class VineCanopyBlock extends Block implements BonemealableBlock {
+public final class VineCanopyBlock extends Block
+        implements BonemealableBlock, ClimbingColumnCanopy {
     public static final EnumProperty<VineStage> STAGE = VineBlock.STAGE;
     public static final EnumProperty<Direction.Axis> AXIS =
             BlockStateProperties.HORIZONTAL_AXIS;
@@ -62,10 +63,17 @@ public final class VineCanopyBlock extends Block implements BonemealableBlock {
         );
     }
 
-    public boolean belongsTo(VineBlock root) {
+    @Override
+    public boolean belongsTo(ClimbingColumnRoot root) {
         return root != null && root.canopyBlock() == this;
     }
 
+    @Override
+    public Direction.Axis axis(BlockState canopyState) {
+        return canopyState.getValue(AXIS);
+    }
+
+    @Override
     public BlockState restoredWire(BlockState canopyState) {
         return wireBlock.get().defaultBlockState().setValue(
                 TrellisWireBlock.AXIS,
@@ -80,12 +88,12 @@ public final class VineCanopyBlock extends Block implements BonemealableBlock {
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos position) {
-        BlockPos rootPos = findRootPos(level, position);
+        BlockPos rootPos = ClimbingColumn.findRoot(level, position);
         if (rootPos == null) {
             return false;
         }
         BlockState rootState = level.getBlockState(rootPos);
-        if (!(rootState.getBlock() instanceof VineBlock)) {
+        if (!(rootState.getBlock() instanceof VineBlock root) || !belongsTo(root)) {
             return false;
         }
         int height = position.getY() - rootPos.getY();
@@ -155,15 +163,7 @@ public final class VineCanopyBlock extends Block implements BonemealableBlock {
             InteractionHand hand,
             BlockHitResult hit
     ) {
-        BlockPos rootPos = findRootPos(level, position);
-        if (rootPos == null) {
-            return InteractionResult.PASS;
-        }
-        BlockState rootState = level.getBlockState(rootPos);
-        if (rootState.getBlock() instanceof VineBlock root && belongsTo(root)) {
-            return root.use(rootState, level, rootPos, player, hand, hit);
-        }
-        return InteractionResult.PASS;
+        return ClimbingColumn.useThroughRoot(level, position, player, hand, hit);
     }
 
     @Override
@@ -173,7 +173,7 @@ public final class VineCanopyBlock extends Block implements BonemealableBlock {
             BlockState state,
             boolean client
     ) {
-        BlockPos rootPos = findRootPos(level, position);
+        BlockPos rootPos = ClimbingColumn.findRoot(level, position);
         if (rootPos == null) {
             return false;
         }
@@ -200,7 +200,7 @@ public final class VineCanopyBlock extends Block implements BonemealableBlock {
             BlockPos position,
             BlockState state
     ) {
-        BlockPos rootPos = findRootPos(level, position);
+        BlockPos rootPos = ClimbingColumn.findRoot(level, position);
         if (rootPos == null) {
             return;
         }
@@ -243,20 +243,4 @@ public final class VineCanopyBlock extends Block implements BonemealableBlock {
         builder.add(STAGE, AXIS, TRUNK);
     }
 
-    @Nullable
-    private BlockPos findRootPos(BlockGetter level, BlockPos position) {
-        BlockState below = level.getBlockState(position.below());
-        if (below.getBlock() instanceof VineBlock root && belongsTo(root)) {
-            return position.below();
-        }
-        if (below.getBlock() instanceof VineStemBlock stem) {
-            BlockState rootState = level.getBlockState(position.below(2));
-            if (rootState.getBlock() instanceof VineBlock root
-                    && belongsTo(root)
-                    && stem.belongsTo(root)) {
-                return position.below(2);
-            }
-        }
-        return null;
-    }
 }

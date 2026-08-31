@@ -20,6 +20,7 @@ public final class AlcoholicIds {
     public static final ResourceId TRELLIS_WIRE = id("trellis_wire");
     public static final ResourceId TRELLIS_SPOOL = id("trellis_spool");
     public static final ResourceId PRUNING_SHEARS = id("pruning_shears");
+    public static final ResourceId SICKLE = id("sickle");
     public static final ResourceId VINE_BLOCK_ENTITY = id("vine");
     public static final ResourceId WILD_RED_GRAPEVINES = id("wild_red_grapevines");
     public static final ResourceId WILD_WHITE_GRAPEVINES = id("wild_white_grapevines");
@@ -89,6 +90,8 @@ public final class AlcoholicIds {
     public static final ResourceId HOPS = id("hops");
     public static final ResourceId HOP_RHIZOME = id("hop_rhizome");
     public static final ResourceId HOP_BINE = id("hop_bine");
+    public static final ResourceId HOP_BINE_STEM = id("hop_bine_stem");
+    public static final ResourceId HOP_BINE_CANOPY = id("hop_bine_canopy");
     public static final ResourceId WILD_HOPS = id("wild_hops");
     public static final ResourceId SPENT_GRAIN = id("spent_grain");
     public static final ResourceId MALTING_FLOOR = id("malting_floor");

@@ -34,6 +34,7 @@ ITEM_TEXTURES = (
     "hops",
     "malted_barley",
     "pruning_shears",
+    "sickle",
     "red_grape_cutting",
     "red_grape_must_bucket",
     "red_grapes",

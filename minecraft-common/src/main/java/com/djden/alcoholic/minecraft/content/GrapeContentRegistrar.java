@@ -2,6 +2,7 @@ package com.djden.alcoholic.minecraft.content;
 
 import com.djden.alcoholic.application.viticulture.VineVarieties;
 import com.djden.alcoholic.minecraft.agriculture.EndPostBlock;
+import com.djden.alcoholic.minecraft.agriculture.SickleItem;
 import com.djden.alcoholic.minecraft.agriculture.TrellisWireBlock;
 import com.djden.alcoholic.minecraft.agriculture.VineBlock;
 import com.djden.alcoholic.minecraft.agriculture.VineBlockEntity;
@@ -175,6 +176,14 @@ public final class GrapeContentRegistrar {
                                 .tab(CreativeModeTab.TAB_TOOLS)
                 )
         );
+        RegistryRef<Item> sickleRef = ports.items().register(
+                AlcoholicIds.SICKLE,
+                () -> new SickleItem(
+                        new Item.Properties()
+                                .durability(256)
+                                .tab(CreativeModeTab.TAB_TOOLS)
+                )
+        );
         RegistryRef<BlockEntityType<?>> vineEntityRef =
                 ports.blockEntities().register(
                         AlcoholicIds.VINE_BLOCK_ENTITY,
@@ -212,6 +221,7 @@ public final class GrapeContentRegistrar {
                 endPostItemRef,
                 trellisSpoolRef,
                 pruningShearsRef,
+                sickleRef,
                 vineEntityRef
         );
     }

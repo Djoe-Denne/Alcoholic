@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "age=0,trained=false": {
+      "model": "alcoholic:block/hop_bine_stem_0_untrained"
+    },
+    "age=0,trained=true": {
+      "model": "alcoholic:block/hop_bine_stem_0_trained"
+    },
+    "age=1,trained=false": {
+      "model": "alcoholic:block/hop_bine_stem_1_untrained"
+    },
+    "age=1,trained=true": {
+      "model": "alcoholic:block/hop_bine_stem_1_trained"
+    },
+    "age=2,trained=false": {
+      "model": "alcoholic:block/hop_bine_stem_2_untrained"
+    },
+    "age=2,trained=true": {
+      "model": "alcoholic:block/hop_bine_stem_2_trained"
+    }
+  }
+}

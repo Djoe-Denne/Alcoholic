@@ -59,6 +59,8 @@
   "block.alcoholic.end_post": "Vineyard End Post",
   "block.alcoholic.fluid_port": "Fluid Port",
   "block.alcoholic.hop_bine": "Hop Bine",
+  "block.alcoholic.hop_bine_canopy": "Hop Bine Canopy",
+  "block.alcoholic.hop_bine_stem": "Hop Bine Stem",
   "block.alcoholic.industrial_brewing_kettle_controller": "Industrial Brewing Kettle Controller",
   "block.alcoholic.industrial_casing": "Industrial Casing",
   "block.alcoholic.industrial_conditioning_vessel_controller": "Industrial Conditioning Vessel Controller",
@@ -219,6 +221,7 @@
   "item.alcoholic.red_grape_must_bucket": "Red Grape Must Bucket",
   "item.alcoholic.red_grapes": "Red Grapes",
   "item.alcoholic.red_wine_bucket": "Red Wine Bucket",
+  "item.alcoholic.sickle": "Sickle",
   "item.alcoholic.spent_grain": "Spent Grain",
   "item.alcoholic.trellis_spool": "Trellis Wire Spool",
   "item.alcoholic.white_grape_cutting": "White Grapevine Cutting",
@@ -249,10 +252,10 @@
   "jei.alcoholic.info.barley.grow": "Plant barley seeds on farmland. The crop has three stages, like wheat. Bone meal speeds growth. A mature crop drops 1 barley and 1 seed. If Brewery is loaded, its barley is accepted as #alcoholic:barley.",
   "jei.alcoholic.info.grapevine.find": "Find a wild grapevine that is ready to harvest in plains, sunflower plains, forest, flower forest, or birch forest. Break it for one cutting (red or white). If Vinery is loaded, Alcoholic wild vines do not generate.",
   "jei.alcoholic.info.grapevine.grow": "Plant the cutting on dirt or farmland. Bone meal advances one stage (stump, stem, or canopy). Grape pomace and spent grain compost into bone meal. A vine can grow without a trellis, but yield is about 70% and quality about 85% of a trained vine. String wire between two posts with a trellis spool, then plant under or along the wire.",
-  "jei.alcoholic.info.grapevine.harvest": "First cycle: planted, establishing, vegetative, flowering, green fruit, ripening, harvest-ready, then dormant. Later cycles return from dormant to flowering. Right-click a harvest-ready vine to pick grapes; the plant stays and goes dormant. Sneak with an empty hand to inspect the plant. Pruning shears only work while dormant and are optional.",
+  "jei.alcoholic.info.grapevine.harvest": "First cycle: planted, establishing, vegetative, flowering, green fruit, ripening, harvest-ready, then dormant. Later cycles return from dormant to flowering. Right-click a harvest-ready vine with a sickle to pick grapes; the plant stays and goes dormant. Sneak with an empty hand to inspect the plant. Pruning shears only work while dormant and are optional.",
   "jei.alcoholic.info.hops.find": "Break wild hops in forest, flower forest, birch forest, taiga, or river for one rhizome and one hop. If Brewery is loaded, Alcoholic wild hops do not generate.",
-  "jei.alcoholic.info.hops.grow": "A hop bine dies without a trellis wire above it (up to 4 blocks). Place two posts at the same height, use the trellis spool on the first post then the second, and plant the rhizome on dirt, grass, or farmland under the wire. The bine grows upward (age 0 to 2, then a new tier).",
-  "jei.alcoholic.info.hops.harvest": "Right-click a mature bine for one hop; that tier resets to age 0. Breaking a bine drops one rhizome, plus one hop if it was mature.",
+  "jei.alcoholic.info.hops.grow": "A hop bine dies without a trellis wire above it (up to 2 blocks). Place two posts at the same height, use the trellis spool on the first post then the second, and plant the rhizome on dirt, grass, or farmland under the wire. The bine occupies up to three blocks: cep, stem, and canopy.",
+  "jei.alcoholic.info.hops.harvest": "Right-click any block of a mature bine with a sickle to harvest the whole column. The plant stays; age resets to 0. Breaking the cep drops one rhizome, plus one hop if it was mature.",
   "jei.alcoholic.info.trellis": "Place two vineyard or end posts at the same height and aligned. Use the trellis spool on the first post, then the second, to string wires. Grapevines grow better on a wire. Hop bines need a wire above them or they die.",
   "jei.alcoholic.volume.unspecified": "Volume not specified",
   "message.alcoholic.barrel.empty": "Empty barrel · used %1$s · last %2$s",
@@ -323,5 +326,6 @@
   "tooltip.alcoholic.harvest_lot.sugar": "Sugar: %s",
   "tooltip.alcoholic.metadata.lost": "Batch metadata was normalized by foreign storage",
   "tooltip.alcoholic.pruning_shears.change": "Sneak + right-click in the air to change",
-  "tooltip.alcoholic.pruning_shears.level": "Pruning: %s"
+  "tooltip.alcoholic.pruning_shears.level": "Pruning: %s",
+  "tooltip.alcoholic.sickle.use": "Harvests a ripe vine or hop column. The plant stays."
 }

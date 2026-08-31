@@ -41,6 +41,8 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         addEmptyLoot(sink, "white_grapevine_stem");
         addEmptyLoot(sink, "red_grapevine_canopy");
         addEmptyLoot(sink, "white_grapevine_canopy");
+        addEmptyLoot(sink, "hop_bine_stem");
+        addEmptyLoot(sink, "hop_bine_canopy");
         addBarleyLoot(sink);
         addHopBineLoot(sink);
         addWildHopsLoot(sink);
@@ -440,6 +442,26 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           },
                           "result": {
                             "item": "alcoholic:pruning_shears"
+                          }
+                        }
+                        """
+        );
+        sink.add(
+                "data/alcoholic/recipes/sickle.json",
+                """
+                        {
+                          "type": "minecraft:crafting_shaped",
+                          "pattern": [
+                            "II",
+                            " S",
+                            " S"
+                          ],
+                          "key": {
+                            "I": { "item": "minecraft:iron_ingot" },
+                            "S": { "item": "minecraft:stick" }
+                          },
+                          "result": {
+                            "item": "alcoholic:sickle"
                           }
                         }
                         """

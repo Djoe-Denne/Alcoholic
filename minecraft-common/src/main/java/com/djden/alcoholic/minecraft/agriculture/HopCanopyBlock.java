@@ -13,47 +13,71 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
- * Upper grapevine segment. No block entity, no loot, no independent growth.
+ * Hop canopy that occupies the trellis wire. Clicks route to the cep.
  */
-public final class VineStemBlock extends Block
-        implements BonemealableBlock, ClimbingColumnStem {
-    public static final EnumProperty<VineStage> STAGE = VineBlock.STAGE;
-    public static final BooleanProperty TRAINED = VineBlock.TRAINED;
+public final class HopCanopyBlock extends Block
+        implements BonemealableBlock, ClimbingColumnCanopy {
+    public static final IntegerProperty AGE = HopBineBlock.AGE;
+    public static final EnumProperty<Direction.Axis> AXIS =
+            BlockStateProperties.HORIZONTAL_AXIS;
+    public static final BooleanProperty TRUNK = BooleanProperty.create("trunk");
 
-    private static final VoxelShape TRUNK_SHAPE =
-            Block.box(6.0, 0.0, 6.0, 10.0, 16.0, 10.0);
-    private static final VoxelShape TRAINED_SHAPE =
+    private static final VoxelShape SHAPE =
             Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
 
     private final Supplier<? extends Block> rootBlock;
+    private final Supplier<? extends Block> wireBlock;
 
-    public VineStemBlock(Properties properties, Supplier<? extends Block> rootBlock) {
+    public HopCanopyBlock(
+            Properties properties,
+            Supplier<? extends Block> rootBlock,
+            Supplier<? extends Block> wireBlock
+    ) {
         super(properties);
         this.rootBlock = Objects.requireNonNull(rootBlock, "rootBlock");
+        this.wireBlock = Objects.requireNonNull(wireBlock, "wireBlock");
         registerDefaultState(
                 stateDefinition.any()
-                        .setValue(STAGE, VineStage.VEGETATIVE)
-                        .setValue(TRAINED, true)
+                        .setValue(AGE, 0)
+                        .setValue(AXIS, Direction.Axis.X)
+                        .setValue(TRUNK, false)
         );
     }
 
     @Override
     public boolean belongsTo(ClimbingColumnRoot root) {
-        return root != null && root.stemBlock() == this;
+        return root != null && root.canopyBlock() == this;
+    }
+
+    @Override
+    public Direction.Axis axis(BlockState canopyState) {
+        return canopyState.getValue(AXIS);
+    }
+
+    @Override
+    public BlockState restoredWire(BlockState canopyState) {
+        return wireBlock.get().defaultBlockState().setValue(
+                TrellisWireBlock.AXIS,
+                canopyState.getValue(AXIS)
+        );
     }
 
     @Override
@@ -63,13 +87,20 @@ public final class VineStemBlock extends Block
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos position) {
-        BlockState below = level.getBlockState(position.below());
-        if (!(below.getBlock() instanceof VineBlock root) || !belongsTo(root)) {
+        BlockPos rootPos = ClimbingColumn.findRoot(level, position);
+        if (rootPos == null) {
             return false;
         }
-        return VineColumn.canExtend(below.getValue(VineBlock.STAGE).domainStage())
-                && TrellisDetector.shared().boundedWireHeightAbove(level, position.below())
-                == VineColumn.MAX_WIRE_OFFSET;
+        BlockState rootState = level.getBlockState(rootPos);
+        if (!(rootState.getBlock() instanceof HopBineBlock root) || !belongsTo(root)) {
+            return false;
+        }
+        int height = position.getY() - rootPos.getY();
+        return TrellisDetector.shared().boundedWireHeightAbove(level, rootPos) == height
+                && (height == 1 || ClimbingColumn.isMatchingStem(
+                        level.getBlockState(position.below()),
+                        root
+                ));
     }
 
     @Override
@@ -81,9 +112,16 @@ public final class VineStemBlock extends Block
             BlockPos position,
             BlockPos neighborPosition
     ) {
-        return !state.canSurvive(level, position)
-                ? Blocks.AIR.defaultBlockState()
-                : super.updateShape(state, direction, neighbor, level, position, neighborPosition);
+        return state.canSurvive(level, position)
+                ? super.updateShape(
+                        state,
+                        direction,
+                        neighbor,
+                        level,
+                        position,
+                        neighborPosition
+                )
+                : restoredWire(state);
     }
 
     @Override
@@ -97,7 +135,21 @@ public final class VineStemBlock extends Block
             boolean moving
     ) {
         if (!state.canSurvive(level, position)) {
-            level.removeBlock(position, false);
+            level.setBlock(position, restoredWire(state), Block.UPDATE_ALL);
+        }
+    }
+
+    @Override
+    public void playerDestroy(
+            Level level,
+            Player player,
+            BlockPos position,
+            BlockState state,
+            @Nullable BlockEntity blockEntity,
+            ItemStack tool
+    ) {
+        if (!level.isClientSide) {
+            level.setBlock(position, restoredWire(state), Block.UPDATE_ALL);
         }
     }
 
@@ -126,7 +178,7 @@ public final class VineStemBlock extends Block
             return false;
         }
         BlockState rootState = level.getBlockState(rootPos);
-        return rootState.getBlock() instanceof VineBlock root
+        return rootState.getBlock() instanceof HopBineBlock root
                 && belongsTo(root)
                 && root.isValidBonemealTarget(level, rootPos, rootState, client);
     }
@@ -153,7 +205,7 @@ public final class VineStemBlock extends Block
             return;
         }
         BlockState rootState = level.getBlockState(rootPos);
-        if (rootState.getBlock() instanceof VineBlock root && belongsTo(root)) {
+        if (rootState.getBlock() instanceof HopBineBlock root && belongsTo(root)) {
             root.performBonemeal(level, random, rootPos, rootState);
         }
     }
@@ -170,11 +222,24 @@ public final class VineStemBlock extends Block
             BlockPos position,
             CollisionContext context
     ) {
-        return state.getValue(TRAINED) ? TRAINED_SHAPE : TRUNK_SHAPE;
+        return SHAPE;
+    }
+
+    @Override
+    public BlockState rotate(BlockState state, Rotation rotation) {
+        return switch (rotation) {
+            case CLOCKWISE_90, COUNTERCLOCKWISE_90 -> state.setValue(
+                    AXIS,
+                    state.getValue(AXIS) == Direction.Axis.X
+                            ? Direction.Axis.Z
+                            : Direction.Axis.X
+            );
+            default -> state;
+        };
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(STAGE, TRAINED);
+        builder.add(AGE, AXIS, TRUNK);
     }
 }

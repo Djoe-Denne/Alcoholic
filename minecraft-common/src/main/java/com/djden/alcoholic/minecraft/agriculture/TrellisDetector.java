@@ -26,20 +26,20 @@ public final class TrellisDetector {
         return SHARED;
     }
 
-    public boolean isTrained(LevelReader level, BlockPos vinePosition) {
-        return boundedWireHeightAbove(level, vinePosition) > 0;
+    public boolean isTrained(LevelReader level, BlockPos plantPosition) {
+        return boundedWireHeightAbove(level, plantPosition) > 0;
     }
 
     /**
-     * Height of the first bounded trellis wire above the vine, or {@code 0}
+     * Height of the first bounded trellis wire above the plant, or {@code 0}
      * when none is reachable through a clear path.
      */
-    public int boundedWireHeightAbove(LevelReader level, BlockPos vinePosition) {
+    public int boundedWireHeightAbove(LevelReader level, BlockPos plantPosition) {
         Objects.requireNonNull(level, "level");
-        Objects.requireNonNull(vinePosition, "vinePosition");
-        for (int height = 1; height <= VineColumn.MAX_WIRE_OFFSET; height++) {
-            if (hasBoundedWire(level, vinePosition.above(height))
-                    && pathClearTo(level, vinePosition, height)) {
+        Objects.requireNonNull(plantPosition, "plantPosition");
+        for (int height = 1; height <= ClimbingColumn.MAX_WIRE_OFFSET; height++) {
+            if (hasBoundedWire(level, plantPosition.above(height))
+                    && pathClearTo(level, plantPosition, height)) {
                 return height;
             }
         }
@@ -48,8 +48,7 @@ public final class TrellisDetector {
 
     private static boolean pathClearTo(LevelReader level, BlockPos root, int wireHeight) {
         for (int dy = 1; dy < wireHeight; dy++) {
-            BlockState state = level.getBlockState(root.above(dy));
-            if (!state.isAir() && !(state.getBlock() instanceof VineStemBlock)) {
+            if (!ClimbingColumn.isClearPathBlock(level.getBlockState(root.above(dy)))) {
                 return false;
             }
         }
@@ -69,15 +68,11 @@ public final class TrellisDetector {
     }
 
     public static boolean isSpan(BlockState state) {
-        return state.getBlock() instanceof TrellisWireBlock
-                || state.getBlock() instanceof VineCanopyBlock;
+        return ClimbingColumn.isSpan(state);
     }
 
     public static Direction.Axis axisOf(BlockState state) {
-        if (state.getBlock() instanceof VineCanopyBlock) {
-            return state.getValue(VineCanopyBlock.AXIS);
-        }
-        return state.getValue(TrellisWireBlock.AXIS);
+        return ClimbingColumn.axisOf(state);
     }
 
     public boolean hasBoundedWire(LevelReader level, BlockPos wirePosition) {

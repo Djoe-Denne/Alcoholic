@@ -131,7 +131,8 @@ public final class AlcoholicForgeMod {
         grain = GrainContentRegistrar.register(
                 ports,
                 () -> cropPolicy.isBuiltinAcquisitionEnabled(CropKind.BARLEY, GameplaySource.CREATIVE_DISCOVERY),
-                () -> cropPolicy.isBuiltinAcquisitionEnabled(CropKind.HOPS, GameplaySource.CREATIVE_DISCOVERY)
+                () -> cropPolicy.isBuiltinAcquisitionEnabled(CropKind.HOPS, GameplaySource.CREATIVE_DISCOVERY),
+                content.trellisWire()::get
         );
         industrial = registerIndustrial(ports);
         craft = CraftContentRegistrar.register(ports);

@@ -5,6 +5,8 @@ import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
 import com.djden.alcoholic.minecraft.agriculture.CerealCropBlock;
 import com.djden.alcoholic.minecraft.agriculture.HopBineBlock;
+import com.djden.alcoholic.minecraft.agriculture.HopCanopyBlock;
+import com.djden.alcoholic.minecraft.agriculture.HopStemBlock;
 import com.djden.alcoholic.minecraft.agriculture.WildHopsBlock;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
 import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlock;
@@ -22,11 +24,15 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -85,63 +91,75 @@ public final class GrainGameTests {
     }
 
     @GameTest(template = "empty", timeoutTicks = 40)
-    public static void hopColumnSegmentsFollowGrowthAndRemoval(GameTestHelper helper) {
+    public static void hopColumnGrowsStemAndCanopyWhenWireAtPlusTwo(GameTestHelper helper) {
         HopBineBlock hopBine = (HopBineBlock) block("hop_bine");
-        placeHopTrellis(helper);
+        placeHopTrellis(helper, 3);
         helper.setBlock(ORIGIN.below(), Blocks.FARMLAND.defaultBlockState());
         helper.setBlock(ORIGIN, hopBine.defaultBlockState().setValue(HopBineBlock.AGE, 2));
-
         growHop(helper, hopBine, ORIGIN);
-        requireSegment(helper, ORIGIN, HopBineBlock.Segment.BOTTOM, 2, "Base did not become bottom");
-        requireSegment(helper, ORIGIN.above(), HopBineBlock.Segment.TOP, 0, "First top segment is missing");
 
-        helper.getLevel().setBlock(
-                helper.absolutePos(ORIGIN.above()),
-                helper.getBlockState(ORIGIN.above()).setValue(HopBineBlock.AGE, 2),
-                Block.UPDATE_CLIENTS
+        require(
+                helper,
+                helper.getBlockState(ORIGIN).getValue(HopBineBlock.TRAINED)
+                        && helper.getBlockState(ORIGIN).getValue(HopBineBlock.EXTENDED),
+                "Mature bine did not mark the root trained and extended"
         );
-        growHop(helper, hopBine, ORIGIN.above());
-        requireSegment(helper, ORIGIN, HopBineBlock.Segment.BOTTOM, 2, "Base stopped being bottom");
-        requireSegment(helper, ORIGIN.above(), HopBineBlock.Segment.MIDDLE, 2, "Middle segment is missing");
-        requireSegment(helper, ORIGIN.above(2), HopBineBlock.Segment.TOP, 0, "Second top segment is missing");
-
-        helper.getLevel().destroyBlock(helper.absolutePos(ORIGIN.above(2)), false);
-        helper.runAtTickTime(2, () -> {
-            requireSegment(
-                    helper,
-                    ORIGIN.above(),
-                    HopBineBlock.Segment.TOP,
-                    2,
-                    "Removal did not restore top segment"
-            );
-            helper.succeed();
-        });
+        require(
+                helper,
+                helper.getBlockState(ORIGIN.above()).getBlock() instanceof HopStemBlock,
+                "Mature bine did not grow a stem toward a wire at +2"
+        );
+        require(
+                helper,
+                helper.getBlockState(ORIGIN.above(2)).getBlock() instanceof HopCanopyBlock,
+                "High wire was not replaced by a hop canopy"
+        );
+        helper.succeed();
     }
 
     @GameTest(template = "empty", timeoutTicks = 40)
-    public static void hopManualStackSetsColumnSegments(GameTestHelper helper) {
+    public static void harvestFromCanopyKeepsTheHopColumn(GameTestHelper helper) {
         HopBineBlock hopBine = (HopBineBlock) block("hop_bine");
-        placeHopTrellis(helper);
+        placeHopTrellis(helper, 3);
         helper.setBlock(ORIGIN.below(), Blocks.FARMLAND.defaultBlockState());
-        helper.setBlock(ORIGIN, hopBine.defaultBlockState());
-        helper.setBlock(
-                ORIGIN.above(),
-                hopBine.segmentStateAt(
-                        helper.getLevel(),
-                        helper.absolutePos(ORIGIN.above()),
-                        hopBine.defaultBlockState()
-                )
+        helper.setBlock(ORIGIN, hopBine.defaultBlockState().setValue(HopBineBlock.AGE, 2));
+        growHop(helper, hopBine, ORIGIN);
+        useWithSickle(helper, ORIGIN.above(2));
+
+        require(
+                helper,
+                helper.getBlockState(ORIGIN).is(hopBine)
+                        && helper.getBlockState(ORIGIN).getValue(HopBineBlock.AGE) == 0,
+                "Harvest from the canopy removed the bine or left it mature"
         );
-        hopBine.neighborChanged(
-                helper.getBlockState(ORIGIN),
-                helper.getLevel(),
-                helper.absolutePos(ORIGIN),
-                hopBine,
-                helper.absolutePos(ORIGIN.above()),
-                false
+        require(
+                helper,
+                helper.getBlockState(ORIGIN.above()).getBlock() instanceof HopStemBlock,
+                "Harvest from the canopy removed the stem"
         );
-        requireSegment(helper, ORIGIN, HopBineBlock.Segment.BOTTOM, 0, "Placed base stayed single");
-        requireSegment(helper, ORIGIN.above(), HopBineBlock.Segment.TOP, 0, "Placed tip stayed single");
+        require(
+                helper,
+                helper.getBlockState(ORIGIN.above(2)).getBlock() instanceof HopCanopyBlock,
+                "Harvest from the canopy restored the wire instead of keeping the canopy"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void emptyHandDoesNotHarvestMatureHop(GameTestHelper helper) {
+        HopBineBlock hopBine = (HopBineBlock) block("hop_bine");
+        placeHopTrellis(helper, 3);
+        helper.setBlock(ORIGIN.below(), Blocks.FARMLAND.defaultBlockState());
+        helper.setBlock(ORIGIN, hopBine.defaultBlockState().setValue(HopBineBlock.AGE, 2));
+        growHop(helper, hopBine, ORIGIN);
+        helper.useBlock(ORIGIN);
+
+        require(
+                helper,
+                helper.getBlockState(ORIGIN).is(hopBine)
+                        && helper.getBlockState(ORIGIN).getValue(HopBineBlock.AGE) == 2,
+                "Empty-hand click harvested a mature hop bine"
+        );
         helper.succeed();
     }
 
@@ -575,11 +593,27 @@ public final class GrainGameTests {
                 .sum();
     }
 
-    private static void placeHopTrellis(GameTestHelper helper) {
-        helper.setBlock(new BlockPos(1, 5, 0), block("vineyard_post").defaultBlockState());
-        helper.setBlock(new BlockPos(1, 5, 2), block("end_post").defaultBlockState());
+    private static void useWithSickle(GameTestHelper helper, BlockPos pos) {
+        Player player = helper.makeMockPlayer();
+        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(item("sickle")));
+        helper.getBlockState(pos).use(
+                helper.getLevel(),
+                player,
+                InteractionHand.MAIN_HAND,
+                new BlockHitResult(
+                        Vec3.atCenterOf(helper.absolutePos(pos)),
+                        Direction.UP,
+                        helper.absolutePos(pos),
+                        false
+                )
+        );
+    }
+
+    private static void placeHopTrellis(GameTestHelper helper, int wireY) {
+        helper.setBlock(new BlockPos(1, wireY, 0), block("vineyard_post").defaultBlockState());
+        helper.setBlock(new BlockPos(1, wireY, 2), block("end_post").defaultBlockState());
         helper.setBlock(
-                new BlockPos(1, 5, 1),
+                new BlockPos(1, wireY, 1),
                 block("trellis_wire").defaultBlockState().setValue(
                         com.djden.alcoholic.minecraft.agriculture.TrellisWireBlock.AXIS,
                         Direction.Axis.Z
@@ -593,22 +627,6 @@ public final class GrainGameTests {
                 RandomSource.create(),
                 helper.absolutePos(pos),
                 helper.getBlockState(pos)
-        );
-    }
-
-    private static void requireSegment(
-            GameTestHelper helper,
-            BlockPos pos,
-            HopBineBlock.Segment segment,
-            int expectedAge,
-            String message
-    ) {
-        require(
-                helper,
-                helper.getBlockState(pos).getBlock() instanceof HopBineBlock
-                        && helper.getBlockState(pos).getValue(HopBineBlock.SEGMENT) == segment
-                        && helper.getBlockState(pos).getValue(HopBineBlock.AGE) == expectedAge,
-                message
         );
     }
 

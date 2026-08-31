@@ -1,66 +1,44 @@
 package com.djden.alcoholic.minecraft.agriculture;
 
-import com.djden.alcoholic.domain.viticulture.VineGrowthStage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Objects;
 
 /**
- * Vine-specific growth rules on top of {@link ClimbingColumn}. Domain stage
- * decides when the stem and canopy exist; geometry stays shared.
+ * Hop-specific growth on top of {@link ClimbingColumn}. Age gates harvest
+ * and whether the bine may occupy the upper wire. No pruning, no lot.
  */
-public final class VineColumn {
+public final class HopColumn {
     public static final int MAX_WIRE_OFFSET = ClimbingColumn.MAX_WIRE_OFFSET;
 
-    private VineColumn() {
+    private HopColumn() {
     }
 
-    public static boolean canExtend(VineGrowthStage stage) {
-        Objects.requireNonNull(stage, "stage");
-        return stage != VineGrowthStage.PLANTED
-                && stage != VineGrowthStage.ESTABLISHING;
+    public static boolean canExtend(int age) {
+        return age >= 1;
     }
 
-    public static boolean shouldOccupyWire(int wireHeight, VineGrowthStage stage) {
-        Objects.requireNonNull(stage, "stage");
+    public static boolean shouldOccupyWire(int wireHeight, int age) {
         if (wireHeight == 1) {
             return true;
         }
-        return wireHeight == MAX_WIRE_OFFSET && canExtend(stage);
-    }
-
-    public static boolean isMatchingStem(BlockState state, VineBlock root) {
-        return ClimbingColumn.isMatchingStem(state, root);
-    }
-
-    public static boolean isMatchingCanopy(BlockState state, VineBlock root) {
-        return ClimbingColumn.isMatchingCanopy(state, root);
-    }
-
-    public static void removeStem(LevelAccessor level, BlockPos rootPos, VineBlock rootBlock) {
-        ClimbingColumn.removeStem(level, rootPos, rootBlock);
-    }
-
-    public static void removeProjection(LevelAccessor level, BlockPos rootPos, VineBlock rootBlock) {
-        ClimbingColumn.removeProjection(level, rootPos, rootBlock);
+        return wireHeight == MAX_WIRE_OFFSET && canExtend(age);
     }
 
     public static void sync(
             Level level,
             BlockPos rootPos,
-            VineBlock rootBlock,
-            VineGrowthStage stage,
+            HopBineBlock rootBlock,
+            int age,
             TrellisDetector detector,
             boolean allowGrowth
     ) {
         Objects.requireNonNull(level, "level");
         Objects.requireNonNull(rootPos, "rootPos");
         Objects.requireNonNull(rootBlock, "rootBlock");
-        Objects.requireNonNull(stage, "stage");
         Objects.requireNonNull(detector, "detector");
         if (level.isClientSide) {
             return;
@@ -70,18 +48,20 @@ public final class VineColumn {
         if (current.getBlock() != rootBlock) {
             return;
         }
+        int boundedAge = HopBineBlock.boundAge(age);
 
         int wireHeight = detector.boundedWireHeightAbove(level, rootPos);
         boolean trained = wireHeight > 0;
-        boolean wantStem = canExtend(stage) && wireHeight == MAX_WIRE_OFFSET;
         BlockPos stemPos = rootPos.above();
         BlockState above = level.getBlockState(stemPos);
-        boolean hasStem = isMatchingStem(above, rootBlock);
+        boolean hasStem = ClimbingColumn.isMatchingStem(above, rootBlock);
+        boolean wantStem = wireHeight == MAX_WIRE_OFFSET
+                && (canExtend(boundedAge) || hasStem);
         boolean extended = false;
 
         if (wantStem) {
             if (hasStem) {
-                updateStem(level, stemPos, above, stage, true);
+                updateStem(level, stemPos, above, boundedAge, true);
                 extended = true;
             } else if (allowGrowth && above.isAir()) {
                 Block stem = rootBlock.stemBlock();
@@ -89,8 +69,8 @@ public final class VineColumn {
                     level.setBlock(
                             stemPos,
                             stem.defaultBlockState()
-                                    .setValue(VineStemBlock.STAGE, VineStage.fromDomain(stage))
-                                    .setValue(VineStemBlock.TRAINED, true),
+                                    .setValue(HopStemBlock.AGE, boundedAge)
+                                    .setValue(HopStemBlock.TRAINED, true),
                             Block.UPDATE_CLIENTS
                     );
                     extended = true;
@@ -104,19 +84,25 @@ public final class VineColumn {
             hasStem = false;
         }
 
-        boolean wantCanopy = trained && shouldOccupyWire(wireHeight, stage)
+        boolean alreadyCanopy = wireHeight > 0
+                && ClimbingColumn.isMatchingCanopy(
+                        level.getBlockState(rootPos.above(wireHeight)),
+                        rootBlock
+                );
+        boolean wantCanopy = trained
+                && (shouldOccupyWire(wireHeight, boundedAge) || alreadyCanopy)
                 && (wireHeight == 1 || hasStem);
         if (wantCanopy) {
-            occupyWire(level, rootPos.above(wireHeight), rootBlock, stage, allowGrowth, hasStem);
+            occupyWire(level, rootPos.above(wireHeight), rootBlock, boundedAge, allowGrowth, hasStem);
         } else {
             ClimbingColumn.restoreCanopy(level, rootPos.above(), rootBlock);
             ClimbingColumn.restoreCanopy(level, rootPos.above(MAX_WIRE_OFFSET), rootBlock);
         }
 
         BlockState next = current
-                .setValue(VineBlock.STAGE, VineStage.fromDomain(stage))
-                .setValue(VineBlock.TRAINED, trained)
-                .setValue(VineBlock.EXTENDED, extended);
+                .setValue(HopBineBlock.AGE, boundedAge)
+                .setValue(HopBineBlock.TRAINED, trained)
+                .setValue(HopBineBlock.EXTENDED, extended);
         if (!next.equals(current)) {
             level.setBlock(rootPos, next, Block.UPDATE_CLIENTS);
         }
@@ -125,16 +111,16 @@ public final class VineColumn {
     private static void occupyWire(
             Level level,
             BlockPos wirePos,
-            VineBlock rootBlock,
-            VineGrowthStage stage,
+            HopBineBlock rootBlock,
+            int age,
             boolean allowGrowth,
             boolean trunk
     ) {
         BlockState current = level.getBlockState(wirePos);
-        if (isMatchingCanopy(current, rootBlock)) {
+        if (ClimbingColumn.isMatchingCanopy(current, rootBlock)) {
             BlockState next = current
-                    .setValue(VineCanopyBlock.STAGE, VineStage.fromDomain(stage))
-                    .setValue(VineCanopyBlock.TRUNK, trunk);
+                    .setValue(HopCanopyBlock.AGE, age)
+                    .setValue(HopCanopyBlock.TRUNK, trunk);
             if (!next.equals(current)) {
                 level.setBlock(wirePos, next, Block.UPDATE_CLIENTS);
             }
@@ -150,9 +136,9 @@ public final class VineColumn {
         level.setBlock(
                 wirePos,
                 canopy.defaultBlockState()
-                        .setValue(VineCanopyBlock.STAGE, VineStage.fromDomain(stage))
-                        .setValue(VineCanopyBlock.AXIS, current.getValue(TrellisWireBlock.AXIS))
-                        .setValue(VineCanopyBlock.TRUNK, trunk),
+                        .setValue(HopCanopyBlock.AGE, age)
+                        .setValue(HopCanopyBlock.AXIS, current.getValue(TrellisWireBlock.AXIS))
+                        .setValue(HopCanopyBlock.TRUNK, trunk),
                 Block.UPDATE_CLIENTS
         );
     }
@@ -161,12 +147,12 @@ public final class VineColumn {
             Level level,
             BlockPos stemPos,
             BlockState current,
-            VineGrowthStage stage,
+            int age,
             boolean trained
     ) {
         BlockState next = current
-                .setValue(VineStemBlock.STAGE, VineStage.fromDomain(stage))
-                .setValue(VineStemBlock.TRAINED, trained);
+                .setValue(HopStemBlock.AGE, age)
+                .setValue(HopStemBlock.TRAINED, trained);
         if (!next.equals(current)) {
             level.setBlock(stemPos, next, Block.UPDATE_CLIENTS);
         }

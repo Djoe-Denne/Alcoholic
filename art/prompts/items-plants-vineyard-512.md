@@ -36,6 +36,7 @@ Style references:
 | `hops` | One fresh vivid-green hop cone with layered bracts. |
 | `malted_barley` | Mound of amber malted kernels with a few tiny rootlets. |
 | `pruning_shears` | Dark-steel vineyard shears with brass pivot and burgundy wrapped handles. |
+| `sickle` | Dark-steel vineyard sickle (serpe) with one curved billhook blade, brass ferrule, and a short burgundy-wrapped oak handle. Single tool, not shears. |
 | `red_grape_cutting` | Short woody cutting, green leaf, red buds, and a red cultivar tag. |
 | `red_grape_must_bucket` | Base iron bucket edited to contain opaque burgundy-purple grape must. |
 | `red_grapes` | Tapered bunch of ripe burgundy-purple grapes, short stem, and one green leaf. |

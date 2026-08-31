@@ -233,40 +233,57 @@ class GeneratedResourceContractTest {
     }
 
     @Test
-    void hopBinesProvideColumnSegmentAssets() throws IOException {
+    void hopBinesProvideClimbingColumnAssets() throws IOException {
         JsonObject variants = resource("assets/alcoholic/blockstates/hop_bine.json")
                 .getAsJsonObject("variants");
         assertEquals(12, variants.size());
 
         for (int age = 0; age <= 2; age++) {
-            JsonObject single = resource("assets/alcoholic/models/block/hop_bine_" + age + ".json");
-            JsonObject bottom = resource(
+            JsonObject untrained = resource("assets/alcoholic/models/block/hop_bine_" + age + ".json");
+            JsonObject trained = resource(
                     "assets/alcoholic/models/block/hop_bine_" + age + "_bottom.json"
             );
-            JsonObject middle = resource(
-                    "assets/alcoholic/models/block/hop_bine_" + age + "_middle.json"
-            );
-            JsonObject top = resource(
-                    "assets/alcoholic/models/block/hop_bine_" + age + "_top.json"
-            );
-            assertEquals("minecraft:block/cross", single.get("parent").getAsString());
-            assertCrossFoliage(bottom);
-            assertCrossFoliage(middle);
-            assertCrossFoliage(top);
-            assertWoodTrunk(bottom);
-            assertWoodTrunk(middle);
-            assertWoodTrunk(top);
-            assertNotEquals(bottom, top, "Bottom and top hop models must differ");
-            assertNotEquals(bottom, middle, "Bottom and middle hop models must differ");
-            for (String segment : new String[]{"single", "bottom", "middle", "top"}) {
-                String modelName = "hop_bine_" + age
-                        + ("single".equals(segment) ? "" : "_" + segment);
-                JsonObject variant = variants.getAsJsonObject(
-                        "age=" + age + ",segment=" + segment
-                );
-                assertEquals("alcoholic:block/" + modelName, variant.get("model").getAsString());
+            assertEquals("minecraft:block/cross", untrained.get("parent").getAsString());
+            assertCrossFoliage(trained);
+            assertWoodTrunk(trained);
+            for (boolean trainedFlag : new boolean[]{false, true}) {
+                for (boolean extended : new boolean[]{false, true}) {
+                    String modelName = trainedFlag
+                            ? "hop_bine_" + age + "_bottom"
+                            : "hop_bine_" + age;
+                    JsonObject variant = variants.getAsJsonObject(
+                            "age=" + age + ",extended=" + extended + ",trained=" + trainedFlag
+                    );
+                    assertEquals("alcoholic:block/" + modelName, variant.get("model").getAsString());
+                }
             }
+            JsonObject stem = resource(
+                    "assets/alcoholic/models/block/hop_bine_stem_" + age + "_trained.json"
+            );
+            assertCrossFoliage(stem);
+            assertWoodTrunk(stem);
+            JsonObject canopy = resource(
+                    "assets/alcoholic/models/block/hop_bine_canopy_" + age + ".json"
+            );
+            assertCrossFoliage(canopy);
+            assertNoWoodTrunk(canopy);
+            assertTrue(
+                    canopy.getAsJsonObject("textures").has("wire"),
+                    "Hop canopy must keep the trellis wire"
+            );
+            JsonObject canopyTrunk = resource(
+                    "assets/alcoholic/models/block/hop_bine_canopy_" + age + "_trunk.json"
+            );
+            assertCrossFoliage(canopyTrunk);
+            assertWoodTrunk(canopyTrunk);
         }
+
+        JsonObject stemVariants = resource("assets/alcoholic/blockstates/hop_bine_stem.json")
+                .getAsJsonObject("variants");
+        assertEquals(6, stemVariants.size());
+        JsonObject canopyVariants = resource("assets/alcoholic/blockstates/hop_bine_canopy.json")
+                .getAsJsonObject("variants");
+        assertEquals(12, canopyVariants.size());
     }
 
     @Test
@@ -295,7 +312,7 @@ class GeneratedResourceContractTest {
             resource("assets/alcoholic/models/item/" + block + ".json");
             assertPng16("assets/alcoholic/textures/block/" + block + ".png");
         }
-        for (String item : new String[]{"trellis_spool", "pruning_shears"}) {
+        for (String item : new String[]{"trellis_spool", "pruning_shears", "sickle"}) {
             resource("assets/alcoholic/models/item/" + item + ".json");
             assertPng16("assets/alcoholic/textures/item/" + item + ".png");
         }
@@ -307,6 +324,8 @@ class GeneratedResourceContractTest {
         }
         resource("assets/alcoholic/blockstates/barley_crop.json");
         resource("assets/alcoholic/blockstates/hop_bine.json");
+        resource("assets/alcoholic/blockstates/hop_bine_stem.json");
+        resource("assets/alcoholic/blockstates/hop_bine_canopy.json");
         for (String block : new String[]{
                 "artisanal_press",
                 "oak_barrel",
@@ -396,8 +415,13 @@ class GeneratedResourceContractTest {
                     "block.alcoholic.white_grapevine_stem",
                     "block.alcoholic.red_grapevine_canopy",
                     "block.alcoholic.white_grapevine_canopy",
+                    "block.alcoholic.hop_bine",
+                    "block.alcoholic.hop_bine_stem",
+                    "block.alcoholic.hop_bine_canopy",
                     "item.alcoholic.red_grape_cutting",
                     "item.alcoholic.white_grape_cutting",
+                    "item.alcoholic.sickle",
+                    "tooltip.alcoholic.sickle.use",
                     "message.alcoholic.vine.inspect",
                     "message.alcoholic.vine.stage.dormant",
                     "message.alcoholic.vine.pruning.balanced",
@@ -631,7 +655,8 @@ class GeneratedResourceContractTest {
     private static final String[] ALWAYS_VANILLA_RECIPES = {
             "yeast",
             "empty_bottle",
-            "pruning_shears"
+            "pruning_shears",
+            "sickle"
     };
 
     private static final String[] CREATE_PROCESS_RECIPES = {
@@ -737,6 +762,7 @@ class GeneratedResourceContractTest {
         resource("data/alcoholic/recipes/end_post.json");
         resource("data/alcoholic/recipes/trellis_spool.json");
         resource("data/alcoholic/recipes/pruning_shears.json");
+        resource("data/alcoholic/recipes/sickle.json");
         resource("data/alcoholic/recipes/artisanal_press.json");
         resource("data/alcoholic/recipes/artisanal_fermenter.json");
         resource("data/alcoholic/recipes/oak_barrel.json");
@@ -797,6 +823,18 @@ class GeneratedResourceContractTest {
         assertEquals(
                 0,
                 resource("data/alcoholic/loot_tables/blocks/white_grapevine_canopy.json")
+                        .getAsJsonArray("pools")
+                        .size()
+        );
+        assertEquals(
+                0,
+                resource("data/alcoholic/loot_tables/blocks/hop_bine_stem.json")
+                        .getAsJsonArray("pools")
+                        .size()
+        );
+        assertEquals(
+                0,
+                resource("data/alcoholic/loot_tables/blocks/hop_bine_canopy.json")
                         .getAsJsonArray("pools")
                         .size()
         );
