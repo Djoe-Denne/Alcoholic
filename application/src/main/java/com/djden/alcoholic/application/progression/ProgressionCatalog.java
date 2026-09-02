@@ -112,7 +112,8 @@ public final class ProgressionCatalog {
                                 image("form_mash_tun", "ftbquests.alcoholic.hover.form_mash_tun", 5.5, 2.8),
                                 image("form_kettle", "ftbquests.alcoholic.hover.form_kettle", 5.5, 4.8),
                                 image("form_vat", "ftbquests.alcoholic.hover.form_vat", 2.0, 6.8),
-                                image("form_conditioning", "ftbquests.alcoholic.hover.form_conditioning", 5.5, 8.8)
+                                image("form_conditioning", "ftbquests.alcoholic.hover.form_conditioning", 5.5, 8.8),
+                                image("form_aging", "ftbquests.alcoholic.hover.form_aging", 2.0, 8.8)
                         )
                 )
         );
@@ -262,7 +263,8 @@ public final class ProgressionCatalog {
                                 item("has_roller_mill", "industrial_roller_mill_controller"),
                                 item("has_mash_tun", "industrial_mash_tun_controller"),
                                 item("has_kettle", "industrial_brewing_kettle_controller"),
-                                item("has_conditioning", "industrial_conditioning_vessel_controller")
+                                item("has_conditioning", "industrial_conditioning_vessel_controller"),
+                                item("has_aging", "industrial_aging_vessel_controller")
                         )
                         .build(),
                 formed(
@@ -350,7 +352,16 @@ public final class ProgressionCatalog {
                         3.5,
                         8.8,
                         0x28
-                )
+                ),
+                node("form_industrial_aging", chapter, ProgressionLine.SHARED)
+                        .parents("form_industrial_vat", "form_industrial_conditioning")
+                        .icon("industrial_aging_vessel_controller")
+                        .frame(ProgressionFrame.GOAL)
+                        .canvas(0.0, 8.8)
+                        .hex(quest(0x29), task(0x29))
+                        .minRequiredDependencies(1)
+                        .formed(ProgressionCriterion.formed("formed", BuiltinMachines.INDUSTRIAL_AGING_VESSEL))
+                        .build()
         );
     }
 

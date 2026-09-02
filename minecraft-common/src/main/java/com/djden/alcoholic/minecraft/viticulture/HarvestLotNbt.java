@@ -1,15 +1,18 @@
 package com.djden.alcoholic.minecraft.viticulture;
 
 import com.djden.alcoholic.api.ResourceId;
+import com.djden.alcoholic.domain.viticulture.PruningLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.Optional;
 
 /**
  * Versioned harvest metadata that is independent of the concrete grape item.
+ * Distinct pruning or quantized profiles stay on separate stacks.
  */
 public final class HarvestLotNbt {
     public static final String ROOT_TAG = "AlcoholicHarvestLot";
@@ -27,8 +30,19 @@ public final class HarvestLotNbt {
             double sugar,
             double acidity
     ) {
+        write(stack, variety, quality, sugar, acidity, null);
+    }
+
+    public static void write(
+            ItemStack stack,
+            ResourceId variety,
+            double quality,
+            double sugar,
+            double acidity,
+            @Nullable PruningLevel pruningLevel
+    ) {
         Objects.requireNonNull(stack, "stack");
-        HarvestLot lot = new HarvestLot(variety, quality, sugar, acidity);
+        HarvestLot lot = new HarvestLot(variety, quality, sugar, acidity, pruningLevel);
         stack.getOrCreateTag().put(ROOT_TAG, toTag(lot));
     }
 
@@ -40,6 +54,9 @@ public final class HarvestLotNbt {
         data.putInt("Quality", quantize(lot.quality()));
         data.putInt("Sugar", quantize(lot.sugar()));
         data.putInt("Acidity", quantize(lot.acidity()));
+        if (lot.pruningLevel() != null) {
+            data.putString("Pruning", lot.pruningLevel().name());
+        }
         return data;
     }
 
@@ -72,7 +89,8 @@ public final class HarvestLotNbt {
                     ResourceId.parse(data.getString("Variety")),
                     quality,
                     sugar,
-                    acidity
+                    acidity,
+                    readPruning(data)
             ));
         } catch (IllegalArgumentException | NullPointerException ignored) {
             return Optional.empty();
@@ -100,12 +118,34 @@ public final class HarvestLotNbt {
         return data.getInt(name);
     }
 
+    @Nullable
+    private static PruningLevel readPruning(CompoundTag data) {
+        if (!data.contains("Pruning", Tag.TAG_STRING)) {
+            return null;
+        }
+        try {
+            return PruningLevel.valueOf(data.getString("Pruning"));
+        } catch (IllegalArgumentException ignored) {
+            return null;
+        }
+    }
+
     public record HarvestLot(
             ResourceId variety,
             double quality,
             double sugar,
-            double acidity
+            double acidity,
+            @Nullable PruningLevel pruningLevel
     ) {
+        public HarvestLot(
+                ResourceId variety,
+                double quality,
+                double sugar,
+                double acidity
+        ) {
+            this(variety, quality, sugar, acidity, null);
+        }
+
         public HarvestLot {
             Objects.requireNonNull(variety, "variety");
             requireUnit(quality, "quality");

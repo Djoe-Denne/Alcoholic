@@ -11,7 +11,7 @@ provenance:
   inferred: 0.1
   ambiguous: 0.02
 created: 2026-08-25T14:40:00+02:00
-updated: 2026-08-29T18:30:00+02:00
+updated: 2026-09-02T19:05:00+02:00
 ---
 
 # Vessel and Environment
@@ -24,7 +24,7 @@ Long-running [[aging-process]] needs material and cellar effects without couplin
 
 Profiles register on `AlcoholicApi.vessels()` and freeze with the rest of the [[public-extension-api]]. A datapack can attach AGE to an existing vessel without a new Java profile. A new *block* remains Java.
 
-The shipped oak barrel is one content adapter of `alcoholic:oak_barrel` (4000 mB, capability `alcoholic:age`). A used barrel (history usage or previous contents) applies a 1.15 seasoning multiplier. Emptying records the previous liquid id and does not wipe history. The cube placeholder is now a lying cask voxel (locked oak, iron hoops); the tap remains decorative. See [[artisanal-machine-voxel-models]] and [[cursor-voxel-campaign-session]].
+The shipped oak barrel is one content adapter of `alcoholic:oak_barrel` (4000 mB, capability `alcoholic:age`). A used barrel (history usage or previous contents) applies a 1.15 seasoning multiplier. Emptying records the previous liquid id **and** a cask imprint (acidity, sugar, tannin, aroma, roast by default) that fades on refill and leaks into the next AGE fill until equilibrium, weighted by the peak volume of that fill. The industrial aging vessel shares that tracker. Inspect and barrel status show the imprint. See ADR-039. The cube placeholder is now a lying cask voxel (locked oak, iron hoops); the tap remains decorative. See [[artisanal-machine-voxel-models]] and [[cursor-voxel-campaign-session]].
 
 Oxidation exposure is accumulated by [[aging-process]] from vessel permeability and `EnvironmentProfile.oxidationFactor` (0.4 sheltered / 1.2 exposed). `OxygenCurve` then interprets that exposure: too little is reductive, the mid band is micro-oxygenation, too much is oxidative damage. Stainless industrial vessels stay clean (purity) but sit under the executor `complexityCap`. Room O₂ / CO₂ and SO₂ are out of v1.
 

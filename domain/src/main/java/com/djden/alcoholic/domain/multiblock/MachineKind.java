@@ -11,5 +11,6 @@ public enum MachineKind {
     MILL,
     MASH,
     BOIL,
-    CONDITION
+    CONDITION,
+    AGE
 }

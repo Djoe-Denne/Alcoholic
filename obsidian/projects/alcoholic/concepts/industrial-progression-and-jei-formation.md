@@ -24,7 +24,7 @@ Players need to learn how to form the minimum [[industrial-multiblock]] hull wit
 
 A second Minecraft tab starts at `alcoholic:industrial_root` (no parent on `alcoholic:root`). One advancement per formed machine family:
 
-- `industrial_root` — `inventory_changed` OR of `industrial_casing` or any of the eight controllers
+- `industrial_root` — `inventory_changed` OR of `industrial_casing` or any of the nine controllers
 - `form_industrial_press` → `alcoholic:industrial_press`
 - `form_industrial_vat` → `alcoholic:industrial_fermentation_vat`
 - `form_industrial_tank` → `alcoholic:industrial_storage_tank`
@@ -33,6 +33,7 @@ A second Minecraft tab starts at `alcoholic:industrial_root` (no parent on `alco
 - `form_industrial_mash_tun` → `alcoholic:industrial_mash_tun`
 - `form_industrial_kettle` → `alcoholic:industrial_brewing_kettle`
 - `form_industrial_conditioning` → `alcoholic:industrial_conditioning_vessel`
+- `form_industrial_aging` → `alcoholic:industrial_aging_vessel`
 
 The trigger is `alcoholic:multiblock_formed` with a `machine` field. `MultiblockControllerBlockEntity.revalidate` fires it on the rising edge of `formed`. Attribution uses the last actor (use or part placement), nearby players within 16 blocks if none is set, then a pending `formed` queue flushed on the next `touch`. Forming a machine is a progression event even when the last block placed is casing.
 

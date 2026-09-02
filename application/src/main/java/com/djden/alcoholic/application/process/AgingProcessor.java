@@ -46,7 +46,9 @@ public final class AgingProcessor implements ProcessHandler<AgingConfig> {
                 config.woodProperty(),
                 config.oxidationProperty(),
                 config.outputLiquid(),
-                context.executorModifiers().scaleDelta(context.deltaTicks())
+                context.executorModifiers().scaleDelta(context.deltaTicks()),
+                config.imprintTransfer(),
+                config.imprintProperties()
         );
         return ProcessResult.success(QualityProfile.stampCap(next.batch(), context.executorModifiers()));
     }

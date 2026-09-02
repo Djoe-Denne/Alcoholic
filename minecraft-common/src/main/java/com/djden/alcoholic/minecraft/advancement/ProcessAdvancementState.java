@@ -29,15 +29,19 @@ public final class ProcessAdvancementState {
 
     @Nullable
     private UUID lastActor;
+    @Nullable
+    private ServerPlayer lastActorPlayer;
     private final List<PendingCriterion> pending = new ArrayList<>();
 
     public void touch(Player player) {
         lastActor = player.getUUID();
+        lastActorPlayer = player instanceof ServerPlayer server ? server : null;
         flush(player);
     }
 
     public void assignActor(UUID actor) {
         lastActor = actor;
+        lastActorPlayer = null;
     }
 
     public void complete(Level level, ResourceLocation process, @Nullable ResourceLocation liquid) {
@@ -146,7 +150,21 @@ public final class ProcessAdvancementState {
         if (lastActor == null || !(level instanceof ServerLevel server)) {
             return null;
         }
-        return server.getServer().getPlayerList().getPlayer(lastActor);
+        if (lastActorPlayer != null
+                && lastActor.equals(lastActorPlayer.getUUID())
+                && lastActorPlayer.level == server) {
+            return lastActorPlayer;
+        }
+        ServerPlayer listed = server.getServer().getPlayerList().getPlayer(lastActor);
+        if (listed != null) {
+            return listed;
+        }
+        for (ServerPlayer player : server.players()) {
+            if (lastActor.equals(player.getUUID())) {
+                return player;
+            }
+        }
+        return null;
     }
 
     private static List<ServerPlayer> nearbyPlayers(Level level, BlockPos position) {

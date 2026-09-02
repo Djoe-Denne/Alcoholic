@@ -29,6 +29,7 @@ public final class FormedMultiblockClient {
             register(event, industrial.mashTunControllerEntity().get());
             register(event, industrial.brewingKettleControllerEntity().get());
             register(event, industrial.conditioningVesselControllerEntity().get());
+            register(event, industrial.agingVesselControllerEntity().get());
             register(event, craft.maltHouseControllerEntity().get());
             register(event, craft.millControllerEntity().get());
             register(event, craft.mashTunControllerEntity().get());

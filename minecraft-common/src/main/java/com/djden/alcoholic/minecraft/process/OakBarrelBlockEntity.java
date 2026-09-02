@@ -23,7 +23,7 @@ import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.fluid.LiquidVessel;
 import com.djden.alcoholic.minecraft.menu.MachineAccess;
 import com.djden.alcoholic.minecraft.menu.MachineLayout;
-import com.djden.alcoholic.minecraft.vessel.BarrelHistoryNbt;
+import com.djden.alcoholic.minecraft.vessel.CaskHistoryTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -43,13 +43,11 @@ public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVes
 
     private final LiquidTank tank;
     private final ProcessAdvancementState advancements = new ProcessAdvancementState();
-    private BarrelHistory history = BarrelHistory.empty();
+    private final CaskHistoryTracker imprint = new CaskHistoryTracker();
     private EnvironmentProfile environment = EnvironmentProfile.temperateCellar();
     private long lastProcessedGameTime;
     private long lastSampledGameTime;
     private boolean skipUnloadGap = true;
-    private boolean occupied;
-    private Optional<ResourceId> lastDefinition = Optional.empty();
     private boolean environmentInvalid = true;
 
     public OakBarrelBlockEntity(BlockEntityType<?> type, BlockPos position, BlockState state) {
@@ -68,7 +66,7 @@ public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVes
     }
 
     public BarrelHistory history() {
-        return history;
+        return imprint.history();
     }
 
     public EnvironmentProfile environment() {
@@ -91,7 +89,7 @@ public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVes
     }
 
     public VesselProfile vesselProfile() {
-        return VesselProfile.oakBarrel().withHistory(history);
+        return VesselProfile.oakBarrel().withHistory(imprint.history());
     }
 
     public void invalidateEnvironment() {
@@ -193,29 +191,32 @@ public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVes
     public Component status() {
         Optional<LiquidBatch> contents = tank.contents();
         if (contents.isEmpty()) {
-            return Component.translatable(
+            Component empty = Component.translatable(
                     "message.alcoholic.barrel.empty",
-                    history.usageCount(),
-                    history.previousContents().isEmpty()
+                    history().usageCount(),
+                    history().previousContents().isEmpty()
                             ? "-"
-                            : history.previousContents().get(history.previousContents().size() - 1).toString()
+                            : history().previousContents().get(history().previousContents().size() - 1).toString()
             );
+            return appendImprint(empty);
         }
         LiquidBatch batch = contents.get();
-        return Component.translatable(
+        Component status = Component.translatable(
                 "message.alcoholic.barrel.status",
                 String.format(java.util.Locale.ROOT, "%.1f", environment.temperature()),
                 String.format(java.util.Locale.ROOT, "%.2f", batch.number(ResourceId.parse("alcoholic:maturity"), 0.0)),
                 batch.baseLiquid().map(ResourceId::toString).orElse("-")
         );
+        return appendImprint(status);
     }
 
     public String debugDump() {
         StringBuilder builder = new StringBuilder();
         builder.append("vessel=").append(vesselProfile().id())
                 .append(" material=").append(vesselProfile().material())
-                .append(" history=").append(history.usageCount())
-                .append(" previous=").append(history.previousContents())
+                .append(" history=").append(history().usageCount())
+                .append(" previous=").append(history().previousContents())
+                .append(" imprint=").append(history().caskImprint())
                 .append(" envT=").append(environment.temperature())
                 .append(" stability=").append(environment.stability())
                 .append(" sheltered=").append(environment.sheltered())
@@ -229,31 +230,42 @@ public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVes
     }
 
     private void syncHistory() {
-        Optional<LiquidBatch> contents = tank.contents();
-        if (occupied && contents.isEmpty()) {
-            lastDefinition.ifPresent(id -> history = history.recordEmptying(id));
-            occupied = false;
+        if (imprint.sync(tank.contents(), CAPACITY, CaskHistoryTracker::axesFor)) {
             setChanged();
-            return;
         }
-        if (contents.isPresent()) {
-            occupied = true;
-            lastDefinition = contents.get().baseLiquid();
+    }
+
+    private Component appendImprint(Component status) {
+        if (history().caskImprint().isEmpty()) {
+            return status;
         }
+        return Component.empty()
+                .append(status)
+                .append(" · ")
+                .append(Component.translatable("message.alcoholic.barrel.imprint", formatImprint()));
+    }
+
+    private String formatImprint() {
+        StringBuilder text = new StringBuilder();
+        history().caskImprint().forEach((id, amount) -> {
+            if (text.length() > 0) {
+                text.append(", ");
+            }
+            text.append(id).append('=').append(String.format(java.util.Locale.ROOT, "%.2f", amount));
+        });
+        return text.toString();
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         tank.contents().ifPresent(batch -> LiquidBatchNbt.writeRoot(tag, batch));
-        tag.put("BarrelHistory", BarrelHistoryNbt.toTag(history));
+        imprint.save(tag);
         tag.putLong("LastProcessedGameTime", lastProcessedGameTime);
         tag.putLong("LastSampledGameTime", lastSampledGameTime);
         tag.putDouble("EnvTemperature", environment.temperature());
         tag.putDouble("EnvStability", environment.stability());
         tag.putBoolean("EnvSheltered", environment.sheltered());
-        lastDefinition.ifPresent(id -> tag.putString("LastDefinition", id.toString()));
-        tag.putBoolean("Occupied", occupied);
         advancements.save(tag);
     }
 
@@ -262,7 +274,7 @@ public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVes
         super.load(tag);
         tank.clear();
         LiquidBatchNbt.readRoot(tag).ifPresent(tank::set);
-        history = BarrelHistoryNbt.fromTag(tag.getCompound("BarrelHistory"));
+        imprint.load(tag, tank.contents(), CaskHistoryTracker::axesFor);
         lastProcessedGameTime = tag.getLong("LastProcessedGameTime");
         lastSampledGameTime = tag.getLong("LastSampledGameTime");
         environment = new EnvironmentProfile(
@@ -270,10 +282,6 @@ public final class OakBarrelBlockEntity extends BlockEntity implements LiquidVes
                 tag.contains("EnvStability") ? tag.getDouble("EnvStability") : 0.5,
                 tag.getBoolean("EnvSheltered")
         );
-        lastDefinition = tag.contains("LastDefinition")
-                ? Optional.of(ResourceId.parse(tag.getString("LastDefinition")))
-                : tank.contents().flatMap(LiquidBatch::baseLiquid);
-        occupied = tag.getBoolean("Occupied") || tank.contents().isPresent();
         advancements.load(tag);
         skipUnloadGap = true;
         environmentInvalid = true;

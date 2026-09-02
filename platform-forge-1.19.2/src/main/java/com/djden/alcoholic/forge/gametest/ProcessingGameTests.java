@@ -1,14 +1,24 @@
 package com.djden.alcoholic.forge.gametest;
 
 import com.djden.alcoholic.api.ResourceId;
+import com.djden.alcoholic.api.process.ExecutorModifiers;
+import com.djden.alcoholic.api.process.ProcessContext;
+import com.djden.alcoholic.api.process.ProcessInputs;
+import com.djden.alcoholic.api.process.ProcessInvocation;
+import com.djden.alcoholic.api.process.ProcessResult;
+import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
+import com.djden.alcoholic.application.process.ProcessRecipeResolver;
 import com.djden.alcoholic.application.viticulture.VineVarieties;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
+import com.djden.alcoholic.domain.vessel.CaskImprint;
 import com.djden.alcoholic.minecraft.bottle.Bottling;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
 import com.djden.alcoholic.minecraft.process.ArtisanalFermenterBlockEntity;
 import com.djden.alcoholic.minecraft.process.ArtisanalPressBlockEntity;
+import com.djden.alcoholic.minecraft.process.MinecraftSelectorMatcher;
 import com.djden.alcoholic.minecraft.process.OakBarrelBlockEntity;
+import com.djden.alcoholic.minecraft.process.ProcessRuntime;
 import com.djden.alcoholic.minecraft.viticulture.HarvestLotNbt;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
@@ -307,6 +317,102 @@ public final class ProcessingGameTests {
     }
 
     @GameTest(template = "empty", timeoutTicks = 40)
+    public static void barrelEmptyRecordsVolumeWeightedImprint(GameTestHelper helper) {
+        helper.setBlock(PRESS, block("oak_barrel").defaultBlockState());
+        helper.setBlock(FERMENTER, block("oak_barrel").defaultBlockState());
+        OakBarrelBlockEntity sip = (OakBarrelBlockEntity) helper.getBlockEntity(PRESS);
+        OakBarrelBlockEntity full = (OakBarrelBlockEntity) helper.getBlockEntity(FERMENTER);
+        sip.tank().fill(acidicWine(100, 0.40), false);
+        full.tank().fill(acidicWine(4000, 0.40), false);
+        OakBarrelBlockEntity.serverTick(sip.getLevel(), sip.getBlockPos(), sip.getBlockState(), sip);
+        OakBarrelBlockEntity.serverTick(full.getLevel(), full.getBlockPos(), full.getBlockState(), full);
+        sip.tank().drain(100, false);
+        full.tank().drain(4000, false);
+        OakBarrelBlockEntity.serverTick(sip.getLevel(), sip.getBlockPos(), sip.getBlockState(), sip);
+        OakBarrelBlockEntity.serverTick(full.getLevel(), full.getBlockPos(), full.getBlockState(), full);
+        double sipImprint = sip.history().caskImprint().getOrDefault(CaskImprint.ACIDITY, 0.0);
+        double fullImprint = full.history().caskImprint().getOrDefault(CaskImprint.ACIDITY, 0.0);
+        require(helper, fullImprint > 0.30, "Full barrel did not record acidity imprint: " + fullImprint);
+        require(helper, sipImprint > 0.0 && sipImprint < fullImprint, "Sip imprint should be weaker than a full fill");
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void barrelDefinitionSwapRecordsPreviousImprint(GameTestHelper helper) {
+        helper.setBlock(PRESS, block("oak_barrel").defaultBlockState());
+        OakBarrelBlockEntity barrel = (OakBarrelBlockEntity) helper.getBlockEntity(PRESS);
+        barrel.tank().fill(acidicWine(4000, 0.40), false);
+        OakBarrelBlockEntity.serverTick(barrel.getLevel(), barrel.getBlockPos(), barrel.getBlockState(), barrel);
+        barrel.tank().drain(4000, false);
+        barrel.tank().fill(
+                LiquidBatch.of(
+                        AlcoholicIds.YOUNG_WHITE_WINE,
+                        4000,
+                        PropertyBag.empty().with(ResourceId.parse("alcoholic:maturity"), 0.0)
+                ),
+                false
+        );
+        OakBarrelBlockEntity.serverTick(barrel.getLevel(), barrel.getBlockPos(), barrel.getBlockState(), barrel);
+        require(helper, barrel.history().usageCount() >= 1, "Definition swap did not record history");
+        require(
+                helper,
+                barrel.history().caskImprint().getOrDefault(CaskImprint.ACIDITY, 0.0) > 0.30,
+                "Definition swap lost the previous imprint"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void barrelUsedCaskLeaksImprintIntoNextFill(GameTestHelper helper) {
+        helper.setBlock(PRESS, block("oak_barrel").defaultBlockState());
+        shelterBarrel(helper, PRESS);
+        OakBarrelBlockEntity barrel = (OakBarrelBlockEntity) helper.getBlockEntity(PRESS);
+        barrel.tank().fill(acidicWine(4000, 0.40), false);
+        OakBarrelBlockEntity.serverTick(barrel.getLevel(), barrel.getBlockPos(), barrel.getBlockState(), barrel);
+        barrel.tank().drain(4000, false);
+        OakBarrelBlockEntity.serverTick(barrel.getLevel(), barrel.getBlockPos(), barrel.getBlockState(), barrel);
+        require(
+                helper,
+                barrel.history().caskImprint().getOrDefault(CaskImprint.ACIDITY, 0.0) > 0.30,
+                "Emptying did not store an acidity imprint"
+        );
+        barrel.tank().fill(youngWine(4000, 0.12), false);
+        OakBarrelBlockEntity.serverTick(barrel.getLevel(), barrel.getBlockPos(), barrel.getBlockState(), barrel);
+        LiquidBatch batch = barrel.tank().contents().orElseThrow();
+        ProcessRuntime runtime = ProcessRuntime.shared();
+        ProcessInvocation invocation = ProcessRecipeResolver.find(
+                runtime.beverages().catalog(),
+                runtime.beverages().api(),
+                BuiltinRegistrations.AGE,
+                MinecraftSelectorMatcher.create(runtime.beverages()),
+                java.util.Optional.empty(),
+                batch.baseLiquid()
+        ).orElseThrow();
+        ProcessResult result = runtime.engine().execute(
+                runtime.ageExecutor(),
+                invocation,
+                ProcessInputs.ofLiquid("source", batch),
+                ProcessContext.of(
+                        barrel.environment().temperature(),
+                        12_000.0,
+                        false,
+                        java.util.Optional.of(barrel.vesselProfile()),
+                        java.util.Optional.of(barrel.environment()),
+                        helper.getLevel().getGameTime(),
+                        ExecutorModifiers.artisanal()
+                )
+        );
+        require(helper, result.success(), "AGE of the refill failed: " + result.message());
+        LiquidBatch aged = (LiquidBatch) result.outputs().get(0);
+        require(
+                helper,
+                aged.number(CaskImprint.ACIDITY, 0.0) > 0.0,
+                "Used cask did not leak acidity into the next fill"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
     public static void barrelFluidMovesIntoCreateTankWhenPresent(GameTestHelper helper) {
         if (!ModList.get().isLoaded("create")) {
             helper.succeed();
@@ -393,6 +499,16 @@ public final class ProcessingGameTests {
         }) {
             helper.setBlock(origin.relative(direction), Blocks.STONE.defaultBlockState());
         }
+    }
+
+    private static LiquidBatch acidicWine(int volume, double acidity) {
+        return LiquidBatch.of(
+                AlcoholicIds.YOUNG_RED_WINE,
+                volume,
+                PropertyBag.empty()
+                        .with(CaskImprint.ACIDITY, acidity)
+                        .with(ResourceId.parse("alcoholic:maturity"), 0.0)
+        );
     }
 
     private static LiquidBatch youngWine(int volume, double sugar) {

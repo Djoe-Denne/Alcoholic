@@ -57,6 +57,19 @@ public final class VesselProfile implements VesselProfileView {
         );
     }
 
+    public static VesselProfile industrialAgingVessel(int capacityMillibuckets) {
+        return new VesselProfile(
+                ResourceId.parse("alcoholic:industrial_aging_vessel"),
+                ResourceId.parse("alcoholic:oak"),
+                Math.max(1, capacityMillibuckets),
+                Set.of(ResourceId.parse("alcoholic:age")),
+                0.35,
+                1.0,
+                0.25,
+                Optional.empty()
+        );
+    }
+
     @Override
     public ResourceId id() {
         return id;

@@ -16,6 +16,7 @@ public record FormedArtSize(int width, int height, int depth) {
     public static final FormedArtSize BREWING_KETTLE = new FormedArtSize(5, 6, 5);
     public static final FormedArtSize FERMENTATION_VAT = new FormedArtSize(3, 5, 3);
     public static final FormedArtSize CONDITIONING_VESSEL = new FormedArtSize(3, 6, 3);
+    public static final FormedArtSize AGING_VESSEL = new FormedArtSize(3, 6, 3);
     public static final FormedArtSize STORAGE_TANK = new FormedArtSize(3, 5, 3);
     public static final FormedArtSize PRESS = new FormedArtSize(3, 4, 3);
     public static final FormedArtSize CRAFT_MALT_HOUSE = new FormedArtSize(3, 3, 3);
@@ -31,6 +32,7 @@ public record FormedArtSize(int width, int height, int depth) {
     public static final ResourceId FERMENTATION_VAT_ID = ResourceId.parse("alcoholic:industrial_fermentation_vat");
     public static final ResourceId CONDITIONING_VESSEL_ID =
             ResourceId.parse("alcoholic:industrial_conditioning_vessel");
+    public static final ResourceId AGING_VESSEL_ID = ResourceId.parse("alcoholic:industrial_aging_vessel");
     public static final ResourceId STORAGE_TANK_ID = ResourceId.parse("alcoholic:industrial_storage_tank");
     public static final ResourceId PRESS_ID = ResourceId.parse("alcoholic:industrial_press");
     public static final ResourceId CRAFT_MALT_HOUSE_ID = ResourceId.parse("alcoholic:craft_malt_house");
@@ -46,6 +48,7 @@ public record FormedArtSize(int width, int height, int depth) {
             Map.entry(BREWING_KETTLE_ID, BREWING_KETTLE),
             Map.entry(FERMENTATION_VAT_ID, FERMENTATION_VAT),
             Map.entry(CONDITIONING_VESSEL_ID, CONDITIONING_VESSEL),
+            Map.entry(AGING_VESSEL_ID, AGING_VESSEL),
             Map.entry(STORAGE_TANK_ID, STORAGE_TANK),
             Map.entry(PRESS_ID, PRESS),
             Map.entry(CRAFT_MALT_HOUSE_ID, CRAFT_MALT_HOUSE),

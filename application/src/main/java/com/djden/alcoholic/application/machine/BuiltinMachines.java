@@ -27,6 +27,8 @@ public final class BuiltinMachines {
     public static final ResourceId INDUSTRIAL_BREWING_KETTLE = ResourceId.parse("alcoholic:industrial_brewing_kettle");
     public static final ResourceId INDUSTRIAL_CONDITIONING_VESSEL =
             ResourceId.parse("alcoholic:industrial_conditioning_vessel");
+    public static final ResourceId INDUSTRIAL_AGING_VESSEL =
+            ResourceId.parse("alcoholic:industrial_aging_vessel");
 
     public static final String TANK_CASING = "alcoholic:industrial_tank_casing";
     public static final String FERMENTER_CASING = "alcoholic:fermenter_casing";
@@ -47,6 +49,7 @@ public final class BuiltinMachines {
         machines.put(INDUSTRIAL_MASH_TUN, industrialMashTun());
         machines.put(INDUSTRIAL_BREWING_KETTLE, industrialBrewingKettle());
         machines.put(INDUSTRIAL_CONDITIONING_VESSEL, industrialConditioningVessel());
+        machines.put(INDUSTRIAL_AGING_VESSEL, industrialAgingVessel());
         return Map.copyOf(machines);
     }
 
@@ -223,6 +226,28 @@ public final class BuiltinMachines {
                 ExecutorModifiers.industrialConditioningVessel(),
                 KineticRequirement.none(),
                 "alcoholic:industrial_conditioning_vessel_controller"
+        );
+    }
+
+    public static MultiblockDefinition industrialAgingVessel() {
+        return new MultiblockDefinition(
+                INDUSTRIAL_AGING_VESSEL,
+                MachineKind.AGE,
+                Optional.of(ResourceId.parse("alcoholic:age")),
+                new MultiblockConstraints(
+                        3, 4, 3,
+                        7, 10, 7,
+                        1,
+                        Set.of(FERMENTER_CASING),
+                        Set.of(WINDOWS),
+                        Set.of(PORTS),
+                        Set.of(),
+                        true
+                ),
+                8_000,
+                ExecutorModifiers.industrialAgingVessel(),
+                KineticRequirement.none(),
+                "alcoholic:industrial_aging_vessel_controller"
         );
     }
 }

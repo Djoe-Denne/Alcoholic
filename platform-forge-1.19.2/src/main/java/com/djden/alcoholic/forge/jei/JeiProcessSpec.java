@@ -101,7 +101,10 @@ final class JeiProcessSpec {
                 AlcoholicIds.ARTISANAL_FERMENTER,
                 AlcoholicIds.INDUSTRIAL_VAT_CONTROLLER
         ));
-        catalysts.put(BuiltinRegistrations.AGE, List.of(AlcoholicIds.OAK_BARREL));
+        catalysts.put(BuiltinRegistrations.AGE, List.of(
+                AlcoholicIds.OAK_BARREL,
+                AlcoholicIds.INDUSTRIAL_AGING_VESSEL_CONTROLLER
+        ));
         catalysts.put(BuiltinRegistrations.BLEND, List.of(AlcoholicIds.ARTISANAL_BLENDING_CROCK));
         catalysts.put(BuiltinRegistrations.CONDITION, List.of(
                 AlcoholicIds.INDUSTRIAL_CONDITIONING_VESSEL_CONTROLLER

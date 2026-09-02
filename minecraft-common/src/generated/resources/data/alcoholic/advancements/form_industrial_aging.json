@@ -1,0 +1,31 @@
+{
+  "parent": "alcoholic:industrial_root",
+  "criteria": {
+    "formed": {
+      "conditions": {
+        "machine": "alcoholic:industrial_aging_vessel"
+      },
+      "trigger": "alcoholic:multiblock_formed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.alcoholic.form_industrial_aging.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "alcoholic:industrial_aging_vessel_controller"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alcoholic.form_industrial_aging.title"
+    }
+  },
+  "requirements": [
+    [
+      "formed"
+    ]
+  ]
+}

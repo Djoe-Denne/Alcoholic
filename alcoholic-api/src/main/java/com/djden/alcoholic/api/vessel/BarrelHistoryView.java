@@ -4,6 +4,7 @@ import com.djden.alcoholic.api.PublicApi;
 import com.djden.alcoholic.api.ResourceId;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -25,5 +26,9 @@ public interface BarrelHistoryView {
 
     default Optional<Double> woodExtractionRemaining() {
         return Optional.empty();
+    }
+
+    default Map<ResourceId, Double> caskImprint() {
+        return Map.of();
     }
 }

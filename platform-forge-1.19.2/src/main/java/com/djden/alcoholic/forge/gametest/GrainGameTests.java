@@ -29,6 +29,8 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -113,6 +115,57 @@ public final class GrainGameTests {
                 helper,
                 helper.getBlockState(ORIGIN.above(2)).getBlock() instanceof HopCanopyBlock,
                 "High wire was not replaced by a hop canopy"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void harvestThreeBlockColumnGivesThreeHops(GameTestHelper helper) {
+        HopBineBlock hopBine = (HopBineBlock) block("hop_bine");
+        placeHopTrellis(helper, 3);
+        helper.setBlock(ORIGIN.below(), Blocks.FARMLAND.defaultBlockState());
+        helper.setBlock(ORIGIN, hopBine.defaultBlockState().setValue(HopBineBlock.AGE, 2));
+        growHop(helper, hopBine, ORIGIN);
+        Player player = harvestWithSickle(helper, ORIGIN.above(2), new ItemStack(item("sickle")));
+
+        require(
+                helper,
+                hopsCollected(helper, player, ORIGIN) == 3,
+                "A three-block hop column did not yield three hops"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void harvestShortColumnGivesTwoHops(GameTestHelper helper) {
+        HopBineBlock hopBine = (HopBineBlock) block("hop_bine");
+        placeHopTrellis(helper, 2);
+        helper.setBlock(ORIGIN.below(), Blocks.FARMLAND.defaultBlockState());
+        helper.setBlock(ORIGIN, hopBine.defaultBlockState().setValue(HopBineBlock.AGE, 2));
+        growHop(helper, hopBine, ORIGIN);
+        Player player = harvestWithSickle(helper, ORIGIN, new ItemStack(item("sickle")));
+
+        require(
+                helper,
+                hopsCollected(helper, player, ORIGIN) == 2,
+                "A two-block hop column did not yield two hops"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 40)
+    public static void sickleAcceptsFortune(GameTestHelper helper) {
+        ItemStack sickle = new ItemStack(item("sickle"));
+        require(
+                helper,
+                Enchantments.BLOCK_FORTUNE.canEnchant(sickle),
+                "Fortune could not be applied to the sickle"
+        );
+        sickle.enchant(Enchantments.BLOCK_FORTUNE, 3);
+        require(
+                helper,
+                EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, sickle) == 3,
+                "Fortune III did not stay on the sickle"
         );
         helper.succeed();
     }
@@ -593,9 +646,18 @@ public final class GrainGameTests {
                 .sum();
     }
 
+    private static int hopsCollected(GameTestHelper helper, Player player, BlockPos position) {
+        return player.getInventory().countItem(item("hops"))
+                + itemCountNear(helper, position, item("hops"));
+    }
+
     private static void useWithSickle(GameTestHelper helper, BlockPos pos) {
+        harvestWithSickle(helper, pos, new ItemStack(item("sickle")));
+    }
+
+    private static Player harvestWithSickle(GameTestHelper helper, BlockPos pos, ItemStack sickle) {
         Player player = helper.makeMockPlayer();
-        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(item("sickle")));
+        player.setItemInHand(InteractionHand.MAIN_HAND, sickle);
         helper.getBlockState(pos).use(
                 helper.getLevel(),
                 player,
@@ -607,6 +669,7 @@ public final class GrainGameTests {
                         false
                 )
         );
+        return player;
     }
 
     private static void placeHopTrellis(GameTestHelper helper, int wireY) {

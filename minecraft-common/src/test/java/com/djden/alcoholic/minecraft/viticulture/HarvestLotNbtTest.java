@@ -1,6 +1,7 @@
 package com.djden.alcoholic.minecraft.viticulture;
 
 import com.djden.alcoholic.application.viticulture.VineVarieties;
+import com.djden.alcoholic.domain.viticulture.PruningLevel;
 import net.minecraft.nbt.CompoundTag;
 import org.junit.jupiter.api.Test;
 
@@ -92,5 +93,30 @@ class HarvestLotNbtTest {
 
         assertNotEquals(first, second);
         assertTrue(HarvestLotNbt.fromTag(first).isPresent());
+    }
+
+    @Test
+    void differentPruningKeepsLotsApartEvenWhenNumbersMatch() {
+        CompoundTag severe = HarvestLotNbt.toTag(
+                new HarvestLotNbt.HarvestLot(
+                        VineVarieties.RED_GRAPE.id(),
+                        0.7,
+                        0.5,
+                        0.4,
+                        PruningLevel.SEVERE
+                )
+        );
+        CompoundTag balanced = HarvestLotNbt.toTag(
+                new HarvestLotNbt.HarvestLot(
+                        VineVarieties.RED_GRAPE.id(),
+                        0.7,
+                        0.5,
+                        0.4,
+                        PruningLevel.BALANCED
+                )
+        );
+
+        assertNotEquals(severe, balanced);
+        assertEquals(PruningLevel.SEVERE, HarvestLotNbt.fromTag(severe).orElseThrow().pruningLevel());
     }
 }

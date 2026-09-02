@@ -1,8 +1,18 @@
 package com.djden.alcoholic.forge.gametest;
 
 import com.djden.alcoholic.api.ResourceId;
+import com.djden.alcoholic.api.process.ExecutorModifiers;
+import com.djden.alcoholic.api.process.ProcessContext;
+import com.djden.alcoholic.api.process.ProcessInputs;
+import com.djden.alcoholic.api.process.ProcessInvocation;
+import com.djden.alcoholic.api.process.ProcessResult;
+import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
+import com.djden.alcoholic.application.process.ProcessRecipeResolver;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
+import com.djden.alcoholic.domain.vessel.CaskImprint;
+import com.djden.alcoholic.minecraft.process.MinecraftSelectorMatcher;
+import com.djden.alcoholic.minecraft.process.ProcessRuntime;
 import com.djden.alcoholic.domain.multiblock.Box3;
 import com.djden.alcoholic.domain.multiblock.PressStrokeState;
 import com.djden.alcoholic.minecraft.bottle.Bottling;
@@ -798,6 +808,75 @@ public final class IndustrialGameTests {
             );
             helper.succeed();
         });
+    }
+
+    @GameTest(template = "industrial_pad", timeoutTicks = 40)
+    public static void industrialAgingVesselLeaksImprintIntoNextFill(GameTestHelper helper) {
+        buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_aging_vessel_controller", "industrial_casing", null);
+        MultiblockControllerBlockEntity vessel = revalidate(helper, ORIGIN);
+        require(helper, vessel.formed(), "Aging vessel did not form: " + vessel.debugDump());
+        int capacity = vessel.tank().capacity();
+        vessel.tank().fill(
+                LiquidBatch.of(
+                        AlcoholicIds.YOUNG_RED_WINE,
+                        capacity,
+                        PropertyBag.empty()
+                                .with(CaskImprint.ACIDITY, 0.40)
+                                .with(ResourceId.parse("alcoholic:maturity"), 0.0)
+                ),
+                false
+        );
+        MultiblockControllerBlockEntity.tick(vessel.getLevel(), vessel.getBlockPos(), vessel.getBlockState(), vessel);
+        vessel.tank().drain(capacity, false);
+        MultiblockControllerBlockEntity.tick(vessel.getLevel(), vessel.getBlockPos(), vessel.getBlockState(), vessel);
+        require(
+                helper,
+                vessel.history().caskImprint().getOrDefault(CaskImprint.ACIDITY, 0.0) > 0.30,
+                "Industrial emptying did not store an acidity imprint"
+        );
+        vessel.tank().fill(
+                LiquidBatch.of(
+                        AlcoholicIds.YOUNG_RED_WINE,
+                        capacity,
+                        PropertyBag.empty()
+                                .with(ResourceId.parse("alcoholic:sugar"), 0.12)
+                                .with(ResourceId.parse("alcoholic:maturity"), 0.0)
+                ),
+                false
+        );
+        MultiblockControllerBlockEntity.tick(vessel.getLevel(), vessel.getBlockPos(), vessel.getBlockState(), vessel);
+        LiquidBatch batch = vessel.tank().contents().orElseThrow();
+        ProcessRuntime runtime = ProcessRuntime.shared();
+        ProcessInvocation invocation = ProcessRecipeResolver.find(
+                runtime.beverages().catalog(),
+                runtime.beverages().api(),
+                BuiltinRegistrations.AGE,
+                MinecraftSelectorMatcher.create(runtime.beverages()),
+                java.util.Optional.empty(),
+                batch.baseLiquid()
+        ).orElseThrow();
+        ProcessResult result = runtime.engine().execute(
+                runtime.ageExecutor(),
+                invocation,
+                ProcessInputs.ofLiquid("source", batch),
+                ProcessContext.of(
+                        vessel.environment().temperature(),
+                        12_000.0,
+                        false,
+                        java.util.Optional.of(vessel.vesselProfile()),
+                        java.util.Optional.of(vessel.environment()),
+                        helper.getLevel().getGameTime(),
+                        ExecutorModifiers.industrialAgingVessel()
+                )
+        );
+        require(helper, result.success(), "Industrial AGE of the refill failed: " + result.message());
+        LiquidBatch aged = (LiquidBatch) result.outputs().get(0);
+        require(
+                helper,
+                aged.number(CaskImprint.ACIDITY, 0.0) > 0.0,
+                "Used industrial cask did not leak acidity into the next fill"
+        );
+        helper.succeed();
     }
 
     @GameTest(template = "industrial_pad", timeoutTicks = 40)

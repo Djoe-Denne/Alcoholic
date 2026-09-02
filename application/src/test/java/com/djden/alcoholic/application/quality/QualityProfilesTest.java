@@ -13,6 +13,7 @@ import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
 import com.djden.alcoholic.domain.process.QualityProfile;
 import com.djden.alcoholic.domain.quality.QualityEvaluator;
+import com.djden.alcoholic.domain.vessel.CaskImprint;
 import com.djden.alcoholic.domain.quality.QualityGraphIds;
 import org.junit.jupiter.api.Test;
 
@@ -172,6 +173,54 @@ class QualityProfilesTest {
         QualityProfile profile = evaluateGraph(api, QualityGraphIds.SPIRIT, batch(0.70, 0.20, 0.40, 0.30));
         assertTrue(profile.summary() > 0.0);
         assertEquals(0.5, profile.balance(), 1e-9);
+    }
+
+    @Test
+    void spiritImprintAxesRaiseComplexity() {
+        AlcoholicApi api = api();
+        LiquidBatch plain = batch(0.70, 0.20, 0.40, 0.30);
+        LiquidBatch stained = plain
+                .withProperty(CaskImprint.ROAST, 0.40)
+                .withProperty(CaskImprint.ACIDITY, 0.35);
+        assertTrue(
+                evaluateGraph(api, QualityGraphIds.SPIRIT, stained).complexity()
+                        > evaluateGraph(api, QualityGraphIds.SPIRIT, plain).complexity()
+        );
+    }
+
+    @Test
+    void beerImprintAxesRaiseComplexity() {
+        AlcoholicApi api = api();
+        LiquidBatch plain = batch(0.70, 0.20, 0.40, 0.30);
+        LiquidBatch stained = plain
+                .withProperty(CaskImprint.ROAST, 0.40)
+                .withProperty(CaskImprint.ACIDITY, 0.35);
+        assertTrue(
+                evaluateGraph(api, QualityGraphIds.BEER, stained).complexity()
+                        > evaluateGraph(api, QualityGraphIds.BEER, plain).complexity()
+        );
+    }
+
+    @Test
+    void genericRoastIntensityRaisesComplexity() {
+        AlcoholicApi api = api();
+        LiquidBatch plain = batch(0.70, 0.45, 0.12, 0.20);
+        LiquidBatch stained = plain.withProperty(CaskImprint.ROAST, 0.50);
+        assertTrue(
+                evaluateGraph(api, QualityGraphIds.GENERIC, stained).complexity()
+                        > evaluateGraph(api, QualityGraphIds.GENERIC, plain).complexity()
+        );
+    }
+
+    @Test
+    void wineRoastIntensityRaisesDefects() {
+        AlcoholicApi api = api();
+        LiquidBatch clean = batch(0.70, 0.45, 0.12, 0.20);
+        LiquidBatch peated = clean.withProperty(CaskImprint.ROAST, 0.50);
+        assertTrue(
+                evaluateGraph(api, QualityGraphIds.WINE, peated).defects()
+                        > evaluateGraph(api, QualityGraphIds.WINE, clean).defects()
+        );
     }
 
     @Test

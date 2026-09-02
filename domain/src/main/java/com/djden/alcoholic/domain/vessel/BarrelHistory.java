@@ -2,9 +2,11 @@ package com.djden.alcoholic.domain.vessel;
 
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.api.vessel.BarrelHistoryView;
+import com.djden.alcoholic.domain.liquid.PropertyBag;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -16,6 +18,7 @@ public final class BarrelHistory implements BarrelHistoryView {
     private final Optional<Integer> toastLevel;
     private final Optional<Integer> charLevel;
     private final Optional<Double> woodExtractionRemaining;
+    private final PropertyBag imprint;
 
     public BarrelHistory(
             int usageCount,
@@ -23,6 +26,17 @@ public final class BarrelHistory implements BarrelHistoryView {
             Optional<Integer> toastLevel,
             Optional<Integer> charLevel,
             Optional<Double> woodExtractionRemaining
+    ) {
+        this(usageCount, previousContents, toastLevel, charLevel, woodExtractionRemaining, PropertyBag.empty());
+    }
+
+    public BarrelHistory(
+            int usageCount,
+            List<ResourceId> previousContents,
+            Optional<Integer> toastLevel,
+            Optional<Integer> charLevel,
+            Optional<Double> woodExtractionRemaining,
+            PropertyBag imprint
     ) {
         this.usageCount = Math.max(0, usageCount);
         List<ResourceId> copy = new ArrayList<>();
@@ -38,6 +52,7 @@ public final class BarrelHistory implements BarrelHistoryView {
         this.woodExtractionRemaining = woodExtractionRemaining == null
                 ? Optional.empty()
                 : woodExtractionRemaining;
+        this.imprint = imprint == null ? PropertyBag.empty() : imprint;
     }
 
     public static BarrelHistory empty() {
@@ -45,6 +60,10 @@ public final class BarrelHistory implements BarrelHistoryView {
     }
 
     public BarrelHistory recordEmptying(ResourceId previous) {
+        return recordEmptying(previous, PropertyBag.empty());
+    }
+
+    public BarrelHistory recordEmptying(ResourceId previous, PropertyBag snapshot) {
         List<ResourceId> next = new ArrayList<>(previousContents);
         if (previous != null) {
             next.add(previous);
@@ -54,8 +73,13 @@ public final class BarrelHistory implements BarrelHistoryView {
                 next,
                 toastLevel,
                 charLevel,
-                woodExtractionRemaining
+                woodExtractionRemaining,
+                CaskImprint.mergeEmptying(imprint, snapshot)
         );
+    }
+
+    public PropertyBag imprint() {
+        return imprint;
     }
 
     @Override
@@ -83,7 +107,12 @@ public final class BarrelHistory implements BarrelHistoryView {
         return woodExtractionRemaining;
     }
 
+    @Override
+    public Map<ResourceId, Double> caskImprint() {
+        return CaskImprint.toMap(imprint);
+    }
+
     public boolean used() {
-        return usageCount > 0 || !previousContents.isEmpty();
+        return usageCount > 0 || !previousContents.isEmpty() || !imprint.asMap().isEmpty();
     }
 }

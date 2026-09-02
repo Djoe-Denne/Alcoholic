@@ -1,6 +1,7 @@
 package com.djden.alcoholic.minecraft.agriculture;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,6 +27,21 @@ public final class HopColumn {
             return true;
         }
         return wireHeight == MAX_WIRE_OFFSET && canExtend(age);
+    }
+
+    public static int baseYield(boolean stem, boolean canopy) {
+        int count = 1;
+        if (stem) {
+            count++;
+        }
+        if (canopy) {
+            count++;
+        }
+        return count;
+    }
+
+    public static int harvestCount(BlockGetter level, BlockPos rootPos, ClimbingColumnRoot root) {
+        return ClimbingColumn.occupiedPlantCount(level, rootPos, root);
     }
 
     public static void sync(

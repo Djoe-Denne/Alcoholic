@@ -7,6 +7,7 @@ import com.djden.alcoholic.minecraft.agriculture.TrellisDetector;
 import com.djden.alcoholic.minecraft.agriculture.VineBlock;
 import com.djden.alcoholic.minecraft.agriculture.VineStage;
 import com.djden.alcoholic.minecraft.content.AlcoholicContent;
+import com.djden.alcoholic.domain.viticulture.PruningLevel;
 import com.djden.alcoholic.minecraft.viticulture.HarvestLotNbt;
 import com.djden.alcoholic.minecraft.viticulture.ViticultureDataReloadListener;
 import com.djden.alcoholic.minecraft.viticulture.ViticultureRuntime;
@@ -96,6 +97,9 @@ public final class ForgeViticultureEvents {
                     "tooltip.alcoholic.harvest_lot.quality",
                     "tooltip.alcoholic.harvest_lot.quality.",
                     qualityBand(lot.quality())
+            ).copy().append(
+                    Component.literal(" (" + Math.round(lot.quality() * 100.0) + "%)")
+                            .withStyle(ChatFormatting.DARK_GRAY)
             ));
             event.getToolTip().add(qualitativeLine(
                     "tooltip.alcoholic.harvest_lot.sugar",
@@ -107,6 +111,14 @@ public final class ForgeViticultureEvents {
                     "tooltip.alcoholic.harvest_lot.level.",
                     levelBand(lot.acidity())
             ));
+            if (lot.pruningLevel() != null) {
+                event.getToolTip().add(
+                        Component.translatable(
+                                "tooltip.alcoholic.harvest_lot.pruning",
+                                Component.translatable(pruningKey(lot.pruningLevel()))
+                        ).withStyle(ChatFormatting.GRAY)
+                );
+            }
         });
     }
 
@@ -159,5 +171,13 @@ public final class ForgeViticultureEvents {
             return "balanced";
         }
         return "low";
+    }
+
+    private static String pruningKey(PruningLevel level) {
+        return switch (level) {
+            case LIGHT -> "message.alcoholic.vine.pruning.light";
+            case BALANCED -> "message.alcoholic.vine.pruning.balanced";
+            case SEVERE -> "message.alcoholic.vine.pruning.severe";
+        };
     }
 }

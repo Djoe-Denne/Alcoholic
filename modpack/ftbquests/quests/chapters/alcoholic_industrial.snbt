@@ -98,6 +98,17 @@
 			hover: ["{translate:ftbquests.alcoholic.hover.form_conditioning}"]
 			click: ""
 			order: 0
+		},
+		{
+			x: 2.0d
+			y: 8.8d
+			width: 2.0d
+			height: 2.0d
+			rotation: 0.0d
+			image: "alcoholic:item/ftbquests/form_aging"
+			hover: ["{translate:ftbquests.alcoholic.hover.form_aging}"]
+			click: ""
+			order: 0
 		}
 	]
 	quests: [
@@ -233,6 +244,22 @@
 				id: "A1C0A01C10000028"
 				type: "advancement"
 				advancement: "alcoholic:form_industrial_conditioning"
+				criterion: ""
+			}]
+		},
+		{
+			id: "A1C0A01C00000029"
+			x: 0.0d
+			y: 8.8d
+			title: "{translate:advancements.alcoholic.form_industrial_aging.title}"
+			description: ["{translate:advancements.alcoholic.form_industrial_aging.description}"]
+			icon: "alcoholic:industrial_aging_vessel_controller"
+			dependencies: ["A1C0A01C00000022", "A1C0A01C00000028"]
+			min_required_dependencies: 1
+			tasks: [{
+				id: "A1C0A01C10000029"
+				type: "advancement"
+				advancement: "alcoholic:form_industrial_aging"
 				criterion: ""
 			}]
 		}

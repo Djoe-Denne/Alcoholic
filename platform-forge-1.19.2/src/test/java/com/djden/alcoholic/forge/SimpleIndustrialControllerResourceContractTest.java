@@ -28,7 +28,8 @@ class SimpleIndustrialControllerResourceContractTest {
             new Case("industrial_malt_house_controller", 118, "floor_tray", "flame_a"),
             new Case("industrial_mash_tun_controller", 117, "tun_body", "paddle_blade"),
             new Case("industrial_brewing_kettle_controller", 120, "kettle_dome", "steam_a"),
-            new Case("industrial_conditioning_vessel_controller", 119, "vessel_body", "flake_c")
+            new Case("industrial_conditioning_vessel_controller", 119, "vessel_body", "flake_c"),
+            new Case("industrial_aging_vessel_controller", 119, "vessel_body", "flake_c")
     };
 
     @Test

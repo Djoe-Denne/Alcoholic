@@ -63,6 +63,7 @@ public final class IndustrialContentRegistrar {
         AtomicReference<RegistryRef<BlockEntityType<?>>> mashTunEntity = new AtomicReference<>();
         AtomicReference<RegistryRef<BlockEntityType<?>>> kettleEntity = new AtomicReference<>();
         AtomicReference<RegistryRef<BlockEntityType<?>>> conditioningEntity = new AtomicReference<>();
+        AtomicReference<RegistryRef<BlockEntityType<?>>> agingEntity = new AtomicReference<>();
 
         RegistryRef<Block> casing = ports.blocks().register(
                 AlcoholicIds.INDUSTRIAL_CASING,
@@ -152,6 +153,14 @@ public final class IndustrialContentRegistrar {
                         BuiltinMachines.INDUSTRIAL_CONDITIONING_VESSEL
                 )
         );
+        RegistryRef<Block> aging = ports.blocks().register(
+                AlcoholicIds.INDUSTRIAL_AGING_VESSEL_CONTROLLER,
+                () -> new MultiblockControllerBlock(
+                        steel(),
+                        () -> agingEntity.get().get(),
+                        BuiltinMachines.INDUSTRIAL_AGING_VESSEL
+                )
+        );
 
         RegistryRef<Item> casingItem = item(ports, AlcoholicIds.INDUSTRIAL_CASING, casing);
         RegistryRef<Item> windowItem = item(ports, AlcoholicIds.MACHINE_WINDOW, window);
@@ -170,6 +179,11 @@ public final class IndustrialContentRegistrar {
                 ports,
                 AlcoholicIds.INDUSTRIAL_CONDITIONING_VESSEL_CONTROLLER,
                 conditioning
+        );
+        RegistryRef<Item> agingItem = item(
+                ports,
+                AlcoholicIds.INDUSTRIAL_AGING_VESSEL_CONTROLLER,
+                aging
         );
 
         fluidEntity.set(ports.blockEntities().register(
@@ -268,6 +282,13 @@ public final class IndustrialContentRegistrar {
                 conditioning,
                 BuiltinMachines.INDUSTRIAL_CONDITIONING_VESSEL
         ));
+        agingEntity.set(controllerEntity(
+                ports,
+                AlcoholicIds.INDUSTRIAL_AGING_VESSEL_ENTITY,
+                agingEntity,
+                aging,
+                BuiltinMachines.INDUSTRIAL_AGING_VESSEL
+        ));
 
         return new IndustrialContent(
                 casing, casingItem,
@@ -283,7 +304,8 @@ public final class IndustrialContentRegistrar {
                 rollerMill, rollerMillItem, rollerMillEntity.get(),
                 mashTun, mashTunItem, mashTunEntity.get(),
                 kettle, kettleItem, kettleEntity.get(),
-                conditioning, conditioningItem, conditioningEntity.get()
+                conditioning, conditioningItem, conditioningEntity.get(),
+                aging, agingItem, agingEntity.get()
         );
     }
 

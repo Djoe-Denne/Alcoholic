@@ -1,5 +1,17 @@
 {
   "criteria": {
+    "has_aging": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alcoholic:industrial_aging_vessel_controller"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_casing": {
       "conditions": {
         "items": [
@@ -135,7 +147,8 @@
       "has_roller_mill",
       "has_mash_tun",
       "has_kettle",
-      "has_conditioning"
+      "has_conditioning",
+      "has_aging"
     ]
   ]
 }

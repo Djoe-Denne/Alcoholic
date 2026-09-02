@@ -21,6 +21,7 @@ class FormedArtSizeTest {
         assertTrue(FormedArtSize.overlayMesh(FormedArtSize.BREWING_KETTLE_ID, 5, 6, 5).isPresent());
         assertTrue(FormedArtSize.overlayMesh(FormedArtSize.FERMENTATION_VAT_ID, 3, 5, 3).isPresent());
         assertTrue(FormedArtSize.overlayMesh(FormedArtSize.CONDITIONING_VESSEL_ID, 3, 6, 3).isPresent());
+        assertTrue(FormedArtSize.overlayMesh(FormedArtSize.AGING_VESSEL_ID, 3, 6, 3).isPresent());
         assertTrue(FormedArtSize.overlayMesh(FormedArtSize.STORAGE_TANK_ID, 3, 5, 3).isPresent());
         assertTrue(FormedArtSize.overlayMesh(FormedArtSize.PRESS_ID, 3, 4, 3).isPresent());
         assertTrue(FormedArtSize.overlayMesh(FormedArtSize.CRAFT_MALT_HOUSE_ID, 3, 3, 3).isPresent());
@@ -38,6 +39,6 @@ class FormedArtSizeTest {
 
     @Test
     void catalogCoversEveryArtMachine() {
-        assertEquals(13, FormedArtSize.all().size());
+        assertEquals(14, FormedArtSize.all().size());
     }
 }

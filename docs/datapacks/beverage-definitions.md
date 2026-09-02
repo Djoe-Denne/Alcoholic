@@ -135,6 +135,15 @@ beverage nodes through `definition`.
 }
 ```
 
+Optional `imprint_transfer` (default `0.20`) and `imprint_properties`
+control how a used barrel leaks its previous occupant's acidity, sugar,
+tannin, aroma, and roast into the current fill. Omitted `imprint_properties`
+keeps the built-in v1 axes. An explicit empty list disables leak for that
+recipe. Leak continues after maturity until the batch meets the imprint
+on each axis. Snapshot axes follow this recipe when the oak barrel or
+industrial aging vessel can resolve it. AGE never matches on a beverage
+id; see ADR-039.
+
 An empty `config` is valid: identity is unchanged and maturity still
 progresses. If `output.liquid` is omitted, the batch keeps its definition
 when aging completes. The oak barrel only runs AGE when this recipe matches

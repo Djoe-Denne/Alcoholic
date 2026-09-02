@@ -792,6 +792,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         addShaped(sink, "industrial_mash_tun_controller", "ITI", "ICI", "III", "I", "minecraft:iron_ingot", "T", "alcoholic:mash_tun", "C", "alcoholic:industrial_casing", 1);
         addShaped(sink, "industrial_brewing_kettle_controller", "IKI", "ICI", "III", "I", "minecraft:iron_ingot", "K", "alcoholic:brewing_kettle", "C", "alcoholic:industrial_casing", 1);
         addShaped(sink, "industrial_conditioning_vessel_controller", "IFI", "ICI", "III", "I", "minecraft:iron_ingot", "F", "alcoholic:oak_barrel", "C", "alcoholic:industrial_casing", 1);
+        addShaped(sink, "industrial_aging_vessel_controller", "IFI", "ICI", "III", "I", "minecraft:iron_ingot", "F", "alcoholic:oak_barrel", "C", "alcoholic:industrial_casing", 1);
         addShaped(sink, "craft_casing", "CCC", "C C", "CCC", "C", "minecraft:copper_ingot", 4);
         addShaped(sink, "craft_malt_house_controller", "CMC", "CXC", "CCC", "C", "minecraft:copper_ingot", "M", "alcoholic:malting_floor", "X", "alcoholic:craft_casing", 1);
         addShaped(sink, "craft_mill_controller", "CRC", "CXC", "CCC", "C", "minecraft:copper_ingot", "R", "alcoholic:malt_mill", "X", "alcoholic:craft_casing", 1);
@@ -941,6 +942,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         addEmptyLoot(sink, "industrial_mash_tun_controller");
         addEmptyLoot(sink, "industrial_brewing_kettle_controller");
         addEmptyLoot(sink, "industrial_conditioning_vessel_controller");
+        addEmptyLoot(sink, "industrial_aging_vessel_controller");
         addEmptyLoot(sink, "craft_malt_house_controller");
         addEmptyLoot(sink, "craft_mill_controller");
         addEmptyLoot(sink, "craft_mash_tun_controller");
@@ -1011,6 +1013,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                             "alcoholic:industrial_mash_tun_controller",
                             "alcoholic:industrial_brewing_kettle_controller",
                             "alcoholic:industrial_conditioning_vessel_controller",
+                            "alcoholic:industrial_aging_vessel_controller",
                             "alcoholic:craft_casing",
                             "alcoholic:craft_malt_house_controller",
                             "alcoholic:craft_mill_controller",
@@ -1148,6 +1151,28 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "hollow_interior": true,
                           "capacity_per_internal_block": 8000,
                           "controller": "alcoholic:industrial_conditioning_vessel_controller",
+                          "modifiers": { "yield": 1.0, "speed": 1.0, "thermal_stability": 3.0, "max_batch_units": 1, "process_fidelity": 0.70, "complexity_cap": 0.55, "purity_floor": 0.15 }
+                        }
+                        """
+        );
+        addMachine(
+                sink,
+                "industrial_aging_vessel",
+                """
+                        {
+                          "id": "alcoholic:industrial_aging_vessel",
+                          "kind": "age",
+                          "process": "alcoholic:age",
+                          "min_exterior": { "x": 3, "y": 4, "z": 3 },
+                          "max_exterior": { "x": 7, "y": 10, "z": 7 },
+                          "required_controllers": 1,
+                          "casing_tags": ["alcoholic:fermenter_casing"],
+                          "window_tags": ["alcoholic:valid_machine_windows"],
+                          "port_tags": ["alcoholic:industrial_ports"],
+                          "required_ports": [],
+                          "hollow_interior": true,
+                          "capacity_per_internal_block": 8000,
+                          "controller": "alcoholic:industrial_aging_vessel_controller",
                           "modifiers": { "yield": 1.0, "speed": 1.0, "thermal_stability": 3.0, "max_batch_units": 1, "process_fidelity": 0.70, "complexity_cap": 0.55, "purity_floor": 0.15 }
                         }
                         """
@@ -2063,6 +2088,10 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                 "K", "alcoholic:brewing_kettle",
                 "C", "alcoholic:industrial_casing");
         addCreateShaped(sink, "industrial_conditioning_vessel_controller", "BFB", "BCB", "BBB", 1,
+                "B", "create:brass_ingot",
+                "F", "alcoholic:oak_barrel",
+                "C", "alcoholic:industrial_casing");
+        addCreateShaped(sink, "industrial_aging_vessel_controller", "BFB", "BCB", "BBB", 1,
                 "B", "create:brass_ingot",
                 "F", "alcoholic:oak_barrel",
                 "C", "alcoholic:industrial_casing");

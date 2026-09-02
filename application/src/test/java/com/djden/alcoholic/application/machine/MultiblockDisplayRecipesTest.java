@@ -13,7 +13,7 @@ class MultiblockDisplayRecipesTest {
     @Test
     void builtinsExposeEightMinHullRecipes() {
         List<MultiblockDisplayRecipe> recipes = MultiblockDisplayRecipes.from(MachineCatalog.builtins());
-        assertEquals(13, recipes.size());
+        assertEquals(14, recipes.size());
         assertEquals(4, recipes.get(0).layers().size());
     }
 

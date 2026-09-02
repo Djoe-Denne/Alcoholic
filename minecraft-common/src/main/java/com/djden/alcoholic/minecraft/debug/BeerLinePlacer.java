@@ -63,6 +63,7 @@ public final class BeerLinePlacer {
                 .sized(5, 6, 5));
         register(MachineSpec.industrial("vat", BuiltinMachines.INDUSTRIAL_VAT).sized(3, 5, 3));
         register(MachineSpec.industrial("conditioning", BuiltinMachines.INDUSTRIAL_CONDITIONING_VESSEL).sized(3, 6, 3));
+        register(MachineSpec.industrial("aging", BuiltinMachines.INDUSTRIAL_AGING_VESSEL).sized(3, 6, 3));
         register(MachineSpec.industrial("tank", BuiltinMachines.INDUSTRIAL_TANK).sized(3, 5, 3));
         register(MachineSpec.industrial("craft_malt_house", BuiltinCraftMachines.CRAFT_MALT_HOUSE).sized(3, 3, 3));
         register(MachineSpec.industrial("craft_mill", BuiltinCraftMachines.CRAFT_MILL).withEngine().sized(3, 3, 3));

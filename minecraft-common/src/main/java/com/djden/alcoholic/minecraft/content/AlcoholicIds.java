@@ -59,6 +59,8 @@ public final class AlcoholicIds {
     public static final ResourceId INDUSTRIAL_BREWING_KETTLE_CONTROLLER = id("industrial_brewing_kettle_controller");
     public static final ResourceId INDUSTRIAL_CONDITIONING_VESSEL_CONTROLLER =
             id("industrial_conditioning_vessel_controller");
+    public static final ResourceId INDUSTRIAL_AGING_VESSEL_CONTROLLER =
+            id("industrial_aging_vessel_controller");
     public static final ResourceId FLUID_PORT_ENTITY = id("fluid_port");
     public static final ResourceId ITEM_PORT_ENTITY = id("item_port");
     public static final ResourceId KINETIC_PORT_ENTITY = id("kinetic_port");
@@ -71,6 +73,8 @@ public final class AlcoholicIds {
     public static final ResourceId INDUSTRIAL_BREWING_KETTLE_ENTITY = id("industrial_brewing_kettle_controller");
     public static final ResourceId INDUSTRIAL_CONDITIONING_VESSEL_ENTITY =
             id("industrial_conditioning_vessel_controller");
+    public static final ResourceId INDUSTRIAL_AGING_VESSEL_ENTITY =
+            id("industrial_aging_vessel_controller");
     public static final ResourceId CRAFT_CASING = id("craft_casing");
     public static final ResourceId CRAFT_MALT_HOUSE_CONTROLLER = id("craft_malt_house_controller");
     public static final ResourceId CRAFT_MILL_CONTROLLER = id("craft_mill_controller");

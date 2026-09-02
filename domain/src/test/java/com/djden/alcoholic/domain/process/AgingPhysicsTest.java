@@ -4,6 +4,7 @@ import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
 import com.djden.alcoholic.domain.vessel.BarrelHistory;
+import com.djden.alcoholic.domain.vessel.CaskImprint;
 import com.djden.alcoholic.domain.vessel.EnvironmentProfile;
 import com.djden.alcoholic.domain.vessel.VesselProfile;
 import org.junit.jupiter.api.Test;
@@ -99,6 +100,109 @@ class AgingPhysicsTest {
         );
         assertTrue(done.complete());
         assertEquals(FINISHED, done.batch().baseLiquid().orElseThrow());
+    }
+
+    @Test
+    void freshVesselDoesNotLeakImprintAxes() {
+        AgingKinetics kinetics = new AgingKinetics(0.01, 0.0, 0.0, 1.0);
+        LiquidBatch aged = step(
+                batch(0.0),
+                kinetics,
+                VesselProfile.oakBarrel(),
+                EnvironmentProfile.temperateCellar(),
+                10.0
+        ).batch();
+        assertEquals(0.0, aged.number(CaskImprint.ACIDITY, 0.0), 1e-9);
+        assertEquals(0.0, aged.number(CaskImprint.SUGAR, 0.0), 1e-9);
+    }
+
+    @Test
+    void imprintLeaksAcidityButNotAbsentSugar() {
+        AgingKinetics kinetics = new AgingKinetics(0.05, 0.0, 0.0, 1.0);
+        VesselProfile stained = vesselWithImprint(PropertyBag.empty().with(CaskImprint.ACIDITY, 0.40));
+        LiquidBatch aged = step(batch(0.0), kinetics, stained, EnvironmentProfile.temperateCellar(), 10.0).batch();
+        assertTrue(aged.number(CaskImprint.ACIDITY, 0.0) > 0.0);
+        assertEquals(0.0, aged.number(CaskImprint.SUGAR, 0.0), 1e-9);
+    }
+
+    @Test
+    void imprintDoesNotLowerAnAxisAlreadyHigher() {
+        AgingKinetics kinetics = new AgingKinetics(0.05, 0.0, 0.0, 1.0);
+        VesselProfile stained = vesselWithImprint(PropertyBag.empty().with(CaskImprint.ACIDITY, 0.20));
+        LiquidBatch start = batch(0.0).withProperty(CaskImprint.ACIDITY, 0.50);
+        LiquidBatch aged = step(start, kinetics, stained, EnvironmentProfile.temperateCellar(), 10.0).batch();
+        assertEquals(0.50, aged.number(CaskImprint.ACIDITY, 0.0), 1e-9);
+    }
+
+    @Test
+    void imprintCatchUpMatchesRepeatedSingleTicks() {
+        AgingKinetics kinetics = new AgingKinetics(0.01, 0.0, 0.0, 1.0);
+        VesselProfile stained = vesselWithImprint(PropertyBag.empty().with(CaskImprint.ACIDITY, 0.40));
+        LiquidBatch start = batch(0.0);
+        double once = step(start, kinetics, stained, EnvironmentProfile.temperateCellar(), 20.0)
+                .batch()
+                .number(CaskImprint.ACIDITY, 0.0);
+        LiquidBatch repeated = start;
+        for (int tick = 0; tick < 20; tick++) {
+            repeated = step(repeated, kinetics, stained, EnvironmentProfile.temperateCellar(), 1.0).batch();
+        }
+        assertEquals(once, repeated.number(CaskImprint.ACIDITY, 0.0), 1e-9);
+    }
+
+    @Test
+    void completedBatchKeepsLeakingTowardEquilibrium() {
+        AgingKinetics kinetics = new AgingKinetics(0.05, 0.0, 0.0, 1.0);
+        VesselProfile stained = vesselWithImprint(PropertyBag.empty().with(CaskImprint.ACIDITY, 0.40));
+        LiquidBatch aged = step(batch(1.0), kinetics, stained, EnvironmentProfile.temperateCellar(), 20.0).batch();
+        assertTrue(aged.number(CaskImprint.ACIDITY, 0.0) > 0.0);
+        assertTrue(aged.number(CaskImprint.ACIDITY, 0.0) <= 0.40 + 1e-9);
+    }
+
+    @Test
+    void leakContinuesAfterCompletionUntilCapped() {
+        AgingKinetics kinetics = new AgingKinetics(0.01, 0.0, 0.0, 1.0);
+        VesselProfile stained = vesselWithImprint(PropertyBag.empty().with(CaskImprint.ACIDITY, 0.40));
+        AgingState first = step(batch(1.0), kinetics, stained, EnvironmentProfile.temperateCellar(), 20.0);
+        double more = step(first.batch(), kinetics, stained, EnvironmentProfile.temperateCellar(), 20.0)
+                .batch()
+                .number(CaskImprint.ACIDITY, 0.0);
+        assertTrue(first.batch().number(CaskImprint.ACIDITY, 0.0) > 0.0);
+        assertTrue(more > first.batch().number(CaskImprint.ACIDITY, 0.0));
+        assertTrue(more <= 0.40 + 1e-9);
+    }
+
+    @Test
+    void secondEmptyingLeaksLessThanFirst() {
+        AgingKinetics kinetics = new AgingKinetics(0.05, 0.0, 0.0, 1.0);
+        BarrelHistory first = BarrelHistory.empty().recordEmptying(
+                SOURCE,
+                PropertyBag.empty().with(CaskImprint.ACIDITY, 0.40)
+        );
+        BarrelHistory second = first.recordEmptying(
+                FINISHED,
+                PropertyBag.empty().with(CaskImprint.ACIDITY, 0.40)
+        );
+        double firstFill = step(
+                batch(0.0),
+                kinetics,
+                VesselProfile.oakBarrel().withHistory(first),
+                EnvironmentProfile.temperateCellar(),
+                10.0
+        ).batch().number(CaskImprint.ACIDITY, 0.0);
+        double refill = step(
+                batch(0.0),
+                kinetics,
+                VesselProfile.oakBarrel().withHistory(second),
+                EnvironmentProfile.temperateCellar(),
+                10.0
+        ).batch().number(CaskImprint.ACIDITY, 0.0);
+        assertTrue(refill < firstFill);
+    }
+
+    private static VesselProfile vesselWithImprint(PropertyBag imprint) {
+        return VesselProfile.oakBarrel().withHistory(
+                new BarrelHistory(1, List.of(SOURCE), Optional.empty(), Optional.empty(), Optional.empty(), imprint)
+        );
     }
 
     private static AgingState step(

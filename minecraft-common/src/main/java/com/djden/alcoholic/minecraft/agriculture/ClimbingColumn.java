@@ -56,6 +56,25 @@ public final class ClimbingColumn {
         return state.getBlock() instanceof ClimbingColumnCanopy canopy && canopy.belongsTo(root);
     }
 
+    /**
+     * Root, plus stem and canopy when those projections are present.
+     */
+    public static int occupiedPlantCount(BlockGetter level, BlockPos rootPos, ClimbingColumnRoot root) {
+        Objects.requireNonNull(level, "level");
+        Objects.requireNonNull(rootPos, "rootPos");
+        Objects.requireNonNull(root, "root");
+        int count = 1;
+        if (isMatchingStem(level.getBlockState(rootPos.above()), root)) {
+            count++;
+        }
+        for (int offset = 1; offset <= MAX_WIRE_OFFSET; offset++) {
+            if (isMatchingCanopy(level.getBlockState(rootPos.above(offset)), root)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     @Nullable
     public static BlockPos findRoot(BlockGetter level, BlockPos position) {
         Objects.requireNonNull(level, "level");

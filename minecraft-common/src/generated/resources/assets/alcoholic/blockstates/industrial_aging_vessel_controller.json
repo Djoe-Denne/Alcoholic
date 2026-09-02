@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "alcoholic:block/industrial_aging_vessel_controller"
+    }
+  }
+}

@@ -54,6 +54,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "item.alcoholic.pruning_shears": "Pruning Shears",
                           "item.alcoholic.sickle": "Sickle",
                           "tooltip.alcoholic.sickle.use": "Harvests a ripe vine or hop column. The plant stays.",
+                          "tooltip.alcoholic.sickle.fortune": "Fortune increases the harvest count.",
                           "message.alcoholic.vine.pruned": "Vine pruned: %s",
                           "message.alcoholic.vine.no_harvest_item": "No grape item is available for this variety",
                           "message.alcoholic.vine.inspect": "Climate: %1$s · Health: %2$s · Maturity: %3$s %4$s%% · Pruning: %5$s",
@@ -120,6 +121,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "fluid_type.alcoholic.red_wine": "Red Wine",
                           "fluid_type.alcoholic.white_wine": "White Wine",
                           "message.alcoholic.barrel.empty": "Empty barrel · used %1$s · last %2$s",
+                          "message.alcoholic.barrel.imprint": "imprint %s",
                           "message.alcoholic.barrel.status": "Temp %1$s°C · maturity %2$s · %3$s",
                           "message.alcoholic.crock.status": "Crock %1$s + %2$s mB",
                           "message.alcoholic.crock.need_two": "The crock needs two liquids to blend",
@@ -161,6 +163,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "block.alcoholic.industrial_mash_tun_controller": "Industrial Mash Tun Controller",
                           "block.alcoholic.industrial_brewing_kettle_controller": "Industrial Brewing Kettle Controller",
                           "block.alcoholic.industrial_conditioning_vessel_controller": "Industrial Conditioning Vessel Controller",
+                          "block.alcoholic.industrial_aging_vessel_controller": "Industrial Aging Vessel Controller",
                           "block.alcoholic.craft_casing": "Craft Casing",
                           "block.alcoholic.craft_malt_house_controller": "Craft Malt House Controller",
                           "block.alcoholic.craft_mill_controller": "Craft Mill Controller",
@@ -225,10 +228,10 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "jei.alcoholic.volume.unspecified": "Volume not specified",
                           "jei.alcoholic.info.grapevine.find": "Find a wild grapevine that is ready to harvest in plains, sunflower plains, forest, flower forest, or birch forest. Break it for one cutting (red or white). If Vinery is loaded, Alcoholic wild vines do not generate.",
                           "jei.alcoholic.info.grapevine.grow": "Plant the cutting on dirt or farmland. Bone meal advances one stage (stump, stem, or canopy). Grape pomace and spent grain compost into bone meal. A vine can grow without a trellis, but yield is about 70% and quality about 85% of a trained vine. String wire between two posts with a trellis spool, then plant under or along the wire.",
-                          "jei.alcoholic.info.grapevine.harvest": "First cycle: planted, establishing, vegetative, flowering, green fruit, ripening, harvest-ready, then dormant. Later cycles return from dormant to flowering. Right-click a harvest-ready vine with a sickle to pick grapes; the plant stays and goes dormant. Sneak with an empty hand to inspect the plant. Pruning shears only work while dormant and are optional.",
+                          "jei.alcoholic.info.grapevine.harvest": "First cycle: planted, establishing, vegetative, flowering, green fruit, ripening, harvest-ready, then dormant. Later cycles return from dormant to flowering. Right-click a harvest-ready vine with a sickle to pick grapes; the plant stays and goes dormant. Fortune on the sickle increases the grape count. Sneak with an empty hand to inspect the plant. Pruning shears only work while dormant and are optional.",
                           "jei.alcoholic.info.hops.find": "Break wild hops in forest, flower forest, birch forest, taiga, or river for one rhizome and one hop. If Brewery is loaded, Alcoholic wild hops do not generate.",
                           "jei.alcoholic.info.hops.grow": "A hop bine dies without a trellis wire above it (up to 2 blocks). Place two posts at the same height, use the trellis spool on the first post then the second, and plant the rhizome on dirt, grass, or farmland under the wire. The bine occupies up to three blocks: cep, stem, and canopy.",
-                          "jei.alcoholic.info.hops.harvest": "Right-click any block of a mature bine with a sickle to harvest the whole column. The plant stays; age resets to 0. Breaking the cep drops one rhizome, plus one hop if it was mature.",
+                          "jei.alcoholic.info.hops.harvest": "Right-click any block of a mature bine with a sickle to harvest the whole column. Yield is one hop per occupied block (cep, stem, canopy), so a three-block bine gives three hops. Fortune on the sickle adds extra hops. The plant stays; age resets to 0. Breaking the cep drops one rhizome, plus one hop if it was mature.",
                           "jei.alcoholic.info.barley.find": "Wild mature barley grows in plains, sunflower plains, and meadows. Break it for barley and seeds.",
                           "jei.alcoholic.info.barley.grow": "Plant barley seeds on farmland. The crop has three stages, like wheat. Bone meal speeds growth. A mature crop drops 1 barley and 1 seed. If Brewery is loaded, its barley is accepted as #alcoholic:barley.",
                           "jei.alcoholic.info.trellis": "Place two vineyard or end posts at the same height and aligned. Use the trellis spool on the first post, then the second, to string wires. Grapevines grow better on a wire. Hop bines need a wire above them or they die.",
@@ -279,6 +282,8 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "advancements.alcoholic.form_industrial_kettle.description": "Assemble an industrial brewing kettle",
                           "advancements.alcoholic.form_industrial_conditioning.title": "Formed Conditioning Vessel",
                           "advancements.alcoholic.form_industrial_conditioning.description": "Assemble an industrial conditioning vessel",
+                          "advancements.alcoholic.form_industrial_aging.title": "Formed Aging Vessel",
+                          "advancements.alcoholic.form_industrial_aging.description": "Assemble an industrial aging vessel",
                           "jei.alcoholic.category.multiblock_formation": "Formation",
                           "jei.alcoholic.formation.size": "min %1$s×%2$s×%3$s · max %4$s×%5$s×%6$s",
                           "jei.alcoholic.formation.layer": "Y = %s",
@@ -299,7 +304,8 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "ftbquests.alcoholic.hover.form_roller_mill": "Minimum 3×4×3 hull, plus a kinetic port. Layer details are in JEI.",
                           "ftbquests.alcoholic.hover.form_mash_tun": "Minimum 3×4×3 hull. Ports sit on the −Z face. Layer details are in JEI.",
                           "ftbquests.alcoholic.hover.form_kettle": "Minimum 3×4×3 hull. Ports sit on the −Z face. Layer details are in JEI.",
-                          "ftbquests.alcoholic.hover.form_conditioning": "Minimum 3×4×3 hull. Ports sit on the −Z face. Layer details are in JEI."
+                          "ftbquests.alcoholic.hover.form_conditioning": "Minimum 3×4×3 hull. Ports sit on the −Z face. Layer details are in JEI.",
+                          "ftbquests.alcoholic.hover.form_aging": "Minimum 3×4×3 oak-lined hull. Previous fills stain the next AGE batch. Layer details are in JEI."
                         }
                         """)
         );
@@ -325,6 +331,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "item.alcoholic.pruning_shears": "Cisailles de taille",
                           "item.alcoholic.sickle": "Serpe",
                           "tooltip.alcoholic.sickle.use": "Récolte une vigne ou une bine mûre. La plante reste.",
+                          "tooltip.alcoholic.sickle.fortune": "Fortune augmente la quantité récoltée.",
                           "message.alcoholic.vine.pruned": "Vigne taillée : %s",
                           "message.alcoholic.vine.no_harvest_item": "Aucun raisin disponible pour cette variété",
                           "message.alcoholic.vine.inspect": "Climat : %1$s · Santé : %2$s · Maturité : %3$s %4$s%% · Taille : %5$s",
@@ -391,6 +398,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "fluid_type.alcoholic.red_wine": "Vin rouge",
                           "fluid_type.alcoholic.white_wine": "Vin blanc",
                           "message.alcoholic.barrel.empty": "Fût vide · usages %1$s · dernier %2$s",
+                          "message.alcoholic.barrel.imprint": "empreinte %s",
                           "message.alcoholic.barrel.status": "Temp. %1$s°C · maturité %2$s · %3$s",
                           "message.alcoholic.crock.status": "Terrine %1$s + %2$s mB",
                           "message.alcoholic.crock.need_two": "Deux liquides sont requis pour assembler",
@@ -432,6 +440,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "block.alcoholic.industrial_mash_tun_controller": "Contrôleur de cuve d'empâtage industrielle",
                           "block.alcoholic.industrial_brewing_kettle_controller": "Contrôleur de chaudière de brassage industrielle",
                           "block.alcoholic.industrial_conditioning_vessel_controller": "Contrôleur de cuve de conditionnement industrielle",
+                          "block.alcoholic.industrial_aging_vessel_controller": "Contrôleur de cuve de vieillissement industrielle",
                           "block.alcoholic.craft_casing": "Revêtement craft",
                           "block.alcoholic.craft_malt_house_controller": "Contrôleur de touraille craft",
                           "block.alcoholic.craft_mill_controller": "Contrôleur de broyeur craft",
@@ -496,10 +505,10 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "jei.alcoholic.volume.unspecified": "Volume non spécifié",
                           "jei.alcoholic.info.grapevine.find": "Trouvez une vigne sauvage prête à vendanger dans les plaines, plaines de tournesols, forêts, forêts fleuries ou forêts de bouleaux. Cassez-la pour une bouture (rouge ou blanche). Si Vinery est chargé, les vignes sauvages Alcoholic ne se génèrent pas.",
                           "jei.alcoholic.info.grapevine.grow": "Plantez la bouture sur de la terre ou de la terre labourée. La poudre d'os avance un stade (souche, tige ou canopée). Le marc et la drêche au composteur produisent de la poudre d'os. Une vigne peut pousser sans fil, mais le rendement est d'environ 70 % et la qualité d'environ 85 % par rapport à une vigne palissée. Tendez le fil entre deux poteaux avec la bobine, puis plantez sous le fil ou le long.",
-                          "jei.alcoholic.info.grapevine.harvest": "Premier cycle : plantée, enracinement, végétatif, floraison, fruit vert, véraison, prête à vendanger, puis dormance. Les cycles suivants repartent de la dormance vers la floraison. Clic droit à la serpe sur une vigne prête à vendanger : les raisins vont dans l'inventaire, le plant reste et passe en dormance. Shift + main vide pour inspecter. Le sécateur ne taille qu'en dormance et reste optionnel.",
+                          "jei.alcoholic.info.grapevine.harvest": "Premier cycle : plantée, enracinement, végétatif, floraison, fruit vert, véraison, prête à vendanger, puis dormance. Les cycles suivants repartent de la dormance vers la floraison. Clic droit à la serpe sur une vigne prête à vendanger : les raisins vont dans l'inventaire, le plant reste et passe en dormance. Fortune sur la serpe augmente le nombre de raisins. Shift + main vide pour inspecter. Le sécateur ne taille qu'en dormance et reste optionnel.",
                           "jei.alcoholic.info.hops.find": "Cassez du houblon sauvage en forêt, forêt fleurie, forêt de bouleaux, taïga ou rivière : 1 rhizome et 1 houblon. Si Brewery est chargé, ce worldgen Alcoholic est coupé.",
                           "jei.alcoholic.info.hops.grow": "Une bine meurt sans fil de palissage au-dessus (2 blocs max). Placez deux poteaux à la même hauteur, cliquez le premier puis le second avec la bobine, et plantez le rhizome sur terre, herbe ou terre labourée, sous le fil. La bine occupe jusqu'à trois blocs : cep, tige et canopée.",
-                          "jei.alcoholic.info.hops.harvest": "Clic droit à la serpe n'importe où sur une bine mature : toute la colonne se récolte d'un coup. La plante reste ; l'âge revient à 0. Casser le cep : 1 rhizome (+ 1 houblon si mature).",
+                          "jei.alcoholic.info.hops.harvest": "Clic droit à la serpe n'importe où sur une bine mature : toute la colonne se récolte d'un coup. Un houblon par bloc occupé (cep, tige, canopée) : une bine de trois blocs donne trois houblons. Fortune sur la serpe ajoute des houblons. La plante reste ; l'âge revient à 0. Casser le cep : 1 rhizome (+ 1 houblon si mature).",
                           "jei.alcoholic.info.barley.find": "L'orge sauvage mature pousse dans les plaines, plaines de tournesols et prairies. Cassez-la pour de l'orge et des graines.",
                           "jei.alcoholic.info.barley.grow": "Plantez les graines d'orge sur de la terre labourée. Trois stades, comme le blé. La poudre d'os accélère. À maturité : 1 orge et 1 graine. Si Brewery est chargé, son orge est acceptée via #alcoholic:barley.",
                           "jei.alcoholic.info.trellis": "Placez deux poteaux (vigne ou extrémité) au même niveau, alignés. Clic sur le premier avec la bobine, puis sur le second, pour tendre les fils. Les vignes poussent mieux palissées. Les bines de houblon exigent un fil au-dessus, sinon elles meurent.",
@@ -550,6 +559,8 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "advancements.alcoholic.form_industrial_kettle.description": "Assemblez la coque d'une chaudière industrielle",
                           "advancements.alcoholic.form_industrial_conditioning.title": "Conditionneur formé",
                           "advancements.alcoholic.form_industrial_conditioning.description": "Assemblez la coque d'une cuve de conditionnement",
+                          "advancements.alcoholic.form_industrial_aging.title": "Cuve de vieillissement formée",
+                          "advancements.alcoholic.form_industrial_aging.description": "Assemblez la coque d'une cuve de vieillissement",
                           "jei.alcoholic.category.multiblock_formation": "Formation",
                           "jei.alcoholic.formation.size": "min %1$s×%2$s×%3$s · max %4$s×%5$s×%6$s",
                           "jei.alcoholic.formation.layer": "Y = %s",
@@ -570,7 +581,8 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "ftbquests.alcoholic.hover.form_roller_mill": "Coque minimale 3×4×3, plus un port cinétique. Le détail des couches est dans JEI.",
                           "ftbquests.alcoholic.hover.form_mash_tun": "Coque minimale 3×4×3. Les ports sont sur la face −Z. Le détail des couches est dans JEI.",
                           "ftbquests.alcoholic.hover.form_kettle": "Coque minimale 3×4×3. Les ports sont sur la face −Z. Le détail des couches est dans JEI.",
-                          "ftbquests.alcoholic.hover.form_conditioning": "Coque minimale 3×4×3. Les ports sont sur la face −Z. Le détail des couches est dans JEI."
+                          "ftbquests.alcoholic.hover.form_conditioning": "Coque minimale 3×4×3. Les ports sont sur la face −Z. Le détail des couches est dans JEI.",
+                          "ftbquests.alcoholic.hover.form_aging": "Coque minimale 3×4×3 doublée de chêne. Les remplissages précédents tachent le prochain AGE. Le détail des couches est dans JEI."
                         }
                         """)
         );
@@ -1104,7 +1116,8 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                 "industrial_malt_house_controller",
                 "industrial_mash_tun_controller",
                 "industrial_brewing_kettle_controller",
-                "industrial_conditioning_vessel_controller"
+                "industrial_conditioning_vessel_controller",
+                "industrial_aging_vessel_controller"
         }) {
             addHandmadeSimpleBlock(sink, name);
         }

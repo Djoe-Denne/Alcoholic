@@ -7,6 +7,7 @@ import com.djden.alcoholic.api.process.ProcessInputs;
 import com.djden.alcoholic.api.process.ProcessInvocation;
 import com.djden.alcoholic.api.process.ProcessResult;
 import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
+import com.djden.alcoholic.application.process.AgingConfig;
 import com.djden.alcoholic.application.process.BoilConfig;
 import com.djden.alcoholic.application.process.ConditionConfig;
 import com.djden.alcoholic.application.process.FermentConfig;
@@ -83,7 +84,7 @@ final class IndustrialProcessTicks {
         machine.preparePressProcess(duration);
         if (!machine.pressProcessComplete()) {
             machine.consumeWork(definition);
-            if (!machine.advancePressProcess()) {
+            if (!advancePress(machine, definition)) {
                 machine.markProcessDirty(machine.shouldSyncPressProcess());
                 return;
             }
@@ -345,7 +346,7 @@ final class IndustrialProcessTicks {
         machine.setProcessStage("milling");
         if (!machine.processComplete()) {
             machine.consumeWork(definition);
-            if (!machine.advanceTick()) {
+            if (!machine.advanceElapsed(now, definition.modifiers().speedModifier())) {
                 machine.markProcessDirty(false);
                 return;
             }
@@ -413,7 +414,7 @@ final class IndustrialProcessTicks {
                 duration
         );
         machine.setProcessStage("mash");
-        if (!machine.advanceElapsed(now, 1.0)) {
+        if (!machine.advanceElapsed(now, definition.modifiers().speedModifier())) {
             machine.markProcessDirty(false);
             return;
         }
@@ -501,7 +502,7 @@ final class IndustrialProcessTicks {
             machine.markProcessDirty(false);
             return;
         }
-        if (!machine.advanceElapsed(now, config.temperature().rateFactor(effective))) {
+        if (!machine.advanceElapsed(now, config.temperature().rateFactor(effective) * definition.modifiers().speedModifier())) {
             machine.markProcessDirty(false);
             return;
         }
@@ -623,6 +624,86 @@ final class IndustrialProcessTicks {
         machine.onProcessTankChanged();
     }
 
+    static void age(MultiblockControllerBlockEntity machine, MultiblockDefinition definition, long now) {
+        machine.syncCaskHistory();
+        Optional<LiquidBatch> contents = machine.tank().contents();
+        if (contents.isEmpty() || contents.get().baseLiquid().isEmpty()) {
+            machine.resetProcess();
+            return;
+        }
+        LiquidBatch batch = contents.get();
+        ProcessRuntime runtime = ProcessRuntime.shared();
+        Optional<ProcessInvocation> invocation = ProcessRecipeResolver.find(
+                runtime.beverages().catalog(),
+                runtime.beverages().api(),
+                BuiltinRegistrations.AGE,
+                MinecraftSelectorMatcher.create(runtime.beverages()),
+                Optional.empty(),
+                batch.baseLiquid(),
+                Optional.ofNullable(machine.boundDefinition())
+        );
+        if (invocation.isEmpty()) {
+            machine.resetProcess();
+            return;
+        }
+        AgingConfig config = AgingConfig.CODEC.decode(invocation.get().config(), "age");
+        double effective = ThermalStability.effectiveCelsius(
+                machine.ambient(),
+                config.temperature().preferredMidpoint(),
+                definition.modifiers().thermalStability()
+        );
+        if (config.temperature().rateFactor(effective) <= 0.0) {
+            machine.pauseElapsed(now);
+            return;
+        }
+        int duration = Math.max(
+                1,
+                (int) Math.round(1.0 / Math.max(1e-9, config.kinetics().maturityRatePerTick()))
+        );
+        machine.beginProcessJob(
+                invocation.get().nodeId() + "|" + batch.baseLiquid().map(ResourceId::toString).orElse(""),
+                duration
+        );
+        double maturity = batch.number(config.maturityProperty(), 0.0);
+        double completion = config.kinetics().completionThreshold();
+        machine.setProcessStage(maturity + 1e-9 >= completion ? "aged" : "age");
+        double delta = machine.consumeElapsed(now);
+        if (delta <= 0.0) {
+            machine.setProcessProgressFraction(maturity / Math.max(1e-9, completion));
+            return;
+        }
+        ProcessResult result = runtime.engine().execute(
+                runtime.ageExecutor(),
+                invocation.get(),
+                ProcessInputs.ofLiquid("source", batch),
+                ProcessContext.of(
+                        effective,
+                        delta,
+                        false,
+                        Optional.of(machine.vesselProfile()),
+                        Optional.of(enclosedEnvironment(machine)),
+                        now,
+                        definition.modifiers()
+                )
+        );
+        if (!result.success() || result.outputs().isEmpty()) {
+            return;
+        }
+        LiquidBatch aged = (LiquidBatch) result.outputs().get(0);
+        AdvancementHooks.changedIdentity(batch, aged)
+                .ifPresent(liquid -> AdvancementHooks.processCompleted(
+                        machine,
+                        BuiltinRegistrations.AGE,
+                        Optional.of(liquid)
+                ));
+        machine.tank().set(aged);
+        machine.syncCaskHistory();
+        machine.setProcessProgressFraction(
+                aged.number(config.maturityProperty(), 0.0) / Math.max(1e-9, completion)
+        );
+        machine.onProcessTankChanged();
+    }
+
     private static EnvironmentProfile enclosedEnvironment(MultiblockControllerBlockEntity machine) {
         EnvironmentProfile sampled = machine.environment();
         return new EnvironmentProfile(sampled.temperature(), sampled.stability(), true, sampled.humidity());
@@ -630,6 +711,16 @@ final class IndustrialProcessTicks {
 
     private static int units(ItemStack input, int amount, MultiblockDefinition definition) {
         return Math.min(input.getCount() / amount, definition.modifiers().maxBatchUnits());
+    }
+
+    private static boolean advancePress(MultiblockControllerBlockEntity machine, MultiblockDefinition definition) {
+        int steps = Math.max(1, (int) Math.round(definition.modifiers().speedModifier()));
+        for (int step = 0; step < steps; step++) {
+            if (machine.advancePressProcess()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static boolean commitAdditions(

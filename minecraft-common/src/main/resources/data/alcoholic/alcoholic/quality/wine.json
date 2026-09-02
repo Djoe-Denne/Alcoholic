@@ -45,6 +45,14 @@
     },
     { "id": "maturity", "op": "alcoholic:aging_maturity" },
     { "id": "stress", "op": "alcoholic:stress" },
+    {
+      "id": "peat_stain",
+      "op": "alcoholic:weighted_present",
+      "config": {
+        "mode": "sum",
+        "weights": { "alcoholic:roast_intensity": 0.55 }
+      }
+    },
     { "id": "caps", "op": "alcoholic:cap_floor", "outputs": ["cap", "floor"] },
     {
       "id": "fold",
@@ -62,6 +70,7 @@
         "maturity": "maturity",
         "defects": [
           "stress",
+          "peat_stain",
           { "node": "oxygen", "port": "defects" },
           { "node": "caps", "port": "floor" }
         ],

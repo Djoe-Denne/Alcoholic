@@ -345,6 +345,7 @@ class GeneratedResourceContractTest {
                 "industrial_mash_tun_controller",
                 "industrial_brewing_kettle_controller",
                 "industrial_conditioning_vessel_controller",
+                "industrial_aging_vessel_controller",
                 "craft_casing",
                 "craft_malt_house_controller",
                 "craft_mill_controller",
@@ -422,6 +423,7 @@ class GeneratedResourceContractTest {
                     "item.alcoholic.white_grape_cutting",
                     "item.alcoholic.sickle",
                     "tooltip.alcoholic.sickle.use",
+                    "tooltip.alcoholic.sickle.fortune",
                     "message.alcoholic.vine.inspect",
                     "message.alcoholic.vine.stage.dormant",
                     "message.alcoholic.vine.pruning.balanced",
@@ -432,6 +434,7 @@ class GeneratedResourceContractTest {
                     "message.alcoholic.fermenter.status",
                     "block.alcoholic.oak_barrel",
                     "message.alcoholic.barrel.status",
+                    "message.alcoholic.barrel.imprint",
                     "block.alcoholic.artisanal_blending_crock",
                     "item.alcoholic.empty_bottle",
                     "tooltip.alcoholic.metadata.lost",
@@ -448,6 +451,7 @@ class GeneratedResourceContractTest {
                     "block.alcoholic.industrial_mash_tun_controller",
                     "block.alcoholic.industrial_brewing_kettle_controller",
                     "block.alcoholic.industrial_conditioning_vessel_controller",
+                    "block.alcoholic.industrial_aging_vessel_controller",
                     "block.alcoholic.craft_casing",
                     "block.alcoholic.craft_malt_house_controller",
                     "block.alcoholic.craft_mill_controller",
@@ -490,6 +494,8 @@ class GeneratedResourceContractTest {
                     "advancements.alcoholic.industrial_root.title",
                     "advancements.alcoholic.form_industrial_press.title",
                     "advancements.alcoholic.form_industrial_conditioning.description",
+                    "advancements.alcoholic.form_industrial_aging.title",
+                    "advancements.alcoholic.form_industrial_aging.description",
                     "jei.alcoholic.category.multiblock_formation",
                     "jei.alcoholic.info.grapevine.find",
                     "jei.alcoholic.info.hops.grow",
@@ -607,6 +613,7 @@ class GeneratedResourceContractTest {
         resource("data/alcoholic/advancements/form_industrial_mash_tun.json");
         resource("data/alcoholic/advancements/form_industrial_kettle.json");
         resource("data/alcoholic/advancements/form_industrial_conditioning.json");
+        resource("data/alcoholic/advancements/form_industrial_aging.json");
     }
 
     private static String criterionTrigger(JsonObject advancement, String criterion) {
@@ -644,6 +651,7 @@ class GeneratedResourceContractTest {
             "industrial_mash_tun_controller",
             "industrial_brewing_kettle_controller",
             "industrial_conditioning_vessel_controller",
+            "industrial_aging_vessel_controller",
             "craft_casing",
             "craft_malt_house_controller",
             "craft_mill_controller",
@@ -852,6 +860,7 @@ class GeneratedResourceContractTest {
         resource("data/alcoholic/recipes/industrial_mash_tun_controller.json");
         resource("data/alcoholic/recipes/industrial_brewing_kettle_controller.json");
         resource("data/alcoholic/recipes/industrial_conditioning_vessel_controller.json");
+        resource("data/alcoholic/recipes/industrial_aging_vessel_controller.json");
         resource("data/alcoholic/tags/blocks/industrial_tank_casing.json");
         resource("data/alcoholic/tags/blocks/fermenter_casing.json");
         resource("data/alcoholic/tags/blocks/pressure_safe_casing.json");
@@ -894,6 +903,7 @@ class GeneratedResourceContractTest {
         resource("data/alcoholic/alcoholic/machines/industrial_mash_tun.json");
         resource("data/alcoholic/alcoholic/machines/industrial_brewing_kettle.json");
         resource("data/alcoholic/alcoholic/machines/industrial_conditioning_vessel.json");
+        resource("data/alcoholic/alcoholic/machines/industrial_aging_vessel.json");
         assertEquals(
                 0,
                 resource("data/alcoholic/loot_tables/blocks/industrial_press_controller.json")

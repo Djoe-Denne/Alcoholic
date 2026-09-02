@@ -44,6 +44,9 @@ public record IndustrialContent(
         RegistryRef<BlockEntityType<?>> brewingKettleControllerEntity,
         RegistryRef<Block> conditioningVesselController,
         RegistryRef<Item> conditioningVesselControllerItem,
-        RegistryRef<BlockEntityType<?>> conditioningVesselControllerEntity
+        RegistryRef<BlockEntityType<?>> conditioningVesselControllerEntity,
+        RegistryRef<Block> agingVesselController,
+        RegistryRef<Item> agingVesselControllerItem,
+        RegistryRef<BlockEntityType<?>> agingVesselControllerEntity
 ) {
 }

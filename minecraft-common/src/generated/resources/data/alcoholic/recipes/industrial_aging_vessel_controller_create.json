@@ -1,0 +1,36 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "B": {
+            "item": "create:brass_ingot"
+          },
+          "C": {
+            "item": "alcoholic:industrial_casing"
+          },
+          "F": {
+            "item": "alcoholic:oak_barrel"
+          }
+        },
+        "pattern": [
+          "BFB",
+          "BCB",
+          "BBB"
+        ],
+        "result": {
+          "count": 1,
+          "item": "alcoholic:industrial_aging_vessel_controller"
+        }
+      }
+    }
+  ]
+}

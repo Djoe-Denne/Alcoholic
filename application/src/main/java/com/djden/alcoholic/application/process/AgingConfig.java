@@ -11,10 +11,14 @@ import com.djden.alcoholic.api.process.ProcessDisplaying;
 import com.djden.alcoholic.domain.process.AgingKinetics;
 import com.djden.alcoholic.domain.process.TemperatureBand;
 import com.djden.alcoholic.domain.process.TemperatureProfile;
+import com.djden.alcoholic.domain.vessel.CaskImprint;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public record AgingConfig(
         Optional<ResourceId> inputLiquid,
@@ -23,7 +27,9 @@ public record AgingConfig(
         AgingKinetics kinetics,
         ResourceId maturityProperty,
         ResourceId woodProperty,
-        ResourceId oxidationProperty
+        ResourceId oxidationProperty,
+        double imprintTransfer,
+        Set<ResourceId> imprintProperties
 ) implements LiquidAccepting, ReferencedLiquids, ProcessDisplaying {
     public AgingConfig {
         inputLiquid = inputLiquid == null ? Optional.empty() : inputLiquid;
@@ -35,6 +41,12 @@ public record AgingConfig(
         oxidationProperty = oxidationProperty == null
                 ? ResourceId.parse("alcoholic:oxidation_exposure")
                 : oxidationProperty;
+        if (!Double.isFinite(imprintTransfer) || imprintTransfer < 0.0) {
+            imprintTransfer = CaskImprint.DEFAULT_TRANSFER;
+        }
+        imprintProperties = imprintProperties == null
+                ? CaskImprint.defaultProperties()
+                : Set.copyOf(imprintProperties);
     }
 
     @Override
@@ -94,7 +106,13 @@ public record AgingConfig(
                                     value,
                                     DataDecodeException.child(path, "oxidation_property")
                             ))
-                            .orElse(ResourceId.parse("alcoholic:oxidation_exposure"))
+                            .orElse(ResourceId.parse("alcoholic:oxidation_exposure")),
+                    object.get("imprint_transfer")
+                            .map(value -> value.asNumber(
+                                    DataDecodeException.child(path, "imprint_transfer")
+                            ).doubleValue())
+                            .orElse(CaskImprint.DEFAULT_TRANSFER),
+                    imprintProperties(object, path)
             );
         }
 
@@ -106,6 +124,15 @@ public record AgingConfig(
                     "output",
                     DataNode.objectBuilder().put("liquid", DataNode.string(id.toString())).build()
             ));
+            if (value.imprintTransfer() != CaskImprint.DEFAULT_TRANSFER) {
+                builder.put("imprint_transfer", DataNode.number(value.imprintTransfer()));
+            }
+            if (!value.imprintProperties().equals(CaskImprint.defaultProperties())) {
+                builder.put(
+                        "imprint_properties",
+                        DataCodecs.RESOURCE_ID.listOf().encode(List.copyOf(value.imprintProperties()))
+                );
+            }
             return builder.build();
         }
     };
@@ -131,8 +158,21 @@ public record AgingConfig(
                 AgingKinetics.simplified(),
                 ResourceId.parse("alcoholic:maturity"),
                 ResourceId.parse("alcoholic:wood_exposure"),
-                ResourceId.parse("alcoholic:oxidation_exposure")
+                ResourceId.parse("alcoholic:oxidation_exposure"),
+                CaskImprint.DEFAULT_TRANSFER,
+                CaskImprint.defaultProperties()
         );
+    }
+
+    private static Set<ResourceId> imprintProperties(DataNode.ObjectNode object, String path) {
+        if (!object.has("imprint_properties")) {
+            return CaskImprint.defaultProperties();
+        }
+        List<ResourceId> ids = DataCodecs.RESOURCE_ID.listOf().decode(
+                object.require("imprint_properties", path),
+                DataDecodeException.child(path, "imprint_properties")
+        );
+        return new LinkedHashSet<>(ids);
     }
 
     private static TemperatureProfile temperature(DataNode.ObjectNode object, String path) {

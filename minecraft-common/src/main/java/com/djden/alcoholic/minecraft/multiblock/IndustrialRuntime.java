@@ -24,6 +24,7 @@ public final class IndustrialRuntime {
         register(BuiltinRegistrations.MASH, MultiblockControllerBlockEntity::executeMash);
         register(BuiltinRegistrations.BOIL, MultiblockControllerBlockEntity::executeBoil);
         register(BuiltinRegistrations.CONDITION, MultiblockControllerBlockEntity::executeCondition);
+        register(BuiltinRegistrations.AGE, MultiblockControllerBlockEntity::executeAge);
     }
 
     public static IndustrialRuntime shared() {

@@ -462,9 +462,12 @@ public class VineBlock extends BaseEntityBlock
         }
 
         Item item = registeredItem.get();
-        int count = Mth.clamp(
-                (int) Math.round(result.harvest().quantity()),
-                1,
+        int count = Math.min(
+                SickleItem.fortuneAdjustedCount(
+                        Math.max(1, (int) Math.round(result.harvest().quantity())),
+                        SickleItem.heldSickle(player),
+                        level.random
+                ),
                 item.getMaxStackSize()
         );
         ItemStack grapes = new ItemStack(item, count);

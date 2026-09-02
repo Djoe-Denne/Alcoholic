@@ -23,13 +23,18 @@ import com.djden.alcoholic.minecraft.process.ArtisanalFermenterBlockEntity;
 import com.djden.alcoholic.minecraft.process.ArtisanalPressBlockEntity;
 import com.djden.alcoholic.minecraft.process.OakBarrelBlockEntity;
 import com.djden.alcoholic.minecraft.viticulture.HarvestLotNbt;
+import com.mojang.authlib.GameProfile;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -204,9 +209,27 @@ public final class AdvancementGameTests {
     }
 
     private static ServerPlayer mockPlayer(GameTestHelper helper) {
-        if (!(helper.makeMockPlayer() instanceof ServerPlayer player)) {
-            throw new IllegalStateException("GameTest mock player is not a ServerPlayer");
+        if (helper.makeMockPlayer() instanceof ServerPlayer player) {
+            return player;
         }
+        ServerLevel level = helper.getLevel();
+        ServerPlayer player = new ServerPlayer(
+                level.getServer(),
+                level,
+                new GameProfile(UUID.randomUUID(), "GameTest"),
+                null
+        ) {
+            @Override
+            public boolean isSpectator() {
+                return false;
+            }
+
+            @Override
+            public boolean isCreative() {
+                return true;
+            }
+        };
+        new ServerGamePacketListenerImpl(level.getServer(), new Connection(PacketFlow.SERVERBOUND), player);
         return player;
     }
 

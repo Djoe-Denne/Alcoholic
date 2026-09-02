@@ -108,6 +108,10 @@ public record ExecutorModifiers(
         return new ExecutorModifiers(1.0, 1.0, 3.0, 1, 0.70, 0.55, 0.15);
     }
 
+    public static ExecutorModifiers industrialAgingVessel() {
+        return new ExecutorModifiers(1.0, 1.0, 3.0, 1, 0.70, 0.55, 0.15);
+    }
+
     public static ExecutorModifiers craftMaltHouse() {
         return new ExecutorModifiers(1.0, 1.25, 1.5, 8, 0.94, 0.82, 0.04);
     }

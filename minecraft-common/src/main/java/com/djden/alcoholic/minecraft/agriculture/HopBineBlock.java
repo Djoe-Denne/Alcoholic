@@ -251,6 +251,11 @@ public class HopBineBlock extends BushBlock
             return true;
         }
         ItemStack drop = harvest.get();
+        drop.setCount(SickleItem.fortuneAdjustedCount(
+                HopColumn.harvestCount(level, rootPos, this),
+                SickleItem.heldSickle(player),
+                level.random
+        ));
         if (!player.getInventory().add(drop)) {
             player.drop(drop, false);
         }

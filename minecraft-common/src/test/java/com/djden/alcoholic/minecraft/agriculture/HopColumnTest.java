@@ -30,4 +30,11 @@ class HopColumnTest {
         assertEquals(ClimbingColumn.MAX_WIRE_OFFSET, HopColumn.MAX_WIRE_OFFSET);
         assertEquals(2, HopColumn.MAX_WIRE_OFFSET);
     }
+
+    @Test
+    void harvestYieldIsOneHopPerOccupiedBlock() {
+        assertEquals(1, HopColumn.baseYield(false, false));
+        assertEquals(2, HopColumn.baseYield(false, true));
+        assertEquals(3, HopColumn.baseYield(true, true));
+    }
 }

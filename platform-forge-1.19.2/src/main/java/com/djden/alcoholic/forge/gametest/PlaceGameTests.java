@@ -1,5 +1,7 @@
 package com.djden.alcoholic.forge.gametest;
 
+import com.djden.alcoholic.domain.multiblock.CellCoord;
+import com.djden.alcoholic.domain.multiblock.IndustrialHullPattern;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
 import com.djden.alcoholic.minecraft.debug.BeerLinePlacer;
 import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlockEntity;
@@ -61,9 +63,10 @@ public final class PlaceGameTests {
                 null
         ).orElseThrow();
         require(helper, result.formed(), "Craft mash tun result was unformed: " + result.reason());
-        requireBlock(helper, ORIGIN, "craft_mash_tun_controller", "Craft mash controller missing");
+        BlockPos controllerPos = relative(helper, result.controller());
+        requireBlock(helper, controllerPos, "craft_mash_tun_controller", "Craft mash controller missing");
         requireBlock(helper, ORIGIN.offset(2, 0, 0), "craft_casing", "Craft casing missing");
-        if (!(helper.getBlockEntity(ORIGIN) instanceof MultiblockControllerBlockEntity controller)) {
+        if (!(helper.getBlockEntity(controllerPos) instanceof MultiblockControllerBlockEntity controller)) {
             helper.fail("Craft mash controller entity missing");
             return;
         }
@@ -80,7 +83,8 @@ public final class PlaceGameTests {
                 null
         ).orElseThrow();
         require(helper, result.formed(), "Malt house result was unformed: " + result.reason());
-        if (!(helper.getBlockEntity(ORIGIN) instanceof MultiblockControllerBlockEntity controller)) {
+        BlockPos controllerPos = relative(helper, result.controller());
+        if (!(helper.getBlockEntity(controllerPos) instanceof MultiblockControllerBlockEntity controller)) {
             helper.fail("Malt house controller missing");
             return;
         }
@@ -97,15 +101,26 @@ public final class PlaceGameTests {
                 null
         ).orElseThrow();
         require(helper, result.formed(), "Roller mill result was unformed: " + result.reason());
-        requireBlock(helper, ORIGIN, "industrial_roller_mill_controller", "Roller mill controller missing");
-        requireBlock(helper, ORIGIN.offset(2, 0, 0), "kinetic_port", "Kinetic port missing");
-        requireBlock(helper, ORIGIN.offset(3, 0, 0), "primitive_combustion_engine", "Roller mill engine missing");
-        if (!(helper.getBlockEntity(ORIGIN) instanceof MultiblockControllerBlockEntity controller)) {
+        BlockPos controllerPos = relative(helper, result.controller());
+        CellCoord port = IndustrialHullPattern.kineticPort(3, 4, 3);
+        requireBlock(helper, controllerPos, "industrial_roller_mill_controller", "Roller mill controller missing");
+        requireBlock(helper, ORIGIN.offset(port.x(), port.y(), port.z()), "kinetic_port", "Kinetic port missing");
+        requireBlock(
+                helper,
+                ORIGIN.offset(port.x() + 1, port.y(), port.z()),
+                "primitive_combustion_engine",
+                "Roller mill engine missing"
+        );
+        if (!(helper.getBlockEntity(controllerPos) instanceof MultiblockControllerBlockEntity controller)) {
             helper.fail("Roller mill controller entity missing");
             return;
         }
         require(helper, controller.formed(), "Roller mill did not form: " + controller.debugDump());
         helper.succeed();
+    }
+
+    private static BlockPos relative(GameTestHelper helper, BlockPos absolute) {
+        return absolute.subtract(helper.absolutePos(BlockPos.ZERO));
     }
 
     private static void requireBlock(GameTestHelper helper, BlockPos pos, String path, String message) {

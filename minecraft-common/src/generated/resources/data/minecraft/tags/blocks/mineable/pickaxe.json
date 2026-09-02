@@ -15,6 +15,7 @@
     "alcoholic:industrial_mash_tun_controller",
     "alcoholic:industrial_brewing_kettle_controller",
     "alcoholic:industrial_conditioning_vessel_controller",
+    "alcoholic:industrial_aging_vessel_controller",
     "alcoholic:craft_casing",
     "alcoholic:craft_malt_house_controller",
     "alcoholic:craft_mill_controller",

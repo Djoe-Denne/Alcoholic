@@ -156,7 +156,8 @@ final class MultiblockFormationCategory implements IRecipeCategory<MultiblockDis
                 stack("alcoholic:industrial_roller_mill_controller"),
                 stack("alcoholic:industrial_mash_tun_controller"),
                 stack("alcoholic:industrial_brewing_kettle_controller"),
-                stack("alcoholic:industrial_conditioning_vessel_controller")
+                stack("alcoholic:industrial_conditioning_vessel_controller"),
+                stack("alcoholic:industrial_aging_vessel_controller")
         ).stream().filter(stack -> !stack.isEmpty()).toList();
     }
 

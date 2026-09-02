@@ -37,6 +37,14 @@
       }
     },
     { "id": "wood", "op": "alcoholic:wood_sweet_spot" },
+    {
+      "id": "imprint",
+      "op": "alcoholic:weighted_present",
+      "config": {
+        "mode": "sum",
+        "weights": { "alcoholic:roast_intensity": 0.25 }
+      }
+    },
     { "id": "oxygen", "op": "alcoholic:oxygen_curve", "outputs": ["complexity", "defects"] },
     {
       "id": "balance",
@@ -76,6 +84,7 @@
           "tannin_c",
           "color_c",
           "wood",
+          "imprint",
           { "node": "oxygen", "port": "complexity" }
         ],
         "balance": "balance",

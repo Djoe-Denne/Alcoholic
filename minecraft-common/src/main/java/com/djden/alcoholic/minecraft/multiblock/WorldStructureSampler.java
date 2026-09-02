@@ -43,6 +43,7 @@ public final class WorldStructureSampler implements StructureQuery {
         add(tags, state, AlcoholicBlockTags.INDUSTRIAL_TANK_CASING, "alcoholic:industrial_tank_casing");
         add(tags, state, AlcoholicBlockTags.FERMENTER_CASING, "alcoholic:fermenter_casing");
         add(tags, state, AlcoholicBlockTags.PRESSURE_SAFE_CASING, "alcoholic:pressure_safe_casing");
+        add(tags, state, AlcoholicBlockTags.CRAFT_CASING, "alcoholic:craft_casing");
         add(tags, state, AlcoholicBlockTags.VALID_MACHINE_WINDOWS, "alcoholic:valid_machine_windows");
         add(tags, state, AlcoholicBlockTags.INDUSTRIAL_PORTS, "alcoholic:industrial_ports");
         return tags;

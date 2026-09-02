@@ -3,6 +3,23 @@
   "nodes": [
     { "id": "harvest", "op": "alcoholic:harvest_complexity" },
     { "id": "wood", "op": "alcoholic:wood_sweet_spot" },
+    {
+      "id": "tannin_c",
+      "op": "alcoholic:wood_sweet_spot",
+      "config": { "property": "alcoholic:tannin", "weight": 0.35 }
+    },
+    {
+      "id": "imprint",
+      "op": "alcoholic:weighted_present",
+      "config": {
+        "mode": "sum",
+        "weights": {
+          "alcoholic:roast_intensity": 0.35,
+          "alcoholic:acidity": 0.20,
+          "alcoholic:sugar": 0.20
+        }
+      }
+    },
     { "id": "oxygen", "op": "alcoholic:oxygen_curve", "outputs": ["complexity", "defects"] },
     { "id": "maturity", "op": "alcoholic:aging_maturity" },
     { "id": "stress", "op": "alcoholic:stress" },
@@ -14,6 +31,8 @@
         "complexity": [
           "harvest",
           "wood",
+          "tannin_c",
+          "imprint",
           { "node": "oxygen", "port": "complexity" }
         ],
         "maturity": "maturity",

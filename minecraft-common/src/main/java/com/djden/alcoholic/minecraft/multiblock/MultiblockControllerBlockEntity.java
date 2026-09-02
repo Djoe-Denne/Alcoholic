@@ -30,7 +30,10 @@ import com.djden.alcoholic.minecraft.menu.MachineContainerData;
 import com.djden.alcoholic.minecraft.menu.MachineLayout;
 import com.djden.alcoholic.minecraft.process.ItemLots;
 import com.djden.alcoholic.minecraft.process.MinecraftSelectorMatcher;
+import com.djden.alcoholic.domain.vessel.BarrelHistory;
+import com.djden.alcoholic.domain.vessel.VesselProfile;
 import com.djden.alcoholic.minecraft.process.ProcessRuntime;
+import com.djden.alcoholic.minecraft.vessel.CaskHistoryTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -89,6 +92,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     private double targetTemperature = Double.NaN;
     private int additionsCommitted;
     private final List<ItemStack> committedSolids = new ArrayList<>();
+    private final CaskHistoryTracker imprint = new CaskHistoryTracker();
 
     public MultiblockControllerBlockEntity(
             BlockEntityType<?> type,
@@ -174,6 +178,24 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
 
     public void executeCondition(MultiblockDefinition definition, long gameTime) {
         IndustrialProcessTicks.condition(this, definition, gameTime);
+    }
+
+    public void executeAge(MultiblockDefinition definition, long gameTime) {
+        IndustrialProcessTicks.age(this, definition, gameTime);
+    }
+
+    public BarrelHistory history() {
+        return imprint.history();
+    }
+
+    public VesselProfile vesselProfile() {
+        return VesselProfile.industrialAgingVessel(tank.capacity()).withHistory(imprint.history());
+    }
+
+    void syncCaskHistory() {
+        if (imprint.sync(tank.contents(), tank.capacity(), CaskHistoryTracker::axesFor)) {
+            setChanged();
+        }
     }
 
     public int processProgress() {
@@ -269,6 +291,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     }
 
     public void onTankChanged() {
+        syncCaskHistory();
         resetProcess();
         markTankChanged();
     }
@@ -715,7 +738,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         return com.djden.alcoholic.minecraft.environment.HeatSources.celsius(level, worldPosition);
     }
 
-    com.djden.alcoholic.domain.vessel.EnvironmentProfile environment() {
+    public com.djden.alcoholic.domain.vessel.EnvironmentProfile environment() {
         if (level == null) {
             return com.djden.alcoholic.domain.vessel.EnvironmentProfile.temperateCellar();
         }
@@ -890,7 +913,8 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
                 + " stage=" + processStage
                 + " progress=" + processProgress + "/" + processDuration
                 + " bound=" + boundDefinition
-                + " targetC=" + targetTemperature;
+                + " targetC=" + targetTemperature
+                + " imprint=" + imprint.history().caskImprint();
     }
 
     private boolean yeastMatches(ProcessRuntime runtime, ItemStack stack) {
@@ -978,6 +1002,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
             parts.add(NbtUtils.writeBlockPos(part));
         }
         tag.put("BoundParts", parts);
+        imprint.save(tag);
         advancements.save(tag);
     }
 
@@ -1061,6 +1086,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         List<BlockPos> parts = new ArrayList<>();
         tag.getList("BoundParts", 10).forEach(entry -> parts.add(NbtUtils.readBlockPos((CompoundTag) entry)));
         boundParts = List.copyOf(parts);
+        imprint.load(tag, tank.contents(), CaskHistoryTracker::axesFor);
         advancements.load(tag);
         structureDirty = true;
     }
@@ -1154,7 +1180,8 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     private boolean inputOnlyProcess(MultiblockDefinition definition) {
         return definition.processType()
                 .filter(type -> BuiltinRegistrations.FERMENT.equals(type)
-                        || BuiltinRegistrations.CONDITION.equals(type))
+                        || BuiltinRegistrations.CONDITION.equals(type)
+                        || BuiltinRegistrations.AGE.equals(type))
                 .isPresent();
     }
 }
