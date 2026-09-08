@@ -8,12 +8,18 @@ import mezz.jei.api.gui.handlers.IGuiClickableArea;
 import mezz.jei.api.gui.handlers.IGuiContainerHandler;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Rect2i;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 final class MachineScreenGuiHandler implements IGuiContainerHandler<AlcoholicMachineScreen> {
+    @Override
+    public List<Rect2i> getGuiExtraAreas(AlcoholicMachineScreen screen) {
+        return screen.telemetryExtraArea().map(List::of).orElseGet(List::of);
+    }
+
     @Override
     public Collection<IGuiClickableArea> getGuiClickableAreas(
             AlcoholicMachineScreen screen,

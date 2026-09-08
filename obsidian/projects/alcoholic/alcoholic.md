@@ -21,13 +21,15 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/7709dbb4-6adc-48f3-ad6f-7de969fd9878/7709dbb4-6adc-48f3-ad6f-7de969fd9878.jsonl"
   - "C:/Users/djden/source/repos/Alcoholic/docs/adr/ADR-036-wine-beer-progression-graph.md"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/07a9f6b4-cb15-4290-9926-14a35cd01c5a/07a9f6b4-cb15-4290-9926-14a35cd01c5a.jsonl"
-summary: Loader-independent brewing mod. Wine/beer progression graph; painted world fluids; optional FTB template.
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/e7dd3c64-d28a-4c16-9d2a-d2dc3be2a3d2/e7dd3c64-d28a-4c16-9d2a-d2dc3be2a3d2.jsonl"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/c1fe1ca7-b44b-4208-8155-4cb69e690435/c1fe1ca7-b44b-4208-8155-4cb69e690435.jsonl"
+summary: Loader-independent brewing mod. Quality DAG, craft-scale machines, cask imprint, controller telemetry.
 provenance:
   extracted: 0.82
   inferred: 0.16
   ambiguous: 0.02
 created: 2026-08-25T09:20:00+02:00
-updated: 2026-08-28T22:30:00+02:00
+updated: 2026-09-08T20:30:00+02:00
 ---
 
 # Alcoholic
@@ -65,6 +67,14 @@ Alcoholic is a Minecraft mod for realistic brewing, winemaking, and distillation
 **Progression (ADR-033–036)** — vanilla advancements are the only source in the JAR ([[advancements-as-progression-source]]). [[wine-beer-progression-graph]] owns tab and FTB shape (wine left, beer right, shared center). [[optional-ftb-quests-chapter]] is a pack-author template. Industrial formation uses `alcoholic:multiblock_formed` plus a JEI min-hull category ([[industrial-progression-and-jei-formation]]).
 
 **World fluids** — four painted still/flow tiles ([[world-fluid-textures]]). Shader waves stay a pack-author `block.properties` edit ([[shader-world-fluids]]).
+
+**Quality (ADR-037–038)** — drink score is derived ([[emergent-quality-profile]]); interpretation is a datapack operator DAG ([[quality-operator-dag]]). Artisanal / [[craft-scale-machines]] / industrial share one process definition and different caps.
+
+**Cask imprint (ADR-039)** — emptying stains the next AGE fill ([[cask-imprint]]). Wood species is still out of scope.
+
+**Harvest and display** — [[column-harvest]] sickle vs empty-hand; [[bottle-stands]] rack and shelf.
+
+**Controller GUI** — [[machine-controller-telemetry]] sits left of the inventory so JEI does not cover it.
 
 The Forge artifact still embeds the inward-pointing modules. Fabric remains a future adapter.
 
@@ -104,6 +114,13 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[industrial-progression-and-jei-formation]]
 - [[world-fluid-textures]]
 - [[shader-world-fluids]]
+- [[emergent-quality-profile]]
+- [[quality-operator-dag]]
+- [[craft-scale-machines]]
+- [[cask-imprint]]
+- [[column-harvest]]
+- [[bottle-stands]]
+- [[machine-controller-telemetry]]
 
 ## Verification
 
@@ -135,3 +152,6 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[cursor-formed-hull-session]]
 - [[cursor-machine-port-audit-session]]
 - [[cursor-progression-and-fluids-session]]
+- [[cursor-quality-and-craft-session]]
+- [[cursor-cask-hedging-stands-session]]
+- [[cursor-machine-gui-and-malting-session]]

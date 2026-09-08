@@ -1,0 +1,4 @@
+{
+  "parent": "alcoholic:block/bottle_rack",
+  "textures": { "oak": "minecraft:block/oak_planks", "particle": "minecraft:block/oak_planks" }
+}

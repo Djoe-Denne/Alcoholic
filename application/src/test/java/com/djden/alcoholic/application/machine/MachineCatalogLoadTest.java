@@ -28,6 +28,7 @@ class MachineCatalogLoadTest {
         );
         assertEquals(MachineKind.STORAGE, catalog.get(BuiltinMachines.INDUSTRIAL_TANK).orElseThrow().kind());
         assertEquals(MachineKind.MALT, catalog.get(BuiltinMachines.INDUSTRIAL_MALT_HOUSE).orElseThrow().kind());
+        assertEquals(384, catalog.get(BuiltinCraftMachines.CRAFT_MALT_HOUSE).orElseThrow().modifiers().maxBatchUnits());
         assertEquals(MachineKind.MILL, catalog.get(BuiltinMachines.INDUSTRIAL_ROLLER_MILL).orElseThrow().kind());
         assertEquals(MachineKind.MASH, catalog.get(BuiltinMachines.INDUSTRIAL_MASH_TUN).orElseThrow().kind());
         assertEquals(MachineKind.BOIL, catalog.get(BuiltinMachines.INDUSTRIAL_BREWING_KETTLE).orElseThrow().kind());

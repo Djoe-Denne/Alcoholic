@@ -11,7 +11,7 @@ provenance:
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T14:40:00+02:00
-updated: 2026-08-25T14:40:00+02:00
+updated: 2026-09-08T20:30:00+02:00
 ---
 
 # Aging Process
@@ -26,7 +26,7 @@ An empty or missing config is valid. Maturity can still progress. If `output.liq
 
 ## Physics
 
-`AgingPhysics.step` evolves numeric properties (`alcoholic:maturity`, `alcoholic:wood_exposure`, `alcoholic:oxidation_exposure`) and flattened [[batch-provenance]] summaries. Completion is `maturity >= threshold` (default 1.0). Rate is the product of temperature-band factor, [[vessel-and-environment]] aging factor, and vessel seasoning. The step is linear in `deltaTicks`, so catch-up `step(N)` matches `N × step(1)` within floating-point error.
+`AgingPhysics.step` evolves numeric properties (`alcoholic:maturity`, `alcoholic:wood_exposure`, `alcoholic:oxidation_exposure`) and flattened [[batch-provenance]] summaries. Completion is `maturity >= threshold` (default 1.0). Rate is the product of temperature-band factor, [[vessel-and-environment]] aging factor, and vessel seasoning. [[cask-imprint]] leaks previous-occupant chemistry upward during the unseasoned maturity step (ADR-039). The step is linear in `deltaTicks`, so catch-up `step(N)` matches `N × step(1)` within floating-point error.
 
 Temperature bands follow the FERMENT pattern: preferred runs at full rate, operating is slower, outside operating stalls. No biome IDs enter domain code.
 
@@ -37,6 +37,7 @@ Temperature bands follow the FERMENT pattern: preferred runs at full rate, opera
 ## Related
 
 - [[vessel-and-environment]]
+- [[cask-imprint]]
 - [[batch-provenance]]
 - [[fermentation-physics]]
 - [[process-capability-graph]]

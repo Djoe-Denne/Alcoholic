@@ -17,7 +17,7 @@ provenance:
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T18:55:00+02:00
-updated: 2026-08-28T22:30:00+02:00
+updated: 2026-09-08T20:30:00+02:00
 ---
 
 # Grain Processing
@@ -37,7 +37,7 @@ The shipped graph is `alcoholic:beer`. It ends after generic `FERMENT`. There is
 
 ## Process types
 
-`alcoholic:malt` is solid-to-solid (ADR-024). A definition carries duration, moisture, temperature, and a kiln profile (`colorPotential`, `fermentablePotential`, `roastIntensity`). Pale / amber / dark are data, not Java subclasses. When several `MALT` definitions share an input, executors bind an explicit id (default `alcoholic:malt_pale`). Shift-using an empty malting floor cycles definitions.
+`alcoholic:malt` is solid-to-solid (ADR-024). A definition carries duration, moisture, temperature, and a kiln profile (`colorPotential`, `fermentablePotential`, `roastIntensity`). Pale / amber / dark are data, not Java subclasses. When several `MALT` definitions share an input, executors bind an explicit id (default `alcoholic:malt_pale`). Shift-using an empty malting floor cycles definitions. Official duration stays datapack-authored; formed malt houses should process multiple ingredient lots in parallel rather than shortening `ticks_to_complete`. See [[cursor-machine-gui-and-malting-session]].
 
 `alcoholic:mill` is a generic solid transform (malted grain → grist, property copy). Official execution is the [[native-executor-invariant|Malt Mill]], powered by any [[mechanical-drive-port]] supply. Create millstone and crushing wheels remain optional extra executors.
 
@@ -57,7 +57,7 @@ Barley is an annual cereal (`CerealCropBlock`). Hops grow as a vertical bine on 
 
 The malting floor executes `MALT` only. An earlier Phase 7A cut also ran `MILL` on that floor because Alcoholic had no mill (ADR-028). [[native-executor-invariant|ADR-030]] added the Malt Mill and returned the floor to malt-only.
 
-The mash tun and brewing kettle are artisanal mixed-input executors. Phase 7B adds industrial executors for the same process types: malt house, roller mill, mash tun, brewing kettle, plus an optional conditioning vessel. See [[industrial-processing]].
+The mash tun and brewing kettle are artisanal mixed-input executors. [[craft-scale-machines]] add formed mid-scale executors for the same types. Phase 7B adds industrial executors: malt house, roller mill, mash tun, brewing kettle, plus an optional conditioning vessel. See [[industrial-processing]].
 
 Floor, mill, mash tun, and kettle have Java voxels: [[malting-floor-visual]], [[malt-mill-visual]], [[mash-tun-visual]], [[brewing-kettle-visual]]. Process types stay generic.
 
@@ -86,6 +86,8 @@ On the player-facing [[wine-beer-progression-graph]], `produce_must` is press-on
 - [[brewing-kettle-visual]]
 - [[cursor-survival-plants-session]]
 - [[cursor-artisanal-brewery-guide-session]]
+- [[craft-scale-machines]]
+- [[cursor-machine-gui-and-malting-session]]
 - [[cursor-phase-7a-grain-session]]
 - [[cursor-create-independence-session]]
 - [[industrial-processing]]

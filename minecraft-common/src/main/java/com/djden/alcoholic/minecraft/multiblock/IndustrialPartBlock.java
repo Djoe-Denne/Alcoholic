@@ -1,6 +1,5 @@
 package com.djden.alcoholic.minecraft.multiblock;
 
-import com.djden.alcoholic.domain.multiblock.FormedHullKit;
 import com.djden.alcoholic.domain.multiblock.PartRole;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -30,10 +29,6 @@ public class IndustrialPartBlock extends Block implements MultiblockPart {
 
     @Override
     public RenderShape getRenderShape(BlockState state) {
-        boolean formed = state.hasProperty(FORMED) && state.getValue(FORMED);
-        if (FormedHullKit.hideCasingCube(role, formed)) {
-            return RenderShape.INVISIBLE;
-        }
         return RenderShape.MODEL;
     }
 

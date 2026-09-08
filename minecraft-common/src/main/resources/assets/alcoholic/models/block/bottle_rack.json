@@ -1,0 +1,15 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": { "oak": "minecraft:block/oak_planks", "particle": "minecraft:block/oak_planks" },
+  "elements": [
+    { "from": [0, 0, 4], "to": [16, 16, 16], "faces": { "north": {"texture":"#oak"}, "south": {"texture":"#oak"}, "east": {"texture":"#oak"}, "west": {"texture":"#oak"}, "up": {"texture":"#oak"}, "down": {"texture":"#oak"} } },
+    { "from": [0, 0, 0], "to": [1, 16, 4], "faces": { "north": {"texture":"#oak"}, "south": {"texture":"#oak"}, "east": {"texture":"#oak"}, "west": {"texture":"#oak"}, "up": {"texture":"#oak"}, "down": {"texture":"#oak"} } },
+    { "from": [15, 0, 0], "to": [16, 16, 4], "faces": { "north": {"texture":"#oak"}, "south": {"texture":"#oak"}, "east": {"texture":"#oak"}, "west": {"texture":"#oak"}, "up": {"texture":"#oak"}, "down": {"texture":"#oak"} } },
+    { "from": [1, 0, 0], "to": [15, 1, 4], "faces": { "north": {"texture":"#oak"}, "south": {"texture":"#oak"}, "east": {"texture":"#oak"}, "west": {"texture":"#oak"}, "up": {"texture":"#oak"}, "down": {"texture":"#oak"} } },
+    { "from": [1, 15, 0], "to": [15, 16, 4], "faces": { "north": {"texture":"#oak"}, "south": {"texture":"#oak"}, "east": {"texture":"#oak"}, "west": {"texture":"#oak"}, "up": {"texture":"#oak"}, "down": {"texture":"#oak"} } },
+    { "from": [1, 5, 0], "to": [15, 6, 4], "faces": { "north": {"texture":"#oak"}, "south": {"texture":"#oak"}, "east": {"texture":"#oak"}, "west": {"texture":"#oak"}, "up": {"texture":"#oak"}, "down": {"texture":"#oak"} } },
+    { "from": [1, 10, 0], "to": [15, 11, 4], "faces": { "north": {"texture":"#oak"}, "south": {"texture":"#oak"}, "east": {"texture":"#oak"}, "west": {"texture":"#oak"}, "up": {"texture":"#oak"}, "down": {"texture":"#oak"} } },
+    { "from": [5, 1, 0], "to": [6, 15, 4], "faces": { "north": {"texture":"#oak"}, "south": {"texture":"#oak"}, "east": {"texture":"#oak"}, "west": {"texture":"#oak"}, "up": {"texture":"#oak"}, "down": {"texture":"#oak"} } },
+    { "from": [10, 1, 0], "to": [11, 15, 4], "faces": { "north": {"texture":"#oak"}, "south": {"texture":"#oak"}, "east": {"texture":"#oak"}, "west": {"texture":"#oak"}, "up": {"texture":"#oak"}, "down": {"texture":"#oak"} } }
+  ]
+}

@@ -50,6 +50,8 @@ public final class MachineMenus {
             case TWO_TANKS -> content.twoTanks().get();
             case FUEL -> content.fuel().get();
             case ENERGY -> content.energy().get();
+            case CRAFT_MALT -> content.craftMalt().get();
+            case INDUSTRIAL_MALT -> content.industrialMalt().get();
         };
     }
 }

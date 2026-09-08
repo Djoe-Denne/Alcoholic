@@ -11,7 +11,7 @@ provenance:
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T12:50:00+02:00
-updated: 2026-08-28T19:15:00+02:00
+updated: 2026-09-08T20:30:00+02:00
 ---
 
 # Perennial Viticulture
@@ -36,7 +36,7 @@ Later cycles skip establishment:
 
 ## Harvest invariant
 
-Harvest never destroys the vine. A `HARVEST_READY` plant drops fruit, then becomes `DORMANT` and can restart. This is an explicit test invariant from the Phase 2 brief.
+Harvest never destroys the vine. A `HARVEST_READY` plant drops fruit, then becomes `DORMANT` and can restart. This is an explicit test invariant from the Phase 2 brief. Empty-hand use still takes the whole column; a sickle uses [[column-harvest]].
 
 ## Climate and quality
 
@@ -50,6 +50,7 @@ Legacy Phase 1 `age` 0–4 vines migrate into the nearest Phase 2 stage. Authori
 
 - [[alcoholic]]
 - [[trellis-training]]
+- [[column-harvest]]
 - [[climbing-plant-visual]]
 - [[harvest-lot-metadata]]
 - [[cursor-phase-2-viticulture-session]]

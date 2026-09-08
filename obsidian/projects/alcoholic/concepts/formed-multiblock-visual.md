@@ -12,7 +12,7 @@ provenance:
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-28T19:15:00+02:00
-updated: 2026-08-28T19:15:00+02:00
+updated: 2026-09-08T20:30:00+02:00
 ---
 
 # Formed Multiblock Visual
@@ -25,16 +25,18 @@ updated: 2026-08-28T19:15:00+02:00
 
 ## Art size only
 
-Each of the eight machines has a formed `.bbmodel` exported to `models/block/formed/*.json`. That mega-mesh overlays **only** the size used by debug place / the art board. Other legal sizes keep the 9-slice hull plus fittings. The press platen is an extra overlay.
+Each of the eight industrial machines — and the [[craft-scale-machines]] beer set — has a formed `.bbmodel` exported to `models/block/formed/*.json`. That mega-mesh overlays **only** the size used by debug place / the art board. Other legal sizes keep the 9-slice hull plus fittings. A craft malt house larger than 3×3×3 must not keep the art-size mesh; that was a display bug. The press platen is an extra overlay.
 
 There is no new block id for the formed look. Geometry already travelled in the controller packet NBT; the `formed` casing flag is pushed on form/unform.
 
 ## Related
 
 - [[industrial-multiblock]]
+- [[craft-scale-machines]]
 - [[industrial-processing]]
 - [[industrial-ports]]
 - [[artisanal-machine-voxel-models]]
 - [[alcoholic-debug-commands]]
 - [[cursor-formed-hull-session]]
+- [[cursor-machine-gui-and-malting-session]]
 - [[alcoholic]]

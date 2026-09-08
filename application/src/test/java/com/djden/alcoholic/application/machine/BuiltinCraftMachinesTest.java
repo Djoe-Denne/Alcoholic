@@ -22,6 +22,7 @@ class BuiltinCraftMachinesTest {
         assertEquals(MachineKind.BOIL, BuiltinCraftMachines.craftBrewingKettle().kind());
         assertEquals(MachineKind.FERMENT, BuiltinCraftMachines.craftVat().kind());
         assertEquals("alcoholic:malt", BuiltinCraftMachines.craftMaltHouse().processType().orElseThrow().toString());
+        assertEquals(384, BuiltinCraftMachines.craftMaltHouse().modifiers().maxBatchUnits());
         assertEquals("alcoholic:mill", BuiltinCraftMachines.craftMill().processType().orElseThrow().toString());
         assertEquals("alcoholic:mash", BuiltinCraftMachines.craftMashTun().processType().orElseThrow().toString());
         assertEquals("alcoholic:boil", BuiltinCraftMachines.craftBrewingKettle().processType().orElseThrow().toString());

@@ -44,6 +44,10 @@ public final class AlcoholicIds {
     public static final ResourceId ARTISANAL_BLENDING_CROCK_ENTITY = id("artisanal_blending_crock");
     public static final ResourceId EMPTY_BOTTLE = id("empty_bottle");
     public static final ResourceId BEVERAGE_BOTTLE = id("beverage_bottle");
+    public static final ResourceId BOTTLE_RACK = id("bottle_rack");
+    public static final ResourceId BOTTLE_RACK_ENTITY = id("bottle_rack");
+    public static final ResourceId BOTTLE_SHELF = id("bottle_shelf");
+    public static final ResourceId BOTTLE_SHELF_ENTITY = id("bottle_shelf");
     public static final ResourceId INDUSTRIAL_CASING = id("industrial_casing");
     public static final ResourceId MACHINE_WINDOW = id("machine_window");
     public static final ResourceId ACCESS_HATCH = id("access_hatch");
@@ -122,6 +126,8 @@ public final class AlcoholicIds {
     public static final ResourceId TWO_TANKS_MENU = id("two_tanks_menu");
     public static final ResourceId FUEL_MENU = id("fuel_menu");
     public static final ResourceId ENERGY_MENU = id("energy_menu");
+    public static final ResourceId CRAFT_MALT_MENU = id("craft_malt_menu");
+    public static final ResourceId INDUSTRIAL_MALT_MENU = id("industrial_malt_menu");
 
     private AlcoholicIds() {
     }

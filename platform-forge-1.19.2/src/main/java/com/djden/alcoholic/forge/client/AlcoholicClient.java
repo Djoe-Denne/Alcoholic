@@ -3,7 +3,6 @@ package com.djden.alcoholic.forge.client;
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.minecraft.content.AlcoholicContent;
 import com.djden.alcoholic.minecraft.content.GrainContent;
-import com.djden.alcoholic.minecraft.content.CraftContent;
 import com.djden.alcoholic.minecraft.content.IndustrialContent;
 import com.djden.alcoholic.minecraft.content.ProcessingContent;
 import com.djden.alcoholic.minecraft.fluid.FluidContent;
@@ -30,12 +29,12 @@ public final class AlcoholicClient {
             ProcessingContent processing,
             GrainContent grain,
             IndustrialContent industrial,
-            CraftContent craft,
             MachineMenuContent menus,
             FluidContent fluids
     ) {
         modEventBus.addListener(
                 (FMLClientSetupEvent event) -> event.enqueueWork(() -> {
+                    BeverageBottleClient.register(processing);
                     ItemBlockRenderTypes.setRenderLayer(content.redGrapevine().get(), RenderType.cutout());
                     ItemBlockRenderTypes.setRenderLayer(content.whiteGrapevine().get(), RenderType.cutout());
                     ItemBlockRenderTypes.setRenderLayer(content.redGrapevineStem().get(), RenderType.cutout());
@@ -66,9 +65,10 @@ public final class AlcoholicClient {
         );
         GrimoireClientOpen.bind(kind -> Minecraft.getInstance().setScreen(new GrimoireScreen(kind)));
         MaltMillClient.register(modEventBus, processing);
+        BottleStandClient.register(modEventBus, processing);
         ElectricMotorClient.register(modEventBus, processing);
         PrimitiveCombustionEngineClient.register(modEventBus, processing);
-        FormedMultiblockClient.register(modEventBus, industrial, craft);
+        FormedMultiblockClient.register(modEventBus, industrial);
     }
 
     private static void registerFluidLayers(FluidContent fluids) {
@@ -91,5 +91,7 @@ public final class AlcoholicClient {
         MenuScreens.register((MenuType<MachineMenu>) menus.twoTanks().get(), AlcoholicMachineScreen::new);
         MenuScreens.register((MenuType<MachineMenu>) menus.fuel().get(), AlcoholicMachineScreen::new);
         MenuScreens.register((MenuType<MachineMenu>) menus.energy().get(), AlcoholicMachineScreen::new);
+        MenuScreens.register((MenuType<MachineMenu>) menus.craftMalt().get(), AlcoholicMachineScreen::new);
+        MenuScreens.register((MenuType<MachineMenu>) menus.industrialMalt().get(), AlcoholicMachineScreen::new);
     }
 }

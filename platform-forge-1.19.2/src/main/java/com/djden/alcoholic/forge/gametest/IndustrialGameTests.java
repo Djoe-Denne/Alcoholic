@@ -348,6 +348,26 @@ public final class IndustrialGameTests {
     }
 
     @GameTest(template = "industrial_pad", timeoutTicks = 80)
+    public static void industrialMaltHouseAcceptsMultipleInputStacks(GameTestHelper helper) {
+        helper.setBlock(ORIGIN.below(), Blocks.MAGMA_BLOCK.defaultBlockState());
+        buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_malt_house_controller", "industrial_casing", null);
+        MultiblockControllerBlockEntity house = revalidate(helper, ORIGIN);
+        require(helper, house.getContainerSize() == 36, "Expected 36 malt slots, was " + house.getContainerSize());
+        require(helper, house.insert(new ItemStack(item("barley"), 64)), "First stack rejected");
+        require(helper, house.insert(new ItemStack(item("barley"), 64)), "Second stack rejected");
+        require(helper, house.getItem(0).getCount() == 64, "First input was not a full stack");
+        require(helper, house.getItem(1).getCount() == 64, "Second input was not a full stack");
+        int output = house.layout().firstOutputSlot();
+        require(helper, house.getItem(output).isEmpty(), "Output filled before the cycle finished");
+        helper.runAtTickTime(20, () -> {
+            MultiblockControllerBlockEntity mid = controller(helper, ORIGIN);
+            require(helper, mid.processProgress() > 0, "Malt house had not started: " + mid.debugDump());
+            require(helper, mid.getItem(output).isEmpty(), "Output appeared before the cycle finished");
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "industrial_pad", timeoutTicks = 80)
     public static void industrialRollerMillExecutesGenericMill(GameTestHelper helper) {
         buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_roller_mill_controller", "industrial_casing", "kinetic_port");
         MultiblockControllerBlockEntity mill = revalidate(helper, ORIGIN);

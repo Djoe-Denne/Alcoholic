@@ -66,7 +66,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     private final ResourceId definitionId;
     private final LiquidTank tank;
     private final ProcessAdvancementState advancements = new ProcessAdvancementState();
-    private final NonNullList<ItemStack> items = NonNullList.withSize(2, ItemStack.EMPTY);
+    private final NonNullList<ItemStack> items = NonNullList.withSize(MachineLayout.MAX_MACHINE_SLOTS, ItemStack.EMPTY);
     private boolean formed;
     private IndustrialAccess access = IndustrialAccess.CLOSED;
     private MultiblockGeometry geometry;
@@ -90,6 +90,8 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     private String processStage = "";
     private ResourceId boundDefinition;
     private double targetTemperature = Double.NaN;
+    private long telemetryGameTime = Long.MIN_VALUE;
+    private ControllerTelemetry cachedTelemetry;
     private int additionsCommitted;
     private final List<ItemStack> committedSolids = new ArrayList<>();
     private final CaskHistoryTracker imprint = new CaskHistoryTracker();
@@ -209,7 +211,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     @Override
     public MachineLayout layout() {
         return definition()
-                .map(value -> value.hasProcess() ? MachineLayout.TWO_SLOTS_ONE_TANK : MachineLayout.ONE_TANK)
+                .map(MachineLayout::forMultiblock)
                 .orElse(MachineLayout.TWO_SLOTS_ONE_TANK);
     }
 
@@ -233,16 +235,104 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
 
     @Override
     public int temperatureDeci() {
-        return MachineAccess.deci(targetTemperature);
+        ControllerTelemetry telemetry = telemetry();
+        if ((telemetry.flags() & MachineContainerData.FLAG_PROCESS_USES_HEAT) != 0) {
+            return telemetry.heatTemperatureDeci();
+        }
+        return telemetry.ambientTemperatureDeci();
+    }
+
+    @Override
+    public int ambientTemperatureDeci() {
+        return telemetry().ambientTemperatureDeci();
+    }
+
+    @Override
+    public int heatTemperatureDeci() {
+        return telemetry().heatTemperatureDeci();
+    }
+
+    @Override
+    public int humidityPermille() {
+        return telemetry().humidityPermille();
+    }
+
+    @Override
+    public int preferredTemperatureMinDeci() {
+        return telemetry().preferredTemperatureMinDeci();
+    }
+
+    @Override
+    public int preferredTemperatureMaxDeci() {
+        return telemetry().preferredTemperatureMaxDeci();
+    }
+
+    @Override
+    public int operatingTemperatureMinDeci() {
+        return telemetry().operatingTemperatureMinDeci();
+    }
+
+    @Override
+    public int operatingTemperatureMaxDeci() {
+        return telemetry().operatingTemperatureMaxDeci();
+    }
+
+    @Override
+    public int requiredHumidityPermille() {
+        return telemetry().requiredHumidityPermille();
+    }
+
+    @Override
+    public int requiredHeatTemperatureDeci() {
+        return telemetry().requiredHeatTemperatureDeci();
+    }
+
+    @Override
+    public int driveSpeedDeci() {
+        return telemetry().driveSpeedDeci();
+    }
+
+    @Override
+    public int driveMinimumDeci() {
+        return telemetry().driveMinimumDeci();
+    }
+
+    @Override
+    public int driveMaximumDeci() {
+        return telemetry().driveMaximumDeci();
+    }
+
+    @Override
+    public int driveCapacityDeci() {
+        return telemetry().driveCapacityDeci();
+    }
+
+    @Override
+    public int requiredDriveCapacityDeci() {
+        return telemetry().requiredDriveCapacityDeci();
+    }
+
+    @Override
+    public int processStageCode() {
+        return telemetry().processStageCode();
+    }
+
+    @Override
+    public int processDefinitionIndex() {
+        return telemetry().processDefinitionIndex();
     }
 
     @Override
     public int flags() {
-        return formed ? MachineContainerData.FLAG_FORMED : 0;
+        return (formed ? MachineContainerData.FLAG_FORMED : 0) | telemetry().flags();
     }
 
     public String processStage() {
         return processStage;
+    }
+
+    String processJob() {
+        return processJob;
     }
 
     public ResourceId boundDefinition() {
@@ -480,22 +570,6 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
                 }
             }
         }
-    }
-
-    @Override
-    public AABB getRenderBoundingBox() {
-        if (formed && geometry != null) {
-            AxisBox box = geometry.bounds();
-            return new AABB(
-                    box.minX(),
-                    box.minY(),
-                    box.minZ(),
-                    box.maxX() + 1.0,
-                    box.maxY() + 1.0,
-                    box.maxZ() + 1.0
-            );
-        }
-        return super.getRenderBoundingBox();
     }
 
     private void applyCrush() {
@@ -864,23 +938,40 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         if (stack.isEmpty() || definition().map(value -> !value.hasProcess()).orElse(true)) {
             return false;
         }
-        ItemStack existing = items.get(INPUT_SLOT);
-        int limit = getMaxStackSize();
-        if (existing.isEmpty()) {
-            items.set(INPUT_SLOT, stack.split(Math.min(stack.getCount(), limit)));
-            setChanged();
-            sync();
-            return true;
-        }
-        if (ItemStack.isSameItemSameTags(existing, stack) && existing.getCount() < limit) {
+        MachineLayout layout = layout();
+        int limit = Math.min(getMaxStackSize(), stack.getMaxStackSize());
+        boolean moved = false;
+        for (int slot : layout.inputSlots()) {
+            if (stack.isEmpty()) {
+                break;
+            }
+            ItemStack existing = items.get(slot);
+            if (existing.isEmpty()) {
+                continue;
+            }
+            if (!ItemStack.isSameItemSameTags(existing, stack) || existing.getCount() >= limit) {
+                continue;
+            }
             int move = Math.min(stack.getCount(), limit - existing.getCount());
             existing.grow(move);
             stack.shrink(move);
+            moved = true;
+        }
+        for (int slot : layout.inputSlots()) {
+            if (stack.isEmpty()) {
+                break;
+            }
+            if (!items.get(slot).isEmpty()) {
+                continue;
+            }
+            items.set(slot, stack.split(Math.min(stack.getCount(), limit)));
+            moved = true;
+        }
+        if (moved) {
             setChanged();
             sync();
-            return true;
         }
-        return false;
+        return moved;
     }
 
     public Optional<MultiblockDefinition> definition() {
@@ -892,6 +983,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     }
 
     public String debugDump() {
+        ControllerTelemetry telemetry = telemetry();
         return "multiblock formed=" + formed
                 + " access=" + access
                 + " controller=" + worldPosition
@@ -914,7 +1006,32 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
                 + " progress=" + processProgress + "/" + processDuration
                 + " bound=" + boundDefinition
                 + " targetC=" + targetTemperature
+                + " ambientC=" + formatTelemetry(telemetry.ambientTemperatureDeci(), 10.0)
+                + " heatC=" + formatTelemetry(telemetry.heatTemperatureDeci(), 10.0)
+                + " humidity=" + formatTelemetry(telemetry.humidityPermille(), 1000.0)
+                + " preferredC=" + formatTelemetry(telemetry.preferredTemperatureMinDeci(), 10.0)
+                + ".." + formatTelemetry(telemetry.preferredTemperatureMaxDeci(), 10.0)
+                + " operatingC=" + formatTelemetry(telemetry.operatingTemperatureMinDeci(), 10.0)
+                + ".." + formatTelemetry(telemetry.operatingTemperatureMaxDeci(), 10.0)
                 + " imprint=" + imprint.history().caskImprint();
+    }
+
+    private ControllerTelemetry telemetry() {
+        long gameTime = level == null ? Long.MIN_VALUE : level.getGameTime();
+        if (cachedTelemetry == null || telemetryGameTime != gameTime) {
+            cachedTelemetry = definition()
+                    .map(value -> ControllerTelemetry.capture(this, value))
+                    .orElse(null);
+            telemetryGameTime = gameTime;
+        }
+        if (cachedTelemetry == null) {
+            throw new IllegalStateException("Missing multiblock definition " + definitionId);
+        }
+        return cachedTelemetry;
+    }
+
+    private static String formatTelemetry(int value, double scale) {
+        return value == MachineAccess.DATA_UNAVAILABLE ? "-" : Double.toString(value / scale);
     }
 
     private boolean yeastMatches(ProcessRuntime runtime, ItemStack stack) {
@@ -1103,7 +1220,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
 
     @Override
     public int getContainerSize() {
-        return definition().map(value -> value.hasProcess() ? 2 : 0).orElse(2);
+        return definition().map(value -> value.hasProcess() ? layout().machineSlotCount() : 0).orElse(layout().machineSlotCount());
     }
 
     @Override
@@ -1155,22 +1272,23 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
             if (!value.hasProcess()) {
                 return new int[0];
             }
+            MachineLayout layout = layout();
             if (inputOnlyProcess(value)) {
-                return new int[]{INPUT_SLOT};
+                return layout.inputSlots();
             }
-            return direction == Direction.DOWN ? new int[]{OUTPUT_SLOT} : new int[]{INPUT_SLOT};
-        }).orElse(new int[]{INPUT_SLOT});
+            return direction == Direction.DOWN ? layout.outputSlots() : layout.inputSlots();
+        }).orElse(layout().inputSlots());
     }
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction direction) {
-        return access.canFill() && slot == INPUT_SLOT;
+        return access.canFill() && layout().isInput(slot);
     }
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction direction) {
         return access.canDrain()
-                && (slot == OUTPUT_SLOT || inputOnlyProcess());
+                && (layout().isOutput(slot) || inputOnlyProcess());
     }
 
     private boolean inputOnlyProcess() {

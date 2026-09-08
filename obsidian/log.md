@@ -64,3 +64,6 @@ title: Wiki Log
 - [2026-08-28T22:30:00+02:00] INGEST source="C:/Users/djden/source/repos/Alcoholic/docs/guides/shaders.md" pages_updated=1 pages_created=1 mode=append
 - [2026-08-28T22:30:00+02:00] CURSOR_HISTORY_INGEST conversations=4 pages_updated=3 pages_created=1 mode=append skipped_subagents=true topic="progression graph + world fluids + shaders"
 - [2026-08-28T22:32:00+02:00] QMD_REFRESH collection="alcoholic-wiki" action=update+embed indexed="11 new, 17 updated" embedded="96 chunks / 30 documents"
+- [2026-09-08T20:30:00+02:00] CURSOR_HISTORY_INGEST conversations=22 pages_updated=12 pages_created=10 mode=append skipped_subagents=true topic="quality DAG + craft scale + cask imprint + sickle harvest + bottle stands + JEI telemetry"
+- [2026-09-08T20:30:00+02:00] CODEX_HISTORY_INGEST sessions=51 pages_updated=12 pages_created=10 mode=append topic="Alcoholic cwd Aug 28–Sep 8 (mirrors Cursor plus bottle stands Codex)"
+- [2026-09-08T20:32:00+02:00] QMD_REFRESH collection="alcoholic-wiki" action=update+embed indexed="10 new, 18 updated" embedded="71 chunks / 28 documents"

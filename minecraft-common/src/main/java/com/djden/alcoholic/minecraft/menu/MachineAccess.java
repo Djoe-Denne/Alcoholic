@@ -19,6 +19,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.List;
 
 public interface MachineAccess extends MenuProvider {
+    int DATA_UNAVAILABLE = -32_768;
+
     MachineLayout layout();
 
     /**
@@ -58,6 +60,70 @@ public interface MachineAccess extends MenuProvider {
 
     default int temperatureDeci() {
         return 0;
+    }
+
+    default int ambientTemperatureDeci() {
+        return DATA_UNAVAILABLE;
+    }
+
+    default int heatTemperatureDeci() {
+        return DATA_UNAVAILABLE;
+    }
+
+    default int humidityPermille() {
+        return DATA_UNAVAILABLE;
+    }
+
+    default int preferredTemperatureMinDeci() {
+        return DATA_UNAVAILABLE;
+    }
+
+    default int preferredTemperatureMaxDeci() {
+        return DATA_UNAVAILABLE;
+    }
+
+    default int operatingTemperatureMinDeci() {
+        return DATA_UNAVAILABLE;
+    }
+
+    default int operatingTemperatureMaxDeci() {
+        return DATA_UNAVAILABLE;
+    }
+
+    default int requiredHumidityPermille() {
+        return DATA_UNAVAILABLE;
+    }
+
+    default int requiredHeatTemperatureDeci() {
+        return DATA_UNAVAILABLE;
+    }
+
+    default int driveSpeedDeci() {
+        return DATA_UNAVAILABLE;
+    }
+
+    default int driveMinimumDeci() {
+        return DATA_UNAVAILABLE;
+    }
+
+    default int driveMaximumDeci() {
+        return DATA_UNAVAILABLE;
+    }
+
+    default int driveCapacityDeci() {
+        return DATA_UNAVAILABLE;
+    }
+
+    default int requiredDriveCapacityDeci() {
+        return DATA_UNAVAILABLE;
+    }
+
+    default int processStageCode() {
+        return MachineProcessStage.IDLE.ordinal();
+    }
+
+    default int processDefinitionIndex() {
+        return DATA_UNAVAILABLE;
     }
 
     default int extra() {

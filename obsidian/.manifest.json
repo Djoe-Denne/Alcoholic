@@ -450,10 +450,10 @@
       "pages_updated": []
     },
     "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-11-32-01a03f45-29de-7df3-a840-d62271c376d5.jsonl": {
-      "ingested_at": "2026-08-27T13:30:00+02:00",
-      "size_bytes": 8043517,
-      "modified_at": "2026-08-26T18:11:38.2181188Z",
-      "content_hash": "sha256:1c9149491d62b2ef44a0746a2cf577e4fa01a08134fe5229ffce8c1db2cb6dd3",
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 38778401,
+      "modified_at": "2026-08-27T18:20:08.800774Z",
+      "content_hash": "sha256:305d6b91f19fb7e1a6e93dcd3746b5067ec47c0ffbb79467585af43ccbe5ac9b",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [
@@ -462,9 +462,9 @@
       "pages_updated": []
     },
     "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-15-09-01a03f48-7af6-7513-a3c9-b297e81b7a96.jsonl": {
-      "ingested_at": "2026-08-27T13:30:00+02:00",
+      "ingested_at": "2026-09-08T20:30:00+02:00",
       "size_bytes": 9568403,
-      "modified_at": "2026-08-26T18:48:03.1412710Z",
+      "modified_at": "2026-08-26T18:48:03.141271Z",
       "content_hash": "sha256:df5f47376fd4b3434851940d6449ebd050fe3a988cbf88304def3b431a885c1e",
       "source_type": "codex_rollout",
       "project": "alcoholic",
@@ -486,9 +486,9 @@
       ]
     },
     "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-28-31-01a03f54-b465-7cc3-9e92-2bcfc0c8e291.jsonl": {
-      "ingested_at": "2026-08-27T13:30:00+02:00",
+      "ingested_at": "2026-09-08T20:30:00+02:00",
       "size_bytes": 1411414,
-      "modified_at": "2026-08-26T18:49:44.3419878Z",
+      "modified_at": "2026-08-26T18:49:44.341988Z",
       "content_hash": "sha256:1c5b3db53545f0fc3aab34d7311000bafdb87bd3e36f55866f94987a395e4a6c",
       "source_type": "codex_rollout",
       "project": "alcoholic",
@@ -499,9 +499,9 @@
       "pages_updated": []
     },
     "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-48-08-01a03f66-acf1-7931-95db-a9b0b9d8961f.jsonl": {
-      "ingested_at": "2026-08-27T13:30:00+02:00",
+      "ingested_at": "2026-09-08T20:30:00+02:00",
       "size_bytes": 34613083,
-      "modified_at": "2026-08-27T09:25:19.4882161Z",
+      "modified_at": "2026-08-27T09:25:19.488216Z",
       "content_hash": "sha256:e343e569be29ff62c9eabb8134fe5f543ddaae0cbc02de83486343a33aab2e97",
       "source_type": "codex_rollout",
       "project": "alcoholic",
@@ -514,9 +514,9 @@
       ]
     },
     "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T20-56-07-01a03f6d-f9dd-71c2-8d26-3fc369bd905a.jsonl": {
-      "ingested_at": "2026-08-27T13:30:00+02:00",
+      "ingested_at": "2026-09-08T20:30:00+02:00",
       "size_bytes": 35390572,
-      "modified_at": "2026-08-27T09:21:25.8466928Z",
+      "modified_at": "2026-08-27T09:21:25.846693Z",
       "content_hash": "sha256:b43ef442a18da05ee032f867ea838cdf256f5b9967587c6658cbbe010e017db0",
       "source_type": "codex_rollout",
       "project": "alcoholic",
@@ -529,9 +529,9 @@
       ]
     },
     "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T21-26-14-01a03f89-8bc5-7140-aa48-215bf4ba51ed.jsonl": {
-      "ingested_at": "2026-08-27T13:30:00+02:00",
+      "ingested_at": "2026-09-08T20:30:00+02:00",
       "size_bytes": 31197,
-      "modified_at": "2026-08-26T19:26:14.1500961Z",
+      "modified_at": "2026-08-26T19:26:14.150096Z",
       "content_hash": "sha256:eee2e99faa03bfece0da7b713d176b97bcf817680cce2e7129973450334e72e2",
       "source_type": "codex_rollout",
       "project": "alcoholic",
@@ -541,10 +541,10 @@
       "pages_updated": []
     },
     "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T21-27-11-01a03f89-8bc5-7140-aa48-215bf4ba51ed_01a03f8a-6d29-7862-943b-e0e09c706834.jsonl": {
-      "ingested_at": "2026-08-27T13:30:00+02:00",
-      "size_bytes": 37934619,
-      "modified_at": "2026-08-27T10:52:17.9227973Z",
-      "content_hash": "sha256:6a315ffb13e65766a372ec3d995b478fc7ac2dd3d0c835458499230f9f5705b0",
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 64178444,
+      "modified_at": "2026-08-27T13:43:38.223555Z",
+      "content_hash": "sha256:b803bff1e73e385d35e3be98c177e3a97659b60bf5caa73962f7c5997d1c07b3",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [
@@ -679,10 +679,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-44-01a03d10-7901-7bb1-9920-2ca64e915e7b.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 49470,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 52401,
       "modified_at": "2026-08-26T07:54:44.867436Z",
-      "content_hash": "sha256:ba7ea052419051a2625266d53640049982c4b5b10ff06dcc1c632db6de67be36",
+      "content_hash": "sha256:e04f0d22aca17c430d323ca443dce22ed3c4c1a350958f7d87551dfe52b2f9c9",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -691,10 +691,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-44-01a03d10-7905-74e3-a217-68f9e2d500a1.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 139924,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 146842,
       "modified_at": "2026-08-26T07:54:44.871258Z",
-      "content_hash": "sha256:7c9c09a15b87bd3ddfa7fd4771ede8ad54969ba5d44e76686ec24ff0cbdca142",
+      "content_hash": "sha256:fc47ea8a8633138bdf307c12dbc2e10163596c725e7c1cc354f854ccc186b889",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -703,10 +703,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-44-01a03d10-7907-70e0-88b7-3a0ed2ce9b9b.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 245211,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 250842,
       "modified_at": "2026-08-26T07:54:44.872723Z",
-      "content_hash": "sha256:ba1185d361dcbd79ebe95111171ad44ba953eabdf2858b0236bc1a333ced550d",
+      "content_hash": "sha256:d24180fe99ecab38bc5fabcdef156c2d49045ad38a21310718ca384ad7855725",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -715,10 +715,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-44-01a03d10-790a-71b0-995d-4a41fb0b1339.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 305248,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 317915,
       "modified_at": "2026-08-26T07:54:44.875951Z",
-      "content_hash": "sha256:d040cd339b3fb5bb36f6765554be988ec8a2f5ac9de8f52869bfb9be7890cbca",
+      "content_hash": "sha256:7b5c586c109a080f203710b2438358382918a41a8f1bebc80325c7550e00fffa",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -727,10 +727,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-44-01a03d10-790e-7f82-8e35-4984ce02c8dc.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 621111,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 663489,
       "modified_at": "2026-08-26T15:30:15.181043Z",
-      "content_hash": "sha256:5ede4d893315acba8aa961b873ad5953386b84f2c95962e2137ea9bdb8f15a5d",
+      "content_hash": "sha256:510775eaef5871ed9ba78da488a1c97a80041b7334fa9e8a41859bbb2d657595",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -739,10 +739,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-45-01a03d10-7cf2-7651-b5f1-5df7285d023d.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 54343,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 57814,
       "modified_at": "2026-08-26T07:54:45.875284Z",
-      "content_hash": "sha256:dd44dd9897be32c57a45d93197a513976082327bdd7ba3a81bcb58c630f7bed6",
+      "content_hash": "sha256:9c8beb1725e4fc8daa6eef6dad1cbf4123b3bea791c97ac7c0e59eb0831d3311",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -751,10 +751,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-45-01a03d10-7d14-7de3-b2c9-50c1f64e9dc4.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 138432,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 146457,
       "modified_at": "2026-08-26T07:54:45.910693Z",
-      "content_hash": "sha256:0cb50f189e5e9d6c5b77e0fcba7a88802884b457bd180d6e6a4deb11f2e8fcff",
+      "content_hash": "sha256:6cc2020b31a3df30fe1b33ea3b58c2c8201657ee572e95a96ae223957c6938c8",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -763,10 +763,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-45-01a03d10-7d4b-7eb2-8a22-23abba862f6e.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 1124449,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 1167577,
       "modified_at": "2026-08-26T07:54:45.965494Z",
-      "content_hash": "sha256:2bf25f6a2a811529a656339542b10db5a3af098fcff990a3709349002b071d1f",
+      "content_hash": "sha256:89ef2c0de5fc6080238f6bbc9afb927a726511bc92a111bf6560285be9b0ce93",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -775,10 +775,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7db2-7d22-8cbe-ec4f07339a5e.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 217046,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 231343,
       "modified_at": "2026-08-26T07:54:46.068267Z",
-      "content_hash": "sha256:d3a5050f59ffc486d8c54cf17ea98790f1f45319d7993ea1485ca51c1dc9ce92",
+      "content_hash": "sha256:01b3a64e80781c6274445d5188fbd9574c98162449c5b353b16f2be264757543",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -787,10 +787,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7dc6-7cd3-8917-6a3959ca378c.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 270344,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 290784,
       "modified_at": "2026-08-26T07:54:46.088054Z",
-      "content_hash": "sha256:871cd815695ea9b7e7f9efd9d68517039f6daad9d66dfe8bccd89f774d645051",
+      "content_hash": "sha256:85d218295689f842bb46610739cce9472a38a2fdc2e3309e42ed8931e2022104",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -799,10 +799,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7e09-7f73-ba04-07c3c999bc89.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 201330,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 208194,
       "modified_at": "2026-08-26T07:54:46.155161Z",
-      "content_hash": "sha256:8b63a41c6b34454858a7cbb5bcb86e19c465fc6999c63bb113ecc51ab58f93f5",
+      "content_hash": "sha256:47b50eb3a7233300c4eb6f512b4fbf48840f7c8d4f2da8594112691ae944e3a8",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -811,10 +811,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7e21-7780-a129-497c90d14d5f.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 974766,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 1002189,
       "modified_at": "2026-08-26T07:54:46.179370Z",
-      "content_hash": "sha256:8e56d3919f74d49b6a2b75b88f71f77d2541e46437e29f2333f448bcb1e216ec",
+      "content_hash": "sha256:9c0784920c4e013f91fc6553b757d1a98f6859a7e227972f0a6b21a70ac149d5",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -823,10 +823,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7e50-75a1-a678-7ec34ee2fcac.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 968022,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 995079,
       "modified_at": "2026-08-26T07:54:46.226737Z",
-      "content_hash": "sha256:c3ff7b3e3e16d64066e9ebffc00baf5acc5d1fe9ea5ebb46cd695c30a21be100",
+      "content_hash": "sha256:097b295e07b86eb7f45e21ec6a528da05677707509cdf45a5633b50d0acb6c8f",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -835,10 +835,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7eba-7b10-ba3d-f257a6883247.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 1066167,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 1097404,
       "modified_at": "2026-08-26T07:54:46.332793Z",
-      "content_hash": "sha256:1820d0bec99aacb6bc32ce38c9d846e612826e1d071cf5fe38e9705c0a39a623",
+      "content_hash": "sha256:196c828a71be29b9c9bb1b1937a1df37d18559ee1869935ded271e36345e003f",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -847,10 +847,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7ecc-7ed3-843e-f0af8e8b8f37.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 707229,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 723499,
       "modified_at": "2026-08-26T07:54:46.350328Z",
-      "content_hash": "sha256:ad02c64471c22f8e1f78bc2d6ce6ac97f329e28f34c27e0aeb1e320a8a65d0ab",
+      "content_hash": "sha256:6ff6e56f8c03ba6fb8d753b70dd42ef25e3a83dbc5962d9dd53701276b2db7e6",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -859,10 +859,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7f0a-7cf1-9937-abe08c699cef.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 467834,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 491024,
       "modified_at": "2026-08-26T07:54:46.411787Z",
-      "content_hash": "sha256:8a6131bf8eb5f26d41be079e6ab55bba6f5ca620b581b2a855d9544326051cb8",
+      "content_hash": "sha256:9be8e02449ddfc1356d99ce9f2926f11f8ca211788c404b4c3f2b19ee854437f",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -871,10 +871,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T09-54-46-01a03d10-7f27-7773-b2cd-2153bd010b26.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 474456,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 505115,
       "modified_at": "2026-08-26T07:54:46.441319Z",
-      "content_hash": "sha256:99d58816aebdf67192a1d95cf2fb109c91c961f67b0195566e6e588681cbd952",
+      "content_hash": "sha256:47700529f01c16e7cd3f0d0bc82e0be36ef38ea00c87cab397f523d38af73151",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -883,10 +883,10 @@
       ]
     },
     "C:/Users\\djden\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T20-44-02-01a03f62-e9dc-7663-b9a1-4d28c8337b60.jsonl": {
-      "ingested_at": "2026-08-27T16:20:00+02:00",
-      "size_bytes": 596923,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 627489,
       "modified_at": "2026-08-26T18:44:02.145749Z",
-      "content_hash": "sha256:11d31e05de23d93c2c8bfb0e6ab07d0cca7002948dbee4673524eb4dfc772b9e",
+      "content_hash": "sha256:2b3ccaf9c0bdfee8462da84a0e67209add90b3f9b33308a60bede242581cbe47",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -1155,10 +1155,10 @@
       "pages_updated": []
     },
     "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T18-13-41-01a04925-fc7d-7b00-a62c-418b9a0d4ce5.jsonl": {
-      "ingested_at": "2026-08-28T19:15:00+02:00",
-      "size_bytes": 3762007,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 4431369,
       "modified_at": "2026-08-28T16:13:43.026163Z",
-      "content_hash": "sha256:9659c08ecee87103284d821e870da6fce2defed24c8052d2d9e4ecf35b06a592",
+      "content_hash": "sha256:3864c3916e212337b2c8f194b911581df8dce5221a1122e692b263bcb699f876",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [
@@ -1169,7 +1169,7 @@
       ]
     },
     "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T10-21-04-01a04775-4a1a-7b80-807e-9819ea5e87b4.jsonl": {
-      "ingested_at": "2026-08-28T19:15:00+02:00",
+      "ingested_at": "2026-09-08T20:30:00+02:00",
       "size_bytes": 2993962,
       "modified_at": "2026-08-28T08:21:05.163830Z",
       "content_hash": "sha256:f4d299250f0d078d5e7c9019d76830d630a0ba95fdab704366fd76a5a1874ee7",
@@ -1184,10 +1184,10 @@
       ]
     },
     "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T09-50-29-01a04759-4c09-7432-8f38-5610849e1278.jsonl": {
-      "ingested_at": "2026-08-28T19:15:00+02:00",
-      "size_bytes": 97792,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 104764,
       "modified_at": "2026-08-28T07:50:29.643584Z",
-      "content_hash": "sha256:baffdcf3548f62ba98dec407130ee86eaf1ec13d3ad9f9be89171f638c7fc8b1",
+      "content_hash": "sha256:86eb4c82bbb7d8525756cc87fe870ead764c95c273015e0e7af1ca305f70ceb4",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [
@@ -1198,10 +1198,10 @@
       ]
     },
     "C:/Users/djden/.codex/sessions/2026/08/27/rollout-2026-08-27T23-08-37-01a0450d-a643-7210-9b1a-17b0f9c8cf42.jsonl": {
-      "ingested_at": "2026-08-28T19:15:00+02:00",
-      "size_bytes": 48287,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 50678,
       "modified_at": "2026-08-27T21:08:37.572980Z",
-      "content_hash": "sha256:cfbd9a03f520346c906f5b50453b43093d3f708ea3616d353478f4158ec213fb",
+      "content_hash": "sha256:41c54d589dd086e95f44ff6978abe4b7c95d2e58e81c4b8e13678eaeefce20c6",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -1211,10 +1211,10 @@
       ]
     },
     "C:/Users/djden/.codex/sessions/2026/08/27/rollout-2026-08-27T23-08-37-01a0450d-a629-7410-b80e-56b465dbd02b.jsonl": {
-      "ingested_at": "2026-08-28T19:15:00+02:00",
-      "size_bytes": 292380,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 305643,
       "modified_at": "2026-08-27T21:08:37.547481Z",
-      "content_hash": "sha256:e8895b4be2dd1e70aedd66e2bf64a035ce3a4eb2abdbfa950d91c5720c07bbdb",
+      "content_hash": "sha256:2c1d8bb305fb0743274d52bd462ba20fc05c780cbe95b797a6505674779bb70f",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -1224,10 +1224,10 @@
       ]
     },
     "C:/Users/djden/.codex/sessions/2026/08/27/rollout-2026-08-27T23-08-37-01a0450d-a5de-7331-8f2b-285decbc74a0.jsonl": {
-      "ingested_at": "2026-08-28T19:15:00+02:00",
-      "size_bytes": 449780,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 474333,
       "modified_at": "2026-08-27T21:08:37.471766Z",
-      "content_hash": "sha256:acd54c8d426e06218223057cedf1dd05464c75869f93c8657ff4d94768e001af",
+      "content_hash": "sha256:2200cc5e50932ec49b30a34e17a736537b422ba1c09ef4d08fdcbd8be8c152da",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [
@@ -1238,10 +1238,10 @@
       ]
     },
     "C:/Users/djden/.codex/sessions/2026/08/27/rollout-2026-08-27T23-08-37-01a0450d-a4ff-7ca0-8ac6-e2a4683ece62.jsonl": {
-      "ingested_at": "2026-08-28T19:15:00+02:00",
-      "size_bytes": 230791,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 241543,
       "modified_at": "2026-08-27T21:08:37.251829Z",
-      "content_hash": "sha256:04798d9ebc427873b6cc9a167c5884659c71a114e1851c993690b4c0ed1c0f1f",
+      "content_hash": "sha256:564d426e5f2586df6caa6a5b2b8a8800db351491aae0f4f7e07849265ffce829",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -1250,10 +1250,10 @@
       ]
     },
     "C:/Users/djden/.codex/sessions/2026/08/27/rollout-2026-08-27T23-08-37-01a0450d-a4b9-7cd1-a0a2-08887b2811c0.jsonl": {
-      "ingested_at": "2026-08-28T19:15:00+02:00",
-      "size_bytes": 184038,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 190209,
       "modified_at": "2026-08-27T21:08:37.179446Z",
-      "content_hash": "sha256:7710b883bcfd1864832faf2c39f28486ace0a36aafd5b9e18584ec77c69d9fc2",
+      "content_hash": "sha256:b3eff061b75ca7d8263f619497919fa6ba49a5c96c6b154d958a1e9e4a741651",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -1262,10 +1262,10 @@
       ]
     },
     "C:/Users/djden/.codex/sessions/2026/08/27/rollout-2026-08-27T23-08-37-01a0450d-a4aa-7a51-82a1-554b8014ccb5.jsonl": {
-      "ingested_at": "2026-08-28T19:15:00+02:00",
-      "size_bytes": 294283,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 314511,
       "modified_at": "2026-08-27T21:08:37.164658Z",
-      "content_hash": "sha256:c9a15fb09a1bfd1198e026f89c062f716f46275c5e124c36e36b0290f2d139cb",
+      "content_hash": "sha256:e334c48059cf35a0de4dddb1acb43c66f3c64e5978f49de05c61662e259d1e52",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [
@@ -1277,10 +1277,10 @@
       ]
     },
     "C:/Users/djden/.codex/sessions/2026/08/27/rollout-2026-08-27T23-08-37-01a0450d-a4a8-75e2-b41b-723b9dfa7162.jsonl": {
-      "ingested_at": "2026-08-28T19:15:00+02:00",
-      "size_bytes": 99446,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 104897,
       "modified_at": "2026-08-27T21:08:37.162173Z",
-      "content_hash": "sha256:147ddc43dfe83555b5493f79791adae8d26954674fe3fac3ad0cf8e5751fbb1e",
+      "content_hash": "sha256:07a3f81a18bdf729501f0c89bd376b92d1495b1c037f840f1755d62dbe514817",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [
@@ -1289,10 +1289,10 @@
       "pages_updated": []
     },
     "C:/Users/djden/.codex/sessions/2026/08/27/rollout-2026-08-27T23-08-37-01a0450d-a483-7831-b80c-dd206832e601.jsonl": {
-      "ingested_at": "2026-08-28T19:15:00+02:00",
-      "size_bytes": 137391,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 143382,
       "modified_at": "2026-08-27T21:08:37.125714Z",
-      "content_hash": "sha256:4d60c3a8f2718f5e500de11bddd2a7610f6cb72ef492402c5375fca8ec6a033b",
+      "content_hash": "sha256:41de736998045b0d9af0920f98bad82e174ba5d8509e6ac4d1c9e6051040a43a",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [],
@@ -1301,10 +1301,10 @@
       ]
     },
     "C:/Users/djden/.codex/sessions/2026/08/27/rollout-2026-08-27T23-08-36-01a0450d-a2aa-7822-aa7e-9924e1f0c3e5.jsonl": {
-      "ingested_at": "2026-08-28T19:15:00+02:00",
-      "size_bytes": 1375601,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 1469815,
       "modified_at": "2026-08-27T21:08:36.653409Z",
-      "content_hash": "sha256:98977162cb0729a610a26f0a0cb218e717db577a4c4c9a82fbdc5bd7f8492255",
+      "content_hash": "sha256:14c1b9ccaf5bb2787006f91ae0941d7985fa9b09ce82815f1b3269b6aa7daff8",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [
@@ -1315,10 +1315,10 @@
       ]
     },
     "C:/Users/djden/.codex/sessions/2026/08/27/rollout-2026-08-27T23-08-36-01a0450d-a2a0-7071-9865-e65bfb14126a.jsonl": {
-      "ingested_at": "2026-08-28T19:15:00+02:00",
-      "size_bytes": 129909,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 142378,
       "modified_at": "2026-08-27T21:08:36.642381Z",
-      "content_hash": "sha256:2698eeefbcdbee7b5bcb8526f7cfc5d2e452320765522644667334954889f85c",
+      "content_hash": "sha256:928e9d3798668c1d8f86f40d9528e028cbd2dc92c74f721e2f4231dd5e240c41",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [
@@ -1329,10 +1329,10 @@
       ]
     },
     "C:/Users/djden/.codex/sessions/2026/08/27/rollout-2026-08-27T23-08-36-01a0450d-a29e-78a3-b545-9a95ead96c0d.jsonl": {
-      "ingested_at": "2026-08-28T19:15:00+02:00",
-      "size_bytes": 222735,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 236323,
       "modified_at": "2026-08-27T21:08:36.640658Z",
-      "content_hash": "sha256:937d31d9bc8a2deab636527a3e7c1492156bf5c5d10195e101e39e8491fe2ffd",
+      "content_hash": "sha256:f753830969e2e860dd07f1033d08bc14db09c50035f2be6770d297e9c5eda129",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [
@@ -1343,10 +1343,10 @@
       ]
     },
     "C:/Users/djden/.codex/sessions/2026/08/27/rollout-2026-08-27T23-08-36-01a0450d-a29b-7011-a273-bf49721dd0f2.jsonl": {
-      "ingested_at": "2026-08-28T19:15:00+02:00",
-      "size_bytes": 90965,
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 95876,
       "modified_at": "2026-08-27T21:08:36.638741Z",
-      "content_hash": "sha256:de4e6738ed2d8a6296b05d534a5b7e0f32b2979d6aa8c9cea5cbe0a95d8f7862",
+      "content_hash": "sha256:483863e73fc186f4680c63d444984725cf48444b11a6909ab274c9ade91b0bbc",
       "source_type": "codex_rollout",
       "project": "alcoholic",
       "pages_created": [
@@ -1357,7 +1357,7 @@
       ]
     },
     "C:/Users/djden/.codex/sessions/2026/08/27/rollout-2026-08-27T20-23-24-01a04476-63b6-7753-9dbc-0aef51083da8.jsonl": {
-      "ingested_at": "2026-08-28T19:15:00+02:00",
+      "ingested_at": "2026-09-08T20:30:00+02:00",
       "size_bytes": 170906430,
       "modified_at": "2026-08-27T18:23:53.233521Z",
       "content_hash": "sha256:5fa8ac63f00060154df255e4ab7997b737fe51e963bb5afcae8b4df13254d3f4",
@@ -1366,8 +1366,7 @@
       "pages_created": [],
       "pages_updated": [
         "projects/alcoholic/concepts/resource-pack-resolution-chain.md"
-      ],
-      "note": "meta-only 170MB AGENTS+items/plants 512 campaign"
+      ]
     },
     "C:/Users/djden/source/repos/Alcoholic/docs/adr/ADR-033-advancements-as-progression-source.md": {
       "ingested_at": "2026-08-28T22:30:00+02:00",
@@ -1525,12 +1524,1403 @@
         "projects/alcoholic/concepts/shader-world-fluids.md",
         "projects/alcoholic/references/cursor-progression-and-fluids-session.md"
       ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/0071757b-137d-401f-bb1e-dcfded953f4b/0071757b-137d-401f-bb1e-dcfded953f4b.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 44426,
+      "modified_at": "2026-08-29T18:26:08.382904Z",
+      "content_hash": "sha256:f3a59aeb379bdeaf46f01a143f5f8e1b42b3508c4d9005f834150022d01f6106",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/1f859963-909b-4bc5-95bf-fa062cec9ef8/1f859963-909b-4bc5-95bf-fa062cec9ef8.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 30397,
+      "modified_at": "2026-08-29T19:28:52.133246Z",
+      "content_hash": "sha256:fef22755a222dba181aa9ec3651ff479c93868b11514a60179b456200de09f4a",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/25e2e859-8571-4ecd-8485-7291dda5b8a4/25e2e859-8571-4ecd-8485-7291dda5b8a4.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 416573,
+      "modified_at": "2026-08-31T16:40:41.479710Z",
+      "content_hash": "sha256:518ddf0cf647dc6d23eb475b2cac898d7e5eb47636bb981b6458446075aa5eb2",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/cask-imprint.md",
+        "projects/alcoholic/concepts/column-harvest.md",
+        "projects/alcoholic/concepts/bottle-stands.md",
+        "projects/alcoholic/references/cursor-cask-hedging-stands-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/311c7aac-40ca-404b-b8c5-4d789891da7c/311c7aac-40ca-404b-b8c5-4d789891da7c.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 865560,
+      "modified_at": "2026-08-29T18:15:00.182419Z",
+      "content_hash": "sha256:358035d2f0949cb638b2f273a7c3d612affcc2259d4d131dfd764032dfc837d9",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/312a15fc-37d5-4e6c-bd14-00f96c8bcefb/312a15fc-37d5-4e6c-bd14-00f96c8bcefb.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 127343,
+      "modified_at": "2026-09-08T17:43:50.895678Z",
+      "content_hash": "sha256:612a3d8a6a4908b59ff94af6e67e070191119418a87c8d8350036ee7c2abe2a0",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/machine-controller-telemetry.md",
+        "projects/alcoholic/references/cursor-machine-gui-and-malting-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/35939915-e6c3-454c-893c-739ef06adb44/35939915-e6c3-454c-893c-739ef06adb44.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 255655,
+      "modified_at": "2026-08-30T10:58:31.973274Z",
+      "content_hash": "sha256:aa91808441ec262b136ad57c8a398a8ae3d99a2c557e06c973c922670952dae9",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/395afd28-47db-450c-983a-c0898a882e46/395afd28-47db-450c-983a-c0898a882e46.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 182820,
+      "modified_at": "2026-08-29T19:07:26.552890Z",
+      "content_hash": "sha256:84665b97c47b55a0d1f0f10b92e434be0141604bed4a32fc93776a3ccf50e8db",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/52522358-20cc-4e9b-a6e0-931cc0a61e1e/52522358-20cc-4e9b-a6e0-931cc0a61e1e.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 74831,
+      "modified_at": "2026-09-02T18:28:41.059076Z",
+      "content_hash": "sha256:acc4180c959a3d9540566c29f84b5a78eb23eafbd106de75fac6daf072ebd180",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/610d3964-ec84-4b8f-b994-76b029026bf1/610d3964-ec84-4b8f-b994-76b029026bf1.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 20796,
+      "modified_at": "2026-09-02T16:47:01.130384Z",
+      "content_hash": "sha256:6c19cdecb3694972546359bf6241285aa48ef406c2de2d9fe9f50c9b16eb701e",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/66c0e8af-3d6f-489a-8192-af11971e4288/66c0e8af-3d6f-489a-8192-af11971e4288.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 53924,
+      "modified_at": "2026-08-30T14:04:49.495891Z",
+      "content_hash": "sha256:67833fe46d0808c02d41c3a1d0251db5cd0b1aa3474e4fe8bb3cee8ce7312467",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/70bd14d5-9768-41dd-8ccf-8b3463491a05/70bd14d5-9768-41dd-8ccf-8b3463491a05.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 16079,
+      "modified_at": "2026-08-29T17:27:55.826262Z",
+      "content_hash": "sha256:9b73d2cc26f9b07dfc03a69cc79553139641335a0f95b61b2425ed7a879b391e",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/7b4a17a0-17a3-46e1-a96d-1d85140832a6/7b4a17a0-17a3-46e1-a96d-1d85140832a6.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 202738,
+      "modified_at": "2026-08-29T09:08:42.688981Z",
+      "content_hash": "sha256:a040d952bba5f2ca49092245d92fcac1f75645f058fc0b0f3f6f859d8b6cc9ae",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/86cc18fc-6ee4-4cf0-8dbb-32844df14b88/86cc18fc-6ee4-4cf0-8dbb-32844df14b88.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 146082,
+      "modified_at": "2026-09-02T17:12:16.227431Z",
+      "content_hash": "sha256:b9c37e9e64273245dc9608494d8b24c9e4acad2f304e073e891a2f7d01dd1436",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/cask-imprint.md",
+        "projects/alcoholic/concepts/column-harvest.md",
+        "projects/alcoholic/concepts/bottle-stands.md",
+        "projects/alcoholic/references/cursor-cask-hedging-stands-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/8ae6a9b0-ebde-4b52-aa01-6a7cc1bcd11e/8ae6a9b0-ebde-4b52-aa01-6a7cc1bcd11e.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 72216,
+      "modified_at": "2026-08-28T20:26:31.958085Z",
+      "content_hash": "sha256:33aeba89454b121d0b52dd90ea0f7c84d3026c0e5913b66d030b435d79550b67",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/8c272bd6-e0a7-4308-a570-3ffc46fba14f/8c272bd6-e0a7-4308-a570-3ffc46fba14f.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 3417,
+      "modified_at": "2026-08-29T18:34:29.415448Z",
+      "content_hash": "sha256:bc8d4218f29ebcde5426c230e9ac0906c625db177fab427a5eb1536508831360",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/92d1db22-5e86-4287-a2c3-f2e11c0cfb5a/92d1db22-5e86-4287-a2c3-f2e11c0cfb5a.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 60723,
+      "modified_at": "2026-08-29T07:33:01.146577Z",
+      "content_hash": "sha256:c1819fa103d95a60c58c95cf306645cdd2a80ff12f38d55890ecc80a41bcce75",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/9d899962-c13d-474a-9cb7-59e0ef74ca71/9d899962-c13d-474a-9cb7-59e0ef74ca71.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 175319,
+      "modified_at": "2026-08-29T16:32:16.940106Z",
+      "content_hash": "sha256:daa1ca0cb1d9d54bc8425e8ddd20999ea900cb8099d26f1b72a334f0bcd848f5",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/c1fe1ca7-b44b-4208-8155-4cb69e690435/c1fe1ca7-b44b-4208-8155-4cb69e690435.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 27900,
+      "modified_at": "2026-09-08T18:21:22.450177Z",
+      "content_hash": "sha256:2ac7699e465b4315d10910de15275c88b8e15ff6d2de545c906cf03003292794",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/machine-controller-telemetry.md",
+        "projects/alcoholic/references/cursor-machine-gui-and-malting-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/c8466d25-e6cc-4161-8f4d-8a9407f73275/c8466d25-e6cc-4161-8f4d-8a9407f73275.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 135563,
+      "modified_at": "2026-08-29T17:06:37.223662Z",
+      "content_hash": "sha256:6a793f5f93d19562a6f957b67209370e265339b6e29ed8fb9dddc74af7a84dba",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/d649689c-f6f6-42e4-bef7-be193c16d93e/d649689c-f6f6-42e4-bef7-be193c16d93e.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 67319,
+      "modified_at": "2026-09-08T15:38:08.854266Z",
+      "content_hash": "sha256:154ce4f6198b6e2e7a1d8c13a0fcf22d9e2eabf29c1e3cc8d5073c5921a2b9de",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/machine-controller-telemetry.md",
+        "projects/alcoholic/references/cursor-machine-gui-and-malting-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/dec23900-7d59-4696-8496-06d52c033486/dec23900-7d59-4696-8496-06d52c033486.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 162673,
+      "modified_at": "2026-09-02T18:01:42.637337Z",
+      "content_hash": "sha256:4f816bfb219df881a7c3c11ed21938fb48f7dfb0b184d9978640ab7b1993f02d",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/cask-imprint.md",
+        "projects/alcoholic/concepts/column-harvest.md",
+        "projects/alcoholic/concepts/bottle-stands.md",
+        "projects/alcoholic/references/cursor-cask-hedging-stands-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/e7dd3c64-d28a-4c16-9d2a-d2dc3be2a3d2/e7dd3c64-d28a-4c16-9d2a-d2dc3be2a3d2.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 210125,
+      "modified_at": "2026-08-29T18:12:50.091197Z",
+      "content_hash": "sha256:6e0d3fac6f5ef3224d9875c55d1aa9b8a44c64414d67b2d547564ee2fcda2b93",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/09/01/rollout-2026-09-01T16-31-16-01a05d61-a83c-75a3-8898-57d70459f0aa.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 933593,
+      "modified_at": "2026-09-01T14:31:16.286655Z",
+      "content_hash": "sha256:af8408c7ee39119bb854ec3d95ffb5fe4a36d6ae3831f534f0048aa938ee5044",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/cask-imprint.md",
+        "projects/alcoholic/concepts/column-harvest.md",
+        "projects/alcoholic/concepts/bottle-stands.md",
+        "projects/alcoholic/references/cursor-cask-hedging-stands-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/09/01/rollout-2026-09-01T16-31-16-01a05d61-a91f-77d2-8164-f05b8ba03f7b.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 215235,
+      "modified_at": "2026-09-01T14:31:16.513212Z",
+      "content_hash": "sha256:f7afcac8f16f717cbefa62b5be3058ed6371a8fffd06cafd387d55ee7388d6e0",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/cask-imprint.md",
+        "projects/alcoholic/concepts/column-harvest.md",
+        "projects/alcoholic/concepts/bottle-stands.md",
+        "projects/alcoholic/references/cursor-cask-hedging-stands-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/09/01/rollout-2026-09-01T16-31-16-01a05d61-aa2c-7b22-9a57-0ed5958c8db2.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 135233,
+      "modified_at": "2026-09-01T14:31:16.782871Z",
+      "content_hash": "sha256:6ba48aac6f710cb22a02aff0f87db69e8d92b55cbc01b53d6b415ab820a8e9c9",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/cask-imprint.md",
+        "projects/alcoholic/concepts/column-harvest.md",
+        "projects/alcoholic/concepts/bottle-stands.md",
+        "projects/alcoholic/references/cursor-cask-hedging-stands-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/09/03/rollout-2026-09-03T08-42-01-01a06600-c410-7ec0-b5ff-defb070ca59e.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 209708,
+      "modified_at": "2026-09-03T06:42:01.361883Z",
+      "content_hash": "sha256:2165cd11cf8fabefc6d21e17f48f7aaefd0364ef16fb03c292b6eb0efd75d9ec",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/09/03/rollout-2026-09-03T08-42-01-01a06600-c590-7da1-8e52-c37a102d4f8b.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 389384,
+      "modified_at": "2026-09-03T06:42:01.746778Z",
+      "content_hash": "sha256:3d104f71c575ae94291d2bf9a99f8b1ae8a2f789040a3c9a0b2fd71c9aecd399",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/09/03/rollout-2026-09-03T08-42-01-01a06600-c5bd-7033-a987-6b741bb7d9ce.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 320549,
+      "modified_at": "2026-09-03T06:42:01.791017Z",
+      "content_hash": "sha256:bbf16067c6bf2407d213f01773d6f56dbb06c5641af03f7ae5f6dd3955cb0672",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/cask-imprint.md",
+        "projects/alcoholic/concepts/column-harvest.md",
+        "projects/alcoholic/concepts/bottle-stands.md",
+        "projects/alcoholic/references/cursor-cask-hedging-stands-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/09/03/rollout-2026-09-03T08-42-02-01a06600-c704-7c03-86b9-ce68af855b5b.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 69642,
+      "modified_at": "2026-09-03T06:42:02.117716Z",
+      "content_hash": "sha256:f820816de8e646c13dae1059b3713daad2d113cb2ae71bca9952c0ba14d77292",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/09/04/rollout-2026-09-04T17-18-38-01a06d00-19ec-7c33-9ed3-171f9c0a2507.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 243421,
+      "modified_at": "2026-09-04T15:18:39.842461Z",
+      "content_hash": "sha256:9d09b47a11f6369506848c321410a7b2126ca92a0224e8a9752c0950ad07bcba",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/09/05/rollout-2026-09-05T11-32-24-01a070e9-79ad-70d1-a5b5-171a8679adfd.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 382631,
+      "modified_at": "2026-09-05T09:32:26.179871Z",
+      "content_hash": "sha256:531c2bf0ba20bb75e9f1082a97124c4f90aa896871353ba22bd11d9deee8a31f",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/cask-imprint.md",
+        "projects/alcoholic/concepts/column-harvest.md",
+        "projects/alcoholic/concepts/bottle-stands.md",
+        "projects/alcoholic/references/cursor-cask-hedging-stands-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/09/05/rollout-2026-09-05T11-35-53-01a070ec-aa37-7c61-ad7b-a53ae962706a.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 1459698,
+      "modified_at": "2026-09-05T09:51:17.797021Z",
+      "content_hash": "sha256:82125a2810108cfbc7b405c439217805940c0396f4b4bc0221031fbd718ac083",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/cask-imprint.md",
+        "projects/alcoholic/concepts/column-harvest.md",
+        "projects/alcoholic/concepts/bottle-stands.md",
+        "projects/alcoholic/references/cursor-cask-hedging-stands-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/09/05/rollout-2026-09-05T11-40-53-01a070e9-79ad-70d1-a5b5-171a8679adfd_01a070f1-3ca5-7dc2-be1a-ae4a2fff7bca.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 332236,
+      "modified_at": "2026-09-05T09:45:54.805806Z",
+      "content_hash": "sha256:3ccec26a3756ad92e1f613b817279ac9c7e332f149f383f470cb30ad87f03cc8",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/cask-imprint.md",
+        "projects/alcoholic/concepts/column-harvest.md",
+        "projects/alcoholic/concepts/bottle-stands.md",
+        "projects/alcoholic/references/cursor-cask-hedging-stands-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/09/05/rollout-2026-09-05T11-53-31-01a070e9-79ad-70d1-a5b5-171a8679adfd_01a070fc-cf7f-7ef3-bc85-816dbd0c603e.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 2199423,
+      "modified_at": "2026-09-05T10:17:56.345115Z",
+      "content_hash": "sha256:7ea4d04ca52fa2d5b9953bacae6162ea206ea75c624ef552bcb39f3946103ad5",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/cask-imprint.md",
+        "projects/alcoholic/concepts/column-harvest.md",
+        "projects/alcoholic/concepts/bottle-stands.md",
+        "projects/alcoholic/references/cursor-cask-hedging-stands-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/09/05/rollout-2026-09-05T14-10-26-01a0717a-2a24-7d02-b63a-a2324be8c7e6.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 11204421,
+      "modified_at": "2026-09-05T12:10:28.698171Z",
+      "content_hash": "sha256:06e892da5933dbbe701515a5c783581324f3b3fbe22fa6b6f9f067bf175d43d6",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/09/05/rollout-2026-09-05T18-02-41-01a0724e-ca3b-7c32-8408-6783b6aaf149.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 1570583,
+      "modified_at": "2026-09-05T16:02:42.969151Z",
+      "content_hash": "sha256:5bf08d019fb52f161707cadc6209a5b7b58f87716dfbf11f10b09b362c7357a3",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/09/08/rollout-2026-09-08T16-34-49-01a08171-6e65-73d2-9db8-5849027dc310.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 94446,
+      "modified_at": "2026-09-08T14:34:51.466223Z",
+      "content_hash": "sha256:f814edb097ca7f8819f803069632874c61bcfd4326e5c5c4c698d1f1dffacff4",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/machine-controller-telemetry.md",
+        "projects/alcoholic/references/cursor-machine-gui-and-malting-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/09/08/rollout-2026-09-08T16-36-39-01a08171-6e65-73d2-9db8-5849027dc310_01a08173-1a4a-7ec2-8a98-fa2c58e2c8e9.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 10155473,
+      "modified_at": "2026-09-08T15:50:44.546613Z",
+      "content_hash": "sha256:ac004d364d91877b8b8ed548850350c69e811ccbbba9d6a37c5cd8d645053524",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/machine-controller-telemetry.md",
+        "projects/alcoholic/references/cursor-machine-gui-and-malting-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/25/rollout-2026-08-25T17-51-12-01a0399e-527a-7c20-8264-305fdf7ed991.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 3666936,
+      "modified_at": "2026-08-25T15:51:12.907809Z",
+      "content_hash": "sha256:0bcb537f03749c389c5b89f536187d84c5a7e462539d06928eaa7e87f993ed41",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/26/rollout-2026-08-26T18-46-15-01a03ef7-1583-74b3-a3b2-bbc6996a2597.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 300393,
+      "modified_at": "2026-08-26T16:46:18.277057Z",
+      "content_hash": "sha256:10e29f0b1764ce024843c6676a37c5fade554a9e7619c1e437e91163de3052eb",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T20-31-40-01a049a4-512d-7770-8355-2a41eb2e4022.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 16972636,
+      "modified_at": "2026-08-28T18:31:41.772898Z",
+      "content_hash": "sha256:a150ab2b7dae0b35ff5273c2b75b1f7175b742cfd062692120378119885317b4",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T20-36-07-01a049a8-61b9-7230-9cea-39ece8e59ef4.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 2171222,
+      "modified_at": "2026-08-28T18:36:08.462750Z",
+      "content_hash": "sha256:c1fee7968cb80ec930c2b2a2dfc95829c3b83c0aff56c3e220d488bb25b365c6",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T20-36-11-01a049a8-6d1a-7aa2-b52a-1acb2fb77b92.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 14699737,
+      "modified_at": "2026-08-28T18:37:00.212540Z",
+      "content_hash": "sha256:3d37282cf9e2ec3dbb4744f8e8bced5e59dffa6640b3fc80bf2790d548082bc0",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T20-47-52-01a049a8-6d1a-7aa2-b52a-1acb2fb77b92_01a049b3-249c-7ea0-9611-4398d6f720a8.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 77956183,
+      "modified_at": "2026-08-28T19:10:40.707498Z",
+      "content_hash": "sha256:21cef809d5790ea489287cebe597ac999070f29e2519f37cdad9e59f4211eb52",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T21-50-29-01a049ec-7a16-7340-92c2-9ea83ab352e1.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 257934,
+      "modified_at": "2026-08-29T06:36:15.617649Z",
+      "content_hash": "sha256:710f3681654e38cb074ea87936b7501766abbb36e85d9caf53341e3cd291d429",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T21-50-29-01a049ec-7a21-7e70-97b3-26038d3620e7.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 236178,
+      "modified_at": "2026-08-28T19:50:29.668257Z",
+      "content_hash": "sha256:c41b38e4f18c615dcb984183ec97aff183c4c348d65c167db65c90d949a4a722",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T21-50-29-01a049ec-7a24-7582-a08a-9cafa6a1fb8d.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 259032,
+      "modified_at": "2026-08-28T19:50:29.671551Z",
+      "content_hash": "sha256:e5098e6dcd867108aac863fbb62d61570243a5bee2ba3b1f6d1251cc76ef3f1d",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T21-50-29-01a049ec-7a2a-7f13-8287-5f9a784eab8d.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 390436,
+      "modified_at": "2026-08-28T19:50:29.679298Z",
+      "content_hash": "sha256:07a01adf12b2609ee93daf5b909354433fd2842dccf59c2acc449c198e57e882",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T21-50-29-01a049ec-7a32-7a11-bcfc-3645b9dd7e3b.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 933472,
+      "modified_at": "2026-08-28T19:50:29.690233Z",
+      "content_hash": "sha256:9999b384d95a61d6a070e582b1e24c5836cf3eab2a2232ca2c92c5ec3e99d314",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T21-50-30-01a049ec-7baa-7e53-81d8-0175d8e4cf9c.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 517194,
+      "modified_at": "2026-08-28T19:50:30.061723Z",
+      "content_hash": "sha256:f9d05b52cacaece087475cb0b82a8bfb2d459f194b865cd24ede1b7739756c7b",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T21-50-30-01a049ec-7bc6-7f43-b49a-ad10da5ec2c9.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 447131,
+      "modified_at": "2026-08-28T19:50:30.106696Z",
+      "content_hash": "sha256:d6dca4be4050cbb10ff4cceacc3a3d1bcad02f559fb0922fbc679f739fd03c11",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T21-50-30-01a049ec-7c18-7cc0-b06e-a877f55cfab9.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 183324,
+      "modified_at": "2026-08-28T19:50:30.172252Z",
+      "content_hash": "sha256:1df0428fab7896aaf53c1905219bd16b7282d44c281b45c5ae783afb23a7dd4e",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T21-50-30-01a049ec-7c1b-7f52-8901-7cfcd43e6dbf.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 112402,
+      "modified_at": "2026-08-28T19:50:30.175954Z",
+      "content_hash": "sha256:4451f6bd6b4ffb48c7d79b637298bee1813aca4c2c1b8ade945933ac03f4edac",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T21-50-30-01a049ec-7e75-7993-950b-5c40ecc344db.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 252167,
+      "modified_at": "2026-08-28T19:50:30.790405Z",
+      "content_hash": "sha256:3cab9410952788fe4b801b95343f1bab3a5132031261f775dcc26470f482346d",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T21-50-30-01a049ec-7ebc-7e72-bb2b-2286c6d7cee6.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 25761,
+      "modified_at": "2026-08-28T19:50:30.845984Z",
+      "content_hash": "sha256:13811d48fe25731b419d805519ae9f349360ef0ce3c3a2f604f4b6784a46f945",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T21-50-30-01a049ec-7ee1-7cf1-8907-6242c8bc3cc8.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 236339,
+      "modified_at": "2026-08-28T19:50:30.885062Z",
+      "content_hash": "sha256:57b6bafeaa3bcf485e472e71cdc6552e38817aa5e272cdfa4796cdc844540662",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T21-50-31-01a049ec-803b-7960-85e7-a91841cdce50.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 73147,
+      "modified_at": "2026-08-28T19:50:31.229037Z",
+      "content_hash": "sha256:89253e293fb77fe0b6184f5fd7dacf11b6f9aaab53b9ff0b22294c054e5e44d0",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/29/rollout-2026-08-29T08-36-15-01a04c3b-b171-7d11-92b8-f4e96577df23.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 163884,
+      "modified_at": "2026-08-29T06:36:15.605400Z",
+      "content_hash": "sha256:b048556c6a12c713654d34cf77a68c0635e418c4946a31ab3553337801055fe4",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/29/rollout-2026-08-29T08-38-03-01a04c3d-56cf-7b83-8d21-2df2a60012f6.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 3000791,
+      "modified_at": "2026-08-29T06:40:47.363716Z",
+      "content_hash": "sha256:6ceefff0a8a201857fb9d44704d978816d69e988e5ab13e9ef217275e3ce5910",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/29/rollout-2026-08-29T11-26-50-01a04cd7-dded-7f43-ac32-99e756f844fd.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 6844258,
+      "modified_at": "2026-08-29T09:26:51.485463Z",
+      "content_hash": "sha256:1cb974ced40226688936b7c1921d253d928e45dd9f095798d9a838b776921544",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/29/rollout-2026-08-29T20-53-11-01a04ede-6055-7833-a7c1-58cbb479d32f.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 103931,
+      "modified_at": "2026-08-29T18:53:11.639681Z",
+      "content_hash": "sha256:586d8568d264f22607030ca01e5281e72562737bdc964fd1917648e5d3fc65c2",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/29/rollout-2026-08-29T20-53-11-01a04ede-6057-7dc0-95e4-7769358b474b.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 30371,
+      "modified_at": "2026-08-29T18:53:11.644713Z",
+      "content_hash": "sha256:5b1f882a3dc0dd40dca728dd37a3a0c24c107c835c9817f07aa52c83a33c65ed",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/29/rollout-2026-08-29T20-53-11-01a04ede-6059-7fc1-bf84-e53ddefdd859.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 98570,
+      "modified_at": "2026-08-30T08:33:35.011627Z",
+      "content_hash": "sha256:9484d4672704417b46258e5948372f161b7576701e2851ad8c1d6e89cba11641",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/29/rollout-2026-08-29T20-53-11-01a04ede-605f-7a42-855b-d9a572559cb6.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 343060,
+      "modified_at": "2026-08-30T08:33:35.033669Z",
+      "content_hash": "sha256:543b7b3da4de424ce85f383a00f8d678ed140735e729decd7ccd76370eb2b2d8",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/29/rollout-2026-08-29T20-53-12-01a04ede-6388-7622-907e-d1915f2d0b66.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 380850,
+      "modified_at": "2026-08-29T18:53:12.458392Z",
+      "content_hash": "sha256:aa6ea0b86b78db1e7da8b68114bc52d87173a493624ae1e0c676db7f8726b040",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/29/rollout-2026-08-29T20-53-12-01a04ede-638d-7fd3-8b15-7d2365fdc21c.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 61268,
+      "modified_at": "2026-08-29T18:53:12.463292Z",
+      "content_hash": "sha256:43fe4045791a65e06d816954f071f8a5581ece74291def7d96cc6b8e7f7cdb35",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/29/rollout-2026-08-29T20-53-12-01a04ede-639b-7a02-ad97-715a41fb619b.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 1881576,
+      "modified_at": "2026-08-29T18:53:12.481692Z",
+      "content_hash": "sha256:2fc8c731e3d7ff6d324cee128fd076dfda531926554606be998c5e1136469c79",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/29/rollout-2026-08-29T20-53-12-01a04ede-6503-7ae2-8d05-f09902b3c801.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 292992,
+      "modified_at": "2026-08-29T18:53:12.838036Z",
+      "content_hash": "sha256:d56fb7a859a07044f0bfef9dac5ddc6bceeb375bd032d92eb388f95c9f98df8f",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/29/rollout-2026-08-29T20-53-12-01a04ede-654f-7862-af0a-7f038a0af159.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 381652,
+      "modified_at": "2026-08-29T18:53:12.914236Z",
+      "content_hash": "sha256:c5c0b9d170fdd73bd40af0cc0365e4a0968da2183c81c0742a64f5f4f251b1fb",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/29/rollout-2026-08-29T20-53-13-01a04ede-6886-78b0-916b-4186d50f9b38.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 74768,
+      "modified_at": "2026-08-29T18:53:13.736309Z",
+      "content_hash": "sha256:acac48b21e76f03ed5f3caa07c871bed574d0cdcb0f7232c37f0359d21820044",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/29/rollout-2026-08-29T20-53-13-01a04ede-68aa-7452-8163-9b93e7409e8c.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 409929,
+      "modified_at": "2026-08-29T18:53:13.772249Z",
+      "content_hash": "sha256:21e7c8c4d282bfa1d25b95fedc91d4787f74ae4db827cf8c7e6f489c21d69a94",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/29/rollout-2026-08-29T20-53-13-01a04ede-696d-72b2-961e-88355f88a3c9.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 161135,
+      "modified_at": "2026-08-29T18:53:13.967372Z",
+      "content_hash": "sha256:c748a2ff84a6f2a7b92762cc30446a157c9e97429fde91915fd40d24ef3900ea",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/liquid-batch.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/formed-multiblock-visual.md",
+        "projects/alcoholic/concepts/industrial-multiblock.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/concepts/perennial-viticulture.md",
+        "projects/alcoholic/concepts/fermentation-physics.md",
+        "projects/alcoholic/concepts/vessel-and-environment.md"
+      ]
+    },
+    "C:/Users/djden/.codex/sessions/2026/08/30/rollout-2026-08-30T10-33-34-01a051cd-7715-7871-9e74-c0447eabeda3.jsonl": {
+      "ingested_at": "2026-09-08T20:30:00+02:00",
+      "size_bytes": 514209,
+      "modified_at": "2026-09-01T14:31:16.972103Z",
+      "content_hash": "sha256:81dc458efa6b23a6244b6a9899043c86bded59a64ec3efeb42aa8577641d473d",
+      "source_type": "codex_rollout",
+      "project": "alcoholic",
+      "pages_created": [],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md"
+      ]
     }
   },
   "projects": {
     "alcoholic": {
       "source_cwd": "C:/Users/djden/source/repos/Alcoholic",
-      "last_synced": "2026-08-28T22:30:00+02:00",
+      "last_synced": "2026-09-08T20:30:00+02:00",
       "last_commit_synced": "95e5b5b602009ef53ac31bf256403a343985c175",
       "pages_in_vault": [
         "projects/alcoholic/alcoholic.md",
@@ -1599,13 +2989,23 @@
         "projects/alcoholic/concepts/world-fluid-textures.md",
         "projects/alcoholic/concepts/shader-world-fluids.md",
         "projects/alcoholic/skills/alcoholic-progression-graph.md",
-        "projects/alcoholic/references/cursor-progression-and-fluids-session.md"
+        "projects/alcoholic/references/cursor-progression-and-fluids-session.md",
+        "projects/alcoholic/concepts/emergent-quality-profile.md",
+        "projects/alcoholic/concepts/quality-operator-dag.md",
+        "projects/alcoholic/concepts/cask-imprint.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/concepts/machine-controller-telemetry.md",
+        "projects/alcoholic/concepts/bottle-stands.md",
+        "projects/alcoholic/concepts/column-harvest.md",
+        "projects/alcoholic/references/cursor-quality-and-craft-session.md",
+        "projects/alcoholic/references/cursor-cask-hedging-stands-session.md",
+        "projects/alcoholic/references/cursor-machine-gui-and-malting-session.md"
       ]
     }
   },
   "stats": {
-    "total_sources_ingested": 109,
-    "total_pages": 75
+    "total_sources_ingested": 182,
+    "total_pages": 85
   },
   "alcoholic_codex_3d": {
     "source_path": "C:/Users/djden/.codex/sessions/2026/08/26",
@@ -1623,11 +3023,10 @@
     "index_updated_at": "2026-08-27T16:20:00+02:00"
   },
   "alcoholic_cursor_delta": {
-    "last_ingested": "2026-08-28T22:30:00+02:00",
-    "parent_conversations_ingested": 4,
+    "last_ingested": "2026-09-08T20:30:00+02:00",
+    "parent_conversations_ingested": 22,
     "skipped_subagents": true,
-    "skipped_current_chat": "8ae6a9b0 wiki ingest + qmd refresh",
-    "note": "progression graph + world fluids + shaders after 19:15 sync"
+    "note": "quality DAG + craft + cask imprint + harvest + stands + JEI telemetry"
   },
   "alcoholic_codex_extra": {
     "last_ingested": "2026-08-27T16:20:00+02:00",
@@ -1638,5 +3037,11 @@
     "last_ingested": "2026-08-28T19:15:00+02:00",
     "sessions_ingested": 16,
     "note": "Alcoholic cwd only; 01a04476 ingested as meta (170MB); malt-mill 64MB hash not re-distilled"
+  },
+  "alcoholic_codex_sep8": {
+    "last_ingested": "2026-09-08T20:30:00+02:00",
+    "sessions_ingested": 51,
+    "sessions_refreshed": 41,
+    "note": "Alcoholic cwd Aug 28-Sep 8; distill by topic not per rollout"
   }
 }

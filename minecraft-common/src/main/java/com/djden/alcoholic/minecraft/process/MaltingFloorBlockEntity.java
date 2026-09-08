@@ -126,7 +126,7 @@ public final class MaltingFloorBlockEntity extends BlockEntity implements Worldl
             setChanged();
             return;
         }
-        IngredientLot lot = ItemLots.lot(MachineItemStacks.copyCount(input, job.inputAmount()));
+        IngredientLot lot = ItemLots.lot(MachineItemStacks.copyCount(input, job.consumeAmount()));
         ProcessResult result = runtime.engine().execute(
                 job.executor(),
                 invocation.get(),
@@ -156,7 +156,7 @@ public final class MaltingFloorBlockEntity extends BlockEntity implements Worldl
         } else {
             existing.grow(created.getCount());
         }
-        input.shrink(job.inputAmount());
+        input.shrink(job.consumeAmount());
         progress = 0;
         setChanged();
         sync();
@@ -172,6 +172,11 @@ public final class MaltingFloorBlockEntity extends BlockEntity implements Worldl
         if (!config.executable() || input.getCount() < config.inputAmount()) {
             return null;
         }
+        ExecutorModifiers modifiers = ExecutorModifiers.maltingFloor();
+        int units = Math.min(input.getCount() / config.inputAmount(), modifiers.maxBatchUnits());
+        if (units < 1) {
+            return null;
+        }
         EnvironmentProfile environment = level == null
                 ? EnvironmentProfile.temperateCellar()
                 : EnvironmentSampler.sample(level, worldPosition);
@@ -182,7 +187,7 @@ public final class MaltingFloorBlockEntity extends BlockEntity implements Worldl
         }
         return new FloorJob(
                 invocation.nodeId(),
-                config.inputAmount(),
+                units * config.inputAmount(),
                 config.processingTicks(),
                 runtime.executor(processType),
                 ProcessContext.of(
@@ -192,7 +197,7 @@ public final class MaltingFloorBlockEntity extends BlockEntity implements Worldl
                         Optional.empty(),
                         Optional.of(environment),
                         level == null ? 0L : level.getGameTime(),
-                        ExecutorModifiers.artisanal()
+                        modifiers
                 ),
                 "grain"
         );
@@ -200,7 +205,7 @@ public final class MaltingFloorBlockEntity extends BlockEntity implements Worldl
 
     private record FloorJob(
             String invocationId,
-            int inputAmount,
+            int consumeAmount,
             int processingTicks,
             CapabilityProcessExecutor executor,
             ProcessContext context,

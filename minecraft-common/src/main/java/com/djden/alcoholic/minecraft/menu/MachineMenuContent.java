@@ -11,6 +11,8 @@ public record MachineMenuContent(
         RegistryRef<MenuType<?>> oneTank,
         RegistryRef<MenuType<?>> twoTanks,
         RegistryRef<MenuType<?>> fuel,
-        RegistryRef<MenuType<?>> energy
+        RegistryRef<MenuType<?>> energy,
+        RegistryRef<MenuType<?>> craftMalt,
+        RegistryRef<MenuType<?>> industrialMalt
 ) {
 }

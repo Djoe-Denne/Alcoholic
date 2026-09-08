@@ -45,6 +45,14 @@ public final class MachineMenuRegistrar {
                 AlcoholicIds.ENERGY_MENU,
                 () -> new MenuType<>(MachineMenu::energy)
         );
+        RegistryRef<MenuType<?>> craftMalt = ports.menus().register(
+                AlcoholicIds.CRAFT_MALT_MENU,
+                () -> new MenuType<>(MachineMenu::craftMalt)
+        );
+        RegistryRef<MenuType<?>> industrialMalt = ports.menus().register(
+                AlcoholicIds.INDUSTRIAL_MALT_MENU,
+                () -> new MenuType<>(MachineMenu::industrialMalt)
+        );
         MachineMenuContent content = new MachineMenuContent(
                 twoSlots,
                 twoSlotsOneTank,
@@ -53,7 +61,9 @@ public final class MachineMenuRegistrar {
                 oneTank,
                 twoTanks,
                 fuel,
-                energy
+                energy,
+                craftMalt,
+                industrialMalt
         );
         MachineMenus.bind(content);
         return content;

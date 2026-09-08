@@ -163,7 +163,7 @@ public final class AlcoholicForgeMod {
         DistExecutor.unsafeRunWhenOn(
                 Dist.CLIENT,
                 () -> () -> AlcoholicClient.register(
-                        modEventBus, content, processing, grain, industrial, craft, menus, fluids
+                        modEventBus, content, processing, grain, industrial, menus, fluids
                 )
         );
 

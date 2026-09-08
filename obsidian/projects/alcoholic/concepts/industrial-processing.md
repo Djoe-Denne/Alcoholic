@@ -13,7 +13,7 @@ provenance:
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T15:30:00+02:00
-updated: 2026-08-28T22:30:00+02:00
+updated: 2026-09-08T20:30:00+02:00
 ---
 
 # Industrial Processing
@@ -22,17 +22,17 @@ Industrial machines are additional executors for existing process types. They do
 
 ```
 PRESS     artisanal / Create / industrial
-FERMENT   artisanal / industrial vat
-MALT      malting floor / industrial malt house
-MILL      malt mill / industrial roller mill / Create millstone / crushing wheels
-MASH      mash tun / industrial mash tun
-BOIL      brewing kettle / industrial brewing kettle
+FERMENT   artisanal / craft vat / industrial vat
+MALT      malting floor / craft malt house / industrial malt house
+MILL      malt mill / craft mill / industrial roller mill / Create millstone / crushing wheels
+MASH      mash tun / craft mash tun / industrial mash tun
+BOIL      brewing kettle / craft kettle / industrial brewing kettle
 CONDITION optional industrial conditioning vessel
 STORAGE   passive tank (never a process executor)
 AGE       oak barrel only — next official industrial family
 ```
 
-Wine and beer DAGs are unchanged. Industrial machines change capacity, throughput, automation, and stability. They do not add industrial recipes. Artisanal executors stay valid. Quality is a derived `QualityProfile`; industrial `complexityCap` 0.55 and `purityFloor` ~0.15 clamp the drink even if the player waits. `speedModifier` finishes FERMENT / AGE / CONDITION sooner without raising that cap.
+Wine and beer DAGs are unchanged. Industrial machines change capacity, throughput, automation, and stability. They do not add industrial recipes. Artisanal executors stay valid. [[craft-scale-machines]] sit between on [[emergent-quality-profile]] caps. Quality is a derived `QualityProfile`; industrial `complexityCap` 0.55 and `purityFloor` ~0.15 clamp the drink even if the player waits. `speedModifier` finishes FERMENT / AGE / CONDITION sooner without raising that cap.
 
 Industrial wine A→Z currently bottles young wine from the vat controller. Finished `red_wine` / `white_wine` still needs the oak barrel. The next official industrial close is a formed `AGE` warehouse, not `DISTILL`, shipped cider, or drinking.
 

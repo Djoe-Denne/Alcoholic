@@ -1200,7 +1200,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "hollow_interior": true,
                           "capacity_per_internal_block": 1000,
                           "controller": "alcoholic:craft_malt_house_controller",
-                          "modifiers": { "yield": 1.0, "speed": 1.25, "thermal_stability": 1.5, "max_batch_units": 8, "process_fidelity": 0.94, "complexity_cap": 0.82, "purity_floor": 0.04 }
+                          "modifiers": { "yield": 1.0, "speed": 1.25, "thermal_stability": 1.5, "max_batch_units": 384, "process_fidelity": 0.94, "complexity_cap": 0.82, "purity_floor": 0.04 }
                         }
                         """
         );

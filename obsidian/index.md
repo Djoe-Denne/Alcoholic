@@ -4,7 +4,7 @@ title: Wiki Index
 
 # Wiki Index
 
-*This index is automatically maintained. Last updated: 2026-08-28T22:30:00+02:00*
+*This index is automatically maintained. Last updated: 2026-09-08T20:30:00+02:00*
 
 ## Concepts
 
@@ -51,6 +51,13 @@ title: Wiki Index
 - [[projects/alcoholic/concepts/industrial-progression-and-jei-formation|Industrial Progression and JEI Formation]] — Second tab plus JEI min-hull; trigger is multiblock_formed. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/world-fluid-textures|World Fluid Textures]] — Four painted still/flow fluids; wines and wort stay tinted water. ( #minecraft)
 - [[projects/alcoholic/concepts/shader-world-fluids|Shader World Fluids]] — Complementary r5.x uses block.32000; Alcoholic never patches shaders. ( #minecraft #compatibility)
+- [[projects/alcoholic/concepts/emergent-quality-profile|Emergent Quality Profile]] — Derived purity/complexity/maturity; executors stamp caps, not a farmable 0–100. ( #minecraft #software-architecture)
+- [[projects/alcoholic/concepts/quality-operator-dag|Quality Operator DAG]] — Second composition graph; datapacks wire operators per beverage. ( #minecraft #software-architecture)
+- [[projects/alcoholic/concepts/cask-imprint|Cask Imprint]] — Emptying stains the next AGE fill; wood species stays out of scope. ( #minecraft #software-architecture)
+- [[projects/alcoholic/concepts/craft-scale-machines|Craft Scale Machines]] — Third formed executor scale between artisanal and industrial. ( #minecraft #software-architecture)
+- [[projects/alcoholic/concepts/machine-controller-telemetry|Machine Controller Telemetry]] — Side panel left of the inventory so JEI does not cover it. ( #minecraft #compatibility)
+- [[projects/alcoholic/concepts/bottle-stands|Bottle Stands]] — Rack and shelf display nine bottled snapshots each. ( #minecraft)
+- [[projects/alcoholic/concepts/column-harvest|Column Harvest]] — Sickle harvests the vine/hop column; Create harvesters are not wired. ( #minecraft)
 
 ## Entities
 
@@ -91,6 +98,9 @@ title: Wiki Index
 - [[projects/alcoholic/references/cursor-formed-hull-session|Cursor Formed Hull Session]] — Beer industrial place showed loose cubes; 9-slice plus mega-mesh. ( #minecraft #software-architecture)
 - [[projects/alcoholic/references/cursor-machine-port-audit-session|Cursor Machine Port Audit Session]] — Decorative taps; kinetic only on the engine shaft face. ( #minecraft #software-architecture)
 - [[projects/alcoholic/references/cursor-progression-and-fluids-session|Cursor Progression and Fluids Session]] — Hybrid advancements plus optional FTB, then wine/beer graph and painted fluids. ( #minecraft #software-architecture)
+- [[projects/alcoholic/references/cursor-quality-and-craft-session|Cursor Quality and Craft Session]] — Quality DAG, three-scale caps, craft formed machines, yeast as a tag. ( #minecraft #software-architecture)
+- [[projects/alcoholic/references/cursor-cask-hedging-stands-session|Cursor Cask Hedging Stands Session]] — Barrel imprint, sickle column harvest, bottle rack and shelf. ( #minecraft #software-architecture)
+- [[projects/alcoholic/references/cursor-machine-gui-and-malting-session|Cursor Machine GUI and Malting Session]] — Telemetry left of JEI; malting lots; mega-mesh art-size only. ( #minecraft #software-architecture)
 
 ## Synthesis
 
@@ -98,4 +108,4 @@ title: Wiki Index
 
 ## Projects
 
-- [[projects/alcoholic/alcoholic|Alcoholic]] — Loader-independent brewing mod: wine/beer progression graph, painted world fluids, optional FTB template. ( #minecraft #project/alcoholic)
+- [[projects/alcoholic/alcoholic|Alcoholic]] — Loader-independent brewing mod: quality DAG, craft-scale machines, cask imprint, controller telemetry. ( #minecraft #project/alcoholic)

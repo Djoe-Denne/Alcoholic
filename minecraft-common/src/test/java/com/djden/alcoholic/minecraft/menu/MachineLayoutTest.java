@@ -1,5 +1,7 @@
 package com.djden.alcoholic.minecraft.menu;
 
+import com.djden.alcoholic.domain.multiblock.MachineKind;
+import com.djden.alcoholic.domain.multiblock.MachineScale;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,7 +49,49 @@ class MachineLayoutTest {
 
         assertEquals(0, MachineLayout.ENERGY.machineSlotCount());
         assertTrue(MachineLayout.ENERGY.energyGauge());
-        assertEquals(15, MachineContainerData.SIZE);
+        assertEquals(31, MachineContainerData.SIZE);
+
+        assertEquals(12, MachineLayout.CRAFT_MALT.machineSlotCount());
+        assertEquals(6, MachineLayout.CRAFT_MALT.inputSlotCount());
+        assertEquals(6, MachineLayout.CRAFT_MALT.outputSlotCount());
+        assertEquals(MachineLayout.PANEL_HEIGHT, MachineLayout.CRAFT_MALT.panelHeight());
+        assertTrue(MachineLayout.CRAFT_MALT.progressArrow());
+
+        assertEquals(36, MachineLayout.INDUSTRIAL_MALT.machineSlotCount());
+        assertEquals(18, MachineLayout.INDUSTRIAL_MALT.inputSlotCount());
+        assertEquals(18, MachineLayout.INDUSTRIAL_MALT.outputSlotCount());
+        assertEquals(208, MachineLayout.INDUSTRIAL_MALT.panelHeight());
+        assertEquals(126, MachineLayout.INDUSTRIAL_MALT.playerInvY());
+    }
+
+    @Test
+    void multiblocksOnlyExposeTanksWhenTheirProcessUsesLiquids() {
+        assertEquals(MachineLayout.INDUSTRIAL_MALT, MachineLayout.forMultiblock(MachineKind.MALT, true));
+        assertEquals(
+                MachineLayout.CRAFT_MALT,
+                MachineLayout.forMultiblock(MachineKind.MALT, true, MachineScale.CRAFT)
+        );
+        assertEquals(
+                MachineLayout.INDUSTRIAL_MALT,
+                MachineLayout.forMultiblock(MachineKind.MALT, true, MachineScale.INDUSTRIAL)
+        );
+        assertEquals(MachineLayout.TWO_SLOTS, MachineLayout.forMultiblock(MachineKind.MILL, true));
+        assertEquals(
+                MachineLayout.TWO_SLOTS,
+                MachineLayout.forMultiblock(MachineKind.MILL, true, MachineScale.CRAFT)
+        );
+        assertEquals(MachineLayout.TWO_SLOTS_ONE_TANK, MachineLayout.forMultiblock(MachineKind.PRESS, true));
+        assertEquals(MachineLayout.TWO_SLOTS_ONE_TANK, MachineLayout.forMultiblock(MachineKind.MASH, true));
+        assertEquals(MachineLayout.ONE_TANK, MachineLayout.forMultiblock(MachineKind.STORAGE, false));
+    }
+
+    @Test
+    void processStagesRoundTripForControllerTelemetry() {
+        for (MachineProcessStage stage : MachineProcessStage.values()) {
+            assertEquals(stage, MachineProcessStage.decode(MachineProcessStage.encode(stage.name())));
+        }
+        assertEquals(MachineProcessStage.IDLE, MachineProcessStage.decode(-1));
+        assertEquals(MachineProcessStage.IDLE.ordinal(), MachineProcessStage.encode("unknown"));
     }
 
     @Test
@@ -70,6 +114,36 @@ class MachineLayoutTest {
                 for (int y = wellY; y < wellY + MachineLayout.SLOT_SIZE; y++) {
                     assertFalse(occupied[x][y], "overlapping well at " + x + "," + y);
                     occupied[x][y] = true;
+                }
+            }
+        }
+    }
+
+    @Test
+    void industrialMaltPlayerInventoryFitsTheTallerPanel() {
+        MachineLayout layout = MachineLayout.INDUSTRIAL_MALT;
+        assertEquals(36, layout.playerSlots().length);
+        boolean[][] occupied = new boolean[layout.panelWidth()][layout.panelHeight()];
+        for (MachineLayout.SlotPos slot : layout.playerSlots()) {
+            int wellX = slot.x() - 1;
+            int wellY = slot.y() - 1;
+            assertTrue(wellX >= 0 && wellY >= 0, slot.toString());
+            assertTrue(wellX + MachineLayout.SLOT_SIZE <= layout.panelWidth(), slot.toString());
+            assertTrue(wellY + MachineLayout.SLOT_SIZE <= layout.panelHeight(), slot.toString());
+            for (int x = wellX; x < wellX + MachineLayout.SLOT_SIZE; x++) {
+                for (int y = wellY; y < wellY + MachineLayout.SLOT_SIZE; y++) {
+                    assertFalse(occupied[x][y], "overlapping well at " + x + "," + y);
+                    occupied[x][y] = true;
+                }
+            }
+        }
+        for (MachineLayout.SlotPos slot : layout.slots()) {
+            int wellX = slot.x() - 1;
+            int wellY = slot.y() - 1;
+            assertTrue(wellY + MachineLayout.SLOT_SIZE <= layout.playerInvY(), slot.toString());
+            for (int x = wellX; x < wellX + MachineLayout.SLOT_SIZE; x++) {
+                for (int y = wellY; y < wellY + MachineLayout.SLOT_SIZE; y++) {
+                    assertFalse(occupied[x][y], "machine well overlaps player at " + x + "," + y);
                 }
             }
         }

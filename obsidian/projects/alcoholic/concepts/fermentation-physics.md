@@ -12,7 +12,7 @@ provenance:
   inferred: 0.1
   ambiguous: 0.02
 created: 2026-08-25T14:10:00+02:00
-updated: 2026-08-29T18:30:00+02:00
+updated: 2026-09-08T20:30:00+02:00
 ---
 
 # Fermentation Physics
@@ -33,7 +33,7 @@ Outside the preferred band the rate slows. Outside the operating band it stalls.
 
 ## Yeast
 
-Gameplay FERMENT requires an item matching `#alcoholic:yeast` when `require_yeast` is true. The shipped tag currently contains `alcoholic:yeast`. The same tag can later accept other mods' yeasts without a new process type.
+Gameplay FERMENT requires an item matching `#alcoholic:yeast` when `require_yeast` is true. The shipped tag currently contains `alcoholic:yeast`. The same tag can later accept other mods' yeasts without a new process type. Yeast is not a drink-family Java class and is not a [[quality-operator-dag]] operator.
 
 ## Related
 
@@ -41,6 +41,7 @@ Gameplay FERMENT requires an item matching `#alcoholic:yeast` when `require_yeas
 - [[artisanal-processing]]
 - [[aging-process]]
 - [[beverage-framework]]
+- [[quality-operator-dag]]
 - [[public-extension-api]]
 - [[harvest-lot-metadata]]
 - [[cursor-phase-4-processing-session]]

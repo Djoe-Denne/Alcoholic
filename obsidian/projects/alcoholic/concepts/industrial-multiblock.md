@@ -12,12 +12,12 @@ provenance:
   inferred: 0.1
   ambiguous: 0.0
 created: 2026-08-25T15:30:00+02:00
-updated: 2026-08-28T22:30:00+02:00
+updated: 2026-09-08T20:30:00+02:00
 ---
 
 # Industrial Multiblock
 
-Phase 6 adds a reusable hollow-cuboid family, not beverage-specific plants. Data-driven definitions describe size constraints, allowed shell parts, required ports, and capacity rules. See [[industrial-processing]] and [[industrial-ports]].
+Phase 6 adds a reusable hollow-cuboid family, not beverage-specific plants. Data-driven definitions describe size constraints, allowed shell parts, required ports, and capacity rules. [[craft-scale-machines]] reuse the same validator with `MachineScale.CRAFT`. See [[industrial-processing]] and [[industrial-ports]].
 
 ## Exterior versus interior
 
@@ -35,7 +35,7 @@ One controller owns the [[liquid-batch]], inventory, process clocks, and geometr
 
 Semantic casing tags allow compatible materials without framework changes. Future beer machinery adds definitions and executors; the validator never learns beverage-specific rules.
 
-Formed look is client-only: [[formed-multiblock-visual]] (9-slice hull at any size, mega-mesh at art size). Capacity and validation stay on this page.
+Formed look is client-only: [[formed-multiblock-visual]] (9-slice hull at any size, mega-mesh at art size). Capacity and validation stay on this page. Controllers expose [[machine-controller-telemetry]] beside the inventory.
 
 The rising edge of `formed` fires `alcoholic:multiblock_formed` for [[industrial-progression-and-jei-formation]]. Attribution uses the last actor, nearby players, then a pending queue. JEI shows the min hull; it does not re-validate geometry.
 

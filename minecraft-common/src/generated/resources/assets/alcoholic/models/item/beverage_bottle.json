@@ -1,6 +1,23 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "alcoholic:item/beverage_bottle"
-  }
+  "parent": "alcoholic:item/beverage_bottle_generic",
+  "overrides": [
+    {
+      "model": "alcoholic:item/beverage_bottle_red_wine",
+      "predicate": {
+        "alcoholic:bottle_style": 1.0
+      }
+    },
+    {
+      "model": "alcoholic:item/beverage_bottle_white_wine",
+      "predicate": {
+        "alcoholic:bottle_style": 2.0
+      }
+    },
+    {
+      "model": "alcoholic:item/beverage_bottle_beer",
+      "predicate": {
+        "alcoholic:bottle_style": 3.0
+      }
+    }
+  ]
 }

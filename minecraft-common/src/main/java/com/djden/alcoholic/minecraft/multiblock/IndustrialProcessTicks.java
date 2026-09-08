@@ -24,6 +24,7 @@ import com.djden.alcoholic.domain.process.MaltExecutionStage;
 import com.djden.alcoholic.domain.process.ThermalStability;
 import com.djden.alcoholic.domain.vessel.EnvironmentProfile;
 import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
+import com.djden.alcoholic.minecraft.menu.MachineLayout;
 import com.djden.alcoholic.minecraft.process.ItemLots;
 import com.djden.alcoholic.minecraft.process.MinecraftSelectorMatcher;
 import com.djden.alcoholic.minecraft.process.ProcessRuntime;
@@ -39,7 +40,8 @@ import java.util.Optional;
  * Generic industrial ticks keyed by process type. No drink-family branches.
  */
 final class IndustrialProcessTicks {
-    private static final ResourceId DEFAULT_MALT = ResourceId.parse("alcoholic:malt_pale");
+    static final ResourceId DEFAULT_MALT = ResourceId.parse("alcoholic:malt_pale");
+    static final double MALT_KILN_MIN_CELSIUS = 40.0;
     private static final ResourceId ADDITION_ROLE = ResourceId.parse("alcoholic:addition_role");
     private static final ResourceId ADDITION_PROGRESS = ResourceId.parse("alcoholic:addition_progress");
 
@@ -221,7 +223,8 @@ final class IndustrialProcessTicks {
     }
 
     static void malt(MultiblockControllerBlockEntity machine, MultiblockDefinition definition, long now) {
-        ItemStack input = machine.inventory().get(MultiblockControllerBlockEntity.INPUT_SLOT);
+        MachineLayout layout = machine.layout();
+        ItemStack input = MaltBatchInventory.firstInput(machine.inventory(), layout.inputSlotCount());
         if (input.isEmpty()) {
             machine.resetProcess();
             return;
@@ -242,7 +245,8 @@ final class IndustrialProcessTicks {
             return;
         }
         MaltConfig config = MaltConfig.CODEC.decode(invocation.get().config());
-        if (!config.executable() || input.getCount() < config.inputAmount()) {
+        int available = MaltBatchInventory.countMatching(machine.inventory(), layout.inputSlotCount(), input);
+        if (!config.executable() || available < config.inputAmount()) {
             machine.resetProcess();
             return;
         }
@@ -277,16 +281,16 @@ final class IndustrialProcessTicks {
             machine.markProcessDirty(false);
             return;
         }
-        if (stage.requiresKilnHeat() && machine.heatCelsius() < 40.0) {
+        if (stage.requiresKilnHeat() && machine.heatCelsius() < MALT_KILN_MIN_CELSIUS) {
             machine.pauseElapsed(now);
             machine.markProcessDirty(false);
             return;
         }
-        if (!machine.advanceElapsed(now, rate)) {
+        if (!machine.processComplete() && !machine.advanceElapsed(now, rate)) {
             machine.markProcessDirty(false);
             return;
         }
-        int units = units(input, config.inputAmount(), definition);
+        int units = Math.min(available / config.inputAmount(), definition.modifiers().maxBatchUnits());
         IngredientLot lot = ItemLots.lot(machine.copyOf(input, units * config.inputAmount()));
         ProcessResult result = runtime.engine().execute(
                 runtime.maltExecutor(),
@@ -302,7 +306,7 @@ final class IndustrialProcessTicks {
                         definition.modifiers()
                 )
         );
-        if (!offerItems(machine, result, units * config.inputAmount(), true)) {
+        if (!offerMaltItems(machine, layout, result, input, units * config.inputAmount())) {
             return;
         }
         machine.completeProcess();
@@ -782,6 +786,43 @@ final class IndustrialProcessTicks {
             }
         }
         return lots;
+    }
+
+    private static boolean offerMaltItems(
+            MultiblockControllerBlockEntity machine,
+            MachineLayout layout,
+            ProcessResult result,
+            ItemStack input,
+            int consumeInput
+    ) {
+        if (!result.success()) {
+            machine.resetProcess();
+            machine.markProcessDirty(false);
+            return false;
+        }
+        if (result.items().isEmpty()) {
+            machine.resetProcess();
+            return false;
+        }
+        ItemOutput produced = result.items().get(0);
+        ItemStack created = machine.itemStack(produced.item(), produced.amount());
+        if (created.isEmpty()) {
+            machine.resetProcess();
+            return false;
+        }
+        SolidPropertyNbt.write(created, produced.properties());
+        if (!MaltBatchInventory.insertOutputs(
+                machine.inventory(),
+                layout.firstOutputSlot(),
+                layout.outputSlotCount(),
+                created
+        )) {
+            return false;
+        }
+        if (consumeInput > 0) {
+            MaltBatchInventory.consumeMatching(machine.inventory(), layout.inputSlotCount(), input, consumeInput);
+        }
+        return true;
     }
 
     private static boolean offerItems(

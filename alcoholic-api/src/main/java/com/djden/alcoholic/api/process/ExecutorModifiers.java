@@ -69,6 +69,13 @@ public record ExecutorModifiers(
         return new ExecutorModifiers(1.0, 1.0, 1.0, 1, 1.0, 1.0, 0.0);
     }
 
+    /**
+     * Artisanal malting floor: one slot, one vanilla stack per cycle.
+     */
+    public static ExecutorModifiers maltingFloor() {
+        return new ExecutorModifiers(1.0, 1.0, 1.0, 64, 1.0, 1.0, 0.0);
+    }
+
     public static ExecutorModifiers artisanalPress() {
         return new ExecutorModifiers(1.0, 1.0, 1.0, 1, 1.0, 1.0, 0.0);
     }
@@ -113,7 +120,7 @@ public record ExecutorModifiers(
     }
 
     public static ExecutorModifiers craftMaltHouse() {
-        return new ExecutorModifiers(1.0, 1.25, 1.5, 8, 0.94, 0.82, 0.04);
+        return new ExecutorModifiers(1.0, 1.25, 1.5, 384, 0.94, 0.82, 0.04);
     }
 
     public static ExecutorModifiers craftMill() {

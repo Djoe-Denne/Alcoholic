@@ -40,6 +40,12 @@ public record ProcessingContent(
         RegistryRef<BlockEntityType<?>> primitiveCombustionEngineEntity,
         RegistryRef<Block> electricMotor,
         RegistryRef<Item> electricMotorItem,
-        RegistryRef<BlockEntityType<?>> electricMotorEntity
+        RegistryRef<BlockEntityType<?>> electricMotorEntity,
+        RegistryRef<Block> bottleRack,
+        RegistryRef<Item> bottleRackItem,
+        RegistryRef<BlockEntityType<?>> bottleRackEntity,
+        RegistryRef<Block> bottleShelf,
+        RegistryRef<Item> bottleShelfItem,
+        RegistryRef<BlockEntityType<?>> bottleShelfEntity
 ) {
 }

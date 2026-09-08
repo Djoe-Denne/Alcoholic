@@ -15,6 +15,9 @@ import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlock;
 import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlockEntity;
 import com.djden.alcoholic.minecraft.process.BrewingKettleBlock;
 import com.djden.alcoholic.minecraft.process.BrewingKettleBlockEntity;
+import com.djden.alcoholic.minecraft.process.BottleStandBlock;
+import com.djden.alcoholic.minecraft.process.BottleStandBlockEntity;
+import com.djden.alcoholic.minecraft.process.BottleStandStyle;
 import com.djden.alcoholic.minecraft.process.MaltMillBlock;
 import com.djden.alcoholic.minecraft.process.MaltMillBlockEntity;
 import com.djden.alcoholic.minecraft.process.MaltingFloorBlock;
@@ -53,6 +56,8 @@ public final class ProcessingContentRegistrar {
         AtomicReference<RegistryRef<BlockEntityType<?>>> millEntityHolder = new AtomicReference<>();
         AtomicReference<RegistryRef<BlockEntityType<?>>> engineEntityHolder = new AtomicReference<>();
         AtomicReference<RegistryRef<BlockEntityType<?>>> motorEntityHolder = new AtomicReference<>();
+        AtomicReference<RegistryRef<BlockEntityType<?>>> rackEntityHolder = new AtomicReference<>();
+        AtomicReference<RegistryRef<BlockEntityType<?>>> shelfEntityHolder = new AtomicReference<>();
         Supplier<BlockEntityType<?>> pressType = () -> pressEntityHolder.get().get();
         Supplier<BlockEntityType<?>> fermenterType = () -> fermenterEntityHolder.get().get();
         Supplier<BlockEntityType<?>> barrelType = () -> barrelEntityHolder.get().get();
@@ -63,6 +68,8 @@ public final class ProcessingContentRegistrar {
         Supplier<BlockEntityType<?>> millType = () -> millEntityHolder.get().get();
         Supplier<BlockEntityType<?>> engineType = () -> engineEntityHolder.get().get();
         Supplier<BlockEntityType<?>> motorType = () -> motorEntityHolder.get().get();
+        Supplier<BlockEntityType<?>> rackType = () -> rackEntityHolder.get().get();
+        Supplier<BlockEntityType<?>> shelfType = () -> shelfEntityHolder.get().get();
 
         RegistryRef<Block> pressRef = ports.blocks().register(
                 AlcoholicIds.ARTISANAL_PRESS,
@@ -104,6 +111,14 @@ public final class ProcessingContentRegistrar {
                 AlcoholicIds.ELECTRIC_MOTOR,
                 () -> new ElectricMotorBlock(motorProperties(), motorType)
         );
+        RegistryRef<Block> rackRef = ports.blocks().register(
+                AlcoholicIds.BOTTLE_RACK,
+                () -> new BottleStandBlock(BottleStandStyle.RACK, machineProperties(), rackType)
+        );
+        RegistryRef<Block> shelfRef = ports.blocks().register(
+                AlcoholicIds.BOTTLE_SHELF,
+                () -> new BottleStandBlock(BottleStandStyle.SHELF, machineProperties(), shelfType)
+        );
         RegistryRef<Item> pressItem = ports.items().register(
                 AlcoholicIds.ARTISANAL_PRESS,
                 () -> new BlockItem(pressRef.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS))
@@ -143,6 +158,14 @@ public final class ProcessingContentRegistrar {
         RegistryRef<Item> motorItem = ports.items().register(
                 AlcoholicIds.ELECTRIC_MOTOR,
                 () -> new BlockItem(motorRef.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS))
+        );
+        RegistryRef<Item> rackItem = ports.items().register(
+                AlcoholicIds.BOTTLE_RACK,
+                () -> new BlockItem(rackRef.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS))
+        );
+        RegistryRef<Item> shelfItem = ports.items().register(
+                AlcoholicIds.BOTTLE_SHELF,
+                () -> new BlockItem(shelfRef.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS))
         );
         RegistryRef<Item> yeast = ports.items().register(
                 AlcoholicIds.YEAST,
@@ -264,6 +287,20 @@ public final class ProcessingContentRegistrar {
                         motorRef.get()
                 ).build(null)
         );
+        RegistryRef<BlockEntityType<?>> rackEntity = ports.blockEntities().register(
+                AlcoholicIds.BOTTLE_RACK_ENTITY,
+                () -> BlockEntityType.Builder.of(
+                        (position, state) -> new BottleStandBlockEntity(rackType.get(), position, state),
+                        rackRef.get()
+                ).build(null)
+        );
+        RegistryRef<BlockEntityType<?>> shelfEntity = ports.blockEntities().register(
+                AlcoholicIds.BOTTLE_SHELF_ENTITY,
+                () -> BlockEntityType.Builder.of(
+                        (position, state) -> new BottleStandBlockEntity(shelfType.get(), position, state),
+                        shelfRef.get()
+                ).build(null)
+        );
         pressEntityHolder.set(pressEntity);
         fermenterEntityHolder.set(fermenterEntity);
         barrelEntityHolder.set(barrelEntity);
@@ -274,6 +311,8 @@ public final class ProcessingContentRegistrar {
         millEntityHolder.set(millEntity);
         engineEntityHolder.set(engineEntity);
         motorEntityHolder.set(motorEntity);
+        rackEntityHolder.set(rackEntity);
+        shelfEntityHolder.set(shelfEntity);
         return new ProcessingContent(
                 pressRef,
                 pressItem,
@@ -309,7 +348,13 @@ public final class ProcessingContentRegistrar {
                 engineEntity,
                 motorRef,
                 motorItem,
-                motorEntity
+                motorEntity,
+                rackRef,
+                rackItem,
+                rackEntity,
+                shelfRef,
+                shelfItem,
+                shelfEntity
         );
     }
 
