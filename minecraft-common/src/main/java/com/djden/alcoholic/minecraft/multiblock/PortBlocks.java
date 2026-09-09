@@ -59,18 +59,24 @@ public final class PortBlocks {
             Player player,
             InteractionHand hand
     ) {
-        if (level.isClientSide) {
-            return InteractionResult.SUCCESS;
+        if (hand != InteractionHand.MAIN_HAND) {
+            return InteractionResult.PASS;
         }
         ItemStack held = player.getItemInHand(hand);
         boolean wrench = "create:wrench".equals(Registry.ITEM.getKey(held.getItem()).toString());
-        boolean sneakEmpty = player.isShiftKeyDown() && held.isEmpty();
+        boolean sneakEmpty = player.isSecondaryUseActive() && player.getMainHandItem().isEmpty();
         if (!wrench && !sneakEmpty) {
             return InteractionResult.PASS;
         }
-        ConfiguredPortMode next = state.getValue(MODE).next();
+        if (level.isClientSide) {
+            return InteractionResult.SUCCESS;
+        }
+        ConfiguredPortMode next = state.getValue(MODE).toggleIo();
         level.setBlock(position, state.setValue(MODE, next), Block.UPDATE_ALL);
-        player.displayClientMessage(Component.translatable("message.alcoholic.port.mode", next.name()), true);
+        player.displayClientMessage(
+                Component.translatable("message.alcoholic.port.mode", Component.translatable(next.translationKey())),
+                true
+        );
         MultiblockNotifier.notifyNearby(level, position);
         return InteractionResult.CONSUME;
     }

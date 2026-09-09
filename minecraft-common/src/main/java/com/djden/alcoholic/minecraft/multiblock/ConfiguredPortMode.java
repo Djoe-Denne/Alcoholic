@@ -31,6 +31,14 @@ public enum ConfiguredPortMode implements StringRepresentable {
         };
     }
 
+    public ConfiguredPortMode toggleIo() {
+        return this == INPUT ? OUTPUT : INPUT;
+    }
+
+    public String translationKey() {
+        return "message.alcoholic.port.mode." + getSerializedName();
+    }
+
     @Override
     public String getSerializedName() {
         return name().toLowerCase();

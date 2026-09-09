@@ -20,8 +20,10 @@ import com.djden.alcoholic.minecraft.content.AlcoholicIds;
 import com.djden.alcoholic.minecraft.mechanical.ElectricMotorSettings;
 import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlock;
 import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlockEntity;
+import com.djden.alcoholic.minecraft.multiblock.ConfiguredPortMode;
 import com.djden.alcoholic.minecraft.multiblock.HollowCuboidPlacer;
 import com.djden.alcoholic.minecraft.multiblock.MultiblockControllerBlockEntity;
+import com.djden.alcoholic.minecraft.multiblock.PortBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -36,6 +38,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
@@ -99,6 +103,66 @@ public final class IndustrialGameTests {
         int filled = handler.fill(new FluidStack(net.minecraft.world.level.material.Fluids.WATER, 1000), IFluidHandler.FluidAction.EXECUTE);
         require(helper, filled == 0, "Unbound fluid port accepted " + filled + " mB");
         require(helper, handler.drain(1000, IFluidHandler.FluidAction.EXECUTE).isEmpty(), "Unbound fluid port yielded liquid");
+        helper.succeed();
+    }
+
+    @GameTest(template = "industrial_pad", timeoutTicks = 40)
+    public static void sneakEmptyHandTogglesPortIo(GameTestHelper helper) {
+        buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_tank_controller", "industrial_casing", null);
+        BlockPos fluidPos = ORIGIN.offset(2, 1, 0);
+        BlockPos itemPos = ORIGIN.offset(1, 0, 0);
+        helper.setBlock(fluidPos, block("fluid_port").defaultBlockState());
+        helper.setBlock(itemPos, block("item_port").defaultBlockState());
+        MultiblockControllerBlockEntity tank = revalidate(helper, ORIGIN);
+        require(helper, tank.formed(), "Tank should form with ports: " + tank.debugDump());
+        tank.tank().fill(must(1000, 0.71), false);
+
+        Player player = helper.makeMockPlayer();
+        player.setShiftKeyDown(true);
+        sneakUse(helper, fluidPos, player);
+        require(
+                helper,
+                helper.getBlockState(fluidPos).getValue(PortBlocks.MODE) == ConfiguredPortMode.INPUT,
+                "First sneak should set the fluid port to input"
+        );
+        IFluidHandler handler = helper.getBlockEntity(fluidPos)
+                .getCapability(ForgeCapabilities.FLUID_HANDLER)
+                .orElseThrow(IllegalStateException::new);
+        require(
+                helper,
+                handler.drain(1000, IFluidHandler.FluidAction.EXECUTE).isEmpty(),
+                "Input fluid port allowed extract"
+        );
+
+        sneakUse(helper, fluidPos, player);
+        require(
+                helper,
+                helper.getBlockState(fluidPos).getValue(PortBlocks.MODE) == ConfiguredPortMode.OUTPUT,
+                "Second sneak should set the fluid port to output"
+        );
+        require(
+                helper,
+                handler.fill(new FluidStack(net.minecraft.world.level.material.Fluids.WATER, 1000), IFluidHandler.FluidAction.EXECUTE) == 0,
+                "Output fluid port accepted fill"
+        );
+        require(
+                helper,
+                !handler.drain(1000, IFluidHandler.FluidAction.EXECUTE).isEmpty(),
+                "Output fluid port blocked extract"
+        );
+
+        sneakUse(helper, itemPos, player);
+        require(
+                helper,
+                helper.getBlockState(itemPos).getValue(PortBlocks.MODE) == ConfiguredPortMode.INPUT,
+                "First sneak should set the item port to input"
+        );
+        sneakUse(helper, itemPos, player);
+        require(
+                helper,
+                helper.getBlockState(itemPos).getValue(PortBlocks.MODE) == ConfiguredPortMode.OUTPUT,
+                "Second sneak should set the item port to output"
+        );
         helper.succeed();
     }
 
@@ -943,6 +1007,20 @@ public final class IndustrialGameTests {
                 "Kettle did not accept wort from the mash tun"
         );
         helper.succeed();
+    }
+
+    private static void sneakUse(GameTestHelper helper, BlockPos pos, Player player) {
+        helper.getBlockState(pos).use(
+                helper.getLevel(),
+                player,
+                InteractionHand.MAIN_HAND,
+                new BlockHitResult(
+                        Vec3.atCenterOf(helper.absolutePos(pos)),
+                        Direction.NORTH,
+                        helper.absolutePos(pos),
+                        false
+                )
+        );
     }
 
     private static boolean hasCrossroadsAxle(net.minecraft.world.level.block.entity.BlockEntity entity) {

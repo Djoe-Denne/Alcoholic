@@ -27,6 +27,7 @@ import com.djden.alcoholic.minecraft.beverage.BeverageRuntime;
 import com.djden.alcoholic.minecraft.content.BeverageFrameworkBootstrap;
 import com.djden.alcoholic.forge.damage.IndustrialDamageSources;
 import com.djden.alcoholic.forge.event.ForgeIndustrialEvents;
+import com.djden.alcoholic.forge.event.ForgePortInteractEvents;
 import com.djden.alcoholic.forge.item.ForgeItemCapabilities;
 import com.djden.alcoholic.minecraft.content.GrapeContentRegistrar;
 import com.djden.alcoholic.minecraft.content.GrainContent;
@@ -159,6 +160,7 @@ public final class AlcoholicForgeMod {
         MinecraftForge.EVENT_BUS.register(new ForgeDebugKitCommands(content, processing, grain, industrial));
         MinecraftForge.EVENT_BUS.register(new ForgePlaceCommands());
         MinecraftForge.EVENT_BUS.register(new ForgeIndustrialEvents());
+        MinecraftForge.EVENT_BUS.register(new ForgePortInteractEvents());
 
         DistExecutor.unsafeRunWhenOn(
                 Dist.CLIENT,

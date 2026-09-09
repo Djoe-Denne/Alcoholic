@@ -20,4 +20,11 @@ public enum PortMode {
             case BOTH -> INPUT;
         };
     }
+
+    /**
+     * Sneak/wrench cycle. {@code BOTH} stays a valid default but is not part of the toggle.
+     */
+    public PortMode toggleIo() {
+        return this == INPUT ? OUTPUT : INPUT;
+    }
 }
