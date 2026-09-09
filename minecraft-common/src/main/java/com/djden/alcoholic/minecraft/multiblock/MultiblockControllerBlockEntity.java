@@ -11,6 +11,7 @@ import com.djden.alcoholic.domain.multiblock.Box3;
 import com.djden.alcoholic.domain.multiblock.CellCoord;
 import com.djden.alcoholic.domain.multiblock.CrushOccupancy;
 import com.djden.alcoholic.domain.multiblock.HollowCuboidValidator;
+import com.djden.alcoholic.domain.multiblock.MachineKind;
 import com.djden.alcoholic.domain.multiblock.MultiblockDefinition;
 import com.djden.alcoholic.domain.multiblock.MultiblockGeometry;
 import com.djden.alcoholic.domain.multiblock.PartRole;
@@ -63,8 +64,12 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     public static final int INPUT_SLOT = 0;
     public static final int OUTPUT_SLOT = 1;
 
+    public static final int INPUT_TANK = 0;
+    public static final int OUTPUT_TANK = 1;
+
     private final ResourceId definitionId;
     private final LiquidTank tank;
+    private final LiquidTank inputTank;
     private final ProcessAdvancementState advancements = new ProcessAdvancementState();
     private final NonNullList<ItemStack> items = NonNullList.withSize(MachineLayout.MAX_MACHINE_SLOTS, ItemStack.EMPTY);
     private boolean formed;
@@ -105,6 +110,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         super(type, position, state);
         this.definitionId = definitionId;
         this.tank = new LiquidTank(1, ProcessRuntime.shared().merges(), ProcessRuntime.shared().aggregators());
+        this.inputTank = new LiquidTank(1, ProcessRuntime.shared().merges(), ProcessRuntime.shared().aggregators());
     }
 
     public ResourceId definitionId() {
@@ -380,6 +386,54 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         return tank;
     }
 
+    @Override
+    public int tankCount() {
+        return mashDualTanks() ? 2 : 1;
+    }
+
+    @Override
+    public LiquidTank tank(int index) {
+        if (mashDualTanks() && index == INPUT_TANK) {
+            return inputTank;
+        }
+        return tank;
+    }
+
+    @Override
+    public boolean canFillTank(int index) {
+        return mashDualTanks() ? index == INPUT_TANK : index == 0;
+    }
+
+    @Override
+    public boolean canDrainTank(int index) {
+        return mashDualTanks() ? index == OUTPUT_TANK : index == 0;
+    }
+
+    LiquidTank fillTank() {
+        return mashDualTanks() ? inputTank : tank;
+    }
+
+    boolean mashDualTanks() {
+        return definition()
+                .map(definition -> definition.kind() == MachineKind.MASH)
+                .orElseGet(() -> definitionId.path().contains("mash"));
+    }
+
+    private int storedVolumeMillibuckets() {
+        int stored = tank.contents().map(LiquidBatch::volumeMillibuckets).orElse(0);
+        if (mashDualTanks()) {
+            stored += inputTank.contents().map(LiquidBatch::volumeMillibuckets).orElse(0);
+        }
+        return stored;
+    }
+
+    private boolean resizeTanks(int capacity) {
+        if (!tank.tryResize(capacity)) {
+            return false;
+        }
+        return !mashDualTanks() || inputTank.tryResize(capacity);
+    }
+
     public void onTankChanged() {
         syncCaskHistory();
         resetProcess();
@@ -450,7 +504,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
                 definition.get(),
                 WorldStructureSampler.coord(worldPosition),
                 new WorldStructureSampler(level),
-                tank.contents().map(LiquidBatch::volumeMillibuckets).orElse(0)
+                storedVolumeMillibuckets()
         );
         MultiblockProfiler.SHARED.recordValidation(System.nanoTime() - start);
         lastReason = result.reason();
@@ -466,7 +520,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
             return;
         }
         MultiblockGeometry next = result.geometry().orElseThrow();
-        if (!tank.tryResize(next.capacityMillibuckets())) {
+        if (!resizeTanks(next.capacityMillibuckets())) {
             unform(IndustrialAccess.DRAIN_ONLY, next);
             return;
         }
@@ -809,7 +863,26 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     }
 
     double heatCelsius() {
-        return com.djden.alcoholic.minecraft.environment.HeatSources.celsius(level, worldPosition);
+        return com.djden.alcoholic.minecraft.environment.HeatSources.celsius(level, worldPosition, hullHeatPositions());
+    }
+
+    private List<BlockPos> hullHeatPositions() {
+        List<BlockPos> positions = new ArrayList<>();
+        positions.add(worldPosition.below());
+        if (geometry == null) {
+            return positions;
+        }
+        AxisBox box = geometry.bounds();
+        int floorY = box.minY() - 1;
+        for (int x = box.minX() + 1; x <= box.maxX() - 1; x++) {
+            for (int z = box.minZ() + 1; z <= box.maxZ() - 1; z++) {
+                BlockPos heat = new BlockPos(x, floorY, z);
+                if (!heat.equals(worldPosition.below())) {
+                    positions.add(heat);
+                }
+            }
+        }
+        return positions;
     }
 
     public com.djden.alcoholic.domain.vessel.EnvironmentProfile environment() {
@@ -931,7 +1004,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         if (level == null) {
             return 20.0;
         }
-        return level.getBiome(worldPosition).value().getBaseTemperature() * 25.0 + 5.0;
+        return com.djden.alcoholic.minecraft.environment.EnvironmentSampler.sample(level, worldPosition).temperature();
     }
 
     public boolean insert(ItemStack stack) {
@@ -993,8 +1066,11 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
                 + geometry.bounds().height() + "x" + geometry.bounds().depth())
                 + " interior=" + (geometry == null ? 0 : geometry.interiorVolume())
                 + " capacity=" + tank.capacity()
-                + " stored=" + tank.contents().map(LiquidBatch::volumeMillibuckets).orElse(0)
+                + " stored=" + storedVolumeMillibuckets()
                 + " liquid=" + tank.contents().flatMap(LiquidBatch::baseLiquid)
+                + (mashDualTanks()
+                ? " input=" + inputTank.contents().flatMap(LiquidBatch::baseLiquid)
+                : "")
                 + " ports=" + (geometry == null ? 0 : geometry.ports().size())
                 + " process=" + definition().flatMap(MultiblockDefinition::processType)
                 + " executor=" + definition().map(MultiblockDefinition::kind)
@@ -1070,6 +1146,9 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         super.saveAdditional(tag);
         tag.putString("Definition", definitionId.toString());
         ContainerHelper.saveAllItems(tag, items);
+        if (mashDualTanks()) {
+            inputTank.contents().ifPresent(batch -> tag.put("InputLiquid", LiquidBatchNbt.toTag(batch)));
+        }
         tank.contents().ifPresent(batch -> LiquidBatchNbt.writeRoot(tag, batch));
         tag.putBoolean("Formed", formed);
         tag.putString("Access", access.name());
@@ -1193,19 +1272,50 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
                     WorldStructureSampler.coord(worldPosition)
             );
             tank.tryResize(Math.max(tank.capacity(), geometry.capacityMillibuckets()));
+            if (mashDualTanks()) {
+                inputTank.tryResize(Math.max(inputTank.capacity(), geometry.capacityMillibuckets()));
+            }
         }
-        Optional<LiquidBatch> restored = LiquidBatchNbt.readRoot(tag);
-        if (restored.isPresent()) {
-            tank.set(restored.get());
-        } else if (!tag.contains(LiquidBatchNbt.ROOT_TAG)) {
-            tank.clear();
-        }
+        restoreTanks(tag);
         List<BlockPos> parts = new ArrayList<>();
         tag.getList("BoundParts", 10).forEach(entry -> parts.add(NbtUtils.readBlockPos((CompoundTag) entry)));
         boundParts = List.copyOf(parts);
         imprint.load(tag, tank.contents(), CaskHistoryTracker::axesFor);
         advancements.load(tag);
         structureDirty = true;
+    }
+
+    private void restoreTanks(CompoundTag tag) {
+        inputTank.clear();
+        Optional<LiquidBatch> restored = LiquidBatchNbt.readRoot(tag);
+        if (tag.contains("InputLiquid", Tag.TAG_COMPOUND)) {
+            LiquidBatchNbt.fromTag(tag.getCompound("InputLiquid")).ifPresent(inputTank::set);
+            if (restored.isPresent()) {
+                tank.set(restored.get());
+            } else if (!tag.contains(LiquidBatchNbt.ROOT_TAG)) {
+                tank.clear();
+            }
+            return;
+        }
+        if (restored.isEmpty()) {
+            if (!tag.contains(LiquidBatchNbt.ROOT_TAG)) {
+                tank.clear();
+            }
+            return;
+        }
+        LiquidBatch batch = restored.get();
+        if (mashDualTanks() && isWater(batch)) {
+            inputTank.set(batch);
+            tank.clear();
+            return;
+        }
+        tank.set(batch);
+    }
+
+    private static boolean isWater(LiquidBatch batch) {
+        return batch.baseLiquid()
+                .filter(id -> "minecraft:water".equals(id.toString()))
+                .isPresent();
     }
 
     @Override

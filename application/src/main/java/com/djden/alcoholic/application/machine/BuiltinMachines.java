@@ -68,7 +68,7 @@ public final class BuiltinMachines {
                         Set.of(PartRole.KINETIC_PORT),
                         true
                 ),
-                4_000,
+                5_000,
                 ExecutorModifiers.industrialPress(),
                 KineticRequirement.industrialPress(),
                 "alcoholic:industrial_press_controller"

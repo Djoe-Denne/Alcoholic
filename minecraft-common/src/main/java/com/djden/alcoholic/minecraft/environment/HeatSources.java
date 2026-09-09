@@ -32,13 +32,27 @@ public final class HeatSources {
     }
 
     public static double celsius(Level level, BlockPos machine) {
+        return celsius(level, machine, List.of(machine.below()));
+    }
+
+    public static double celsius(Level level, BlockPos machine, List<BlockPos> heatPositions) {
         if (level == null) {
             return 20.0;
         }
-        BlockPos below = machine.below();
-        BlockState state = level.getBlockState(below);
+        double hottest = Double.NEGATIVE_INFINITY;
+        List<BlockPos> positions = heatPositions == null || heatPositions.isEmpty()
+                ? List.of(machine.below())
+                : heatPositions;
+        for (BlockPos heatPos : positions) {
+            hottest = Math.max(hottest, sample(level, machine, heatPos));
+        }
+        return Double.isFinite(hottest) ? hottest : 20.0;
+    }
+
+    private static double sample(Level level, BlockPos machine, BlockPos heatPos) {
+        BlockState state = level.getBlockState(heatPos);
         for (Probe probe : PROBES) {
-            OptionalDouble sampled = probe.sample(level, below, state);
+            OptionalDouble sampled = probe.sample(level, heatPos, state);
             if (sampled.isPresent()) {
                 return sampled.getAsDouble();
             }

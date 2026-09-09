@@ -79,18 +79,23 @@ final class JeiProcessSpec {
         Map<ResourceId, List<ResourceId>> catalysts = new LinkedHashMap<>();
         catalysts.put(BuiltinRegistrations.MILL, List.of(
                 AlcoholicIds.MALT_MILL,
-                AlcoholicIds.INDUSTRIAL_ROLLER_MILL_CONTROLLER
+                AlcoholicIds.CRAFT_MILL_CONTROLLER,
+                AlcoholicIds.INDUSTRIAL_ROLLER_MILL_CONTROLLER,
+                AlcoholicIds.ELECTRIC_MOTOR
         ));
         catalysts.put(BuiltinRegistrations.MASH, List.of(
                 AlcoholicIds.MASH_TUN,
+                AlcoholicIds.CRAFT_MASH_TUN_CONTROLLER,
                 AlcoholicIds.INDUSTRIAL_MASH_TUN_CONTROLLER
         ));
         catalysts.put(BuiltinRegistrations.BOIL, List.of(
                 AlcoholicIds.BREWING_KETTLE,
+                AlcoholicIds.CRAFT_BREWING_KETTLE_CONTROLLER,
                 AlcoholicIds.INDUSTRIAL_BREWING_KETTLE_CONTROLLER
         ));
         catalysts.put(BuiltinRegistrations.MALT, List.of(
                 AlcoholicIds.MALTING_FLOOR,
+                AlcoholicIds.CRAFT_MALT_HOUSE_CONTROLLER,
                 AlcoholicIds.INDUSTRIAL_MALT_HOUSE_CONTROLLER
         ));
         catalysts.put(BuiltinRegistrations.PRESS, List.of(
@@ -99,6 +104,7 @@ final class JeiProcessSpec {
         ));
         catalysts.put(BuiltinRegistrations.FERMENT, List.of(
                 AlcoholicIds.ARTISANAL_FERMENTER,
+                AlcoholicIds.CRAFT_VAT_CONTROLLER,
                 AlcoholicIds.INDUSTRIAL_VAT_CONTROLLER
         ));
         catalysts.put(BuiltinRegistrations.AGE, List.of(

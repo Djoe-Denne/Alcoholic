@@ -1,19 +1,27 @@
 package com.djden.alcoholic.integration.create.forge;
 
+import com.djden.alcoholic.api.ResourceId;
+import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
 import com.djden.alcoholic.minecraft.process.SolidPropertyNbt;
 import com.simibubi.create.content.kinetics.crusher.CrushingWheelControllerBlockEntity;
 import com.simibubi.create.content.kinetics.millstone.MillstoneBlockEntity;
+import com.simibubi.create.content.processing.basin.BasinBlockEntity;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ChunkHolder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -28,6 +36,7 @@ import java.util.WeakHashMap;
  */
 public final class CreateMillPropertyBridge {
     private final Map<BlockEntity, ItemStack> lastInputs = new WeakHashMap<>();
+    private final Map<BlockEntity, Integer> lastBasinFluid = new WeakHashMap<>();
 
     @SubscribeEvent
     public void onLevelTick(TickEvent.LevelTickEvent event) {
@@ -40,15 +49,22 @@ public final class CreateMillPropertyBridge {
         for (LevelChunk chunk : loadedChunks(level)) {
             for (BlockEntity blockEntity : chunk.getBlockEntities().values()) {
                 if (blockEntity instanceof MillstoneBlockEntity millstone) {
-                    transfer(millstone, millstone.inputInv, millstone.outputInv);
+                    transfer(millstone, millstone.inputInv, millstone.outputInv, BuiltinRegistrations.MILL);
                 } else if (blockEntity instanceof CrushingWheelControllerBlockEntity crusher) {
-                    transfer(crusher, crusher.inventory, crusher.inventory);
+                    transfer(crusher, crusher.inventory, crusher.inventory, BuiltinRegistrations.MILL);
+                } else if (blockEntity instanceof BasinBlockEntity basin) {
+                    trackBasin(basin);
                 }
             }
         }
     }
 
-    private void transfer(BlockEntity entity, IItemHandler inputInv, IItemHandler outputInv) {
+    private void transfer(
+            BlockEntity entity,
+            IItemHandler inputInv,
+            IItemHandler outputInv,
+            ResourceId process
+    ) {
         ItemStack input = firstNonEmpty(inputInv);
         ItemStack previous = lastInputs.get(entity);
         if (previous != null && !previous.isEmpty() && input.getCount() < previous.getCount()) {
@@ -62,8 +78,40 @@ public final class CreateMillPropertyBridge {
                     SolidPropertyNbt.write(output, properties.get().asMap());
                 }
             }
+            AdvancementHooks.processCompletedNearby(
+                    entity.getLevel(),
+                    entity.getBlockPos(),
+                    process,
+                    Optional.empty()
+            );
         }
         lastInputs.put(entity, input.copy());
+    }
+
+    private void trackBasin(BasinBlockEntity basin) {
+        IFluidHandler fluids = basin.getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
+        if (fluids == null) {
+            return;
+        }
+        int volume = 0;
+        boolean alcoholic = false;
+        for (int index = 0; index < fluids.getTanks(); index++) {
+            var stack = fluids.getFluidInTank(index);
+            volume += stack.getAmount();
+            ResourceLocation id = ForgeRegistries.FLUIDS.getKey(stack.getFluid());
+            if (id != null && "alcoholic".equals(id.getNamespace())) {
+                alcoholic = true;
+            }
+        }
+        Integer previous = lastBasinFluid.put(basin, volume);
+        if (alcoholic && previous != null && volume > previous) {
+            AdvancementHooks.processCompletedNearby(
+                    basin.getLevel(),
+                    basin.getBlockPos(),
+                    BuiltinRegistrations.PRESS,
+                    Optional.empty()
+            );
+        }
     }
 
     private static ItemStack firstNonEmpty(IItemHandler inventory) {

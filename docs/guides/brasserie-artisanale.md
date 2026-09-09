@@ -164,7 +164,7 @@ Bine verticale, pas une vigne. Elle **meurt** sans fil de palissage au-dessus (m
 2. Clic sur le premier poteau avec la bobine, puis sur le second → fil(s) de palissage.
 3. Planter le **rhizome de houblon** sur terre / herbe / terre labourée, **sous** le fil.
 4. La bine grandit vers le haut (âge 0 → 2, puis un étage au-dessus).
-5. Clic droit sur une bine mature : 1 houblon, l’étage revient à l’âge 0.
+5. Clic droit **avec une serpe** sur une bine mature : 1 houblon par étage occupé, l’étage revient à l’âge 0. Sans serpe, un message l’indique.
 6. Casser une bine : 1 rhizome (+ 1 houblon si mature).
 
 Premier rhizome : casser du **houblon sauvage** (`alcoholic:wild_hops`) en forêt, forêt fleurie, forêt de bouleaux, taïga ou rivière. Drop : 1 rhizome + 1 houblon. Si Brewery est chargé, ce worldgen est coupé.
@@ -175,7 +175,7 @@ Premier rhizome : casser du **houblon sauvage** (`alcoholic:wild_hops`) en forê
 
 Un clic à main vide ouvre l’écran de la machine (le statut reste visible en sneak, ou dans l’écran). Les durées sont en ticks (20 ticks = 1 s).
 
-### Étape A — Maltage (80 ticks)
+### Étape A — Maltage (12000 ticks)
 
 1. Clic droit sur l’aire avec de l’**orge**.
 2. Shift + main vide : récupère l’**orge maltée**. Si le slot de sortie est vide, le même geste **cycle** le profil (pâle / ambré / foncé).
@@ -189,7 +189,7 @@ Un clic à main vide ouvre l’écran de la machine (le statut reste visible en 
 
 L’aire ne broie plus : c’est uniquement `MALT`.
 
-### Étape B — Mouture (80 ticks)
+### Étape B — Mouture (200 ticks)
 
 1. Placer le **moteur** (ou un moteur électrique / arbre Create / essieu Crossroads) **adjacent** au broyeur.
 2. Charger le moteur : clic avec du **combustible de fourneau** (charbon, charbon de bois, bois). Shift + main vide retire le combustible.
@@ -199,7 +199,7 @@ L’aire ne broie plus : c’est uniquement `MALT`.
 
 Avec Create, le même process `alcoholic:mill_malted_grain` peut aussi tourner sur millstone / crushing wheels.
 
-### Étape C — Empâtage (40 ticks)
+### Étape C — Empâtage (1200 ticks)
 
 1. Poser la cuve **sur** un bloc de magma (65 °C). Hors 52–78 °C le rendement chute ; hors bande le process stagne.
 2. Clic avec de la **mouture**.
@@ -208,14 +208,14 @@ Avec Create, le même process `alcoholic:mill_malted_grain` peut aussi tourner s
 5. Shift + main vide : récupère la drêche.
 6. Seau vide (ou tuyau Create) pour extraire le moût.
 
-### Étape D — Ébullition (40 ticks)
+### Étape D — Ébullition (1600 ticks)
 
 1. Poser le chaudron **sur** un feu de camp allumé ou de la lave (≈ 100 °C). Bande préférée 98–105 °C, opérable 90–110 °C.
 2. Verser le **moût** au seau.
 3. Clic avec du **houblon** (`#alcoholic:hops`). Ajout unique en début de process (rôle *bittering*).
 4. Le liquide devient **moût houblonné** : amertume ≈ 0,55, arôme ≈ 0,40. Le sucre déjà présent est conservé.
 
-### Étape E — Fermentation (80 ticks de cinétique)
+### Étape E — Fermentation (24000 ticks)
 
 1. Transférer le moût houblonné dans la **cuve de fermentation** (seau, clic, ou tuyau Create).
 2. Clic avec de la **levure**.

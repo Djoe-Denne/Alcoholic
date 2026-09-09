@@ -81,12 +81,12 @@ class MachineLayoutTest {
                 MachineLayout.forMultiblock(MachineKind.MILL, true, MachineScale.CRAFT)
         );
         assertEquals(MachineLayout.TWO_SLOTS_ONE_TANK, MachineLayout.forMultiblock(MachineKind.PRESS, true));
-        assertEquals(MachineLayout.TWO_SLOTS_ONE_TANK, MachineLayout.forMultiblock(MachineKind.MASH, true));
+        assertEquals(MachineLayout.TWO_SLOTS_TWO_TANKS, MachineLayout.forMultiblock(MachineKind.MASH, true));
         assertEquals(
-                MachineLayout.TWO_SLOTS_ONE_TANK,
+                MachineLayout.TWO_SLOTS_TWO_TANKS,
                 MachineLayout.forMultiblock(MachineKind.MASH, true, MachineScale.CRAFT)
         );
-        assertEquals(1, MachineLayout.forMultiblock(MachineKind.MASH, true, MachineScale.CRAFT).tankCount());
+        assertEquals(2, MachineLayout.forMultiblock(MachineKind.MASH, true, MachineScale.CRAFT).tankCount());
         assertEquals(2, MachineLayout.TWO_SLOTS_TWO_TANKS.tankCount());
         assertEquals(MachineLayout.ONE_TANK, MachineLayout.forMultiblock(MachineKind.STORAGE, false));
     }

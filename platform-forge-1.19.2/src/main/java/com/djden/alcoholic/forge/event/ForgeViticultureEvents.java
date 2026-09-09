@@ -6,7 +6,12 @@ import com.djden.alcoholic.integration.vinery.VineryIntegration;
 import com.djden.alcoholic.minecraft.agriculture.TrellisDetector;
 import com.djden.alcoholic.minecraft.agriculture.VineBlock;
 import com.djden.alcoholic.minecraft.agriculture.VineStage;
+import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
+import com.djden.alcoholic.minecraft.content.AlcoholicIds;
 import com.djden.alcoholic.minecraft.content.AlcoholicContent;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import com.djden.alcoholic.domain.viticulture.PruningLevel;
 import com.djden.alcoholic.minecraft.viticulture.HarvestLotNbt;
 import com.djden.alcoholic.minecraft.viticulture.ViticultureDataReloadListener;
@@ -19,6 +24,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -49,6 +55,26 @@ public final class ForgeViticultureEvents {
         this.compatibility = Objects.requireNonNull(compatibility, "compatibility");
         this.content = Objects.requireNonNull(content, "content");
         this.runtime = Objects.requireNonNull(runtime, "runtime");
+    }
+
+    @SubscribeEvent
+    public void harvestCompatCrops(PlayerEvent.ItemPickupEvent event) {
+        ItemStack stack = event.getStack();
+        if (stack.isEmpty()) {
+            return;
+        }
+        Player player = event.getEntity();
+        if (stack.is(itemTag("grapes/red"))) {
+            AdvancementHooks.harvest(player, AdvancementHooks.location(AlcoholicIds.RED_GRAPES));
+        } else if (stack.is(itemTag("grapes/white"))) {
+            AdvancementHooks.harvest(player, AdvancementHooks.location(AlcoholicIds.WHITE_GRAPES));
+        } else if (stack.is(itemTag("hops"))) {
+            AdvancementHooks.harvest(player, AdvancementHooks.location(AlcoholicIds.HOPS));
+        }
+    }
+
+    private static TagKey<Item> itemTag(String path) {
+        return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(AlcoholicIds.MOD_ID, path));
     }
 
     @SubscribeEvent

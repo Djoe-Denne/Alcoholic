@@ -13,33 +13,37 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Locks current playability defects so a later fix is visible in CI.
- * Invert or delete an assertion when the corresponding defect is remediated.
+ * Remaining playability defects (C16–C26) stay locked here.
+ * C1, C3 and C15 assertions were inverted after remédiation.
  */
 class PlayabilityAuditCharacterizationTest {
     @Test
-    void agingAndConditioningControllersShareIdenticalCraftPatterns() throws IOException {
-        assertSameShapedRecipe(
-                "industrial_aging_vessel_controller.json",
-                "industrial_conditioning_vessel_controller.json"
+    void agingAndConditioningControllersUseDistinctIngredients() throws IOException {
+        JsonObject aging = innerRecipe(resource("data/alcoholic/recipes/industrial_aging_vessel_controller.json"));
+        JsonObject conditioning = innerRecipe(resource("data/alcoholic/recipes/industrial_conditioning_vessel_controller.json"));
+        assertEquals(aging.getAsJsonArray("pattern").toString(), conditioning.getAsJsonArray("pattern").toString());
+        assertTrue(
+                !aging.getAsJsonObject("key").toString().equals(conditioning.getAsJsonObject("key").toString()),
+                "AGE and CONDITION controllers still share the same craft keys"
         );
-        assertSameShapedRecipe(
-                "industrial_aging_vessel_controller_create.json",
-                "industrial_conditioning_vessel_controller_create.json"
+        JsonObject agingCreate = innerRecipe(resource("data/alcoholic/recipes/industrial_aging_vessel_controller_create.json"));
+        JsonObject conditioningCreate = innerRecipe(resource("data/alcoholic/recipes/industrial_conditioning_vessel_controller_create.json"));
+        assertTrue(
+                !agingCreate.getAsJsonObject("key").toString().equals(conditioningCreate.getAsJsonObject("key").toString()),
+                "Create AGE and CONDITION controllers still share the same craft keys"
         );
     }
 
     @Test
-    void bottleProcessJsonIsAbsentSoJeiBottlingFallsBack() {
-        assertNull(
+    void bottleProcessJsonIsPresentForJei() {
+        assertNotNull(
                 stream("data/alcoholic/alcoholic/processes/bottle.json"),
-                "bottle.json appeared; JEI Bottling may now have recipes"
+                "bottle.json is missing; JEI Bottling would fall back to incomplete()"
         );
         assertNotNull(stream("data/alcoholic/alcoholic/processes/mash_wort.json"));
     }
@@ -52,7 +56,7 @@ class PlayabilityAuditCharacterizationTest {
     }
 
     @Test
-    void formAgingFlipbookIsCataloguedWithoutTextureOrContractCoverage() throws IOException {
+    void formAgingFlipbookIsPresent() throws IOException {
         boolean catalogued = ProgressionCatalog.official()
                 .chapter(ProgressionChapter.INDUSTRIAL)
                 .images()
@@ -63,9 +67,9 @@ class PlayabilityAuditCharacterizationTest {
                 stream("assets/alcoholic/textures/item/ftbquests/form_conditioning.png"),
                 "form_conditioning texture should exist as the control"
         );
-        assertNull(
+        assertNotNull(
                 stream("assets/alcoholic/textures/item/ftbquests/form_aging.png"),
-                "form_aging.png appeared; FTB industrial chapter icon is no longer missing"
+                "form_aging.png is still missing from the industrial chapter"
         );
     }
 
@@ -109,18 +113,6 @@ class PlayabilityAuditCharacterizationTest {
         assertEquals("finished", ferment.getAsJsonArray("outputs").get(0).getAsString());
         JsonObject process = resource("data/alcoholic/alcoholic/processes/ferment_hopped_wort.json");
         assertEquals("young", process.getAsJsonArray("outputs").get(0).getAsString());
-    }
-
-    private static void assertSameShapedRecipe(String leftFile, String rightFile) throws IOException {
-        JsonObject left = innerRecipe(resource("data/alcoholic/recipes/" + leftFile));
-        JsonObject right = innerRecipe(resource("data/alcoholic/recipes/" + rightFile));
-        assertEquals(left.getAsJsonArray("pattern").toString(), right.getAsJsonArray("pattern").toString());
-        assertEquals(left.getAsJsonObject("key").toString(), right.getAsJsonObject("key").toString());
-        assertFalse(
-                left.getAsJsonObject("result").get("item").getAsString()
-                        .equals(right.getAsJsonObject("result").get("item").getAsString()),
-                "characterization expected two different controller results"
-        );
     }
 
     private static JsonObject innerRecipe(JsonObject wrapper) {

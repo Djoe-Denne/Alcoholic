@@ -1,5 +1,5 @@
 {
-  "capacity_per_internal_block": 4000,
+  "capacity_per_internal_block": 5000,
   "casing_tags": [
     "alcoholic:pressure_safe_casing"
   ],

@@ -152,7 +152,7 @@ Cycles suivants : `DORMANT` → `FLOWERING` → … → `HARVEST_READY` → `DOR
 
 ### Récolte (comportement cible)
 
-À `HARVEST_READY`, un **clic droit n’importe quelle main** (vide ou non) récolte. La vigne passe en `DORMANT` ; elle n’est **pas** détruite. Le tas porte le NBT de lot (qualité, sucre, acidité, cépage).
+À `HARVEST_READY`, un **clic droit avec une serpe** (`alcoholic:sickle`) récolte. Main vide ou autre outil : un message l’indique, la vigne reste. La vigne passe en `DORMANT` ; elle n’est **pas** détruite. Fortune sur la serpe augmente le nombre de raisins. Le tas porte le NBT de lot (qualité, sucre, acidité, cépage).
 
 **Shift + main vide** : inspecte le plant (stade, santé, taille, lot).
 
@@ -166,7 +166,7 @@ Le **sécateur** ne taille qu’en `DORMANT`. C’est **optionnel** : ça ajuste
 
 Un clic à main vide ouvre l’écran de la machine (le statut reste visible en sneak, ou dans l’écran). Les durées sont en ticks (20 ticks = 1 s).
 
-### Étape A — Pressage (20 ticks)
+### Étape A — Pressage (200 ticks)
 
 1. Clic droit sur le pressoir avec des **raisins** (`#alcoholic:grapes/red` ou `#alcoholic:grapes/white`).
 2. Attendre. Résultat : **moût** (`alcoholic:red_grape_must` / `alcoholic:white_grape_must`) + **marc**.
@@ -176,7 +176,7 @@ Un clic à main vide ouvre l’écran de la machine (le statut reste visible en 
 
 Create n’est pas requis. Un Mechanical Press Create produit du moût aux propriétés **par défaut** : le NBT de lot de récolte est perdu.
 
-### Étape B — Fermentation (80 ticks de cinétique)
+### Étape B — Fermentation (24000 ticks)
 
 1. Verser le moût au seau dans la **cuve de fermentation**.
 2. Clic avec de la **levure**.
@@ -191,7 +191,7 @@ La cuve n’est pas « une machine à vin » : elle exécute `alcoholic:ferment`
 Deux sorties officielles, **pas** un second DAG :
 
 1. **Bouteiller le vin jeune** depuis le fermenteur (bouteille vide, 250 mB).
-2. **Élever** : seau de vin jeune → **fût de chêne** → `AGE` jusqu’à maturité ≥ 1,0 → le batch devient `alcoholic:red_wine` / `alcoholic:white_wine` → bouteiller depuis le fût.
+2. **Élever** (72000 ticks) : seau de vin jeune → **fût de chêne** (ou vaisseau d’élevage industriel) → `AGE` jusqu’à maturité ≥ 1,0 → le batch devient `alcoholic:red_wine` / `alcoholic:white_wine` → bouteiller depuis le fût.
 
 Le fût saisonné (déjà utilisé) applique un multiplicateur 1,15. Vider le fût enregistre le liquide précédent.
 
@@ -211,9 +211,9 @@ On **ne** bouteille **pas** depuis le pressoir, la cuve d’empâtage ni le chau
 
 ## 5. Industriels et Create
 
-Les contrôleurs industriels (pressoir, cuve de fermentation, tank passif) sont des **exécuteurs supplémentaires** des mêmes process. Ils ne changent pas le DAG.
+Les contrôleurs industriels (pressoir, cuve, tank, vaisseau d’élevage) sont des **exécuteurs supplémentaires** des mêmes process. Ils ne changent pas le DAG.
 
-Un joueur **uniquement industriel** peut aller de la récolte au **vin jeune en bouteille** (pressoir → tank optionnel → cuve → `empty_bottle` sur le contrôleur). L’**élevage** (`AGE` → `red_wine` / `white_wine`) reste le **fût de chêne** tant qu’il n’existe pas de famille `BuiltinMachines` pour `AGE`. C’est le prochain trou industriel officiel à fermer, pas `DISTILL` ni le cidre.
+Un joueur **uniquement industriel** peut aller de la récolte au **vin jeune en bouteille** (pressoir → tank optionnel → cuve → `empty_bottle` sur le contrôleur). L’**élevage** (`AGE` → `red_wine` / `white_wine`) se fait dans le **fût de chêne** ou le **vaisseau d’élevage industriel** (`alcoholic:industrial_aging_vessel`).
 
 Create reste optionnel (Mechanical Press, tuyaux). Le pressoir Alcoholic conserve le lot de récolte ; le compactage Create ne le conserve pas.
 

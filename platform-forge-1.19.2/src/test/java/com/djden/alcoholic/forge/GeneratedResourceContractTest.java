@@ -424,6 +424,7 @@ class GeneratedResourceContractTest {
                     "item.alcoholic.sickle",
                     "tooltip.alcoholic.sickle.use",
                     "tooltip.alcoholic.sickle.fortune",
+                    "message.alcoholic.vine.need_sickle",
                     "message.alcoholic.vine.inspect",
                     "message.alcoholic.vine.stage.dormant",
                     "message.alcoholic.vine.pruning.balanced",
@@ -878,6 +879,7 @@ class GeneratedResourceContractTest {
         resource("data/alcoholic/alcoholic/processes/boil_wort.json");
         resource("data/alcoholic/alcoholic/processes/ferment_hopped_wort.json");
         resource("data/alcoholic/alcoholic/processes/condition_beer.json");
+        resource("data/alcoholic/alcoholic/processes/bottle.json");
         JsonObject beer = resource("data/alcoholic/alcoholic/beverages/beer.json");
         assertEquals("alcoholic:beer", beer.get("quality").getAsString());
         assertEquals(

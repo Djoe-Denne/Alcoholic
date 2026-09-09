@@ -24,6 +24,7 @@ import com.djden.alcoholic.domain.process.MaltExecutionStage;
 import com.djden.alcoholic.domain.process.ThermalStability;
 import com.djden.alcoholic.domain.vessel.EnvironmentProfile;
 import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
+import com.djden.alcoholic.minecraft.fluid.LiquidTank;
 import com.djden.alcoholic.minecraft.menu.MachineLayout;
 import com.djden.alcoholic.minecraft.process.ItemLots;
 import com.djden.alcoholic.minecraft.process.MinecraftSelectorMatcher;
@@ -276,7 +277,7 @@ final class IndustrialProcessTicks {
                 : Math.min(1.0, (double) machine.processProgress() / machine.processDuration());
         MaltExecutionStage stage = MaltExecutionStage.at(fraction);
         machine.setProcessStage(stage.name().toLowerCase());
-        if (stage.requiresMoisture() && humidity + 1e-9 < config.moistureRequirement()) {
+        if (stage.requiresMoisture() && processEnvironment.humidity() + 1e-9 < config.moistureRequirement()) {
             machine.pauseElapsed(now);
             machine.markProcessDirty(false);
             return;
@@ -350,7 +351,7 @@ final class IndustrialProcessTicks {
         machine.setProcessStage("milling");
         if (!machine.processComplete()) {
             machine.consumeWork(definition);
-            if (!machine.advanceElapsed(now, definition.modifiers().speedModifier())) {
+            if (!machine.advanceElapsed(now, 1.0)) {
                 machine.markProcessDirty(false);
                 return;
             }
@@ -371,9 +372,11 @@ final class IndustrialProcessTicks {
         machine.markProcessDirty(true);
     }
 
-    static void mash(MultiblockControllerBlockEntity machine, MultiblockDefinition definition, long now) {
+        static void mash(MultiblockControllerBlockEntity machine, MultiblockDefinition definition, long now) {
         ItemStack input = machine.inventory().get(MultiblockControllerBlockEntity.INPUT_SLOT);
-        Optional<LiquidBatch> water = machine.tank().contents();
+        LiquidTank waterTank = machine.tank(MultiblockControllerBlockEntity.INPUT_TANK);
+        LiquidTank wortTank = machine.tank();
+        Optional<LiquidBatch> water = waterTank.contents();
         if (input.isEmpty() || water.isEmpty()) {
             machine.resetProcess();
             return;
@@ -418,7 +421,7 @@ final class IndustrialProcessTicks {
                 duration
         );
         machine.setProcessStage("mash");
-        if (!machine.advanceElapsed(now, definition.modifiers().speedModifier())) {
+        if (!machine.advanceElapsed(now, 1.0)) {
             machine.markProcessDirty(false);
             return;
         }
@@ -427,7 +430,7 @@ final class IndustrialProcessTicks {
                 (int) Math.floor(liquid.volume() / config.inputLiquidVolume())
         );
         int consume = Math.max(1, (int) Math.round(config.inputLiquidVolume() * units));
-        LiquidBatch extracted = machine.tank().drain(consume, true);
+        LiquidBatch extracted = waterTank.drain(consume, true);
         IngredientLot lot = ItemLots.lot(machine.copyOf(input, units * config.inputAmount()));
         ProcessResult result = runtime.engine().execute(
                 runtime.mashExecutor(),
@@ -441,20 +444,14 @@ final class IndustrialProcessTicks {
             return;
         }
         LiquidBatch produced = (LiquidBatch) result.outputs().get(0);
-        LiquidBatch removed = machine.tank().drain(consume, false);
-        if (machine.tank().fill(produced, true) < produced.volumeMillibuckets()) {
-            if (removed != null) {
-                machine.tank().fill(removed, false);
-            }
+        if (wortTank.fill(produced, true) < produced.volumeMillibuckets()) {
             return;
         }
         if (!offerItems(machine, result, 0, false)) {
-            if (removed != null) {
-                machine.tank().fill(removed, false);
-            }
             return;
         }
-        machine.tank().fill(produced, false);
+        waterTank.drain(consume, false);
+        wortTank.fill(produced, false);
         input.shrink(units * config.inputAmount());
         machine.completeProcess();
         AdvancementHooks.processCompleted(machine, BuiltinRegistrations.MASH, produced.baseLiquid());
@@ -506,7 +503,7 @@ final class IndustrialProcessTicks {
             machine.markProcessDirty(false);
             return;
         }
-        if (!machine.advanceElapsed(now, config.temperature().rateFactor(effective) * definition.modifiers().speedModifier())) {
+        if (!machine.advanceElapsed(now, config.temperature().rateFactor(effective))) {
             machine.markProcessDirty(false);
             return;
         }
@@ -718,13 +715,7 @@ final class IndustrialProcessTicks {
     }
 
     private static boolean advancePress(MultiblockControllerBlockEntity machine, MultiblockDefinition definition) {
-        int steps = Math.max(1, (int) Math.round(definition.modifiers().speedModifier()));
-        for (int step = 0; step < steps; step++) {
-            if (machine.advancePressProcess()) {
-                return true;
-            }
-        }
-        return false;
+        return machine.advancePressProcess();
     }
 
     private static boolean commitAdditions(

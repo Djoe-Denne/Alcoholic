@@ -101,8 +101,7 @@ public final class ArtisanalFermenterBlockEntity extends BlockEntity
         if (level == null) {
             return 20.0;
         }
-        float biome = level.getBiome(worldPosition).value().getBaseTemperature();
-        return biome * 25.0 + 5.0;
+        return com.djden.alcoholic.minecraft.environment.EnvironmentSampler.sample(level, worldPosition).temperature();
     }
 
     @Override

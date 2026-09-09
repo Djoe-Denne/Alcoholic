@@ -3,10 +3,14 @@ package com.djden.alcoholic.minecraft.advancement;
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -54,6 +58,17 @@ public final class AdvancementHooks {
                 location(process),
                 liquid.map(AdvancementHooks::location).orElse(null)
         );
+    }
+
+    public static void processCompletedNearby(Level level, BlockPos position, ResourceId process, Optional<ResourceId> liquid) {
+        if (!(level instanceof ServerLevel server)) {
+            return;
+        }
+        ResourceLocation processId = location(process);
+        ResourceLocation liquidId = liquid.map(AdvancementHooks::location).orElse(null);
+        for (ServerPlayer player : server.getEntitiesOfClass(ServerPlayer.class, new AABB(position).inflate(16))) {
+            AlcoholicCriteria.PROCESS_COMPLETED.trigger(player, processId, liquidId);
+        }
     }
 
     public static void multiblockFormed(BlockEntity entity, ResourceId machine) {

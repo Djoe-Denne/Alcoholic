@@ -277,6 +277,9 @@ public enum MachineLayout {
         if (kind == MachineKind.MILL) {
             return TWO_SLOTS;
         }
+        if (kind == MachineKind.MASH) {
+            return TWO_SLOTS_TWO_TANKS;
+        }
         return hasProcess ? TWO_SLOTS_ONE_TANK : ONE_TANK;
     }
 

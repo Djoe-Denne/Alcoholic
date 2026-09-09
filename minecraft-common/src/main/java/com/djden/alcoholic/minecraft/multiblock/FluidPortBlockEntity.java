@@ -62,12 +62,12 @@ public final class FluidPortBlockEntity extends PartBlockEntity implements Liqui
 
         @Override
         public int capacity() {
-            return controller.tank().capacity();
+            return mode.allowsExtract() ? controller.tank().capacity() : controller.fillTank().capacity();
         }
 
         @Override
         public Optional<LiquidBatch> contents() {
-            return controller.tank().contents();
+            return mode.allowsExtract() ? controller.tank().contents() : controller.fillTank().contents();
         }
 
         @Override
@@ -75,9 +75,9 @@ public final class FluidPortBlockEntity extends PartBlockEntity implements Liqui
             if (!mode.allowsInsert() || !controller.access().canFill()) {
                 return 0;
             }
-            int filled = controller.tank().fill(incoming, simulate);
+            int filled = controller.fillTank().fill(incoming, simulate);
             if (!simulate && filled > 0) {
-                controller.onTankChanged();
+                controller.onProcessTankChanged();
             }
             return filled;
         }
@@ -89,7 +89,7 @@ public final class FluidPortBlockEntity extends PartBlockEntity implements Liqui
             }
             LiquidBatch drained = controller.tank().drain(millibuckets, simulate);
             if (!simulate && drained.volume() > 0.0) {
-                controller.onTankChanged();
+                controller.onProcessTankChanged();
             }
             return drained;
         }

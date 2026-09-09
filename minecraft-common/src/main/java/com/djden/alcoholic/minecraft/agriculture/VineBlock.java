@@ -302,6 +302,13 @@ public class VineBlock extends BaseEntityBlock
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
+        if (!level.isClientSide && isHarvestReadyState(state) && !SickleItem.isSickle(held)) {
+            player.displayClientMessage(
+                    Component.translatable("message.alcoholic.vine.need_sickle"),
+                    true
+            );
+        }
+
         return InteractionResult.PASS;
     }
 

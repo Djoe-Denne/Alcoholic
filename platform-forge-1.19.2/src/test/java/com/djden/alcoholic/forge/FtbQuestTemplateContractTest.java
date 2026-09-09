@@ -43,7 +43,8 @@ class FtbQuestTemplateContractTest {
             "form_roller_mill",
             "form_mash_tun",
             "form_kettle",
-            "form_conditioning"
+            "form_conditioning",
+            "form_aging"
     };
 
     @Test

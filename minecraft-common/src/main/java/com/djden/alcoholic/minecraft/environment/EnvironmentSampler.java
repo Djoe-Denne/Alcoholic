@@ -4,7 +4,9 @@ import com.djden.alcoholic.domain.vessel.EnvironmentProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 
 /**
  * Samples a compact cellar-like profile from vanilla surroundings only.
@@ -42,9 +44,20 @@ public final class EnvironmentSampler {
             return 0.5;
         }
         float downfall = level.getBiome(position).value().getDownfall();
-        if (!Float.isFinite(downfall)) {
-            return 0.5;
+        double humidity = 0.5;
+        if (Float.isFinite(downfall)) {
+            humidity = Math.max(0.0, Math.min(1.0, downfall));
         }
-        return Math.max(0.0, Math.min(1.0, downfall));
+        for (Direction direction : Direction.values()) {
+            BlockState neighbour = level.getBlockState(position.relative(direction));
+            if (neighbour.getFluidState().is(Fluids.WATER)
+                    || neighbour.is(Blocks.WATER)
+                    || neighbour.is(Blocks.WATER_CAULDRON)
+                    || neighbour.is(Blocks.WET_SPONGE)) {
+                humidity = Math.min(1.0, humidity + 0.4);
+                break;
+            }
+        }
+        return humidity;
     }
 }

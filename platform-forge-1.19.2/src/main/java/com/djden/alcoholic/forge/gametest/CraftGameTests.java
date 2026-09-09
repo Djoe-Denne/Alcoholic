@@ -54,7 +54,7 @@ public final class CraftGameTests {
         helper.succeed();
     }
 
-    @GameTest(template = "industrial_pad", timeoutTicks = 1000)
+    @GameTest(template = "industrial_pad", timeoutTicks = 1100)
     public static void craftMashTunProducesWortAndSpentGrain(GameTestHelper helper) {
         helper.setBlock(ORIGIN.below(), Blocks.MAGMA_BLOCK.defaultBlockState());
         buildHollow(helper, ORIGIN, 3, 3, 3, "craft_mash_tun_controller", "craft_casing", null);
@@ -62,8 +62,9 @@ public final class CraftGameTests {
         require(helper, mash.formed(), "Craft mash tun did not form: " + mash.debugDump());
         require(helper, mash.tank().capacity() == 2_000, "Unexpected min craft mash capacity " + mash.tank().capacity());
         mash.insert(new ItemStack(item("grist"), 1));
-        mash.tank().fill(LiquidBatch.of(ResourceId.parse("minecraft:water"), 1000, PropertyBag.empty()), false);
-        helper.runAtTickTime(970, () -> {
+        mash.tank(MultiblockControllerBlockEntity.INPUT_TANK)
+                .fill(LiquidBatch.of(ResourceId.parse("minecraft:water"), 1000, PropertyBag.empty()), false);
+        helper.runAtTickTime(980, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(helper, entity.tank().contents().isPresent(), "Craft mash produced no liquid");
             require(
@@ -80,29 +81,33 @@ public final class CraftGameTests {
         });
     }
 
-    @GameTest(template = "industrial_pad", timeoutTicks = 1000)
-    public static void leftoverWaterCurrentlyDeadlocksCraftMash(GameTestHelper helper) {
+    @GameTest(template = "industrial_pad", timeoutTicks = 1100)
+    public static void leftoverWaterStillProducesWort(GameTestHelper helper) {
         helper.setBlock(ORIGIN.below(), Blocks.MAGMA_BLOCK.defaultBlockState());
         buildHollow(helper, ORIGIN, 3, 3, 3, "craft_mash_tun_controller", "craft_casing", null);
         MultiblockControllerBlockEntity mash = revalidate(helper, ORIGIN);
         require(helper, mash.formed(), "Craft mash tun did not form: " + mash.debugDump());
         mash.insert(new ItemStack(item("grist"), 1));
-        mash.tank().fill(LiquidBatch.of(ResourceId.parse("minecraft:water"), 1500, PropertyBag.empty()), false);
-        helper.runAtTickTime(970, () -> {
+        mash.tank(MultiblockControllerBlockEntity.INPUT_TANK)
+                .fill(LiquidBatch.of(ResourceId.parse("minecraft:water"), 1500, PropertyBag.empty()), false);
+        helper.runAtTickTime(980, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
-            require(helper, entity.tank().contents().isPresent(), "Tank emptied during leftover mash");
             require(
                     helper,
-                    entity.tank().contents().orElseThrow().baseLiquid()
-                            .filter(id -> "minecraft:water".equals(id.toString()))
-                            .isPresent(),
-                    "Current defect changed: leftover water became "
-                            + entity.tank().contents().orElseThrow().baseLiquid()
+                    entity.tank().contents().orElseThrow().baseLiquid().filter(AlcoholicIds.WORT::equals).isPresent(),
+                    "Leftover water did not produce wort"
             );
             require(
                     helper,
-                    entity.getItem(MultiblockControllerBlockEntity.INPUT_SLOT).is(item("grist")),
-                    "Grist was consumed despite leftover-water deadlock"
+                    entity.tank(MultiblockControllerBlockEntity.INPUT_TANK).contents()
+                            .orElseThrow()
+                            .volumeMillibuckets() == 500,
+                    "Expected 500 mB leftover water"
+            );
+            require(
+                    helper,
+                    entity.getItem(MultiblockControllerBlockEntity.OUTPUT_SLOT).is(item("spent_grain")),
+                    "Spent grain was not extractable after leftover mash"
             );
             helper.succeed();
         });

@@ -55,6 +55,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "item.alcoholic.sickle": "Sickle",
                           "tooltip.alcoholic.sickle.use": "Harvests a ripe vine or hop column. The plant stays.",
                           "tooltip.alcoholic.sickle.fortune": "Fortune increases the harvest count.",
+                          "message.alcoholic.vine.need_sickle": "Use a sickle to harvest a ripe vine or hop bine.",
                           "message.alcoholic.vine.pruned": "Vine pruned: %s",
                           "message.alcoholic.vine.no_harvest_item": "No grape item is available for this variety",
                           "message.alcoholic.vine.inspect": "Climate: %1$s · Health: %2$s · Maturity: %3$s %4$s%% · Pruning: %5$s",
@@ -336,7 +337,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "ftbquests.alcoholic.hover.form_mash_tun": "Minimum 3×4×3 hull. Ports sit on the −Z face. Layer details are in JEI.",
                           "ftbquests.alcoholic.hover.form_kettle": "Minimum 3×4×3 hull. Ports sit on the −Z face. Layer details are in JEI.",
                           "ftbquests.alcoholic.hover.form_conditioning": "Minimum 3×4×3 hull. Ports sit on the −Z face. Layer details are in JEI.",
-                          "ftbquests.alcoholic.hover.form_aging": "Minimum 3×4×3 oak-lined hull. Previous fills stain the next AGE batch. Layer details are in JEI."
+                          "ftbquests.alcoholic.hover.form_aging": "Minimum 3×4×3 hull lined with fermenter casing. Previous fills stain the next AGE batch. Layer details are in JEI."
                         }
                         """)
         );
@@ -363,6 +364,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "item.alcoholic.sickle": "Serpe",
                           "tooltip.alcoholic.sickle.use": "Récolte une vigne ou une bine mûre. La plante reste.",
                           "tooltip.alcoholic.sickle.fortune": "Fortune augmente la quantité récoltée.",
+                          "message.alcoholic.vine.need_sickle": "Utilisez une serpe pour récolter une vigne ou une bine mûre.",
                           "message.alcoholic.vine.pruned": "Vigne taillée : %s",
                           "message.alcoholic.vine.no_harvest_item": "Aucun raisin disponible pour cette variété",
                           "message.alcoholic.vine.inspect": "Climat : %1$s · Santé : %2$s · Maturité : %3$s %4$s%% · Taille : %5$s",
@@ -644,7 +646,7 @@ final class GrapeAssetDataProvider extends AlcoholicJsonProvider {
                           "ftbquests.alcoholic.hover.form_mash_tun": "Coque minimale 3×4×3. Les ports sont sur la face −Z. Le détail des couches est dans JEI.",
                           "ftbquests.alcoholic.hover.form_kettle": "Coque minimale 3×4×3. Les ports sont sur la face −Z. Le détail des couches est dans JEI.",
                           "ftbquests.alcoholic.hover.form_conditioning": "Coque minimale 3×4×3. Les ports sont sur la face −Z. Le détail des couches est dans JEI.",
-                          "ftbquests.alcoholic.hover.form_aging": "Coque minimale 3×4×3 doublée de chêne. Les remplissages précédents tachent le prochain AGE. Le détail des couches est dans JEI."
+                          "ftbquests.alcoholic.hover.form_aging": "Coque minimale 3×4×3 en casing de fermenteur. Les remplissages précédents tachent le prochain AGE. Le détail des couches est dans JEI."
                         }
                         """)
         );

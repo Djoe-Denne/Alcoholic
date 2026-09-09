@@ -122,7 +122,7 @@ final class GrimoireLangData {
         );
         lang.put(
                 "grimoire.alcoholic.wine.ch8.p1",
-                "That missing industrial cave is the next official hole to close, not distill and not cider. Create pipes remain optional. The Alcoholic press keeps the harvest lot; Create compacting does not."
+                "Industrial press, vat, tank, and aging vessel are extra executors of the same processes. They do not change the graph. A factory-only player can bottle young wine, then age it in the industrial cave or the oak barrel."
         );
 
         lang.put("grimoire.alcoholic.beer.ch0.title", "Frontispiece");

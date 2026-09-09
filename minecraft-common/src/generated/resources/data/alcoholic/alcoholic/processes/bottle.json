@@ -1,0 +1,8 @@
+{
+  "config": {
+    "item": "alcoholic:beverage_bottle",
+    "volume": 250
+  },
+  "id": "alcoholic:bottle",
+  "process": "alcoholic:bottle"
+}

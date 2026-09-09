@@ -15,7 +15,7 @@ public record ElectricMotorSettings(
 ) {
     public static final ElectricMotorSettings DEFAULT = new ElectricMotorSettings(
             8_000,
-            80,
+            128,
             32.0,
             8.0,
             0.8,

@@ -4,6 +4,7 @@ import com.djden.alcoholic.minecraft.advancement.AdvancementHooks;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -186,6 +187,12 @@ public class HopBineBlock extends BushBlock
                 held.hurtAndBreak(1, player, brokenBy -> brokenBy.broadcastBreakEvent(hand));
             }
             return InteractionResult.sidedSuccess(level.isClientSide);
+        }
+        if (!level.isClientSide && isMature(state) && !SickleItem.isSickle(held)) {
+            player.displayClientMessage(
+                    Component.translatable("message.alcoholic.vine.need_sickle"),
+                    true
+            );
         }
         return InteractionResult.PASS;
     }

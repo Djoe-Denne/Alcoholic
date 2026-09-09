@@ -17,6 +17,7 @@ import com.djden.alcoholic.domain.multiblock.Box3;
 import com.djden.alcoholic.domain.multiblock.PressStrokeState;
 import com.djden.alcoholic.minecraft.bottle.Bottling;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
+import com.djden.alcoholic.minecraft.mechanical.ElectricMotorSettings;
 import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlock;
 import com.djden.alcoholic.minecraft.mechanical.PrimitiveCombustionEngineBlockEntity;
 import com.djden.alcoholic.minecraft.multiblock.HollowCuboidPlacer;
@@ -159,14 +160,14 @@ public final class IndustrialGameTests {
         helper.succeed();
     }
 
-    @GameTest(template = "industrial_pad", timeoutTicks = 80)
+    @GameTest(template = "industrial_pad", timeoutTicks = 140)
     public static void industrialPressExecutesGenericPress(GameTestHelper helper) {
         buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_press_controller", "industrial_casing", "kinetic_port");
         MultiblockControllerBlockEntity press = revalidate(helper, ORIGIN);
         require(helper, press.formed(), "Press did not form: " + press.debugDump());
         press.debugForceRpm(64);
         press.insert(new ItemStack(item("red_grapes"), 8));
-        helper.runAtTickTime(55, () -> {
+        helper.runAtTickTime(110, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(helper, entity.tank().contents().isPresent(), "Industrial press produced no liquid");
             require(
@@ -181,7 +182,7 @@ public final class IndustrialGameTests {
         });
     }
 
-    @GameTest(template = "industrial_pad", timeoutTicks = 80)
+    @GameTest(template = "industrial_pad", timeoutTicks = 140)
     public static void industrialPressRunsFromPrimitiveEngine(GameTestHelper helper) {
         buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_press_controller", "industrial_casing", "kinetic_port");
         BlockPos enginePos = ORIGIN.offset(3, 0, 0);
@@ -204,7 +205,7 @@ public final class IndustrialGameTests {
                 engine
         );
         press.insert(new ItemStack(item("red_grapes"), 8));
-        helper.runAtTickTime(55, () -> {
+        helper.runAtTickTime(110, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(
                     helper,
@@ -215,7 +216,7 @@ public final class IndustrialGameTests {
         });
     }
 
-    @GameTest(template = "industrial_pad", timeoutTicks = 80)
+    @GameTest(template = "industrial_pad", timeoutTicks = 140)
     public static void industrialPressRunsFromElectricMotor(GameTestHelper helper) {
         buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_press_controller", "industrial_casing", "kinetic_port");
         BlockPos motorPos = ORIGIN.offset(3, 0, 0);
@@ -225,11 +226,9 @@ public final class IndustrialGameTests {
         IEnergyStorage energy = helper.getBlockEntity(motorPos)
                 .getCapability(ForgeCapabilities.ENERGY)
                 .orElseThrow(IllegalStateException::new);
-        for (int i = 0; i < 20; i++) {
-            energy.receiveEnergy(80, false);
-        }
+        fillElectricMotor(energy);
         press.insert(new ItemStack(item("red_grapes"), 8));
-        helper.runAtTickTime(55, () -> {
+        helper.runAtTickTime(110, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(
                     helper,
@@ -367,14 +366,14 @@ public final class IndustrialGameTests {
         });
     }
 
-    @GameTest(template = "industrial_pad", timeoutTicks = 80)
+    @GameTest(template = "industrial_pad", timeoutTicks = 90)
     public static void industrialRollerMillExecutesGenericMill(GameTestHelper helper) {
         buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_roller_mill_controller", "industrial_casing", "kinetic_port");
         MultiblockControllerBlockEntity mill = revalidate(helper, ORIGIN);
         require(helper, mill.formed(), "Roller mill did not form: " + mill.debugDump());
         mill.debugForceRpm(16);
         mill.insert(new ItemStack(item("malted_barley"), 1));
-        helper.runAtTickTime(30, () -> {
+        helper.runAtTickTime(55, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(
                     helper,
@@ -385,14 +384,14 @@ public final class IndustrialGameTests {
         });
     }
 
-    @GameTest(template = "industrial_pad", timeoutTicks = 50)
+    @GameTest(template = "industrial_pad", timeoutTicks = 80)
     public static void industrialRollerMillStopsAdvancingUnderOutputBackpressure(GameTestHelper helper) {
         buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_roller_mill_controller", "industrial_casing", "kinetic_port");
         MultiblockControllerBlockEntity mill = revalidate(helper, ORIGIN);
         mill.debugForceRpm(16);
         mill.setItem(MultiblockControllerBlockEntity.OUTPUT_SLOT, new ItemStack(Items.DIRT));
         mill.insert(new ItemStack(item("malted_barley"), 1));
-        helper.runAtTickTime(30, () -> {
+        helper.runAtTickTime(55, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(
                     helper,
@@ -422,7 +421,7 @@ public final class IndustrialGameTests {
         helper.succeed();
     }
 
-    @GameTest(template = "industrial_pad", timeoutTicks = 80)
+    @GameTest(template = "industrial_pad", timeoutTicks = 90)
     public static void industrialRollerMillRunsFromPrimitiveEngine(GameTestHelper helper) {
         buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_roller_mill_controller", "industrial_casing", "kinetic_port");
         BlockPos enginePos = ORIGIN.offset(3, 0, 0);
@@ -444,7 +443,7 @@ public final class IndustrialGameTests {
                 engine
         );
         mill.insert(new ItemStack(item("malted_barley"), 1));
-        helper.runAtTickTime(30, () -> {
+        helper.runAtTickTime(55, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(
                     helper,
@@ -455,7 +454,7 @@ public final class IndustrialGameTests {
         });
     }
 
-    @GameTest(template = "industrial_pad", timeoutTicks = 80)
+    @GameTest(template = "industrial_pad", timeoutTicks = 90)
     public static void industrialRollerMillRunsFromElectricMotor(GameTestHelper helper) {
         buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_roller_mill_controller", "industrial_casing", "kinetic_port");
         BlockPos motorPos = ORIGIN.offset(3, 0, 0);
@@ -464,11 +463,9 @@ public final class IndustrialGameTests {
         IEnergyStorage energy = helper.getBlockEntity(motorPos)
                 .getCapability(ForgeCapabilities.ENERGY)
                 .orElseThrow(IllegalStateException::new);
-        for (int i = 0; i < 40; i++) {
-            energy.receiveEnergy(80, false);
-        }
+        fillElectricMotor(energy);
         mill.insert(new ItemStack(item("malted_barley"), 1));
-        helper.runAtTickTime(30, () -> {
+        helper.runAtTickTime(55, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(
                     helper,
@@ -494,7 +491,7 @@ public final class IndustrialGameTests {
         helper.succeed();
     }
 
-    @GameTest(template = "industrial_pad", timeoutTicks = 700)
+    @GameTest(template = "industrial_pad", timeoutTicks = 900)
     public static void industrialMashTunProducesWortAndSpentGrain(GameTestHelper helper) {
         helper.setBlock(ORIGIN.below(), Blocks.MAGMA_BLOCK.defaultBlockState());
         buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_mash_tun_controller", "industrial_casing", null);
@@ -502,8 +499,9 @@ public final class IndustrialGameTests {
         require(helper, mash.formed(), "Mash tun did not form: " + mash.debugDump());
         require(helper, mash.tank().capacity() == 16_000, "Unexpected min mash capacity " + mash.tank().capacity());
         mash.insert(new ItemStack(item("grist"), 1));
-        mash.tank().fill(LiquidBatch.of(ResourceId.parse("minecraft:water"), 1000, PropertyBag.empty()), false);
-        helper.runAtTickTime(610, () -> {
+        mash.tank(MultiblockControllerBlockEntity.INPUT_TANK)
+                .fill(LiquidBatch.of(ResourceId.parse("minecraft:water"), 1000, PropertyBag.empty()), false);
+        helper.runAtTickTime(810, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(helper, entity.tank().contents().isPresent(), "Industrial mash produced no liquid");
             require(
@@ -520,15 +518,16 @@ public final class IndustrialGameTests {
         });
     }
 
-    @GameTest(template = "industrial_pad", timeoutTicks = 1300)
+    @GameTest(template = "industrial_pad", timeoutTicks = 1700)
     public static void industrialMashStartsEachBatchWithAFreshClock(GameTestHelper helper) {
         helper.setBlock(ORIGIN.below(), Blocks.MAGMA_BLOCK.defaultBlockState());
         buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_mash_tun_controller", "industrial_casing", null);
         MultiblockControllerBlockEntity mash = revalidate(helper, ORIGIN);
         mash.insert(new ItemStack(item("grist"), 1));
-        mash.tank().fill(LiquidBatch.of(ResourceId.parse("minecraft:water"), 1000, PropertyBag.empty()), false);
+        mash.tank(MultiblockControllerBlockEntity.INPUT_TANK)
+                .fill(LiquidBatch.of(ResourceId.parse("minecraft:water"), 1000, PropertyBag.empty()), false);
 
-        helper.runAtTickTime(610, () -> {
+        helper.runAtTickTime(810, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(
                     helper,
@@ -538,25 +537,25 @@ public final class IndustrialGameTests {
             entity.tank().clear();
             entity.setItem(MultiblockControllerBlockEntity.OUTPUT_SLOT, ItemStack.EMPTY);
         });
-        helper.runAtTickTime(620, () -> {
+        helper.runAtTickTime(820, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             entity.insert(new ItemStack(item("grist"), 1));
-            entity.tank().fill(
+            entity.tank(MultiblockControllerBlockEntity.INPUT_TANK).fill(
                     LiquidBatch.of(ResourceId.parse("minecraft:water"), 1000, PropertyBag.empty()),
                     false
             );
         });
-        helper.runAtTickTime(622, () -> {
+        helper.runAtTickTime(822, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(
                     helper,
-                    entity.tank().contents().flatMap(LiquidBatch::baseLiquid)
+                    entity.tank(MultiblockControllerBlockEntity.INPUT_TANK).contents().flatMap(LiquidBatch::baseLiquid)
                             .filter(ResourceId.parse("minecraft:water")::equals)
                             .isPresent(),
                     "Second mash inherited idle time and completed immediately"
             );
         });
-        helper.runAtTickTime(1230, () -> {
+        helper.runAtTickTime(1635, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             require(
                     helper,
@@ -579,7 +578,7 @@ public final class IndustrialGameTests {
         helper.succeed();
     }
 
-    @GameTest(template = "industrial_pad", timeoutTicks = 850)
+    @GameTest(template = "industrial_pad", timeoutTicks = 1200)
     public static void industrialBrewingKettleBoilsWortWithHops(GameTestHelper helper) {
         helper.setBlock(
                 ORIGIN.below(),
@@ -597,7 +596,7 @@ public final class IndustrialGameTests {
                 false
         );
         kettle.insert(new ItemStack(item("hops"), 1));
-        helper.runAtTickTime(810, () -> {
+        helper.runAtTickTime(1100, () -> {
             MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
             LiquidBatch hopped = entity.tank().contents().orElseThrow();
             require(
@@ -730,7 +729,7 @@ public final class IndustrialGameTests {
         });
     }
 
-    @GameTest(template = "industrial_pad", timeoutTicks = 280)
+    @GameTest(template = "industrial_pad", timeoutTicks = 400)
     public static void industrialPressMustFermentsInVatThenBottlesYoungWine(GameTestHelper helper) {
         buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_press_controller", "industrial_casing", "kinetic_port");
         buildHollow(helper, OTHER, 3, 4, 3, "industrial_vat_controller", "industrial_casing", null);
@@ -740,7 +739,7 @@ public final class IndustrialGameTests {
         require(helper, vat.formed(), "Vat did not form: " + vat.debugDump());
         press.debugForceRpm(64);
         press.insert(new ItemStack(item("red_grapes"), 8));
-        helper.runAtTickTime(55, () -> {
+        helper.runAtTickTime(110, () -> {
             LiquidBatch must = controller(helper, ORIGIN).tank().drain(1000, false);
             require(helper, must.volumeMillibuckets() == 1000, "Industrial press did not yield a full must batch");
             require(
@@ -751,7 +750,7 @@ public final class IndustrialGameTests {
             controller(helper, OTHER).tank().fill(must, false);
             controller(helper, OTHER).insert(new ItemStack(item("yeast"), 1));
         });
-        helper.runAtTickTime(220, () -> {
+        helper.runAtTickTime(280, () -> {
             LiquidBatch batch = controller(helper, OTHER).tank().contents().orElseThrow();
             require(
                     helper,
@@ -1026,6 +1025,17 @@ public final class IndustrialGameTests {
             throw new IllegalStateException("Missing item alcoholic:" + path);
         }
         return value;
+    }
+
+    private static void fillElectricMotor(IEnergyStorage energy) {
+        int packet = ElectricMotorSettings.DEFAULT.maxReceivePerTick();
+        int guard = 0;
+        while (energy.getEnergyStored() < energy.getMaxEnergyStored() && guard++ < 10_000) {
+            int accepted = energy.receiveEnergy(packet, false);
+            if (accepted <= 0) {
+                break;
+            }
+        }
     }
 
     private static void require(GameTestHelper helper, boolean condition, String message) {
