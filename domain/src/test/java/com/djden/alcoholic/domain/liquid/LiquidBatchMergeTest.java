@@ -61,6 +61,21 @@ class LiquidBatchMergeTest {
     }
 
     @Test
+    void leftoverMashWaterCannotAcceptWort() {
+        LiquidBatch leftoverWater = LiquidBatch.of(
+                ResourceId.parse("minecraft:water"),
+                500,
+                PropertyBag.empty()
+        );
+        LiquidBatch wort = LiquidBatch.of(
+                ResourceId.parse("alcoholic:wort"),
+                1000,
+                PropertyBag.empty()
+        );
+        assertTrue(leftoverWater.merge(wort, id -> PropertyMerge.WEIGHTED_AVERAGE).isEmpty());
+    }
+
+    @Test
     void rejectsWhenIdenticalOrRejectPropertyDiverges() {
         ResourceId marker = ResourceId.parse("test:lot");
         LiquidBatch first = LiquidBatch.of(MUST, 1000, PropertyBag.empty().with(marker, "a"));

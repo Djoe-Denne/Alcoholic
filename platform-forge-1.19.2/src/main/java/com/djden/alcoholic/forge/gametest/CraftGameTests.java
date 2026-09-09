@@ -80,6 +80,34 @@ public final class CraftGameTests {
         });
     }
 
+    @GameTest(template = "industrial_pad", timeoutTicks = 1000)
+    public static void leftoverWaterCurrentlyDeadlocksCraftMash(GameTestHelper helper) {
+        helper.setBlock(ORIGIN.below(), Blocks.MAGMA_BLOCK.defaultBlockState());
+        buildHollow(helper, ORIGIN, 3, 3, 3, "craft_mash_tun_controller", "craft_casing", null);
+        MultiblockControllerBlockEntity mash = revalidate(helper, ORIGIN);
+        require(helper, mash.formed(), "Craft mash tun did not form: " + mash.debugDump());
+        mash.insert(new ItemStack(item("grist"), 1));
+        mash.tank().fill(LiquidBatch.of(ResourceId.parse("minecraft:water"), 1500, PropertyBag.empty()), false);
+        helper.runAtTickTime(970, () -> {
+            MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
+            require(helper, entity.tank().contents().isPresent(), "Tank emptied during leftover mash");
+            require(
+                    helper,
+                    entity.tank().contents().orElseThrow().baseLiquid()
+                            .filter(id -> "minecraft:water".equals(id.toString()))
+                            .isPresent(),
+                    "Current defect changed: leftover water became "
+                            + entity.tank().contents().orElseThrow().baseLiquid()
+            );
+            require(
+                    helper,
+                    entity.getItem(MultiblockControllerBlockEntity.INPUT_SLOT).is(item("grist")),
+                    "Grist was consumed despite leftover-water deadlock"
+            );
+            helper.succeed();
+        });
+    }
+
     @GameTest(template = "industrial_pad", timeoutTicks = 40)
     public static void craftMashTunCapacityScalesWithInterior(GameTestHelper helper) {
         buildHollow(helper, ORIGIN, 3, 3, 3, "craft_mash_tun_controller", "craft_casing", null);

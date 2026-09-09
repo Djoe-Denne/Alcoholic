@@ -15,6 +15,14 @@ class ElectricMotorSettingsTest {
     }
 
     @Test
+    void rollerMillLoadExceedsDefaultMotorIntake() {
+        ElectricMotorSettings settings = ElectricMotorSettings.DEFAULT;
+        int rollerCost = settings.feForLoad(MechanicalRequirement.industrialRollerMill().requiredCapacity());
+        assertEquals(100, rollerCost);
+        assertTrue(rollerCost > settings.maxReceivePerTick());
+    }
+
+    @Test
     void millLoadConsumesProportionalFe() {
         ElectricMotorSettings settings = ElectricMotorSettings.DEFAULT;
         int millCost = settings.feForLoad(MechanicalRequirement.maltMill().requiredCapacity());
