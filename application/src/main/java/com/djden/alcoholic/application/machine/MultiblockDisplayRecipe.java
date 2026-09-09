@@ -7,11 +7,15 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Viewer-facing min-hull layers and ingredient counts. No recipe-viewer types.
+ * Viewer-facing hull layers and ingredient counts. {@code width}/{@code height}/{@code depth}
+ * are this recipe's showcase size; min/max are the legal range. No recipe-viewer types.
  */
 public record MultiblockDisplayRecipe(
         ResourceId definitionId,
         String controllerBlockId,
+        int width,
+        int height,
+        int depth,
         int minWidth,
         int minHeight,
         int minDepth,

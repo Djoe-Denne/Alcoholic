@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MultiblockDisplayRecipesTest {
     @Test
-    void builtinsExposeEightMinHullRecipes() {
+    void builtinsExposeIndustrialMinHullsAndCraftMinAndMax() {
         List<MultiblockDisplayRecipe> recipes = MultiblockDisplayRecipes.from(MachineCatalog.builtins());
-        assertEquals(14, recipes.size());
+        assertEquals(19, recipes.size());
         assertEquals(4, recipe(recipes, BuiltinMachines.INDUSTRIAL_PRESS.toString()).layers().size());
     }
 
@@ -36,6 +36,28 @@ class MultiblockDisplayRecipesTest {
         assertFalse(hasRole(tank, PartRole.KINETIC_PORT));
     }
 
+    @Test
+    void craftMaltHouseUsesCraftCasingAtMinAndMax() {
+        List<MultiblockDisplayRecipe> recipes = MultiblockDisplayRecipes.from(MachineCatalog.builtins());
+        List<MultiblockDisplayRecipe> maltHouse = recipes.stream()
+                .filter(recipe -> recipe.definitionId().equals(BuiltinCraftMachines.CRAFT_MALT_HOUSE))
+                .toList();
+        assertEquals(2, maltHouse.size());
+        MultiblockDisplayRecipe min = maltHouse.get(0);
+        MultiblockDisplayRecipe max = maltHouse.get(1);
+        assertEquals(3, min.width());
+        assertEquals(3, min.height());
+        assertEquals(3, min.depth());
+        assertEquals(5, max.width());
+        assertEquals(5, max.height());
+        assertEquals(5, max.depth());
+        assertTrue(hasBlock(min, "alcoholic:craft_casing"));
+        assertTrue(hasBlock(max, "alcoholic:craft_casing"));
+        assertFalse(hasBlock(min, "alcoholic:industrial_casing"));
+        assertFalse(hasBlock(max, "alcoholic:industrial_casing"));
+        assertTrue(hasBlock(recipe(recipes, BuiltinMachines.INDUSTRIAL_PRESS.toString()), "alcoholic:industrial_casing"));
+    }
+
     private static MultiblockDisplayRecipe recipe(List<MultiblockDisplayRecipe> recipes, String id) {
         return recipes.stream()
                 .filter(recipe -> recipe.definitionId().toString().equals(id))
@@ -45,5 +67,9 @@ class MultiblockDisplayRecipesTest {
 
     private static boolean hasRole(MultiblockDisplayRecipe recipe, PartRole role) {
         return recipe.ingredients().stream().anyMatch(ingredient -> ingredient.role() == role);
+    }
+
+    private static boolean hasBlock(MultiblockDisplayRecipe recipe, String blockId) {
+        return recipe.ingredients().stream().anyMatch(ingredient -> ingredient.blockId().equals(blockId));
     }
 }

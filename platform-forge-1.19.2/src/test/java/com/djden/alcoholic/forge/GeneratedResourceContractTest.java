@@ -498,6 +498,8 @@ class GeneratedResourceContractTest {
                     "advancements.alcoholic.form_industrial_aging.title",
                     "advancements.alcoholic.form_industrial_aging.description",
                     "jei.alcoholic.category.multiblock_formation",
+                    "jei.alcoholic.formation.size",
+                    "jei.alcoholic.formation.size_max",
                     "jei.alcoholic.info.grapevine.find",
                     "jei.alcoholic.info.hops.grow",
                     "jei.alcoholic.info.barley.find",

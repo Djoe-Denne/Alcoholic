@@ -2,6 +2,7 @@ package com.djden.alcoholic.application.machine;
 
 import com.djden.alcoholic.domain.multiblock.CellCoord;
 import com.djden.alcoholic.domain.multiblock.IndustrialHullPattern;
+import com.djden.alcoholic.domain.multiblock.MachineScale;
 import com.djden.alcoholic.domain.multiblock.MultiblockConstraints;
 import com.djden.alcoholic.domain.multiblock.MultiblockDefinition;
 import com.djden.alcoholic.domain.multiblock.PartRole;
@@ -17,8 +18,11 @@ import java.util.Set;
 
 /**
  * Projects each {@link MultiblockDefinition} through {@link IndustrialHullPattern}.
+ * Craft families expose the 3×3×3 min hull and the 5×5×5 max hull.
  */
 public final class MultiblockDisplayRecipes {
+    private static final int SHOWCASE_MAX = 5;
+
     private MultiblockDisplayRecipes() {
     }
 
@@ -26,7 +30,28 @@ public final class MultiblockDisplayRecipes {
         Objects.requireNonNull(catalog, "catalog");
         List<MultiblockDisplayRecipe> recipes = new ArrayList<>();
         for (MultiblockDefinition definition : catalog.machines().values()) {
-            recipes.add(from(definition));
+            recipes.addAll(fromAll(definition));
+        }
+        return List.copyOf(recipes);
+    }
+
+    public static List<MultiblockDisplayRecipe> fromAll(MultiblockDefinition definition) {
+        Objects.requireNonNull(definition, "definition");
+        MultiblockConstraints constraints = definition.constraints();
+        List<MultiblockDisplayRecipe> recipes = new ArrayList<>();
+        recipes.add(from(
+                definition,
+                constraints.minWidth(),
+                constraints.minHeight(),
+                constraints.minDepth()
+        ));
+        if (showMaxShowcase(definition)) {
+            recipes.add(from(
+                    definition,
+                    constraints.maxWidth(),
+                    constraints.maxHeight(),
+                    constraints.maxDepth()
+            ));
         }
         return List.copyOf(recipes);
     }
@@ -34,11 +59,27 @@ public final class MultiblockDisplayRecipes {
     public static MultiblockDisplayRecipe from(MultiblockDefinition definition) {
         Objects.requireNonNull(definition, "definition");
         MultiblockConstraints constraints = definition.constraints();
-        boolean kinetic = definition.kinetic().required();
-        StructureQuery query = IndustrialHullPattern.query(
+        return from(
+                definition,
                 constraints.minWidth(),
                 constraints.minHeight(),
-                constraints.minDepth(),
+                constraints.minDepth()
+        );
+    }
+
+    public static MultiblockDisplayRecipe from(
+            MultiblockDefinition definition,
+            int width,
+            int height,
+            int depth
+    ) {
+        Objects.requireNonNull(definition, "definition");
+        MultiblockConstraints constraints = definition.constraints();
+        boolean kinetic = definition.kinetic().required();
+        StructureQuery query = IndustrialHullPattern.query(
+                width,
+                height,
+                depth,
                 kinetic,
                 first(constraints.casingTags(), "alcoholic:industrial_tank_casing"),
                 first(constraints.windowTags(), "alcoholic:valid_machine_windows"),
@@ -47,10 +88,10 @@ public final class MultiblockDisplayRecipes {
         );
         List<MultiblockDisplayRecipe.Layer> layers = new ArrayList<>();
         Map<String, CountedRole> counts = new LinkedHashMap<>();
-        for (int y = 0; y < constraints.minHeight(); y++) {
+        for (int y = 0; y < height; y++) {
             List<MultiblockDisplayRecipe.Cell> cells = new ArrayList<>();
-            for (int z = 0; z < constraints.minDepth(); z++) {
-                for (int x = 0; x < constraints.minWidth(); x++) {
+            for (int z = 0; z < depth; z++) {
+                for (int x = 0; x < width; x++) {
                     StructureCell cell = query.cell(new CellCoord(x, y, z));
                     if (cell.role().isEmpty() || cell.blockId().isEmpty()) {
                         continue;
@@ -71,6 +112,9 @@ public final class MultiblockDisplayRecipes {
         return new MultiblockDisplayRecipe(
                 definition.id(),
                 definition.controllerBlockId(),
+                width,
+                height,
+                depth,
                 constraints.minWidth(),
                 constraints.minHeight(),
                 constraints.minDepth(),
@@ -81,6 +125,21 @@ public final class MultiblockDisplayRecipes {
                 layers,
                 ingredients
         );
+    }
+
+    private static boolean showMaxShowcase(MultiblockDefinition definition) {
+        if (definition.scale() != MachineScale.CRAFT) {
+            return false;
+        }
+        MultiblockConstraints constraints = definition.constraints();
+        if (constraints.minWidth() == constraints.maxWidth()
+                && constraints.minHeight() == constraints.maxHeight()
+                && constraints.minDepth() == constraints.maxDepth()) {
+            return false;
+        }
+        return constraints.maxWidth() <= SHOWCASE_MAX
+                && constraints.maxHeight() <= SHOWCASE_MAX
+                && constraints.maxDepth() <= SHOWCASE_MAX;
     }
 
     private static String first(Set<String> tags, String fallback) {

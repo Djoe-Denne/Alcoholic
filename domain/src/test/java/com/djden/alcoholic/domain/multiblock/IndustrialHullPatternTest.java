@@ -93,6 +93,22 @@ class IndustrialHullPatternTest {
         assertTrue(result.formed(), result.reason());
     }
 
+    @Test
+    void craftCasingTagDisplaysCraftCasingBlock() {
+        StructureQuery query = IndustrialHullPattern.query(
+                3,
+                3,
+                3,
+                false,
+                "alcoholic:craft_casing",
+                WINDOWS,
+                PORTS,
+                "alcoholic:craft_malt_house_controller"
+        );
+        assertEquals("alcoholic:craft_casing", query.cell(new CellCoord(0, 0, 0)).blockId().orElseThrow());
+        assertEquals("alcoholic:industrial_casing", IndustrialHullPattern.casingBlockId("alcoholic:fermenter_casing"));
+    }
+
     private static MultiblockDefinition tank() {
         return new MultiblockDefinition(
                 ResourceId.parse("alcoholic:industrial_storage_tank"),

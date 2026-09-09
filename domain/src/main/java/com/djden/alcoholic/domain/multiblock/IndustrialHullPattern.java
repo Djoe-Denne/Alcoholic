@@ -69,6 +69,14 @@ public final class IndustrialHullPattern {
         return coord -> cell(cells.get(coord), casingTag, windowTag, portTag, controllerId);
     }
 
+    public static String casingBlockId(String casingTag) {
+        Objects.requireNonNull(casingTag, "casingTag");
+        if ("alcoholic:craft_casing".equals(casingTag)) {
+            return "alcoholic:craft_casing";
+        }
+        return "alcoholic:industrial_casing";
+    }
+
     private static StructureCell cell(
             PartRole role,
             String casingTag,
@@ -86,7 +94,7 @@ public final class IndustrialHullPattern {
             case FLUID_PORT -> StructureCell.structure(role, Set.of(portTag), "alcoholic:fluid_port");
             case KINETIC_PORT -> StructureCell.structure(role, Set.of(portTag), "alcoholic:kinetic_port");
             case HATCH -> StructureCell.structure(role, Set.of(casingTag), "alcoholic:access_hatch");
-            case CASING -> StructureCell.structure(role, Set.of(casingTag), "alcoholic:industrial_casing");
+            case CASING -> StructureCell.structure(role, Set.of(casingTag), casingBlockId(casingTag));
         };
     }
 
