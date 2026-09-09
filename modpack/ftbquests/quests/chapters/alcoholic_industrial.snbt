@@ -262,6 +262,21 @@
 				advancement: "alcoholic:form_industrial_aging"
 				criterion: ""
 			}]
+		},
+		{
+			id: "A1C0A01C0000002F"
+			x: 3.5d
+			y: 10.8d
+			title: "{translate:advancements.alcoholic.condition_beer.title}"
+			description: ["{translate:advancements.alcoholic.condition_beer.description}"]
+			icon: "alcoholic:industrial_conditioning_vessel_controller"
+			dependencies: ["A1C0A01C00000028"]
+			tasks: [{
+				id: "A1C0A01C1000002F"
+				type: "advancement"
+				advancement: "alcoholic:condition_beer"
+				criterion: ""
+			}]
 		}
 	]
 	quest_links: [

@@ -1,9 +1,9 @@
 {
-  "parent": "alcoholic:form_industrial_vat",
+  "parent": "alcoholic:mash",
   "criteria": {
     "formed": {
       "conditions": {
-        "machine": "alcoholic:industrial_aging_vessel"
+        "machine": "alcoholic:craft_mash_tun"
       },
       "trigger": "alcoholic:multiblock_formed"
     }
@@ -11,16 +11,16 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.alcoholic.form_industrial_aging.description"
+      "translate": "advancements.alcoholic.form_craft_mash_tun.description"
     },
     "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "alcoholic:industrial_aging_vessel_controller"
+      "item": "alcoholic:craft_mash_tun_controller"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.alcoholic.form_industrial_aging.title"
+      "translate": "advancements.alcoholic.form_craft_mash_tun.title"
     }
   },
   "requirements": [

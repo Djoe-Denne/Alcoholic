@@ -1,0 +1,32 @@
+{
+  "parent": "alcoholic:form_industrial_conditioning",
+  "criteria": {
+    "condition_beer": {
+      "conditions": {
+        "liquid": "alcoholic:beer",
+        "process": "alcoholic:condition"
+      },
+      "trigger": "alcoholic:process_completed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.alcoholic.condition_beer.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "alcoholic:industrial_conditioning_vessel_controller"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.alcoholic.condition_beer.title"
+    }
+  },
+  "requirements": [
+    [
+      "condition_beer"
+    ]
+  ]
+}

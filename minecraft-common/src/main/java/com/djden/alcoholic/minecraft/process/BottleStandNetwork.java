@@ -52,7 +52,8 @@ public final class BottleStandNetwork {
 
         List<BlockPos> positions = new ArrayList<>(connected);
         if (!isFullRectangle(positions, origin, lateral)) {
-            positions = List.of(origin);
+            positions = new ArrayList<>();
+            positions.add(origin);
         }
         positions.sort(Comparator
                 .comparingInt((BlockPos position) -> -position.getY())

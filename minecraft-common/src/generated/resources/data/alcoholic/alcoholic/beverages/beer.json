@@ -71,6 +71,19 @@
           }
         },
         "outputs": [
+          "young"
+        ]
+      },
+      {
+        "definition": "alcoholic:condition_beer",
+        "id": "condition",
+        "inputs": {
+          "beer": {
+            "node": "ferment",
+            "port": "young"
+          }
+        },
+        "outputs": [
           "finished"
         ]
       }
@@ -78,7 +91,7 @@
     "outputs": {
       "result": {
         "node": "ferment",
-        "port": "finished"
+        "port": "young"
       }
     }
   },

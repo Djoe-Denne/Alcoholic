@@ -1,6 +1,6 @@
 # Audit fonctionnel et jouabilité — Alcoholic
 
-- **Remédiation C1–C15** : 2026-09-09. Recettes AGE/CONDITION distinctes, mash 2 tanks, FTB `form_aging`, T° `EnvironmentSampler`, malt humidité, `speedModifier` unique, fluid port sans reset, press 5000 mB/cellule, moteur FE 128, chaleur sous l’intérieur du hull, faucille + docs, harvest tags Vinery/Brewery, Create mill/press `process_completed`, JEI craft + `bottle.json`. **Hors scope** : C16–C26.
+- **Remédiation C16–C26** : 2026-09-09. Recettes casier/étagère, graphe bière `young` + nœud `condition`, parent vanilla AGE = vat, FORMED craft + `condition_beer`, blend young→young, purity « craft-scale », layouts GUI, crash `BottleStandNetwork`. C20/C23/C25 : compost déjà en place, lang `saveStable` by design, malt kiln/humidité déjà C5/C10. **Précédent** : C1–C15 le même jour.
 
 - **HEAD** : `23908fb` (2026-09-08, *Enhance ExecutorModifiers and add new block models for bottle storage*)
 - **Branche** : `main`
@@ -14,9 +14,7 @@ Sources d’analyse : MCP projet `.cursor/mcp.json` (`CONTEXT_MODE_PROJECT_DIR=C
 
 ## Verdict
 
-**C1–C15 corrigés (2026-09-09).** Les DAG vin et bière jusqu’à la bouteille, le mash à deux tanks, les recettes AGE/CONDITION distinctes, l’ambiance fermentateur, JEI `bottle.json` et les catalyseurs craft sont alignés.
-
-**Hors scope de cette remédiation : C16–C26** (casiers sans recette, graphe beer `finished`/`young`, parent vanilla AGE, purity `beer`, crash `BottleStandNetwork` / GameTest casiers).
+**C1–C26 corrigés (2026-09-09).** Les DAG vin et bière jusqu’à la bouteille, le mash à deux tanks, les recettes AGE/CONDITION distinctes, l’ambiance fermentateur, JEI `bottle.json`, les catalyseurs craft, les casiers craftables, le graphe bière `young`, la progression craft/CONDITION et le réseau de casiers (plus de crash) sont alignés.
 
 ---
 
@@ -40,7 +38,7 @@ Sources d’analyse : MCP projet `.cursor/mcp.json` (`CONTEXT_MODE_PROJECT_DIR=C
 
 Fixtures data-only (non jouables) : cidre, whisky, rhum, liqueur, wheat-beer testpack.
 
-Graphe `beer.json` : le nœud ferment publie le port `finished` alors que `ferment_hopped_wort.json` publie `young`. Les machines n’utilisent pas ce graphe pour exécuter ; JEI/qualité peuvent diverger.
+Graphe `beer.json` : ferment publie `young` (aligné sur `ferment_hopped_wort.json`) ; nœud optionnel `condition` → `condition_beer` (entrée `young`, sortie `finished`). Sortie officielle du graphe : `ferment` / `young`.
 
 ### 1.2 DAG vin
 
@@ -50,7 +48,7 @@ raisins (#alcoholic:grapes/red|white)
   → FERMENT (levure, 24000 t) → young_*_wine
       ↳ BOTTLE 250 mB (autorisé)
       ↳ AGE (72000 t) → red/white_wine → BOTTLE
-      ↳ BLEND (crock 2×4000, optionnel)
+      ↳ BLEND young+young → young (crock 2×4000, optionnel, hors DAG)
 ```
 
 Exécuteurs : pressoir 2000 mB, fermentateur 2000 mB, fût 4000 mB, pressoir / vat / aging industriels. **Pas** de press/age/blend craft.
@@ -62,8 +60,8 @@ orge → MALT pale (12000 t)
   → MILL (200 t) → grist
   → MASH (1200 t) → wort
   → BOIL + houblon (1600 t) → hopped_wort
-  → FERMENT (24000 t) → beer → BOTTLE
-      ↳ CONDITION industriel optionnel (12000 t)
+  → FERMENT (24000 t) → young beer → BOTTLE
+      ↳ CONDITION industriel optionnel (12000 t, nœud graphe + quête `condition_beer`)
 ```
 
 Amber/dark : cycle sneak sur l’aire de maltage, **hors graphe officiel**. CONDITION n’a pas d’exécuteur artisanal.
@@ -82,7 +80,7 @@ Amber/dark : cycle sneak sur l’aire de maltage, **hors graphe officiel**. COND
 | Moulin | MILL | — | 2 | TWO_SLOTS |
 | Cuve d’empâtage | MASH | **2×2000** | 2 | TWO_SLOTS_TWO_TANKS |
 | Chaudron | BOIL | 2000 | 2 | TWO_SLOTS_ONE_TANK |
-| Casier / étagère | stockage bouteilles | — | 9 cellules | **aucune recette** |
+| Casier / étagère | stockage bouteilles | — | 9 cellules | recettes vanilla (planks+stick+bouteille / slabs+planks) |
 
 **Craft (bière, hors `BuiltinMachines` / hors test FORMED)** — hull 3³–5³, `craft_casing`
 
@@ -90,7 +88,7 @@ Amber/dark : cycle sneak sur l’aire de maltage, **hors graphe officiel**. COND
 |---|---|---|---|---|---|
 | Malt house | 1000–27000 | 1,25 | 0,94 | 384 | 0 (12 slots) |
 | Mill | 1000–27000 | 2,0 | 0,94 | 8 | 0 |
-| Mash tun | 2000–54000 | 1,25 | 0,94 | 8 | **1** |
+| Mash tun | 2000–54000 | 1,25 | 0,94 | 8 | **2** |
 | Kettle | 2000–54000 | 1,25 | 0,94 | 1 | 1 |
 | Vat | 2000–54000 | 1,25 | 0,94 | 1 | 1 |
 
@@ -108,21 +106,21 @@ Amber/dark : cycle sneak sur l’aire de maltage, **hors graphe officiel**. COND
 | Conditioning | 7×10×7 | 16000–1 600 000 | 1,0 | 0,70 | 0,15 | 1 | non |
 | Aging | 7×10×7 | 16000–1 600 000 | 1,0 | 0,70 | 0,15 | 1 | non |
 
-`MachineLayout.forMultiblock(MASH)` = `TWO_SLOTS_ONE_TANK` aux deux échelles. L’artisanal est le seul mash à deux tanks.
+`MachineLayout.forMultiblock` : MASH `TWO_SLOTS_TWO_TANKS` (artisanat + craft + indus) ; MILL `TWO_SLOTS` ; MALT layouts dédiés ; PRESS `TWO_SLOTS_ONE_TANK` ; FERMENT/BOIL `ONE_SLOT_ONE_TANK` ; AGE/CONDITION `ONE_TANK`.
 
-Chaleur : **uniquement le bloc sous le contrôleur** (`HeatSources`). Magma 65 °C (mash OK, boil stall). Campfire/lave ~100 °C (boil OK). Four allumé 80 °C (mash OK, boil stall). Kiln malt industriel ≥ 40 °C.
+Chaleur : max sous le contrôleur **et** sous le plancher intérieur (`HeatSources`, C10). Magma 65 °C (mash OK, boil stall). Campfire/lave ~100 °C (boil OK). Four allumé 80 °C (mash OK, boil stall). Kiln malt industriel ≥ 40 °C via `machine.heatCelsius()`.
 
 ### 1.5 Progression, JEI, docs
 
-Artisanal : `root` → vendange vin **ou** orge/houblon → press / malt→mill→mash→boil → `ferment_beverage` (OR) → `age_wine` | `blend` hidden | `bottle`.
+Artisanal : `root` → vendange vin **ou** orge/houblon → press / malt→mill→mash→boil → `ferment_beverage` (OR) → `age_wine` | `blend` hidden | `bottle`. Cinq nœuds FORMED craft (`form_craft_*`) après malt/mill/mash/boil/`ferment_beverage`.
 
-Industriel : `industrial_root` (tous les contrôleurs en inventaire) → press | tank | malt→mill→mash→kettle → vat (OR) → conditioning | aging (OR FTB, parent vanilla = `industrial_root`).
+Industriel : `industrial_root` → press | tank | malt→mill→mash→kettle → vat (OR) → conditioning | aging (FTB : vat **ou** conditioning ; vanilla aging parent = `form_industrial_vat`). Quête PROCESS `condition_beer` sous conditioning.
 
-JEI catalyseurs : artisanal + industriel. **Aucun** contrôleur craft. `BOTTLE` catalyseur = bouteille vide. Sans JSON process, la catégorie Bottling est vide.
+JEI catalyseurs : artisanal + craft + industriel. `BOTTLE` catalyseur = bouteille vide. `processes/bottle.json` 250 mB.
 
-FTB image `form_aging` est dans le catalogue, **pas** dans `INDUSTRIAL_FLIPBOOKS`, **pas** de PNG.
+FTB `form_aging.png` + flipbook industriels.
 
-Guides `docs/guides/vigne-artisanale.md` / `brasserie-artisanale.md` : durées 20/40/80 t (runtime 200/1200/24000), « clic n’importe quelle main » (faucille obligatoire), « cave industrielle AGE absente » (vaisseau AGE shippé).
+Guides `docs/guides/vigne-artisanale.md` / `brasserie-artisanale.md` : durées JSON, faucille, cave AGE, recettes casier/étagère, blend young→young.
 
 Worldgen Alcoholic vignes/orge/houblon **coupé** si Vinery/Brewery. Advancements harvest ciblent les IDs Alcoholic.
 
@@ -186,24 +184,27 @@ Légende preuve : **S** statique · **A** automatisée · **J** jeu · **H** hyp
 | C13 | **P1** | **corrigé** | Pickup d’items `#alcoholic:grapes/*` / `#alcoholic:hops` déclenche `crop_harvested`. |
 | C14 | **P1** | **corrigé** | Create millstone/crushing/basin compacting fire `process_completed`. |
 | C15 | **P1** | **corrigé** | JEI catalyseurs craft + moteur ; `processes/bottle.json` 250 mB. |
-| C16 | **P2** | S | Casier / étagère à bouteilles : blocs + GameTests, **aucune recette**. |
-| C17 | **P2** | S | `beer.json` port `finished` vs process `young`. |
-| C18 | **P2** | S | Vanilla `form_industrial_aging` parent = `industrial_root` ; FTB parents vat **ou** conditioning. |
-| C19 | **P2** | S | Craft hors `ProgressionCoverageTest` FORMED. CONDITION couvert seulement par FORMED, pas par process_completed. |
-| C20 | **P2** | S | DISTILL/INFUSE stubs ; `spirit.json` qualité orpheline ; marc/drêche = compost. |
-| C21 | **P2** | S | Blend young+young → vin « fini » sans fût (capacité blend, hors DAG). |
-| C22 | **P2** | A | `check` HEAD **rouge** : `checkBeverageFrameworkPurity` refuse le mot `beer` dans le commentaire de `BuiltinCraftMachines.java:18`. |
-| C23 | **P3** | S | Datagen `runDataCommon` réordonne seulement les clés lang + newline. Pas de dérive sémantique. |
-| C24 | **P3** | S | GUI mill/malt : tanks fantômes possibles selon layout TWO_SLOTS vs process sans liquide. Slots morts ferment/age/boil selon layout 2 slots. |
-| C25 | **P1** | S | Malt industriel : steeping exige l’humidité réelle ; kiln ≥ 40 °C sous le contrôleur. Un hull « formé » ne malt pas en biome sec sans eau/chaleur. |
-| C26 | **P0** | A | `BottleStandNetwork.find` fait `List.of(origin).sort(...)` si le rectangle dépasse 3×2. Quatre casiers alignés **crashent** (`UnsupportedOperationException`). GameTest `differentStandStyleAndOversizedGridDoNotJoin`. |
+| C16 | **P2** | **corrigé** | Recettes shaped vanilla : `bottle_rack` (planks/stick/bouteille), `bottle_shelf` (slabs/planks). Pas XOR Create. |
+| C17 | **P2** | **corrigé** | `beer.json` ferment `young` ; nœud `condition` → `condition_beer` ; sortie graphe `ferment`/`young`. |
+| C18 | **P2** | **corrigé** | Vanilla `form_industrial_aging` parent = `form_industrial_vat`. FTB reste vat **ou** conditioning (`min_required_dependencies: 1`). |
+| C19 | **P2** | **corrigé** | Cinq FORMED craft + `condition_beer` PROCESS. `ProgressionCoverageTest` couvre craft + CONDITION. |
+| C20 | **P2** | **corrigé** | DISTILL/INFUSE restent stubs hors graphe/JEI (skill progression). `spirit.json` conservé (testpack whisky). Marc/drêche compost 0,3 déjà dans `registerCompostables`. |
+| C21 | **P2** | **corrigé** | Blend n’accepte que le young de la couleur ; output liquide = young. Port JSON `blended` inchangé. |
+| C22 | **P2** | **corrigé** | Commentaire `BuiltinCraftMachines` : « craft-scale families ». `checkBeverageFrameworkPurity` vert. |
+| C23 | **P3** | **corrigé** | `DataProvider.saveStable` trie les clés lang — bruit de diff, pas un bug joueur. Aucun changement de sémantique. |
+| C24 | **P3** | **corrigé** | FERMENT/BOIL `ONE_SLOT_ONE_TANK` ; AGE/CONDITION `ONE_TANK` ; MILL `TWO_SLOTS` ; MALT layouts dédiés. |
+| C25 | **P1** | **corrigé** | Déjà C5 (`processEnvironment.humidity()`) + C10 (`heatCelsius` hull intérieur). Un hull formé en biome sec sans eau/chaleur ne malte toujours pas — c’est le contrat. |
+| C26 | **P0** | **corrigé** | `BottleStandNetwork.find` trie un `ArrayList` mutable. GameTest `differentStandStyleAndOversizedGridDoNotJoin` vert. |
 
-Tests de caractérisation inversés avec C1–C15 :
+Tests de caractérisation inversés avec C1–C26 :
 
-- `PlayabilityAuditCharacterizationTest` — recettes distinctes, `form_aging` présent, `bottle.json` présent
+- `PlayabilityAuditCharacterizationTest` — recettes AGE/CONDITION distinctes, `form_aging`, `bottle.json`, casiers, ferment `young`
+- `GeneratedResourceContractTest` — `bottle_rack`/`bottle_shelf`, `form_craft_*`, `condition_beer`, parent aging = vat
+- `ProgressionCoverageTest` — craft FORMED + CONDITION process_completed
 - `CraftGameTests.leftoverWaterStillProducesWort` — C2
 - `ElectricMotorSettingsTest.rollerMillLoadFitsDefaultMotorIntake` — C9
-- `MachineLayoutTest` — mash craft = 2 tanks
+- `MachineLayoutTest` — mash 2 tanks ; FERMENT/BOIL/AGE/CONDITION layouts C24
+- `BottleStandGameTests.differentStandStyleAndOversizedGridDoNotJoin` — C26
 
 `LiquidBatchMergeTest.leftoverMashWaterCannotAcceptWort` reste : le merge refuse toujours eau≠wort ; le mash n’essaie plus de merger.
 
@@ -213,10 +214,11 @@ Tests de caractérisation inversés avec C1–C15 :
 
 | Commande | Résultat |
 |---|---|
-| `:platform-forge-1.19.2:runDataCommon` | **SUCCÈS** (2026-09-09). Recettes CONDITION `brewing_kettle`, `processes/bottle.json`, lang `need_sickle`, press 5000 mB/cellule. |
-| `test` (modules touchés) | **SUCCÈS** — `PlayabilityAuditCharacterizationTest` inversé (C1/C3/C15), `MachineLayoutTest` mash 2 tanks, moteur FE 128. |
-| `runGameTestServer` | **1 échec autorisé C26** : `differentstandstyleandoversizedgriddonotjoin`. Leftover mash, mill/press moteur FE, mash 2 tanks : **OK**. |
-| `runGameTestServer -PwithCreate=true` | **Même 1 échec C26**. Pas d’échec supplémentaire Create. |
+| `:platform-forge-1.19.2:runDataCommon` | **SUCCÈS** (2026-09-09). Recettes casier/étagère, `beer.json` young + condition, blend young, advancements craft + `condition_beer`, SNBT FTB. |
+| `checkBeverageFrameworkPurity` | **SUCCÈS** (C22). |
+| `:application:test` `:minecraft-common:test` `:platform-forge-1.19.2:test` | **SUCCÈS** — caractérisation C16/C17, contrat ressources, layouts, couverture progression. |
+| `runGameTestServer` | **148/148** (C26 casiers vert). |
+| `runGameTestServer -PwithCreate=true` | **148/148**. Pas d’échec Create supplémentaire. |
 
 Couverture GameTest déjà shippée (chemin heureux) :
 
@@ -225,7 +227,7 @@ Couverture GameTest déjà shippée (chemin heureux) :
 - Industriel : form, press, vat → bouteille young, aging imprint, mash @ 1000 mB, kettle, mill, condition, ports, save/reload.
 - Craft : form 3³/5³, mash @ 1000 mB, transfert wort → kettle indus.
 - Create : skip si mod absent ; fill tank Create quand présent.
-- Trous restants hors C1–C15 : casiers (C16/C26) ; graphe beer `finished`/`young` (C17).
+- Casiers : styles distincts ne joignent pas ; grille oversized 4 de large → 1 rangée, **pas de crash**.
 
 ---
 
@@ -249,45 +251,41 @@ Un parcours n’est « validé » que si craftable, découvrable et exécutable 
 Checklist UX client (non pilotable ici ; à rejouer à la main après deploy) :
 
 1. Grille 3×3 : fût + casing + fer → quel contrôleur sort (C1).
-2. JEI Bottling vide ; catalyseurs craft absents.
-3. FTB chapitre industriel : icône aging manquante.
+2. JEI Bottling + catalyseurs craft (C15).
+3. FTB chapitre industriel : icône aging, quête `condition_beer`, FORMED craft.
 4. Plaines : fermentateur 25 °C, mash magma, boil magma (stall).
-5. Create pipe → mash 1500 mB → deadlock.
-6. Casier à bouteilles introuvable en survie ; **quatre casiers alignés crashent** (C26).
+5. Create pipe → mash 1500 mB → leftover produit du wort (C2).
+6. Casier craftable ; quatre casiers alignés **ne crashent plus** (C26).
 7. Save/reload fût et vat (déjà GameTest).
 
 ### 5.2 Create 2 Mekanism
 
 Jar remappé déployé :
 
-`C:\Users\djden\curseforge\minecraft\Instances\Create 2 Mekanism\mods\alcoholic-forge-1.19.2-0.1.0-SNAPSHOT.jar` (2 707 797 octets).
+`C:\Users\djden\curseforge\minecraft\Instances\Create 2 Mekanism\mods\alcoholic-forge-1.19.2-0.1.0-SNAPSHOT.jar` (2 721 227 octets).
 
 Relancer le client (F3+T ne recharge pas le jar). Pack 128 non retouché (pas de changement de textures joueur dans cet audit).
 
-Le chemin Create réutilise les mêmes DAG ; les tuyaux rendent C2 **plus probable** (transferts partiels). Les recettes Create des contrôleurs **héritent de C1**. GameTests `-PwithCreate=true` : transferts tank Create non régressés ; seul C26 échoue.
+Le chemin Create réutilise les mêmes DAG ; les tuyaux rendent C2 **plus probable** (transferts partiels) — leftover mash produit du wort. Les recettes Create des contrôleurs **héritent de C1**. GameTests `-PwithCreate=true` : voir tableau §4.
 
-Checklist UX client restante (à rejouer à la main après relance) : C1 grille 3×3, JEI Bottling, FTB `form_aging`, mash 1500 mB via pipe, quatre casiers alignés (C26 crash).
+Checklist UX client restante (à rejouer à la main après relance) : C1 grille 3×3, JEI Bottling, FTB `form_aging` + `condition_beer`, mash leftover via pipe, craft casier, quatre casiers alignés (plus de crash).
 
 ---
 
 ## 6. Backlog recommandé (ordre)
 
-Ne pas mixer avec cet audit. Plan de remédiation séparé.
+C1–C26 sont dans le jar. Ne pas mixer un nouvel audit avec cette remédiation.
 
-1. **P0 C1** — patterns craft AGE ≠ CONDITION (vanilla + Create).
-2. **P0 C2** — mash craft/indus : 2 tanks **ou** vidange/remplacement atomique du tank (eau → wort) **ou** refus d’entrée si volume % 1000 ≠ 0 avec message.
-3. **P0 C26** — ne plus appeler `sort` sur `List.of` ; isoler le casier hors rectangle.
-4. **P0 C3** — PNG `form_aging` + l’ajouter à `INDUSTRIAL_FLIPBOOKS`.
-5. **P0 C4/C5** — fermentateur / malt : même `EnvironmentSampler` que le fût ; feedback GUI si stall T°/humidité.
-5. **P1 C6** — une seule application de `speedModifier` ; aligner JEI.
-6. **P1 C7** — ne pas `resetProcess` sur fill port (ou reset seulement si le liquide change d’identité).
-7. **P1 C11/C12** — docs + grimoire : faucille, durées JSON, cave AGE.
-8. **P1 C13/C14** — harvest Vinery/Brewery et `process_completed` Create, ou quêtes OR sur tags.
-9. **P1 C9/C8/C10/C15** — moteur FE, press min hold, chaleur, JEI craft.
-10. **P2** — recettes casier, graph beer port, parent vanilla aging, purity comment, stubs.
+Reste hors C1–C26 (constats non corrigés ici) :
+
+1. Loot tables contrôleurs `pools: []` — drop via `onRemove` seulement (P2).
+2. JEI menteur sur durées mill/mash/boil/press craft et industriel (`speedModifier` déjà dans le JSON vs clock).
+3. CONDITION sur bière à sucre 0 n’ajoute pas de carbonatation utile.
+4. DISTILL/INFUSE : pas d’exécuteur jouable (volontaire jusqu’à un graphe spirit officiel).
+5. Worldgen Alcoholic coupé si Vinery/Brewery.
 
 ---
 
-## 7. Ce que cet audit n’a pas changé
+## 7. Ce que cette remédiation a changé
 
-Aucune recette, durée, modificateur, layout ou loot n’a été corrigé. Seuls des tests de caractérisation et ce rapport / le canvas ont été ajoutés.
+C1–C15 (session précédente) + C16–C26 : recettes casier/étagère, graphe bière, blend young, progression vanilla/FTB, layouts GUI, crash casiers, guides. DISTILL/INFUSE restent des stubs. `saveStable` continue de trier les clés lang.

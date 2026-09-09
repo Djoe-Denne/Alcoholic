@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Small hollow-cuboid beer-line families. Kept out of {@link BuiltinMachines}
+ * Small hollow-cuboid craft-scale families. Kept out of {@link BuiltinMachines}
  * so industrial FORMED progression coverage stays industrial-only.
  */
 public final class BuiltinCraftMachines {

@@ -280,6 +280,15 @@ public enum MachineLayout {
         if (kind == MachineKind.MASH) {
             return TWO_SLOTS_TWO_TANKS;
         }
+        if (kind == MachineKind.PRESS) {
+            return TWO_SLOTS_ONE_TANK;
+        }
+        if (kind == MachineKind.FERMENT || kind == MachineKind.BOIL) {
+            return ONE_SLOT_ONE_TANK;
+        }
+        if (kind == MachineKind.AGE || kind == MachineKind.CONDITION) {
+            return ONE_TANK;
+        }
         return hasProcess ? TWO_SLOTS_ONE_TANK : ONE_TANK;
     }
 

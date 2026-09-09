@@ -115,6 +115,27 @@ G   G
 
 `G` = verre.
 
+### Casier à bouteilles
+
+```
+P S P
+P B P
+P S P
+```
+
+`P` = planches, `S` = bâton, `B` = bouteille vide.
+
+### Étagère à bouteilles
+
+```
+S S S
+P   P
+```
+
+`S` = dalles de bois, `P` = planches.
+
+Quatre casiers alignés ne forment **pas** un réseau : la grille max est 3 de large × 2 de haut.
+
 ### Palissage
 
 - **Poteau de vigne** ×2 : stick au-dessus de deux planches.
@@ -197,7 +218,7 @@ Le fût saisonné (déjà utilisé) applique un multiplicateur 1,15. Vider le f�
 
 ### Étape D — Assemblage (optionnel, hors DAG)
 
-La terrine exécute `alcoholic:blend` : deux tanks, **shift + main vide**. Ce n’est **pas** un nœud de `red_wine` / `white_wine`. Le graphe officiel s’arrête à `AGE`.
+La terrine exécute `alcoholic:blend` : deux tanks, **shift + main vide**. Ce n’est **pas** un nœud de `red_wine` / `white_wine`. Le graphe officiel s’arrête à `AGE`. Seuls deux vins **jeunes** de la même couleur s’assemblent ; le résultat reste du vin jeune (il faut encore le fût pour un vin fini).
 
 ### Étape E — Mise en bouteille
 

@@ -2,6 +2,7 @@ package com.djden.alcoholic.application.progression;
 
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
+import com.djden.alcoholic.application.machine.BuiltinCraftMachines;
 import com.djden.alcoholic.application.machine.BuiltinMachines;
 
 import java.util.ArrayList;
@@ -242,7 +243,62 @@ public final class ProgressionCatalog {
                         .canvas(0.0, 10.4)
                         .hex(quest(0x17), task(0x17))
                         .process(ProgressionCriterion.process("bottle", BuiltinRegistrations.BOTTLE))
-                        .build()
+                        .build(),
+                formed(
+                        "form_craft_malt_house",
+                        chapter,
+                        ProgressionLine.BEER,
+                        "malt",
+                        "craft_malt_house_controller",
+                        BuiltinCraftMachines.CRAFT_MALT_HOUSE,
+                        5.6,
+                        0.4,
+                        0x2A
+                ),
+                formed(
+                        "form_craft_mill",
+                        chapter,
+                        ProgressionLine.BEER,
+                        "mill",
+                        "craft_mill_controller",
+                        BuiltinCraftMachines.CRAFT_MILL,
+                        5.6,
+                        2.4,
+                        0x2B
+                ),
+                formed(
+                        "form_craft_mash_tun",
+                        chapter,
+                        ProgressionLine.BEER,
+                        "mash",
+                        "craft_mash_tun_controller",
+                        BuiltinCraftMachines.CRAFT_MASH_TUN,
+                        5.6,
+                        4.4,
+                        0x2C
+                ),
+                formed(
+                        "form_craft_kettle",
+                        chapter,
+                        ProgressionLine.BEER,
+                        "boil",
+                        "craft_brewing_kettle_controller",
+                        BuiltinCraftMachines.CRAFT_BREWING_KETTLE,
+                        5.6,
+                        6.4,
+                        0x2D
+                ),
+                formed(
+                        "form_craft_vat",
+                        chapter,
+                        ProgressionLine.BEER,
+                        "ferment_beverage",
+                        "craft_vat_controller",
+                        BuiltinCraftMachines.CRAFT_VAT,
+                        5.6,
+                        8.4,
+                        0x2E
+                )
         );
     }
 
@@ -360,7 +416,15 @@ public final class ProgressionCatalog {
                         .canvas(0.0, 8.8)
                         .hex(quest(0x29), task(0x29))
                         .minRequiredDependencies(1)
+                        .vanillaParent("form_industrial_vat")
                         .formed(ProgressionCriterion.formed("formed", BuiltinMachines.INDUSTRIAL_AGING_VESSEL))
+                        .build(),
+                node("condition_beer", chapter, ProgressionLine.BEER)
+                        .parents("form_industrial_conditioning")
+                        .icon("industrial_conditioning_vessel_controller")
+                        .canvas(3.5, 10.8)
+                        .hex(quest(0x2F), task(0x2F))
+                        .process(process("condition_beer", BuiltinRegistrations.CONDITION, "beer"))
                         .build()
         );
     }

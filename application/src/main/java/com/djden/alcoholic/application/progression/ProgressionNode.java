@@ -22,6 +22,7 @@ public final class ProgressionNode {
     private final double canvasX;
     private final double canvasY;
     private final int minRequiredDependencies;
+    private final String vanillaParentOverride;
 
     private ProgressionNode(Builder builder) {
         this.id = builder.id;
@@ -40,6 +41,7 @@ public final class ProgressionNode {
         this.canvasX = builder.canvasX;
         this.canvasY = builder.canvasY;
         this.minRequiredDependencies = builder.minRequiredDependencies;
+        this.vanillaParentOverride = builder.vanillaParentOverride;
     }
 
     public static Builder builder(String id, ProgressionChapter chapter, ProgressionLine line) {
@@ -119,6 +121,9 @@ public final class ProgressionNode {
     }
 
     public Optional<String> vanillaParentId() {
+        if (vanillaParentOverride != null && !vanillaParentOverride.isBlank()) {
+            return Optional.of(vanillaParentOverride);
+        }
         if (parents.isEmpty()) {
             return Optional.empty();
         }
@@ -145,6 +150,7 @@ public final class ProgressionNode {
         private Double canvasX;
         private Double canvasY;
         private int minRequiredDependencies;
+        private String vanillaParentOverride;
 
         private Builder(String id, ProgressionChapter chapter, ProgressionLine line) {
             this.id = Objects.requireNonNull(id, "id");
@@ -207,6 +213,11 @@ public final class ProgressionNode {
 
         public Builder minRequiredDependencies(int value) {
             this.minRequiredDependencies = value;
+            return this;
+        }
+
+        public Builder vanillaParent(String id) {
+            this.vanillaParentOverride = id;
             return this;
         }
 

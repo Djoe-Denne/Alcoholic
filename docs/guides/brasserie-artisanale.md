@@ -126,6 +126,27 @@ G   G
 
 `G` = verre.
 
+### Casier à bouteilles
+
+```
+P S P
+P B P
+P S P
+```
+
+`P` = planches, `S` = bâton, `B` = bouteille vide.
+
+### Étagère à bouteilles
+
+```
+S S S
+P   P
+```
+
+`S` = dalles de bois, `P` = planches.
+
+Quatre casiers alignés ne forment **pas** un réseau : la grille max est 3 de large × 2 de haut.
+
 ### Palissage du houblon
 
 - **Poteau de vigne** ×2 : stick au-dessus de deux planches.

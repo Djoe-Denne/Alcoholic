@@ -14,7 +14,6 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -49,9 +48,9 @@ class PlayabilityAuditCharacterizationTest {
     }
 
     @Test
-    void bottleRackAndShelfHaveNoCraftingRecipes() {
-        assertNull(stream("data/alcoholic/recipes/bottle_rack.json"));
-        assertNull(stream("data/alcoholic/recipes/bottle_shelf.json"));
+    void bottleRackAndShelfHaveCraftingRecipes() {
+        assertNotNull(stream("data/alcoholic/recipes/bottle_rack.json"));
+        assertNotNull(stream("data/alcoholic/recipes/bottle_shelf.json"));
         assertNotNull(stream("data/alcoholic/recipes/empty_bottle.json"));
     }
 
@@ -98,7 +97,7 @@ class PlayabilityAuditCharacterizationTest {
     }
 
     @Test
-    void beerGraphFermentPortDoesNotMatchProcessOutputName() throws IOException {
+    void beerGraphFermentPortMatchesProcessOutputName() throws IOException {
         JsonObject beer = resource("data/alcoholic/alcoholic/beverages/beer.json");
         JsonArray nodes = beer.getAsJsonObject("graph").getAsJsonArray("nodes");
         JsonObject ferment = null;
@@ -110,7 +109,7 @@ class PlayabilityAuditCharacterizationTest {
             }
         }
         assertNotNull(ferment);
-        assertEquals("finished", ferment.getAsJsonArray("outputs").get(0).getAsString());
+        assertEquals("young", ferment.getAsJsonArray("outputs").get(0).getAsString());
         JsonObject process = resource("data/alcoholic/alcoholic/processes/ferment_hopped_wort.json");
         assertEquals("young", process.getAsJsonArray("outputs").get(0).getAsString());
     }

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "alcoholic:empty_bottle"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "PSP",
+    "PBP",
+    "PSP"
+  ],
+  "result": {
+    "item": "alcoholic:bottle_rack"
+  }
+}

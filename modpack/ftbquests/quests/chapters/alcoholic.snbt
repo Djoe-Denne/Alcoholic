@@ -273,6 +273,81 @@
 				advancement: "alcoholic:bottle"
 				criterion: ""
 			}]
+		},
+		{
+			id: "A1C0A01C0000002A"
+			x: 5.6d
+			y: 0.4d
+			title: "{translate:advancements.alcoholic.form_craft_malt_house.title}"
+			description: ["{translate:advancements.alcoholic.form_craft_malt_house.description}"]
+			icon: "alcoholic:craft_malt_house_controller"
+			dependencies: ["A1C0A01C00000019"]
+			tasks: [{
+				id: "A1C0A01C1000002A"
+				type: "advancement"
+				advancement: "alcoholic:form_craft_malt_house"
+				criterion: ""
+			}]
+		},
+		{
+			id: "A1C0A01C0000002B"
+			x: 5.6d
+			y: 2.4d
+			title: "{translate:advancements.alcoholic.form_craft_mill.title}"
+			description: ["{translate:advancements.alcoholic.form_craft_mill.description}"]
+			icon: "alcoholic:craft_mill_controller"
+			dependencies: ["A1C0A01C0000001A"]
+			tasks: [{
+				id: "A1C0A01C1000002B"
+				type: "advancement"
+				advancement: "alcoholic:form_craft_mill"
+				criterion: ""
+			}]
+		},
+		{
+			id: "A1C0A01C0000002C"
+			x: 5.6d
+			y: 4.4d
+			title: "{translate:advancements.alcoholic.form_craft_mash_tun.title}"
+			description: ["{translate:advancements.alcoholic.form_craft_mash_tun.description}"]
+			icon: "alcoholic:craft_mash_tun_controller"
+			dependencies: ["A1C0A01C0000001B"]
+			tasks: [{
+				id: "A1C0A01C1000002C"
+				type: "advancement"
+				advancement: "alcoholic:form_craft_mash_tun"
+				criterion: ""
+			}]
+		},
+		{
+			id: "A1C0A01C0000002D"
+			x: 5.6d
+			y: 6.4d
+			title: "{translate:advancements.alcoholic.form_craft_kettle.title}"
+			description: ["{translate:advancements.alcoholic.form_craft_kettle.description}"]
+			icon: "alcoholic:craft_brewing_kettle_controller"
+			dependencies: ["A1C0A01C0000001C"]
+			tasks: [{
+				id: "A1C0A01C1000002D"
+				type: "advancement"
+				advancement: "alcoholic:form_craft_kettle"
+				criterion: ""
+			}]
+		},
+		{
+			id: "A1C0A01C0000002E"
+			x: 5.6d
+			y: 8.4d
+			title: "{translate:advancements.alcoholic.form_craft_vat.title}"
+			description: ["{translate:advancements.alcoholic.form_craft_vat.description}"]
+			icon: "alcoholic:craft_vat_controller"
+			dependencies: ["A1C0A01C00000014"]
+			tasks: [{
+				id: "A1C0A01C1000002E"
+				type: "advancement"
+				advancement: "alcoholic:form_craft_vat"
+				criterion: ""
+			}]
 		}
 	]
 	quest_links: [

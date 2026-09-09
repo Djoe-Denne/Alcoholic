@@ -1,12 +1,11 @@
 {
   "config": {
     "accepted_inputs": [
-      "alcoholic:young_white_wine",
-      "alcoholic:white_wine"
+      "alcoholic:young_white_wine"
     ],
     "min_inputs": 2,
     "output": {
-      "liquid": "alcoholic:white_wine"
+      "liquid": "alcoholic:young_white_wine"
     }
   },
   "id": "alcoholic:blend_white_wine",

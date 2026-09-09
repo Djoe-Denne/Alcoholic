@@ -799,6 +799,46 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         addShaped(sink, "craft_mash_tun_controller", "CTC", "CXC", "CCC", "C", "minecraft:copper_ingot", "T", "alcoholic:mash_tun", "X", "alcoholic:craft_casing", 1);
         addShaped(sink, "craft_brewing_kettle_controller", "CKC", "CXC", "CCC", "C", "minecraft:copper_ingot", "K", "alcoholic:brewing_kettle", "X", "alcoholic:craft_casing", 1);
         addShaped(sink, "craft_vat_controller", "CFC", "CXC", "CCC", "C", "minecraft:copper_ingot", "F", "alcoholic:artisanal_fermenter", "X", "alcoholic:craft_casing", 1);
+        sink.add(
+                "data/alcoholic/recipes/bottle_rack.json",
+                """
+                        {
+                          "type": "minecraft:crafting_shaped",
+                          "pattern": [
+                            "PSP",
+                            "PBP",
+                            "PSP"
+                          ],
+                          "key": {
+                            "P": { "tag": "minecraft:planks" },
+                            "S": { "item": "minecraft:stick" },
+                            "B": { "item": "alcoholic:empty_bottle" }
+                          },
+                          "result": {
+                            "item": "alcoholic:bottle_rack"
+                          }
+                        }
+                        """
+        );
+        sink.add(
+                "data/alcoholic/recipes/bottle_shelf.json",
+                """
+                        {
+                          "type": "minecraft:crafting_shaped",
+                          "pattern": [
+                            "SSS",
+                            "P P"
+                          ],
+                          "key": {
+                            "S": { "tag": "minecraft:wooden_slabs" },
+                            "P": { "tag": "minecraft:planks" }
+                          },
+                          "result": {
+                            "item": "alcoholic:bottle_shelf"
+                          }
+                        }
+                        """
+        );
         addCreateMachineRecipes(sink);
     }
 
@@ -1328,8 +1368,8 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         addFermentProcess(sink, "ferment_white_must", "alcoholic:white_grape_must", "alcoholic:young_white_wine");
         addAgeProcess(sink, "age_young_red_wine", "alcoholic:young_red_wine", "alcoholic:red_wine");
         addAgeProcess(sink, "age_young_white_wine", "alcoholic:young_white_wine", "alcoholic:white_wine");
-        addBlendProcess(sink, "blend_red_wine", "alcoholic:young_red_wine", "alcoholic:red_wine");
-        addBlendProcess(sink, "blend_white_wine", "alcoholic:young_white_wine", "alcoholic:white_wine");
+        addBlendProcess(sink, "blend_red_wine", "alcoholic:young_red_wine");
+        addBlendProcess(sink, "blend_white_wine", "alcoholic:young_white_wine");
         addWineBeverage(sink, "young_red_wine", "press_red_grapes", "ferment_red_must", "alcoholic:grapes/red");
         addWineBeverage(sink, "young_white_wine", "press_white_grapes", "ferment_white_must", "alcoholic:grapes/white");
         addAgedWineBeverage(
@@ -1514,7 +1554,7 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
         );
     }
 
-    private static void addBlendProcess(JsonSink sink, String id, String young, String finished) {
+    private static void addBlendProcess(JsonSink sink, String id, String young) {
         sink.add(
                 "data/alcoholic/alcoholic/processes/" + id + ".json",
                 """
@@ -1522,14 +1562,14 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                           "id": "alcoholic:%s",
                           "process": "alcoholic:blend",
                           "config": {
-                            "accepted_inputs": ["%s", "%s"],
+                            "accepted_inputs": ["%s"],
                             "output": { "liquid": "%s" },
                             "min_inputs": 2
                           },
                           "inputs": {},
                           "outputs": ["blended"]
                         }
-                        """.formatted(id, young, finished, finished)
+                        """.formatted(id, young, young)
         );
     }
 
@@ -1929,10 +1969,18 @@ final class GrapeServerDataProvider extends AlcoholicJsonProvider {
                                   "wort": { "node": "boil", "port": "hopped_wort" },
                                   "yeast": { "tag": "alcoholic:yeast" }
                                 },
+                                "outputs": ["young"]
+                              },
+                              {
+                                "id": "condition",
+                                "definition": "alcoholic:condition_beer",
+                                "inputs": {
+                                  "beer": { "node": "ferment", "port": "young" }
+                                },
                                 "outputs": ["finished"]
                               }
                             ],
-                            "outputs": { "result": { "node": "ferment", "port": "finished" } }
+                            "outputs": { "result": { "node": "ferment", "port": "young" } }
                           },
                           "properties": [
                             "alcoholic:sugar",

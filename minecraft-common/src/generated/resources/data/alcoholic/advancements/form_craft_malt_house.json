@@ -1,9 +1,9 @@
 {
-  "parent": "alcoholic:form_industrial_vat",
+  "parent": "alcoholic:malt",
   "criteria": {
     "formed": {
       "conditions": {
-        "machine": "alcoholic:industrial_aging_vessel"
+        "machine": "alcoholic:craft_malt_house"
       },
       "trigger": "alcoholic:multiblock_formed"
     }
@@ -11,16 +11,16 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.alcoholic.form_industrial_aging.description"
+      "translate": "advancements.alcoholic.form_craft_malt_house.description"
     },
     "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "alcoholic:industrial_aging_vessel_controller"
+      "item": "alcoholic:craft_malt_house_controller"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.alcoholic.form_industrial_aging.title"
+      "translate": "advancements.alcoholic.form_craft_malt_house.title"
     }
   },
   "requirements": [

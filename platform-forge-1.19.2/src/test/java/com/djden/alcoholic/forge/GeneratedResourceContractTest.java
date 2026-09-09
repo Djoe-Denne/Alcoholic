@@ -580,6 +580,11 @@ class GeneratedResourceContractTest {
         resource("data/alcoholic/advancements/boil.json");
         resource("data/alcoholic/advancements/age_wine.json");
         resource("data/alcoholic/advancements/blend.json");
+        resource("data/alcoholic/advancements/form_craft_malt_house.json");
+        resource("data/alcoholic/advancements/form_craft_mill.json");
+        resource("data/alcoholic/advancements/form_craft_mash_tun.json");
+        resource("data/alcoholic/advancements/form_craft_kettle.json");
+        resource("data/alcoholic/advancements/form_craft_vat.json");
     }
 
     @Test
@@ -614,7 +619,11 @@ class GeneratedResourceContractTest {
         resource("data/alcoholic/advancements/form_industrial_mash_tun.json");
         resource("data/alcoholic/advancements/form_industrial_kettle.json");
         resource("data/alcoholic/advancements/form_industrial_conditioning.json");
-        resource("data/alcoholic/advancements/form_industrial_aging.json");
+        JsonObject aging = resource("data/alcoholic/advancements/form_industrial_aging.json");
+        assertEquals("alcoholic:form_industrial_vat", aging.get("parent").getAsString());
+        JsonObject condition = resource("data/alcoholic/advancements/condition_beer.json");
+        assertEquals("alcoholic:form_industrial_conditioning", condition.get("parent").getAsString());
+        assertEquals("alcoholic:process_completed", criterionTrigger(condition, "condition_beer"));
     }
 
     private static String criterionTrigger(JsonObject advancement, String criterion) {
@@ -780,6 +789,8 @@ class GeneratedResourceContractTest {
         resource("data/alcoholic/recipes/mash_tun.json");
         resource("data/alcoholic/recipes/brewing_kettle.json");
         resource("data/alcoholic/recipes/empty_bottle.json");
+        resource("data/alcoholic/recipes/bottle_rack.json");
+        resource("data/alcoholic/recipes/bottle_shelf.json");
         resource("data/alcoholic/recipes/yeast.json");
         resource("data/alcoholic/recipes/wine_grimoire.json");
         resource("data/alcoholic/recipes/beer_grimoire.json");

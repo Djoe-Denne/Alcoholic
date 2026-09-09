@@ -88,6 +88,10 @@ class MachineLayoutTest {
         );
         assertEquals(2, MachineLayout.forMultiblock(MachineKind.MASH, true, MachineScale.CRAFT).tankCount());
         assertEquals(2, MachineLayout.TWO_SLOTS_TWO_TANKS.tankCount());
+        assertEquals(MachineLayout.ONE_SLOT_ONE_TANK, MachineLayout.forMultiblock(MachineKind.FERMENT, true));
+        assertEquals(MachineLayout.ONE_SLOT_ONE_TANK, MachineLayout.forMultiblock(MachineKind.BOIL, true));
+        assertEquals(MachineLayout.ONE_TANK, MachineLayout.forMultiblock(MachineKind.AGE, true));
+        assertEquals(MachineLayout.ONE_TANK, MachineLayout.forMultiblock(MachineKind.CONDITION, true));
         assertEquals(MachineLayout.ONE_TANK, MachineLayout.forMultiblock(MachineKind.STORAGE, false));
     }
 

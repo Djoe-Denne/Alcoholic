@@ -14,7 +14,7 @@ class MultiblockDisplayRecipesTest {
     void builtinsExposeEightMinHullRecipes() {
         List<MultiblockDisplayRecipe> recipes = MultiblockDisplayRecipes.from(MachineCatalog.builtins());
         assertEquals(14, recipes.size());
-        assertEquals(4, recipes.get(0).layers().size());
+        assertEquals(4, recipe(recipes, BuiltinMachines.INDUSTRIAL_PRESS.toString()).layers().size());
     }
 
     @Test

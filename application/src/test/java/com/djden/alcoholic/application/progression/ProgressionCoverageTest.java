@@ -2,10 +2,12 @@ package com.djden.alcoholic.application.progression;
 
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.application.beverage.builtin.BuiltinRegistrations;
+import com.djden.alcoholic.application.machine.BuiltinCraftMachines;
 import com.djden.alcoholic.application.machine.BuiltinMachines;
 import com.djden.alcoholic.domain.multiblock.MultiblockDefinition;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -27,11 +29,18 @@ class ProgressionCoverageTest {
     void officialProcessesExceptStubsHaveANode() {
         ProgressionCatalog catalog = ProgressionCatalog.official();
         Set<ResourceId> covered = new HashSet<>();
-        Map<ResourceId, MultiblockDefinition> machines = BuiltinMachines.all();
+        Map<ResourceId, MultiblockDefinition> machines = new HashMap<>();
+        machines.putAll(BuiltinMachines.all());
+        machines.putAll(BuiltinCraftMachines.all());
         for (ProgressionNode node : catalog.nodes()) {
             for (ProgressionCriterion criterion : node.criteria()) {
                 criterion.process().ifPresent(covered::add);
-                criterion.machine().ifPresent(machine -> machines.get(machine).processType().ifPresent(covered::add));
+                criterion.machine().ifPresent(machine -> {
+                    MultiblockDefinition definition = machines.get(machine);
+                    if (definition != null) {
+                        definition.processType().ifPresent(covered::add);
+                    }
+                });
             }
         }
         assertTrue(
@@ -56,6 +65,32 @@ class ProgressionCoverageTest {
                     .count();
             assertEquals(1, count, "Industrial formed coverage for " + machine);
         }
+    }
+
+    @Test
+    void everyCraftMachineHasExactlyOneFormedNode() {
+        ProgressionCatalog catalog = ProgressionCatalog.official();
+        for (ResourceId machine : BuiltinCraftMachines.all().keySet()) {
+            long count = catalog.nodes().stream()
+                    .filter(node -> node.trigger() == ProgressionTriggerKind.FORMED)
+                    .filter(node -> node.chapter() == ProgressionChapter.ARTISANAL)
+                    .filter(node -> node.criteria().stream().anyMatch(criterion ->
+                            criterion.machine().isPresent() && criterion.machine().orElseThrow().equals(machine)
+                    ))
+                    .count();
+            assertEquals(1, count, "Craft formed coverage for " + machine);
+        }
+    }
+
+    @Test
+    void conditionHasAProcessCompletedNode() {
+        ProgressionCatalog catalog = ProgressionCatalog.official();
+        boolean covered = catalog.nodes().stream()
+                .filter(node -> node.trigger() == ProgressionTriggerKind.PROCESS)
+                .flatMap(node -> node.criteria().stream())
+                .anyMatch(criterion -> criterion.process().filter(BuiltinRegistrations.CONDITION::equals).isPresent());
+        assertTrue(covered, "CONDITION has no process_completed node");
+        assertEquals("form_industrial_vat", catalog.require("form_industrial_aging").vanillaParentId().orElseThrow());
     }
 
     @Test
