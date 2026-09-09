@@ -6,14 +6,15 @@ tags: [minecraft, software-architecture, compatibility, type/concept, project/al
 aliases: [ADR-035, multiblock_formed, alcoholic:multiblock_formation]
 sources:
   - "C:/Users/djden/source/repos/Alcoholic/docs/adr/ADR-035-industrial-progression-and-jei-formation.md"
+  - "C:/Users/djden/source/repos/Alcoholic/docs/audits/current-playability-audit.md"
 summary: >-
-  A second tab starts at industrial_root. Formation uses multiblock_formed. JEI shows the min hull, not a mega-mesh.
+  A second tab starts at industrial_root. Formation uses multiblock_formed. Vanilla aging parents the vat.
 provenance:
   extracted: 0.88
   inferred: 0.1
   ambiguous: 0.02
 created: 2026-08-28T22:30:00+02:00
-updated: 2026-08-28T22:30:00+02:00
+updated: 2026-09-09T16:00:00+02:00
 ---
 
 # Industrial Progression and JEI Formation
@@ -37,7 +38,7 @@ A second Minecraft tab starts at `alcoholic:industrial_root` (no parent on `alco
 
 The trigger is `alcoholic:multiblock_formed` with a `machine` field. `MultiblockControllerBlockEntity.revalidate` fires it on the rising edge of `formed`. Attribution uses the last actor (use or part placement), nearby players within 16 blocks if none is set, then a pending `formed` queue flushed on the next `touch`. Forming a machine is a progression event even when the last block placed is casing.
 
-Industrial process completions reuse `alcoholic:process_completed`. A press that produces must still grants `produce_must`. The storage tank has formation only.
+Industrial process completions reuse `alcoholic:process_completed`. A press that produces must still grants `produce_must`. The storage tank has formation only. Vanilla `form_industrial_aging` parents `form_industrial_vat`. FTB still uses `min_required_dependencies: 1` so vat **or** conditioning unlocks aging. Process quest `condition_beer` sits under conditioning. See [[playability-audit]].
 
 ## JEI
 
@@ -55,4 +56,5 @@ Chapter `alcoholic_industrial` (hex `A1C0A01C00000002`, quests `…0020`–`…0
 - [[wine-beer-progression-graph]]
 - [[process-display-and-recipe-viewers]]
 - [[cursor-progression-and-fluids-session]]
+- [[playability-audit]]
 - [[alcoholic]]

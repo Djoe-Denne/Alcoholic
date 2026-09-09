@@ -1145,14 +1145,15 @@
       ]
     },
     "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/42495efa-83bd-474e-99ac-b2227a45c814/42495efa-83bd-474e-99ac-b2227a45c814.jsonl": {
-      "ingested_at": "2026-08-28T19:15:00+02:00",
-      "size_bytes": 265,
-      "modified_at": "2026-08-28T17:01:25.725712Z",
-      "content_hash": "sha256:3834cb1fce12a3452d15cfef390585144483f5dbf68869e0cb7bfef8d0850336",
+      "ingested_at": "2026-09-09T16:00:00+02:00",
+      "size_bytes": 134137,
+      "modified_at": "2026-08-28T17:10:52.810451+00:00",
+      "content_hash": "sha256:a5c729091ee23a3909ee0cd08f503fd9b47c6027da20cd69dfb1e7526baf420f",
       "source_type": "cursor-history",
       "project": "alcoholic",
       "pages_created": [],
-      "pages_updated": []
+      "pages_updated": [],
+      "note": "size refresh; content already distilled 2026-08-28 as wiki ingest session"
     },
     "C:/Users/djden/.codex/sessions/2026/08/28/rollout-2026-08-28T18-13-41-01a04925-fc7d-7b00-a62c-418b9a0d4ce5.jsonl": {
       "ingested_at": "2026-09-08T20:30:00+02:00",
@@ -1848,28 +1849,17 @@
       ]
     },
     "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/c1fe1ca7-b44b-4208-8155-4cb69e690435/c1fe1ca7-b44b-4208-8155-4cb69e690435.jsonl": {
-      "ingested_at": "2026-09-08T20:30:00+02:00",
-      "size_bytes": 27900,
-      "modified_at": "2026-09-08T18:21:22.450177Z",
-      "content_hash": "sha256:2ac7699e465b4315d10910de15275c88b8e15ff6d2de545c906cf03003292794",
+      "ingested_at": "2026-09-09T16:00:00+02:00",
+      "size_bytes": 125995,
+      "modified_at": "2026-09-08T18:32:55.907917+00:00",
+      "content_hash": "sha256:c82191a7fd40e158e2b89ad2748e16ce136c75cb5969c299cdd4fc69c4ab1900",
       "source_type": "cursor-history",
       "project": "alcoholic",
-      "pages_created": [
-        "projects/alcoholic/concepts/machine-controller-telemetry.md",
-        "projects/alcoholic/references/cursor-machine-gui-and-malting-session.md"
-      ],
+      "pages_created": [],
       "pages_updated": [
-        "projects/alcoholic/alcoholic.md",
-        "projects/alcoholic/concepts/liquid-batch.md",
-        "projects/alcoholic/concepts/aging-process.md",
-        "projects/alcoholic/concepts/formed-multiblock-visual.md",
-        "projects/alcoholic/concepts/industrial-multiblock.md",
-        "projects/alcoholic/concepts/industrial-processing.md",
-        "projects/alcoholic/concepts/grain-processing.md",
-        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
-        "projects/alcoholic/concepts/perennial-viticulture.md",
-        "projects/alcoholic/concepts/fermentation-physics.md",
-        "projects/alcoholic/concepts/vessel-and-environment.md"
+        "projects/alcoholic/concepts/machine-controller-telemetry.md",
+        "projects/alcoholic/references/cursor-machine-gui-and-malting-session.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md"
       ]
     },
     "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/c8466d25-e6cc-4161-8f4d-8a9407f73275/c8466d25-e6cc-4161-8f4d-8a9407f73275.jsonl": {
@@ -2915,13 +2905,65 @@
       "pages_updated": [
         "projects/alcoholic/alcoholic.md"
       ]
+    },
+    "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/112827ce-4901-4cfd-8dad-1e626367ee8f/112827ce-4901-4cfd-8dad-1e626367ee8f.jsonl": {
+      "ingested_at": "2026-09-09T16:00:00+02:00",
+      "size_bytes": 586452,
+      "modified_at": "2026-09-09T12:51:26.365571+00:00",
+      "content_hash": "sha256:afd2ddc970fd58dee267dc62d0881252b74ecfe32faf3e8112c9b7bb0833b1b4",
+      "source_type": "cursor-history",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/playability-audit.md",
+        "projects/alcoholic/references/cursor-playability-audit-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/wine-beer-progression-graph.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/concepts/bottle-stands.md",
+        "projects/alcoholic/concepts/blend-versus-tank-merge.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/industrial-progression-and-jei-formation.md",
+        "projects/alcoholic/concepts/machine-controller-telemetry.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/references/cursor-machine-gui-and-malting-session.md"
+      ]
+    },
+    "C:/Users/djden/source/repos/Alcoholic/docs/audits/current-playability-audit.md": {
+      "ingested_at": "2026-09-09T16:00:00+02:00",
+      "size_bytes": 19169,
+      "modified_at": "2026-09-09T12:51:03.109885+00:00",
+      "content_hash": "sha256:676da721989957627b586bd5ab44d2684b5d0343589fdecb71fd85e32497b08d",
+      "source_type": "document",
+      "project": "alcoholic",
+      "pages_created": [
+        "projects/alcoholic/concepts/playability-audit.md",
+        "projects/alcoholic/references/cursor-playability-audit-session.md"
+      ],
+      "pages_updated": [
+        "projects/alcoholic/alcoholic.md",
+        "projects/alcoholic/concepts/grain-processing.md",
+        "projects/alcoholic/concepts/wine-beer-progression-graph.md",
+        "projects/alcoholic/concepts/industrial-processing.md",
+        "projects/alcoholic/concepts/craft-scale-machines.md",
+        "projects/alcoholic/concepts/bottle-stands.md",
+        "projects/alcoholic/concepts/blend-versus-tank-merge.md",
+        "projects/alcoholic/concepts/aging-process.md",
+        "projects/alcoholic/concepts/industrial-progression-and-jei-formation.md",
+        "projects/alcoholic/concepts/machine-controller-telemetry.md",
+        "projects/alcoholic/concepts/process-display-and-recipe-viewers.md",
+        "projects/alcoholic/references/cursor-machine-gui-and-malting-session.md"
+      ]
     }
   },
   "projects": {
     "alcoholic": {
       "source_cwd": "C:/Users/djden/source/repos/Alcoholic",
-      "last_synced": "2026-09-08T20:30:00+02:00",
-      "last_commit_synced": "95e5b5b602009ef53ac31bf256403a343985c175",
+      "last_synced": "2026-09-09T16:00:00+02:00",
+      "last_commit_synced": "5a6fdadba506398e83a4930497b86a0710600551",
       "pages_in_vault": [
         "projects/alcoholic/alcoholic.md",
         "projects/alcoholic/concepts/loader-independent-minecraft-architecture.md",
@@ -2999,13 +3041,16 @@
         "projects/alcoholic/concepts/column-harvest.md",
         "projects/alcoholic/references/cursor-quality-and-craft-session.md",
         "projects/alcoholic/references/cursor-cask-hedging-stands-session.md",
-        "projects/alcoholic/references/cursor-machine-gui-and-malting-session.md"
+        "projects/alcoholic/references/cursor-machine-gui-and-malting-session.md",
+        "projects/alcoholic/concepts/playability-audit.md",
+        "projects/alcoholic/references/cursor-playability-audit-session.md"
       ]
     }
   },
   "stats": {
-    "total_sources_ingested": 182,
-    "total_pages": 85
+    "total_sources_ingested": 184,
+    "total_pages": 87,
+    "total_projects": 1
   },
   "alcoholic_codex_3d": {
     "source_path": "C:/Users/djden/.codex/sessions/2026/08/26",
@@ -3023,10 +3068,11 @@
     "index_updated_at": "2026-08-27T16:20:00+02:00"
   },
   "alcoholic_cursor_delta": {
-    "last_ingested": "2026-09-08T20:30:00+02:00",
-    "parent_conversations_ingested": 22,
+    "last_ingested": "2026-09-09T16:00:00+02:00",
+    "parent_conversations_ingested": 2,
     "skipped_subagents": true,
-    "note": "quality DAG + craft + cask imprint + harvest + stands + JEI telemetry"
+    "skipped_current_session": "fdcb0e59-1ba6-4924-8999-89b7a66400e4",
+    "note": "playability C1-C26 + telemetry JEI extra-areas continuation"
   },
   "alcoholic_codex_extra": {
     "last_ingested": "2026-08-27T16:20:00+02:00",

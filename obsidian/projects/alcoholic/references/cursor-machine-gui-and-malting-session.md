@@ -14,7 +14,7 @@ provenance:
   inferred: 0.1
   ambiguous: 0.02
 created: 2026-09-08T20:30:00+02:00
-updated: 2026-09-08T20:30:00+02:00
+updated: 2026-09-09T16:00:00+02:00
 ---
 
 # Cursor Machine GUI and Malting Session
@@ -33,6 +33,7 @@ The remapped jar was deployed to Create 2 Mekanism via [[curseforge-create2-depl
 - [[formed-multiblock-visual]]
 - [[craft-scale-machines]]
 - [[grain-processing]]
+- [[playability-audit]]
 
 ## Related
 

@@ -12,7 +12,7 @@ provenance:
   inferred: 0.08
   ambiguous: 0.02
 created: 2026-09-08T20:30:00+02:00
-updated: 2026-09-08T20:30:00+02:00
+updated: 2026-09-09T16:00:00+02:00
 ---
 
 # Machine Controller Telemetry

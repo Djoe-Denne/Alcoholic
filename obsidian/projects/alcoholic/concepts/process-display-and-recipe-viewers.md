@@ -13,7 +13,7 @@ provenance:
   inferred: 0.1
   ambiguous: 0.02
 created: 2026-08-27T16:00:00+02:00
-updated: 2026-09-08T20:30:00+02:00
+updated: 2026-09-09T16:00:00+02:00
 ---
 
 # Process Display and Recipe Viewers
@@ -28,7 +28,7 @@ JEI rebinds on `AlcoholicApi.notifyCatalogReloaded()`. Client resources / the Al
 
 Category `alcoholic:multiblock_formation` shows the minimum industrial hull from `IndustrialHullPattern` (useful face −Z). The DTO lives in `application` and rebinds on catalogue reload. There is no 3D mega-mesh preview. Formation detection stays on `alcoholic:multiblock_formed`, not in the viewer. See [[industrial-progression-and-jei-formation]].
 
-Formed controller screens draw [[machine-controller-telemetry]] **left** of the inventory. `IGuiContainerHandler.getGuiExtraAreas` must include that rectangle so JEI's ingredient list and bookmarks do not cover it.
+Formed controller screens draw [[machine-controller-telemetry]] **left** of the inventory. `IGuiContainerHandler.getGuiExtraAreas` must include that rectangle so JEI's ingredient list and bookmarks do not cover it. JEI catalysts include artisanal, craft, and industrial executors. `BOTTLE` uses the empty bottle; `processes/bottle.json` is 250 mB.
 
 ## Related
 
@@ -38,6 +38,8 @@ Formed controller screens draw [[machine-controller-telemetry]] **left** of the 
 - [[grain-processing]]
 - [[industrial-progression-and-jei-formation]]
 - [[wine-beer-progression-graph]]
+- [[playability-audit]]
+- [[machine-controller-telemetry]]
 - [[cursor-jei-display-session]]
 - [[machine-controller-telemetry]]
 - [[alcoholic]]

@@ -7,13 +7,14 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/dc49ea79-b9e5-4902-ad7f-795f762f8f52/dc49ea79-b9e5-4902-ad7f-795f762f8f52.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06/416b9587-3d6b-43c7-ae7d-cfe21d2c2e06.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/1ca21b6f-a077-4686-8f47-c41ee6e59fc7/1ca21b6f-a077-4686-8f47-c41ee6e59fc7.jsonl"
+  - "C:/Users/djden/source/repos/Alcoholic/docs/audits/current-playability-audit.md"
 summary: Extra executors for existing process types plus a passive tank. Kinetic power is any MechanicalDrivePort supply, not Create-only.
 provenance:
   extracted: 0.86
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T15:30:00+02:00
-updated: 2026-09-08T20:30:00+02:00
+updated: 2026-09-09T16:00:00+02:00
 ---
 
 # Industrial Processing
@@ -29,12 +30,14 @@ MASH      mash tun / craft mash tun / industrial mash tun
 BOIL      brewing kettle / craft kettle / industrial brewing kettle
 CONDITION optional industrial conditioning vessel
 STORAGE   passive tank (never a process executor)
-AGE       oak barrel only — next official industrial family
+AGE       oak barrel / industrial aging vessel
 ```
 
-Wine and beer DAGs are unchanged. Industrial machines change capacity, throughput, automation, and stability. They do not add industrial recipes. Artisanal executors stay valid. [[craft-scale-machines]] sit between on [[emergent-quality-profile]] caps. Quality is a derived `QualityProfile`; industrial `complexityCap` 0.55 and `purityFloor` ~0.15 clamp the drink even if the player waits. `speedModifier` finishes FERMENT / AGE / CONDITION sooner without raising that cap.
+Wine and beer DAGs stay the same process types. Industrial machines change capacity, throughput, automation, and stability. They do not add industrial recipes. Artisanal executors stay valid. [[craft-scale-machines]] sit between on [[emergent-quality-profile]] caps. Quality is a derived `QualityProfile`; industrial `complexityCap` 0.55 and `purityFloor` ~0.15 clamp the drink even if the player waits. `speedModifier` finishes FERMENT / AGE / CONDITION sooner without raising that cap.
 
-Industrial wine A→Z currently bottles young wine from the vat controller. Finished `red_wine` / `white_wine` still needs the oak barrel. The next official industrial close is a formed `AGE` warehouse, not `DISTILL`, shipped cider, or drinking.
+Industrial press volume at HEAD is 8000–600000 mB (7×8×7, speed 2.0, fidelity 0.70). The roller mill kinetic load is 4 versus 1 on the small mill. Heat is sampled under the controller and the interior floor; magma can mash and stall boil. See [[playability-audit]].
+
+Finished `red_wine` / `white_wine` can AGE in the oak barrel or a formed aging vessel. `DISTILL`, shipped cider, and drinking stay later families.
 
 ## Industrial press
 
@@ -74,4 +77,5 @@ Alcoholic does not add pipes, pumps, belts, or shafts. The intended factory is v
 - [[cursor-crossroads-electric-motor-session]]
 - [[grain-processing]]
 - [[industrial-progression-and-jei-formation]]
+- [[playability-audit]]
 - [[forge-1.19.2-phase-6-verification]]

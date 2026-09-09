@@ -11,13 +11,15 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/38cdf6ba-d500-47a2-87ec-22f346732c8c/38cdf6ba-d500-47a2-87ec-22f346732c8c.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/d120a5cc-91ff-47b3-99d0-392583b27834/d120a5cc-91ff-47b3-99d0-392583b27834.jsonl"
   - "C:/Users/djden/source/repos/Alcoholic/docs/adr/ADR-036-wine-beer-progression-graph.md"
-summary: Phase 7A ships a beer DAG through generic MALT, MILL, MASH, and BOIL. No drink-family Java branches.
+  - "C:/Users/djden/source/repos/Alcoholic/docs/audits/current-playability-audit.md"
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/112827ce-4901-4cfd-8dad-1e626367ee8f/112827ce-4901-4cfd-8dad-1e626367ee8f.jsonl"
+summary: Phase 7A ships a beer DAG through generic MALT, MILL, MASH, and BOIL. Official ferment output is young beer.
 provenance:
   extracted: 0.86
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T18:55:00+02:00
-updated: 2026-09-08T20:30:00+02:00
+updated: 2026-09-09T16:00:00+02:00
 ---
 
 # Grain Processing
@@ -30,10 +32,11 @@ Phase 7A adds the second shipped beverage family by stressing the [[beverage-fra
 BARLEY → MALT → MALTED BARLEY → MILL → GRIST
 GRIST + WATER → MASH → WORT
 WORT + HOPS → BOIL → HOPPED WORT
-HOPPED WORT + YEAST → FERMENT → BEER
+HOPPED WORT + YEAST → FERMENT → young beer → BOTTLE
+optional industrial CONDITION → finished beer
 ```
 
-The shipped graph is `alcoholic:beer`. It ends after generic `FERMENT`. There is no official beer AGE definition. `CONDITION` is optional, industrial-only, and not a node on `alcoholic:beer`. Artisanal play bottles after FERMENT. Whisky remains a structural fixture (`DISTILL` is still a stub). Wheat-beer and non-beer mash graphs stay validation fixtures.
+The shipped graph is `alcoholic:beer`. Official output is generic `FERMENT` / `young` (aligned with `ferment_hopped_wort.json`). There is no official beer AGE definition. `CONDITION` is optional, industrial-only, and a node on `alcoholic:beer` (`condition_beer`, young in / finished out). Artisanal play bottles after FERMENT. Whisky remains a structural fixture (`DISTILL` is still a stub). Wheat-beer and non-beer mash graphs stay validation fixtures. See [[playability-audit]].
 
 ## Process types
 
@@ -41,11 +44,11 @@ The shipped graph is `alcoholic:beer`. It ends after generic `FERMENT`. There is
 
 `alcoholic:mill` is a generic solid transform (malted grain → grist, property copy). Official execution is the [[native-executor-invariant|Malt Mill]], powered by any [[mechanical-drive-port]] supply. Create millstone and crushing wheels remain optional extra executors.
 
-`alcoholic:mash` is a mixed thermal process (ADR-026): grist plus `minecraft:water` → wort plus spent grain. `TemperatureProfile.extractionYield` maps preferred / cold / hot / out-of-band heat to extraction quality. Sugar, color, and temperature are typed liquid properties. The mash tun is a two-tank executor; heat comes from the block below through `HeatSources`.
+`alcoholic:mash` is a mixed thermal process (ADR-026): grist plus `minecraft:water` → wort plus spent grain. `TemperatureProfile.extractionYield` maps preferred / cold / hot / out-of-band heat to extraction quality. Sugar, color, and temperature are typed liquid properties. Every mash executor (artisanal, [[craft-scale-machines]], industrial) uses two tanks (`MachineLayout.TWO_SLOTS_TWO_TANKS`). Heat is sampled under the controller and the interior floor (`HeatSources`).
 
 `alcoholic:boil` heats a liquid and consumes hop additions (ADR-027). Extracted `alcoholic:bitterness` and `alcoholic:aroma` are typed properties. Additions may carry `at_progress` and a lightweight `role` (`bittering`, `aroma`, `dual`). The brewing kettle and industrial kettle execute `BOIL`. Existing fermenters then run generic `FERMENT`.
 
-`alcoholic:condition` is optional post-fermentation maturation that is not wood `AGE`. It is industrial-only and off-graph: it may raise `alcoholic:maturity` and, with yeast plus residual sugar, `alcoholic:carbonation`. It is not a node on `alcoholic:beer`. Artisanal bottles after FERMENT.
+`alcoholic:condition` is optional post-fermentation maturation that is not wood `AGE`. It is industrial-only: it may raise `alcoholic:maturity` and, with yeast plus residual sugar, `alcoholic:carbonation`. The beer graph now includes that node; artisanal bottles after FERMENT.
 
 Mixed solid/liquid ports reuse `ProcessInputs` (ADR-025). There is no brewing-water fluid.
 
@@ -57,7 +60,7 @@ Barley is an annual cereal (`CerealCropBlock`). Hops grow as a vertical bine on 
 
 The malting floor executes `MALT` only. An earlier Phase 7A cut also ran `MILL` on that floor because Alcoholic had no mill (ADR-028). [[native-executor-invariant|ADR-030]] added the Malt Mill and returned the floor to malt-only.
 
-The mash tun and brewing kettle are artisanal mixed-input executors. [[craft-scale-machines]] add formed mid-scale executors for the same types. Phase 7B adds industrial executors: malt house, roller mill, mash tun, brewing kettle, plus an optional conditioning vessel. See [[industrial-processing]].
+The mash tun and brewing kettle are artisanal mixed-input executors. [[craft-scale-machines]] add formed mid-scale executors for the same types. Industrial executors cover malt house, roller mill, mash tun, brewing kettle, optional conditioning, and a formed AGE warehouse. See [[industrial-processing]].
 
 Floor, mill, mash tun, and kettle have Java voxels: [[malting-floor-visual]], [[malt-mill-visual]], [[mash-tun-visual]], [[brewing-kettle-visual]]. Process types stay generic.
 
@@ -67,6 +70,7 @@ On the player-facing [[wine-beer-progression-graph]], `produce_must` is press-on
 
 ## Related
 
+- [[playability-audit]]
 - [[alcoholic]]
 - [[process-capability-graph]]
 - [[beverage-framework]]

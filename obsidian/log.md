@@ -67,3 +67,8 @@ title: Wiki Log
 - [2026-09-08T20:30:00+02:00] CURSOR_HISTORY_INGEST conversations=22 pages_updated=12 pages_created=10 mode=append skipped_subagents=true topic="quality DAG + craft scale + cask imprint + sickle harvest + bottle stands + JEI telemetry"
 - [2026-09-08T20:30:00+02:00] CODEX_HISTORY_INGEST sessions=51 pages_updated=12 pages_created=10 mode=append topic="Alcoholic cwd Aug 28–Sep 8 (mirrors Cursor plus bottle stands Codex)"
 - [2026-09-08T20:32:00+02:00] QMD_REFRESH collection="alcoholic-wiki" action=update+embed indexed="10 new, 18 updated" embedded="71 chunks / 28 documents"
+- [2026-09-09T16:00:00+02:00] CURSOR_HISTORY_INGEST conversations=2 pages_updated=12 pages_created=2 mode=append skipped_subagents=true topic="playability C1-C26 + telemetry left of JEI (c1fe1ca7 continuation)"
+- [2026-09-09T16:00:00+02:00] INGEST source="C:/Users/djden/source/repos/Alcoholic/docs/audits/current-playability-audit.md" pages_updated=12 pages_created=2 mode=append
+- [2026-09-09T16:00:00+02:00] WIKI_UPDATE project=alcoholic pages_updated=12 pages_created=2 source_cwd=C:/Users/djden/source/repos/Alcoholic last_commit=5a6fdad
+- [2026-09-09T16:05:00+02:00] QMD_REFRESH collection="alcoholic-wiki" action=update+embed indexed="2 new, 18 updated" embedded="87 chunks / 20 documents"
+

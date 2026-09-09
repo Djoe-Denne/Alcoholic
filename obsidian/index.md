@@ -4,7 +4,7 @@ title: Wiki Index
 
 # Wiki Index
 
-*This index is automatically maintained. Last updated: 2026-09-08T20:30:00+02:00*
+*This index is automatically maintained. Last updated: 2026-09-09T16:00:00+02:00*
 
 ## Concepts
 
@@ -27,9 +27,9 @@ title: Wiki Index
 - [[projects/alcoholic/concepts/blend-versus-tank-merge|Blend Versus Tank Merge]] — Same-definition merge versus explicit alcoholic:blend. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/bottled-beverage-snapshot|Bottled Beverage Snapshot]] — Consumer snapshot of a batch, not runtime process state. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/industrial-multiblock|Industrial Multiblock]] — Variable-size hollow cuboid machines; capacity is interior volume. ( #minecraft #software-architecture)
-- [[projects/alcoholic/concepts/industrial-processing|Industrial Processing]] — Extra PRESS and FERMENT executors plus a passive tank; kinetic power is not Create-only. ( #minecraft #software-architecture)
+- [[projects/alcoholic/concepts/industrial-processing|Industrial Processing]] — Extra executors plus tank, conditioning, and formed AGE warehouse. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/industrial-ports|Industrial Ports]] — Fluid, item, and kinetic views; one kinetic port wins per tick for gate and billing. ( #minecraft #compatibility)
-- [[projects/alcoholic/concepts/grain-processing|Grain Processing]] — Beer DAG through generic MALT, MILL, MASH, and BOIL; no drink-family branches. ( #minecraft #software-architecture)
+- [[projects/alcoholic/concepts/grain-processing|Grain Processing]] — Beer DAG through generic MALT, MILL, MASH, and BOIL; official ferment output is young. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/mechanical-drive-port|Mechanical Drive Port]] — Loader-independent rotary port; four supplies; consumeWork bills the winner. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/electric-motor|Electric Motor]] — Native FE consumer that emits MechanicalDrivePort; idle machines do not drain. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/crossroads-rotary-adapter|Crossroads Rotary Adapter]] — Optional IAxleHandler on Alcoholic inputs; joule billing stays in the adapter. ( #minecraft #compatibility)
@@ -45,7 +45,7 @@ title: Wiki Index
 - [[projects/alcoholic/concepts/vanilla-xor-create-crafts|Vanilla XOR Create Crafts]] — 27 machine crafts switch to Create parts when Create is loaded. ( #minecraft #compatibility)
 - [[projects/alcoholic/concepts/mash-tun-visual|Mash Tun Visual]] — Locked oak; skip mid-res; open lid is a second model. ( #minecraft)
 - [[projects/alcoholic/concepts/brewing-kettle-visual|Brewing Kettle Visual]] — Copper kettle with front gauges after the first paint. ( #minecraft)
-- [[projects/alcoholic/concepts/wine-beer-progression-graph|Wine / Beer Progression Graph]] — ProgressionCatalog owns tab and FTB shape; wine left, beer right, shared center. ( #minecraft #software-architecture)
+- [[projects/alcoholic/concepts/wine-beer-progression-graph|Wine / Beer Progression Graph]] — ProgressionCatalog owns tab and FTB shape; craft FORMED nodes and condition_beer. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/advancements-as-progression-source|Advancements as Progression Source]] — Vanilla advancements are the only progression source in the JAR. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/optional-ftb-quests-chapter|Optional FTB Quests Chapter]] — Pack-author SNBT template; each quest is one AdvancementTask. ( #minecraft #compatibility)
 - [[projects/alcoholic/concepts/industrial-progression-and-jei-formation|Industrial Progression and JEI Formation]] — Second tab plus JEI min-hull; trigger is multiblock_formed. ( #minecraft #software-architecture)
@@ -56,8 +56,9 @@ title: Wiki Index
 - [[projects/alcoholic/concepts/cask-imprint|Cask Imprint]] — Emptying stains the next AGE fill; wood species stays out of scope. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/craft-scale-machines|Craft Scale Machines]] — Third formed executor scale between artisanal and industrial. ( #minecraft #software-architecture)
 - [[projects/alcoholic/concepts/machine-controller-telemetry|Machine Controller Telemetry]] — Side panel left of the inventory so JEI does not cover it. ( #minecraft #compatibility)
-- [[projects/alcoholic/concepts/bottle-stands|Bottle Stands]] — Rack and shelf display nine bottled snapshots each. ( #minecraft)
+- [[projects/alcoholic/concepts/bottle-stands|Bottle Stands]] — Rack and shelf with vanilla crafts; adjacent tiling no longer crashes. ( #minecraft)
 - [[projects/alcoholic/concepts/column-harvest|Column Harvest]] — Sickle harvests the vine/hop column; Create harvesters are not wired. ( #minecraft)
+- [[projects/alcoholic/concepts/playability-audit|Playability Audit]] — 2026-09-09 C1–C26 remediations: young beer, mash tanks, craft FORMED, bottle-stand crafts. ( #minecraft #testing)
 
 ## Entities
 
@@ -101,6 +102,7 @@ title: Wiki Index
 - [[projects/alcoholic/references/cursor-quality-and-craft-session|Cursor Quality and Craft Session]] — Quality DAG, three-scale caps, craft formed machines, yeast as a tag. ( #minecraft #software-architecture)
 - [[projects/alcoholic/references/cursor-cask-hedging-stands-session|Cursor Cask Hedging Stands Session]] — Barrel imprint, sickle column harvest, bottle rack and shelf. ( #minecraft #software-architecture)
 - [[projects/alcoholic/references/cursor-machine-gui-and-malting-session|Cursor Machine GUI and Malting Session]] — Telemetry left of JEI; malting lots; mega-mesh art-size only. ( #minecraft #software-architecture)
+- [[projects/alcoholic/references/cursor-playability-audit-session|Cursor Playability Audit Session]] — Functional map then remediations C1–C26 through bottling. ( #minecraft #testing)
 
 ## Synthesis
 
@@ -108,4 +110,4 @@ title: Wiki Index
 
 ## Projects
 
-- [[projects/alcoholic/alcoholic|Alcoholic]] — Loader-independent brewing mod: quality DAG, craft-scale machines, cask imprint, controller telemetry. ( #minecraft #project/alcoholic)
+- [[projects/alcoholic/alcoholic|Alcoholic]] — Loader-independent brewing mod: quality DAG, craft-scale machines, playability remediations through bottling. ( #minecraft #project/alcoholic)

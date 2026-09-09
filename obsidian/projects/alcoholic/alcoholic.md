@@ -23,13 +23,15 @@ sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/07a9f6b4-cb15-4290-9926-14a35cd01c5a/07a9f6b4-cb15-4290-9926-14a35cd01c5a.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/e7dd3c64-d28a-4c16-9d2a-d2dc3be2a3d2/e7dd3c64-d28a-4c16-9d2a-d2dc3be2a3d2.jsonl"
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/c1fe1ca7-b44b-4208-8155-4cb69e690435/c1fe1ca7-b44b-4208-8155-4cb69e690435.jsonl"
-summary: Loader-independent brewing mod. Quality DAG, craft-scale machines, cask imprint, controller telemetry.
+  - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/112827ce-4901-4cfd-8dad-1e626367ee8f/112827ce-4901-4cfd-8dad-1e626367ee8f.jsonl"
+  - "C:/Users/djden/source/repos/Alcoholic/docs/audits/current-playability-audit.md"
+summary: Loader-independent brewing mod. Quality DAG, craft-scale machines, playability remediations through bottling.
 provenance:
   extracted: 0.82
   inferred: 0.16
   ambiguous: 0.02
 created: 2026-08-25T09:20:00+02:00
-updated: 2026-09-08T20:30:00+02:00
+updated: 2026-09-09T16:00:00+02:00
 ---
 
 # Alcoholic
@@ -52,7 +54,7 @@ Alcoholic is a Minecraft mod for realistic brewing, winemaking, and distillation
 
 **Phase 7A** — second beverage family through generic process types: barley and hops agriculture, `MALT` / `MILL` / `MASH` / `BOIL`, malting floor, mash tun, brewing kettle. See [[grain-processing]]. Official DAGs follow the [[native-executor-invariant]]: the Malt Mill plus [[mechanical-drive-port]] keep MILL playable without Create. Create millstone/crushing stay optional extras. Shipped grain beer ends after generic `FERMENT`. AGE stays optional. Whisky remains a structural DAG fixture (`DISTILL` is still a stub).
 
-**Next official industrial close** — wine `AGE` warehouse (`BuiltinMachines` + `form_*` node). Industrial wine A→Z currently bottles young wine; finished wine still uses the oak barrel. `DISTILL`, shipped cider, and drinking are later families.
+**Next official industrial close** — formed `AGE` warehouse is shipped (`BuiltinMachines` + `form_industrial_aging`). Industrial wine can bottle young from the vat or finish in barrel / aging vessel. `DISTILL`, shipped cider, and drinking are later families.
 
 **Mechanical supplies (ADR-031)** — four ways to feed the same port: primitive combustion engine, [[electric-motor]] (generic FE; IE connector is one provider), optional Create, optional [[crossroads-rotary-adapter]]. Machines never branch on which mod is installed.
 
@@ -75,6 +77,8 @@ Alcoholic is a Minecraft mod for realistic brewing, winemaking, and distillation
 **Harvest and display** — [[column-harvest]] sickle vs empty-hand; [[bottle-stands]] rack and shelf.
 
 **Controller GUI** — [[machine-controller-telemetry]] sits left of the inventory so JEI does not cover it.
+
+**Playability (2026-09-09)** — [[playability-audit]] remediates C1–C26: mash two tanks, beer `young` + optional `CONDITION`, craft FORMED nodes, vanilla bottle-stand crafts, stand-network crash fix. Wine and beer reach the bottle.
 
 The Forge artifact still embeds the inward-pointing modules. Fabric remains a future adapter.
 
@@ -121,6 +125,7 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[column-harvest]]
 - [[bottle-stands]]
 - [[machine-controller-telemetry]]
+- [[playability-audit]]
 
 ## Verification
 
@@ -155,3 +160,4 @@ The Forge artifact still embeds the inward-pointing modules. Fabric remains a fu
 - [[cursor-quality-and-craft-session]]
 - [[cursor-cask-hedging-stands-session]]
 - [[cursor-machine-gui-and-malting-session]]
+- [[cursor-playability-audit-session]]

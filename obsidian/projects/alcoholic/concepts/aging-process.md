@@ -5,13 +5,14 @@ tags: [minecraft, software-architecture, type/concept, project/alcoholic]
 aliases: [AGE, AgingPhysics, AgingConfig]
 sources:
   - "C:/Users/djden/.cursor/projects/c-Users-djden-source-repos-Alcoholic/agent-transcripts/c2ca3b27-ad63-4be9-af24-47c49c111f2f/c2ca3b27-ad63-4be9-af24-47c49c111f2f.jsonl"
+  - "C:/Users/djden/source/repos/Alcoholic/docs/audits/current-playability-audit.md"
 summary: alcoholic:age is optional and data-driven. The engine never injects it. Completion can rename a batch or leave identity unchanged.
 provenance:
   extracted: 0.86
   inferred: 0.12
   ambiguous: 0.02
 created: 2026-08-25T14:40:00+02:00
-updated: 2026-09-08T20:30:00+02:00
+updated: 2026-09-09T16:00:00+02:00
 ---
 
 # Aging Process
@@ -20,7 +21,7 @@ Phase 4 registered `alcoholic:age` as a UNIT stub. Phase 5 replaces that stub wi
 
 ## Optional, never injected
 
-A vessel ages a [[liquid-batch]] only when `ProcessRecipeResolver` finds a compatible `alcoholic:age` definition or graph node for the stored liquid. The [[process-capability-graph]] remains the authority. The engine does not add AGE because a drink “should” age.
+A vessel ages a [[liquid-batch]] only when `ProcessRecipeResolver` finds a compatible `alcoholic:age` definition or graph node for the stored liquid. The [[process-capability-graph]] remains the authority. The engine does not add AGE because a drink “should” age. Executors are the oak barrel and the formed industrial aging vessel ([[industrial-processing]]).
 
 An empty or missing config is valid. Maturity can still progress. If `output.liquid` is absent, the batch keeps its definition when aging completes. If present, completion renames the batch the same way FERMENT does.
 
@@ -44,3 +45,5 @@ Temperature bands follow the FERMENT pattern: preferred runs at full rate, opera
 - [[artisanal-processing]]
 - [[cursor-phase-5-aging-session]]
 - [[forge-1.19.2-phase-5-verification]]
+- [[industrial-processing]]
+- [[playability-audit]]
