@@ -103,12 +103,8 @@ record ControllerTelemetry(
         }
 
         String stage = machine.processStage();
-        if ((stage == null || stage.isBlank()) && active.isPresent()) {
-            if (definition.kind() == MachineKind.PRESS) {
-                stage = "pressing";
-            } else if (definition.kind() == MachineKind.FERMENT) {
-                stage = "fermenting";
-            }
+        if ((stage == null || stage.isBlank()) && active.isPresent() && definition.kind() == MachineKind.PRESS) {
+            stage = "pressing";
         }
 
         return new ControllerTelemetry(

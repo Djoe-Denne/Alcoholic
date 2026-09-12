@@ -2,6 +2,7 @@ package com.djden.alcoholic.minecraft.menu;
 
 import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.domain.process.ProcessDefinition;
+import com.djden.alcoholic.minecraft.multiblock.MultiblockControllerBlockEntity;
 import com.djden.alcoholic.minecraft.process.ProcessRuntime;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
@@ -250,6 +251,21 @@ public final class MachineMenu extends AbstractContainerMenu {
 
     public boolean formed() {
         return (flags() & MachineContainerData.FLAG_FORMED) != 0;
+    }
+
+    public String structureReason(Level level) {
+        if (access instanceof MultiblockControllerBlockEntity controller) {
+            return controller.lastReason();
+        }
+        if (level == null) {
+            return "";
+        }
+        BlockEntity entity = level.getBlockEntity(new BlockPos(
+                data.get(MachineContainerData.BE_X),
+                data.get(MachineContainerData.BE_Y),
+                data.get(MachineContainerData.BE_Z)
+        ));
+        return entity instanceof MultiblockControllerBlockEntity controller ? controller.lastReason() : "";
     }
 
     public boolean hasControllerTelemetry() {

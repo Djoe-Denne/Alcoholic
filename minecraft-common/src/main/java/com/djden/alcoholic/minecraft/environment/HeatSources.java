@@ -15,6 +15,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * here; optional probes (Create burners) register from the integration layer.
  */
 public final class HeatSources {
+    /**
+     * Share of the below-block temperature delta a fermenting vessel absorbs.
+     * Magma (65 °C) under a 14 °C cellar warms it to ~21 °C, inside the
+     * preferred band without reaching mash temperatures.
+     */
+    public static final double FERMENT_WARMING_SHARE = 0.15;
+
     @FunctionalInterface
     public interface Probe {
         OptionalDouble sample(Level level, BlockPos heatPos, BlockState state);
@@ -86,5 +93,16 @@ public final class HeatSources {
             return 80.0;
         }
         return ambient;
+    }
+
+    /**
+     * Fermentation vessels absorb a damped share of the heat below: enough to
+     * lift a cold cellar into the preferred band, never a mash-tun blanket.
+     */
+    public static double warmedAmbient(double ambient, double heatBelow) {
+        if (!Double.isFinite(ambient) || !Double.isFinite(heatBelow) || heatBelow <= ambient) {
+            return ambient;
+        }
+        return ambient + (heatBelow - ambient) * FERMENT_WARMING_SHARE;
     }
 }

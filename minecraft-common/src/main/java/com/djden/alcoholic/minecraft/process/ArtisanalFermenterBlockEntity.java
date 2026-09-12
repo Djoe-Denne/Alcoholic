@@ -104,6 +104,13 @@ public final class ArtisanalFermenterBlockEntity extends BlockEntity
         return com.djden.alcoholic.minecraft.environment.EnvironmentSampler.sample(level, worldPosition).temperature();
     }
 
+    private double heatCelsius() {
+        if (level == null) {
+            return Double.NEGATIVE_INFINITY;
+        }
+        return com.djden.alcoholic.minecraft.environment.HeatSources.celsius(level, worldPosition);
+    }
+
     @Override
     public MachineLayout layout() {
         return MachineLayout.ONE_SLOT_ONE_TANK;
@@ -175,7 +182,9 @@ public final class ArtisanalFermenterBlockEntity extends BlockEntity
                 invocation.get(),
                 ProcessInputs.ofLiquid("must", batch),
                 ProcessContext.of(
-                        temperatureCelsius(),
+                        temperatureCelsius()
+                                + Math.max(0.0, heatCelsius() - temperatureCelsius())
+                                * com.djden.alcoholic.minecraft.environment.HeatSources.FERMENT_WARMING_SHARE,
                         1.0,
                         yeastPitched || !config.requireYeast(),
                         ExecutorModifiers.artisanal()

@@ -44,6 +44,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
@@ -162,6 +163,44 @@ public final class IndustrialGameTests {
                 helper,
                 helper.getBlockState(itemPos).getValue(PortBlocks.MODE) == ConfiguredPortMode.OUTPUT,
                 "Second sneak should set the item port to output"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "industrial_pad", timeoutTicks = 40)
+    public static void outputItemPortExtractsFromLateralFace(GameTestHelper helper) {
+        buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_roller_mill_controller", "industrial_casing", "kinetic_port");
+        BlockPos millPort = ORIGIN.offset(2, 1, 0);
+        helper.setBlock(
+                millPort,
+                block("item_port").defaultBlockState().setValue(PortBlocks.MODE, ConfiguredPortMode.OUTPUT)
+        );
+        MultiblockControllerBlockEntity mill = revalidate(helper, ORIGIN);
+        require(helper, mill.formed(), "Roller mill did not form: " + mill.debugDump());
+        mill.setItem(mill.layout().firstOutputSlot(), new ItemStack(item("grist"), 8));
+        IItemHandler millHandler = helper.getBlockEntity(millPort)
+                .getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.EAST)
+                .orElseThrow(IllegalStateException::new);
+        ItemStack extracted = millHandler.extractItem(0, 64, false);
+        require(
+                helper,
+                extracted.is(item("grist")) && extracted.getCount() == 8,
+                "Output mill port did not yield grist from EAST"
+        );
+        require(
+                helper,
+                mill.getItem(mill.layout().firstOutputSlot()).isEmpty(),
+                "Mill output slot still held items after lateral extract"
+        );
+
+        mill.setItem(mill.layout().firstOutputSlot(), new ItemStack(item("grist"), 4));
+        helper.setBlock(millPort, helper.getBlockState(millPort).setValue(PortBlocks.MODE, ConfiguredPortMode.INPUT));
+        ItemStack blocked = millHandler.extractItem(0, 64, false);
+        require(helper, blocked.isEmpty(), "Input mill port allowed lateral extract");
+        require(
+                helper,
+                mill.getItem(mill.layout().firstOutputSlot()).getCount() == 4,
+                "Input mill port consumed output items"
         );
         helper.succeed();
     }
@@ -642,6 +681,51 @@ public final class IndustrialGameTests {
         helper.succeed();
     }
 
+    @GameTest(template = "industrial_pad", timeoutTicks = 900)
+    public static void industrialMashTunStaysFormedAfterFullWaterMash(GameTestHelper helper) {
+        helper.setBlock(ORIGIN.below(), Blocks.MAGMA_BLOCK.defaultBlockState());
+        buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_mash_tun_controller", "industrial_casing", null);
+        MultiblockControllerBlockEntity mash = revalidate(helper, ORIGIN);
+        require(helper, mash.formed(), "Mash tun did not form: " + mash.debugDump());
+        mash.insert(new ItemStack(item("grist"), 1));
+        mash.tank(MultiblockControllerBlockEntity.INPUT_TANK)
+                .fill(LiquidBatch.of(ResourceId.parse("minecraft:water"), 16_000, PropertyBag.empty()), false);
+        helper.runAtTickTime(810, () -> {
+            MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
+            require(
+                    helper,
+                    entity.tank().contents().orElseThrow().baseLiquid().filter(AlcoholicIds.WORT::equals).isPresent(),
+                    "Full-water industrial mash did not produce wort"
+            );
+            MultiblockControllerBlockEntity revalidated = revalidate(helper, ORIGIN);
+            require(
+                    helper,
+                    revalidated.formed(),
+                    "Industrial mash tun unformed after a full-water batch: " + revalidated.debugDump()
+            );
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "industrial_pad", timeoutTicks = 40)
+    public static void industrialMashTunStaysFormedWhenWaterRefilledWithWortPresent(GameTestHelper helper) {
+        buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_mash_tun_controller", "industrial_casing", null);
+        MultiblockControllerBlockEntity mash = revalidate(helper, ORIGIN);
+        require(helper, mash.formed(), "Mash tun did not form: " + mash.debugDump());
+        // Each vessel fits the 16000 mB min hull on its own; the 17000 mB sum must
+        // not unform the machine.
+        mash.tank().fill(LiquidBatch.of(AlcoholicIds.WORT, 1000, PropertyBag.empty()), false);
+        mash.tank(MultiblockControllerBlockEntity.INPUT_TANK)
+                .fill(LiquidBatch.of(ResourceId.parse("minecraft:water"), 16_000, PropertyBag.empty()), false);
+        MultiblockControllerBlockEntity revalidated = revalidate(helper, ORIGIN);
+        require(
+                helper,
+                revalidated.formed(),
+                "Industrial mash tun unformed with full water over wort: " + revalidated.debugDump()
+        );
+        helper.succeed();
+    }
+
     @GameTest(template = "industrial_pad", timeoutTicks = 1200)
     public static void industrialBrewingKettleBoilsWortWithHops(GameTestHelper helper) {
         helper.setBlock(
@@ -756,6 +840,41 @@ public final class IndustrialGameTests {
                     helper,
                     batch.number(ResourceId.parse("alcoholic:bitterness"), 0.0) > 0.39,
                     "Bitterness was lost during generic FERMENT"
+            );
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "industrial_pad", timeoutTicks = 200)
+    public static void industrialVatWarmsGentlyOnMagma(GameTestHelper helper) {
+        // Heat block below the hull floor: the vat absorbs a damped share
+        // (HeatSources.FERMENT_WARMING_SHARE), never the raw block temperature.
+        helper.setBlock(ORIGIN.below(), Blocks.MAGMA_BLOCK.defaultBlockState());
+        buildHollow(helper, ORIGIN, 3, 4, 3, "industrial_vat_controller", "industrial_casing", null);
+        MultiblockControllerBlockEntity vat = revalidate(helper, ORIGIN);
+        require(helper, vat.formed(), "Vat did not form: " + vat.debugDump());
+        vat.tank().fill(
+                LiquidBatch.of(
+                        AlcoholicIds.HOPPED_WORT,
+                        1000,
+                        PropertyBag.empty()
+                                .with(ResourceId.parse("alcoholic:sugar"), 0.80)
+                                .with(ResourceId.parse("alcoholic:ethanol"), 0.0)
+                ),
+                false
+        );
+        vat.insert(new ItemStack(item("yeast"), 1));
+        helper.runAtTickTime(160, () -> {
+            LiquidBatch batch = controller(helper, ORIGIN).tank().contents().orElseThrow();
+            require(
+                    helper,
+                    batch.number(ResourceId.parse("alcoholic:sugar"), 1.0) < 0.80,
+                    "Magma-warmed vat did not consume sugar"
+            );
+            require(
+                    helper,
+                    batch.number(ResourceId.parse("alcoholic:ethanol"), 0.0) > 0.0,
+                    "Magma-warmed vat did not produce ethanol"
             );
             helper.succeed();
         });

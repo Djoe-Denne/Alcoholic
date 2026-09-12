@@ -80,6 +80,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     private long lastProcessedGameTime;
     private boolean skipUnloadGap = true;
     private boolean yeastPitched;
+    private double fermentInitialSugar = Double.NaN;
     private double ventedCo2;
     private int pressProgress;
     private int pressDuration = 20;
@@ -422,7 +423,11 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
     private int storedVolumeMillibuckets() {
         int stored = tank.contents().map(LiquidBatch::volumeMillibuckets).orElse(0);
         if (mashDualTanks()) {
-            stored += inputTank.contents().map(LiquidBatch::volumeMillibuckets).orElse(0);
+            int inputStored = inputTank.contents().map(LiquidBatch::volumeMillibuckets).orElse(0);
+            // Mash keeps two independent vessels, each sized to the full hull capacity
+            // (see resizeTanks). The validator must compare the fullest vessel against
+            // the hull, not the sum, otherwise water + wort unforms a valid machine.
+            return Math.max(stored, inputStored);
         }
         return stored;
     }
@@ -507,8 +512,14 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
                 storedVolumeMillibuckets()
         );
         MultiblockProfiler.SHARED.recordValidation(System.nanoTime() - start);
-        lastReason = result.reason();
+        String reason = result.reason();
+        boolean reasonChanged = !reason.equals(lastReason);
+        lastReason = reason;
         if (result.status() == ValidationStatus.INCOMPLETE) {
+            if (reasonChanged) {
+                setChanged();
+                sync();
+            }
             return;
         }
         if (result.status() == ValidationStatus.OVERCAPACITY) {
@@ -521,6 +532,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         }
         MultiblockGeometry next = result.geometry().orElseThrow();
         if (!resizeTanks(next.capacityMillibuckets())) {
+            lastReason = "contents exceed resized capacity";
             unform(IndustrialAccess.DRAIN_ONLY, next);
             return;
         }
@@ -764,6 +776,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         processStage = "";
         additionsCommitted = 0;
         yeastPitched = false;
+        fermentInitialSugar = Double.NaN;
         skipUnloadGap = true;
     }
 
@@ -776,10 +789,38 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
             processStage = "";
             additionsCommitted = 0;
             yeastPitched = false;
+            fermentInitialSugar = Double.NaN;
             skipUnloadGap = true;
         }
         processDuration = Math.max(1, durationTicks);
         return true;
+    }
+
+    /**
+     * Progress source of truth for conversion processes (FERMENT): the UI bar
+     * derives from consumed sugar, never from a ticking counter.
+     */
+    void trackFermentProgress(double initialSugar, double remainingSugar, double completionThreshold, double rateFactor) {
+        if (!Double.isFinite(initialSugar) || initialSugar <= 0.0) {
+            processProgress = 0;
+            processDuration = 1;
+            return;
+        }
+        double total = Math.max(1e-9, initialSugar - completionThreshold);
+        double done = Math.max(0.0, initialSugar - remainingSugar);
+        double rate = Math.max(1e-9, rateFactor);
+        // Display duration in ticks at 1x: full conversion at this rate factor.
+        processDuration = Math.max(1, (int) Math.round(total / rate));
+        processClock = Math.min(total, done / rate);
+        processProgress = (int) Math.floor(processClock);
+    }
+
+    double fermentInitialSugar() {
+        return fermentInitialSugar;
+    }
+
+    void fermentInitialSugar(double value) {
+        fermentInitialSugar = value;
     }
 
     boolean processComplete() {
@@ -1154,6 +1195,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         tag.putString("Access", access.name());
         tag.putString("Reason", lastReason);
         tag.putBoolean("YeastPitched", yeastPitched);
+        tag.putDouble("FermentInitialSugar", fermentInitialSugar);
         tag.putDouble("VentedCo2", ventedCo2);
         tag.putInt("PressProgress", pressProgress);
         tag.putInt("PressDuration", pressDuration);
@@ -1214,6 +1256,7 @@ public final class MultiblockControllerBlockEntity extends BlockEntity
         }
         lastReason = tag.getString("Reason");
         yeastPitched = tag.getBoolean("YeastPitched");
+        fermentInitialSugar = tag.contains("FermentInitialSugar") ? tag.getDouble("FermentInitialSugar") : Double.NaN;
         ventedCo2 = tag.getDouble("VentedCo2");
         pressProgress = tag.getInt("PressProgress");
         pressDuration = Math.max(1, tag.getInt("PressDuration"));

@@ -2,12 +2,14 @@ package com.djden.alcoholic.forge.client;
 
 import com.djden.alcoholic.minecraft.menu.MachineLayout;
 import com.djden.alcoholic.minecraft.menu.MachineMenu;
+import com.djden.alcoholic.minecraft.multiblock.StructureReasonDisplay;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 
 import java.util.List;
@@ -197,6 +199,16 @@ public final class AlcoholicMachineScreen extends AbstractContainerScreen<Machin
                 menu.formed() ? GOOD : BAD
         );
         y += TELEMETRY_LINE;
+        if (!menu.formed()) {
+            String reason = menu.structureReason(minecraft == null ? null : minecraft.level);
+            if (StructureReasonDisplay.present(reason)) {
+                int wrapWidth = TELEMETRY_WIDTH - 14;
+                for (FormattedCharSequence line : font.split(StructureReasonDisplay.component(reason), wrapWidth)) {
+                    font.draw(pose, line, x, y, BAD);
+                    y += TELEMETRY_LINE;
+                }
+            }
+        }
 
         Optional<ResourceLocation> process = menu.processDefinition(minecraft == null ? null : minecraft.level)
                 .map(id -> ResourceLocation.fromNamespaceAndPath(id.namespace(), id.path()));

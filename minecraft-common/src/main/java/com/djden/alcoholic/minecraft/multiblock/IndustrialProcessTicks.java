@@ -153,6 +153,8 @@ final class IndustrialProcessTicks {
         Optional<LiquidBatch> contents = machine.tank().contents();
         if (contents.isEmpty() || contents.get().baseLiquid().isEmpty()) {
             machine.catalystConsumed(false);
+            machine.fermentInitialSugar(Double.NaN);
+            machine.setProcessStage("");
             return;
         }
         LiquidBatch batch = contents.get();
@@ -168,15 +170,25 @@ final class IndustrialProcessTicks {
                 Optional.ofNullable(machine.boundDefinition())
         );
         if (invocation.isEmpty()) {
+            machine.setProcessStage("");
             return;
         }
         FermentConfig config = FermentConfig.CODEC.decode(invocation.get().config());
-        double effective = ThermalStability.effectiveCelsius(
+        // Ambient-only process: a heat block below warms the vessel gently
+        // (see HeatSources.FERMENT_WARMING_SHARE), it never drives the vat.
+        double warmed = com.djden.alcoholic.minecraft.environment.HeatSources.warmedAmbient(
                 machine.ambient(),
+                machine.heatCelsius()
+        );
+        double effective = ThermalStability.effectiveCelsius(
+                warmed,
                 config.temperature().preferredMidpoint(),
                 definition.modifiers().thermalStability()
         );
-        if (config.temperature().rateFactor(effective) <= 0.0) {
+        double rateFactor = config.temperature().rateFactor(effective);
+        if (rateFactor <= 0.0) {
+            machine.pauseElapsed(now);
+            machine.setProcessStage("stalled");
             return;
         }
         if (config.requireYeast() && !machine.catalystConsumed()) {
@@ -185,11 +197,26 @@ final class IndustrialProcessTicks {
                     .map(selector -> matcher.matches(selector, ItemLots.id(yeast)))
                     .orElseGet(() -> machine.matchesYeast(yeast));
             if (!matches) {
+                machine.setProcessStage("awaiting_yeast");
                 return;
             }
             yeast.shrink(1);
             machine.catalystConsumed(true);
         }
+        double sugar = batch.number(config.sugarProperty(), 0.0);
+        machine.beginProcessJob(invocation.get().nodeId() + "|" + batch.baseLiquid().map(ResourceId::toString).orElse(""), 1);
+        double initial = machine.fermentInitialSugar();
+        if (!Double.isFinite(initial) || initial <= 0.0) {
+            initial = Math.max(sugar, 1e-9);
+            machine.fermentInitialSugar(initial);
+        }
+        machine.setProcessStage(sugar <= config.kinetics().completionThreshold() ? "fermented" : "fermenting");
+        machine.trackFermentProgress(
+                initial,
+                sugar,
+                config.kinetics().completionThreshold(),
+                rateFactor * definition.modifiers().speedModifier()
+        );
         ProcessResult result = runtime.engine().execute(
                 IndustrialRuntime.shared().executor(BuiltinRegistrations.FERMENT),
                 invocation.get(),
@@ -220,6 +247,7 @@ final class IndustrialProcessTicks {
                         Optional.of(liquid)
                 ));
         machine.tank().set(next);
+        machine.trackFermentProgress(initial, next.number(config.sugarProperty(), 0.0), config.kinetics().completionThreshold(), rateFactor);
         machine.onProcessTankChanged();
     }
 

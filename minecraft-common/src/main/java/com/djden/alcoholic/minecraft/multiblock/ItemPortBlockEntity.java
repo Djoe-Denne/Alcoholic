@@ -1,6 +1,7 @@
 package com.djden.alcoholic.minecraft.multiblock;
 
 import com.djden.alcoholic.domain.multiblock.PortMode;
+import com.djden.alcoholic.minecraft.menu.MachineLayout;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.WorldlyContainer;
@@ -77,7 +78,37 @@ public final class ItemPortBlockEntity extends PartBlockEntity implements Worldl
 
     @Override
     public int[] getSlotsForFace(Direction direction) {
-        return delegate().getSlotsForFace(direction);
+        return slotsForMode();
+    }
+
+    /**
+     * Port mode, not hopper sidedness, decides which controller slots a
+     * neighbor sees. Create funnels query the face they touch; treating
+     * every non-{@code DOWN} face as input made {@code OUTPUT} ports inert.
+     */
+    private int[] slotsForMode() {
+        MultiblockControllerBlockEntity controller = controller();
+        if (controller == null || !controller.access().canProcess() && !controller.access().canDrain()) {
+            return new int[0];
+        }
+        MachineLayout layout = controller.layout();
+        PortMode mode = mode();
+        int[] inputs = layout.inputSlots();
+        int[] outputs = layout.outputSlots();
+        if (mode.allowsExtract() && !mode.allowsInsert()) {
+            return outputs.length > 0 ? outputs : inputs;
+        }
+        if (mode.allowsInsert() && !mode.allowsExtract()) {
+            return inputs;
+        }
+        return concat(inputs, outputs);
+    }
+
+    private static int[] concat(int[] left, int[] right) {
+        int[] slots = new int[left.length + right.length];
+        System.arraycopy(left, 0, slots, 0, left.length);
+        System.arraycopy(right, 0, slots, left.length, right.length);
+        return slots;
     }
 
     @Override

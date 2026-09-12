@@ -15,7 +15,10 @@ public enum MachineProcessStage {
     CONDITION,
     CONDITIONED,
     AGE,
-    AGED;
+    AGED,
+    STALLED,
+    AWAITING_YEAST,
+    FERMENTED;
 
     public static int encode(String id) {
         if (id == null || id.isBlank()) {

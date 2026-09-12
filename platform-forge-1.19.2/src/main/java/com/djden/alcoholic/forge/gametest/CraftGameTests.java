@@ -4,9 +4,12 @@ import com.djden.alcoholic.api.ResourceId;
 import com.djden.alcoholic.domain.liquid.LiquidBatch;
 import com.djden.alcoholic.domain.liquid.PropertyBag;
 import com.djden.alcoholic.minecraft.content.AlcoholicIds;
+import com.djden.alcoholic.minecraft.multiblock.ConfiguredPortMode;
 import com.djden.alcoholic.minecraft.multiblock.HollowCuboidPlacer;
 import com.djden.alcoholic.minecraft.multiblock.MultiblockControllerBlockEntity;
+import com.djden.alcoholic.minecraft.multiblock.PortBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +20,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -28,6 +32,31 @@ public final class CraftGameTests {
     private static final BlockPos OTHER = new BlockPos(6, 1, 1);
 
     private CraftGameTests() {
+    }
+
+    @GameTest(template = "industrial_pad", timeoutTicks = 40)
+    public static void outputItemPortExtractsCraftMaltFromLateralFace(GameTestHelper helper) {
+        buildHollow(helper, ORIGIN, 3, 3, 3, "craft_malt_house_controller", "craft_casing", null);
+        BlockPos portPos = ORIGIN.offset(2, 1, 0);
+        helper.setBlock(
+                portPos,
+                block("item_port").defaultBlockState().setValue(PortBlocks.MODE, ConfiguredPortMode.OUTPUT)
+        );
+        MultiblockControllerBlockEntity house = revalidate(helper, ORIGIN);
+        require(helper, house.formed(), "Craft malt house did not form: " + house.debugDump());
+        int output = house.layout().firstOutputSlot();
+        house.setItem(output, new ItemStack(item("malted_barley"), 12));
+        IItemHandler handler = helper.getBlockEntity(portPos)
+                .getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.NORTH)
+                .orElseThrow(IllegalStateException::new);
+        ItemStack extracted = handler.extractItem(0, 64, false);
+        require(
+                helper,
+                extracted.is(item("malted_barley")) && extracted.getCount() == 12,
+                "Output malt-house port did not yield malted barley from NORTH"
+        );
+        require(helper, house.getItem(output).isEmpty(), "Malt-house output slot still held items");
+        helper.succeed();
     }
 
     @GameTest(template = "industrial_pad", timeoutTicks = 40)
@@ -148,6 +177,52 @@ public final class CraftGameTests {
                 helper,
                 kettle.tank().contents().flatMap(LiquidBatch::baseLiquid).filter(AlcoholicIds.WORT::equals).isPresent(),
                 "Industrial kettle did not accept wort from the craft mash tun"
+        );
+        helper.succeed();
+    }
+
+    @GameTest(template = "industrial_pad", timeoutTicks = 1100)
+    public static void craftMashTunStaysFormedAfterFullWaterMash(GameTestHelper helper) {
+        helper.setBlock(ORIGIN.below(), Blocks.MAGMA_BLOCK.defaultBlockState());
+        buildHollow(helper, ORIGIN, 3, 3, 3, "craft_mash_tun_controller", "craft_casing", null);
+        MultiblockControllerBlockEntity mash = revalidate(helper, ORIGIN);
+        require(helper, mash.formed(), "Craft mash tun did not form: " + mash.debugDump());
+        mash.insert(new ItemStack(item("grist"), 1));
+        mash.tank(MultiblockControllerBlockEntity.INPUT_TANK)
+                .fill(LiquidBatch.of(ResourceId.parse("minecraft:water"), 2000, PropertyBag.empty()), false);
+        helper.runAtTickTime(980, () -> {
+            MultiblockControllerBlockEntity entity = controller(helper, ORIGIN);
+            require(
+                    helper,
+                    entity.tank().contents().orElseThrow().baseLiquid().filter(AlcoholicIds.WORT::equals).isPresent(),
+                    "Full-water craft mash did not produce wort"
+            );
+            MultiblockControllerBlockEntity revalidated = revalidate(helper, ORIGIN);
+            require(
+                    helper,
+                    revalidated.formed(),
+                    "Craft mash tun unformed after a full-water batch: " + revalidated.debugDump()
+            );
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "industrial_pad", timeoutTicks = 40)
+    public static void craftMashTunStaysFormedWhenWaterRefilledWithWortPresent(GameTestHelper helper) {
+        buildHollow(helper, ORIGIN, 3, 3, 3, "craft_mash_tun_controller", "craft_casing", null);
+        MultiblockControllerBlockEntity mash = revalidate(helper, ORIGIN);
+        require(helper, mash.formed(), "Craft mash tun did not form: " + mash.debugDump());
+        // Simulates post-process leftover + refill: each vessel fits the 2000 mB hull
+        // on its own, but the sum (3000 mB) exceeds it. The validator must compare
+        // the fullest vessel, not the sum.
+        mash.tank().fill(LiquidBatch.of(AlcoholicIds.WORT, 1000, PropertyBag.empty()), false);
+        mash.tank(MultiblockControllerBlockEntity.INPUT_TANK)
+                .fill(LiquidBatch.of(ResourceId.parse("minecraft:water"), 2000, PropertyBag.empty()), false);
+        MultiblockControllerBlockEntity revalidated = revalidate(helper, ORIGIN);
+        require(
+                helper,
+                revalidated.formed(),
+                "Craft mash tun unformed with full water over wort: " + revalidated.debugDump()
         );
         helper.succeed();
     }
